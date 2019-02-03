@@ -12,7 +12,7 @@ namespace ArkHttpServer.HttpServices
 {
     public class PopulationService
     {
-        public const int POPULATION_DETAIL = 40;
+        public const int POPULATION_DETAIL = 16;
         public const int TILE_SIZE = 512;
 
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkWorld world)

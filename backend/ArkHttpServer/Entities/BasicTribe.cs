@@ -19,6 +19,8 @@ namespace ArkHttpServer.Entities
         public float gameTime;
         public Dictionary<string, BasicArkDino> dinos;
 
+        public List<string> baby_dino_urls;
+
         public string[] diff_dinos_missing; //Dinos missing since last request
         public string[] diff_dinos_added; //New dinos
         public string[] diff_dinos_unchanged;
@@ -65,6 +67,16 @@ namespace ArkHttpServer.Entities
                 diff_dinos_added = new_dino_list.ToArray();
                 diff_dinos_unchanged = new_dino_list.ToArray();
             }
+
+            //Get baby dinos
+            baby_dino_urls = new List<string>();
+            foreach(var d in world.dinos)
+            {
+                if(d.isBaby == true && d.babyAge < 1f && d.tamerName == tribeName)
+                {
+                    baby_dino_urls.Add(new BasicArkDino(d, world, sessionid).apiUrl);
+                }
+            }
         }
     }
 
@@ -96,9 +108,9 @@ namespace ArkHttpServer.Entities
             normalized_pos = w.ConvertFromWorldToNormalizedPos(dino.location);
 
             classname = dino.classnameString;
-            imgUrl = $"https://ark.romanport.com/resources/dinos/icons/lq/{classname}.png";
+            imgUrl = $"{Program.config.resources_url}/dinos/icons/lq/{classname}.png";
             id = dino.dinosaurId;
-            apiUrl = $"https://ark.romanport.com/api/world/{sessionId}/dinos/{id}";
+            apiUrl = $"{Program.config.api_url}/world/{sessionId}/dinos/{id}";
             isFemale = dino.isFemale;
             tamedName = dino.tamedName;
             tamerName = dino.tamerName;

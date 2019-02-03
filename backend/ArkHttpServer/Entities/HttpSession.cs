@@ -17,6 +17,8 @@ namespace ArkHttpServer.Entities
         public List<HttpSessionEvent> new_events = new List<HttpSessionEvent>();
         public Dictionary<string, ArkItemSearchResultsItem> item_dict_cache = new Dictionary<string, ArkItemSearchResultsItem>(); //Key: Item classname
 
+        public DateTime worldLastSavedAt;
+
         public byte[] last_file_hash; //Used to tell when the file is updated
         public DateTime last_heartbeat_time; //Updated when a request comes in.
         public List<string> last_dino_list;

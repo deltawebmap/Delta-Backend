@@ -17,6 +17,8 @@ namespace ArkHttpServer
 {
     partial class Program
     {
+        public static ServerConfigFile config;
+
         public static ArkWorld world;
         public static System.Timers.Timer event_checker_timer;
 
@@ -24,6 +26,25 @@ namespace ArkHttpServer
 
         static void Main(string[] args)
         {
+            //Load
+            string config_path = Directory.GetCurrentDirectory().TrimEnd('\\') + "\\config.json";
+            if (args.Length >= 2)
+                config_path = args[1];
+            Console.WriteLine($"Loading config file from '{config_path}'... Specify the config path with the console args.");
+            if(File.Exists(config_path))
+            {
+                config = JsonConvert.DeserializeObject<ServerConfigFile>(File.ReadAllText(config_path));
+            } else
+            {
+                config = new ServerConfigFile();
+                File.WriteAllText(config_path, JsonConvert.SerializeObject(config, Formatting.Indented));
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("No config file found! A file has been created. Please edit it. Press ENTER.");
+                Console.ReadLine();
+                Console.WriteLine("Exiting!");
+                return;
+            }
+
             //Start event checker timer
             event_checker_timer = new System.Timers.Timer(5000);
             event_checker_timer.Elapsed += Event_checker_timer_Elapsed;
@@ -67,6 +88,10 @@ namespace ArkHttpServer
 
                     //Update the hash
                     s.last_file_hash = hash;
+
+                    //Reload the new file from the disk
+                    var newFile = new ArkWorld(ArkSaveEditor.Deserializer.ArkSaveDeserializer.OpenDotArk(s.game_file_path));
+                    s.world = newFile;
                 }
 
                 //Next, loop through clients and find old sessions to remove.
@@ -86,23 +111,13 @@ namespace ArkHttpServer
             }
         }
 
-        public static ArkWorld GetArkWorld(string pathname)
-        {
-            if (world != null)
-                return world;
-            var ark = ArkSaveEditor.Deserializer.ArkSaveDeserializer.OpenDotArk();
-            //Get normal object
-            world = new ArkWorld(ark);
-            return world;
-        }
-
         public static Task MainAsync()
         {
             var host = new WebHostBuilder()
                 .UseKestrel(options =>
                 {
                     IPAddress addr = IPAddress.Any;
-                    options.Listen(addr, 43298);
+                    options.Listen(addr, config.web_port);
                     /*options.Listen(addr, 443, listenOptions =>
                     {
                         listenOptions.UseHttps(LibRpwsCore.config.ssl_cert_path, "");

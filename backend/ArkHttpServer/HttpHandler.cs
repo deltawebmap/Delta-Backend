@@ -9,6 +9,7 @@ using ArkHttpServer.HttpServices;
 using ArkSaveEditor.Entities;
 using ArkSaveEditor.ArkEntries;
 using ArkSaveEditor;
+using System.IO;
 
 namespace ArkHttpServer
 {
@@ -193,7 +194,7 @@ namespace ArkHttpServer
             string file_path = @"C:\Program Files (x86)\Steam\steamapps\common\ARK\ShooterGame\Saved\SavedArks\Extinction.ark";
 
             //Get Ark world
-            ArkWorld w = GetArkWorld(file_path);
+            ArkWorld w = new ArkWorld(ArkSaveEditor.Deserializer.ArkSaveDeserializer.OpenDotArk(file_path));
 
             //Create session
             var session = new HttpSession
@@ -203,7 +204,8 @@ namespace ArkHttpServer
                 new_events = new List<HttpSessionEvent>(),
                 game_file_path = file_path,
                 last_heartbeat_time = DateTime.UtcNow,
-                session_id = sessionId
+                session_id = sessionId,
+                worldLastSavedAt = File.GetLastWriteTimeUtc(file_path)
             };
 
             //Recompute dino dict
@@ -213,10 +215,11 @@ namespace ArkHttpServer
             session.last_file_hash = session.GetComputedFileHash();
 
             //Add to sessions
-            sessions.Add(sessionId, session);
+            lock(sessions)
+                sessions.Add(sessionId, session);
 
             //Return basic Ark world
-            return QuickWriteJsonToDoc(e, new BasicArkWorld(w, sessionId));
+            return QuickWriteJsonToDoc(e, new BasicArkWorld(w, session));
         }
     }
 }

@@ -12,6 +12,7 @@ namespace ArkHttpServer.Entities
         public float dayTime;
         public string mapName;
         public ArkMapData mapData;
+        public double mapTimeOffset; //Offset from the map time sent. Usually obtained by getting the amount of time since now and the last time the file was saved.
 
         public string href; //URL of this file. Depending on how this was loaded, this might be different from what was actually requested.
         public string endpoint_population_map; //Endpoint for viewing populations
@@ -21,7 +22,7 @@ namespace ArkHttpServer.Entities
         public string endpoint_events; //Events endpoint
         public string endpoint_tribes_itemsearch; //Item search endpoint
 
-        public BasicArkWorld(ArkWorld w, string sessionId)
+        public BasicArkWorld(ArkWorld w, HttpSession session)
         {
             //Set world data
             day = w.day;
@@ -29,11 +30,14 @@ namespace ArkHttpServer.Entities
             mapName = w.map;
             mapData = w.mapinfo;
 
+            //Calculate map time offset
+            mapTimeOffset = (DateTime.UtcNow - session.worldLastSavedAt).TotalSeconds;
+
             //Set endpoints
-            string baseUrl = $"https://ark.romanport.com/api/world/{sessionId}/";
+            string baseUrl = $"{Program.config.api_url}/world/{session.session_id}/";
             href = baseUrl;
             endpoint_population_map = baseUrl + "map/tiles/population/?zoom={z}&x={x}&y={y}&filter={filter}&v="+Program.CURRENT_CLIENT_VERSION;
-            endpoint_game_map = "https://ark.romanport.com/resources/maps/"+mapName+"/tiles/{z}_{x}_{y}.png";
+            endpoint_game_map = $"{Program.config.resources_url}/maps/"+mapName+"/tiles/{z}_{x}_{y}.png";
             endpoint_tribes = baseUrl + "tribes/";
             heartrate = Program.SESSION_TIMEOUT_MS;
             endpoint_events = baseUrl + "events";
