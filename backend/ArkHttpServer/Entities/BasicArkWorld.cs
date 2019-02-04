@@ -21,6 +21,7 @@ namespace ArkHttpServer.Entities
         public int heartrate; //Time, in ms, that the client must use to poll for events.
         public string endpoint_events; //Events endpoint
         public string endpoint_tribes_itemsearch; //Item search endpoint
+        public string endpoint_tribes_dino; //Dino endpoint
 
         public BasicArkWorld(ArkWorld w, HttpSession session)
         {
@@ -34,14 +35,15 @@ namespace ArkHttpServer.Entities
             mapTimeOffset = (DateTime.UtcNow - session.worldLastSavedAt).TotalSeconds;
 
             //Set endpoints
-            string baseUrl = $"{Program.config.api_url}/world/{session.session_id}/";
+            string baseUrl = $"{ArkWebServer.api_prefix}/world/{session.session_id}/";
             href = baseUrl;
-            endpoint_population_map = baseUrl + "map/tiles/population/?zoom={z}&x={x}&y={y}&filter={filter}&v="+Program.CURRENT_CLIENT_VERSION;
-            endpoint_game_map = $"{Program.config.resources_url}/maps/"+mapName+"/tiles/{z}_{x}_{y}.png";
+            endpoint_population_map = baseUrl + "map/tiles/population/?zoom={z}&x={x}&y={y}&filter={filter}&v="+ArkWebServer.CURRENT_CLIENT_VERSION;
+            endpoint_game_map = $"{ArkWebServer.config.resources_url}/maps/"+mapName+"/tiles/{z}_{x}_{y}.png";
             endpoint_tribes = baseUrl + "tribes/";
-            heartrate = Program.SESSION_TIMEOUT_MS;
+            heartrate = ArkWebServer.SESSION_TIMEOUT_MS;
             endpoint_events = baseUrl + "events";
             endpoint_tribes_itemsearch = baseUrl + "tribes/item_search/?q={query}";
+            endpoint_tribes_dino = baseUrl + "dinos/{dino}";
         }
     }
 }

@@ -24,7 +24,7 @@ namespace ArkHttpServer.HttpServices
             if (x < 0 || x > imageSideCount || y < 0 || y > imageSideCount)
             {
                 //404
-                return Program.QuickWriteToDoc(e, "Tile is out of bounds.", "text/plain", 404);
+                return ArkWebServer.QuickWriteToDoc(e, "Tile is out of bounds.", "text/plain", 404);
             }
 
             //Set reply headers

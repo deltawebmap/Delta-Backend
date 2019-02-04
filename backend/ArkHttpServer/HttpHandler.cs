@@ -13,7 +13,7 @@ using System.IO;
 
 namespace ArkHttpServer
 {
-    partial class Program
+    partial class ArkWebServer
     {
         public static Dictionary<string, HttpSession> sessions = new Dictionary<string, HttpSession>();
 
@@ -36,7 +36,7 @@ namespace ArkHttpServer
                 e.Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
                 //Since we don't have to worry about permissions or anything, we'll just have a list of services created at compile time.
-                string pathname = e.Request.Path.ToString().ToLower();
+                string pathname = e.Request.Path.ToString().ToLower().Substring("/api".Length);
 
                 //Handle things that are not map specific
                 if (pathname.StartsWith("/create_session"))
@@ -54,7 +54,7 @@ namespace ArkHttpServer
                         if (d.screen_name.ToLower().Contains(query))
                             dinos.Add(d);
                     }
-                    return Program.QuickWriteJsonToDoc(e, dinos);
+                    return ArkWebServer.QuickWriteJsonToDoc(e, dinos);
                 }
 
                 //Continue to map specific things
@@ -65,7 +65,7 @@ namespace ArkHttpServer
 
                     //Validate session ID
                     if (!sessions.ContainsKey(sessionId))
-                        return Program.QuickWriteToDoc(e, "Invalid session ID", "text/plain", 403);
+                        return ArkWebServer.QuickWriteToDoc(e, "Invalid session ID", "text/plain", 403);
 
                     //Trim session ID
                     pathname = pathname.Substring("/world/".Length + sessionId.Length);
@@ -191,7 +191,7 @@ namespace ArkHttpServer
                 sessionId = GenerateRandomString(8).ToLower();
 
             //Get pathname
-            string file_path = @"C:\Program Files (x86)\Steam\steamapps\common\ARK\ShooterGame\Saved\SavedArks\Extinction.ark";
+            string file_path = config.save_location;
 
             //Get Ark world
             ArkWorld w = new ArkWorld(ArkSaveEditor.Deserializer.ArkSaveDeserializer.OpenDotArk(file_path));

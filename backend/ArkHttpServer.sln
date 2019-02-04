@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkHttpServer", "ArkHttpSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkSaveEditor", "Ark-Save-Manager\ArkSaveEditor\ArkSaveEditor.csproj", "{CA8F9500-8795-44EE-BFA0-E6A6BBE82905}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArkWebMapMasterServer", "ArkWebMapMasterServer\ArkWebMapMasterServer.csproj", "{E7668329-B4DE-403F-8F75-8E293EB43747}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArkWebMapSlaveServer", "ArkWebMapSlaveServer\ArkWebMapSlaveServer.csproj", "{5944226B-507E-429D-8823-A865281A9C5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArkWebMapSlaveServerConsole", "ArkWebMapSlaveServerConsole\ArkWebMapSlaveServerConsole.csproj", "{CAE78088-6427-4D0F-8DD0-358631C82368}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +27,18 @@ Global
 		{CA8F9500-8795-44EE-BFA0-E6A6BBE82905}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA8F9500-8795-44EE-BFA0-E6A6BBE82905}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA8F9500-8795-44EE-BFA0-E6A6BBE82905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7668329-B4DE-403F-8F75-8E293EB43747}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7668329-B4DE-403F-8F75-8E293EB43747}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7668329-B4DE-403F-8F75-8E293EB43747}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7668329-B4DE-403F-8F75-8E293EB43747}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5944226B-507E-429D-8823-A865281A9C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5944226B-507E-429D-8823-A865281A9C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5944226B-507E-429D-8823-A865281A9C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5944226B-507E-429D-8823-A865281A9C5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAE78088-6427-4D0F-8DD0-358631C82368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAE78088-6427-4D0F-8DD0-358631C82368}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAE78088-6427-4D0F-8DD0-358631C82368}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAE78088-6427-4D0F-8DD0-358631C82368}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

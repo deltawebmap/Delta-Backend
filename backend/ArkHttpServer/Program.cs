@@ -15,35 +15,23 @@ using System.Collections.Generic;
 
 namespace ArkHttpServer
 {
-    partial class Program
+    public partial class ArkWebServer
     {
         public static ServerConfigFile config;
 
         public static ArkWorld world;
         public static System.Timers.Timer event_checker_timer;
 
+        public static string api_prefix;
+
         public const int SESSION_TIMEOUT_MS = 10000; //Amount of time before a session is timed out and removed. This is the "heartbeat" of the session. It's also how quickly a client will poll the server.
 
-        static void Main(string[] args)
+        public static void Configure(ServerConfigFile config, string api_prefix)
         {
             //Load
-            string config_path = Directory.GetCurrentDirectory().TrimEnd('\\') + "\\config.json";
-            if (args.Length >= 2)
-                config_path = args[1];
-            Console.WriteLine($"Loading config file from '{config_path}'... Specify the config path with the console args.");
-            if(File.Exists(config_path))
-            {
-                config = JsonConvert.DeserializeObject<ServerConfigFile>(File.ReadAllText(config_path));
-            } else
-            {
-                config = new ServerConfigFile();
-                File.WriteAllText(config_path, JsonConvert.SerializeObject(config, Formatting.Indented));
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("No config file found! A file has been created. Please edit it. Press ENTER.");
-                Console.ReadLine();
-                Console.WriteLine("Exiting!");
-                return;
-            }
+            //string config_path = Directory.GetCurrentDirectory().TrimEnd('\\') + "\\config.json";
+            ArkWebServer.config = config;
+            ArkWebServer.api_prefix = api_prefix;
 
             //Start event checker timer
             event_checker_timer = new System.Timers.Timer(5000);
@@ -52,9 +40,6 @@ namespace ArkHttpServer
 
             //Load save editor entries
             ArkImports.ImportContent(@"PrimalData/world.json", @"PrimalData/dinos.json", @"PrimalData/items.json");
-
-            //Start Kestrel
-            MainAsync().GetAwaiter().GetResult();
         }
 
         private static void Event_checker_timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -111,30 +96,7 @@ namespace ArkHttpServer
             }
         }
 
-        public static Task MainAsync()
-        {
-            var host = new WebHostBuilder()
-                .UseKestrel(options =>
-                {
-                    IPAddress addr = IPAddress.Any;
-                    options.Listen(addr, config.web_port);
-                    /*options.Listen(addr, 443, listenOptions =>
-                    {
-                        listenOptions.UseHttps(LibRpwsCore.config.ssl_cert_path, "");
-                    });*/
-
-                })
-                .UseStartup<Program>()
-                .Build();
-
-            return host.RunAsync();
-        }
-
-        public void Configure(IApplicationBuilder app)
-        {
-            app.Run(OnHttpRequest);
-
-        }
+        
 
         public static Task QuickWriteToDoc(Microsoft.AspNetCore.Http.HttpContext context, string content, string type = "text/html", int code = 200)
         {

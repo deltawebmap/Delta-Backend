@@ -108,9 +108,9 @@ namespace ArkHttpServer.Entities
             normalized_pos = w.ConvertFromWorldToNormalizedPos(dino.location);
 
             classname = dino.classnameString;
-            imgUrl = $"{Program.config.resources_url}/dinos/icons/lq/{classname}.png";
+            imgUrl = $"{ArkWebServer.config.resources_url}/dinos/icons/lq/{classname}.png";
             id = dino.dinosaurId;
-            apiUrl = $"{Program.config.api_url}/world/{sessionId}/dinos/{id}";
+            apiUrl = $"{ArkWebServer.api_prefix}/world/{sessionId}/dinos/{id}";
             isFemale = dino.isFemale;
             tamedName = dino.tamedName;
             tamerName = dino.tamerName;
