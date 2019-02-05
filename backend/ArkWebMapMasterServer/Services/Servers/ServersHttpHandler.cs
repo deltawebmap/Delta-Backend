@@ -1,5 +1,6 @@
 ﻿using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -46,7 +47,11 @@ namespace ArkWebMapMasterServer.Services.Servers
                 {
                     //Send
                     HttpContent content = new StreamContent(e.Request.Body);
-                    HttpResponseMessage reply = server.OpenHttpRequest(content, "/api/" + proxyUrl, e.Request.Method);
+                    user.steam_id = "76561198300124500"; //Temp
+                    user.is_steam_verified = true;
+
+                    HttpResponseMessage reply = server.OpenHttpRequest(content, "/api/" + proxyUrl, e.Request.Method, user);
+                    
 
                     //Set response
                     e.Response.StatusCode = (int)reply.StatusCode;

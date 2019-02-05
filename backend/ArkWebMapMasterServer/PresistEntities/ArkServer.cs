@@ -45,9 +45,9 @@ namespace ArkWebMapMasterServer.PresistEntities
             ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetCollection().Update(this);
         }
 
-        public T SendRequest<T>(string action, object data, RequestHttpMethod method)
+        public T SendRequest<T>(string action, object data, RequestHttpMethod method, ArkUser user)
         {
-            HttpResponseMessage response = OpenHttpRequest(new StringContent(JsonConvert.SerializeObject(data)), action, method.ToString());
+            HttpResponseMessage response = OpenHttpRequest(new StringContent(JsonConvert.SerializeObject(data)), action, method.ToString(), user);
             var replyString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
@@ -67,9 +67,10 @@ namespace ArkWebMapMasterServer.PresistEntities
             }
         }
 
-        public HttpResponseMessage OpenHttpRequest(HttpContent content, string action, string method)
+        public HttpResponseMessage OpenHttpRequest(HttpContent content, string action, string method, ArkUser user)
         {
             //Add headers and send.
+            content.Headers.Add("X-Ark-User-Auth", JsonConvert.SerializeObject(user));
 
             //Todo: Create validation headers
             string fullURL = $"http://{latest_proxy_url}{action}";

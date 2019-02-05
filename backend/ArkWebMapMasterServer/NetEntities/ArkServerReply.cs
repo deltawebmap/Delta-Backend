@@ -32,7 +32,7 @@ namespace ArkWebMapMasterServer.NetEntities
                 s.SendRequest<PingRequest>("/bridge/ping", new PingRequest
                 {
                     content = "user ping"
-                }, RequestHttpMethod.get);
+                }, RequestHttpMethod.get, u);
                 ping = (DateTime.UtcNow - start).TotalMilliseconds;
                 online = true;
             } catch

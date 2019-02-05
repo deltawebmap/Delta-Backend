@@ -18,7 +18,6 @@ namespace ArkWebMapMasterServer.NetEntities
             //Set basic values
             screen_name = u.screen_name;
             profile_image_url = u.profile_image_url;
-            profile_image_url = "/assets/placeholder_icon.png"; //TEMP;
             id = u._id;
 
             //Convert servers

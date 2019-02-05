@@ -3,6 +3,7 @@ using ArkSaveEditor.World.WorldTypes;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -12,7 +13,11 @@ namespace ArkHttpServer.Entities
     {
         public ArkWorld world;
         public string session_id;
-        public string tribe_name;
+        public MasterServerArkUser latest_user;
+
+        public int tribe_id;
+        public bool has_tribe_id;
+
         public string game_file_path;
         public List<HttpSessionEvent> new_events = new List<HttpSessionEvent>();
         public Dictionary<string, ArkItemSearchResultsItem> item_dict_cache = new Dictionary<string, ArkItemSearchResultsItem>(); //Key: Item classname
@@ -22,6 +27,34 @@ namespace ArkHttpServer.Entities
         public byte[] last_file_hash; //Used to tell when the file is updated
         public DateTime last_heartbeat_time; //Updated when a request comes in.
         public List<string> last_dino_list;
+
+        public bool FindTribeId(MasterServerArkUser user)
+        {
+            //Search through players in the world with this user's Steam ID
+            if(!user.is_steam_verified)
+            {
+                //Not verified. Stop
+                tribe_id = -1;
+                has_tribe_id = false;
+                return false;
+            }
+            string userSteamId = user.steam_id;
+            var users = world.players.Where(x => x.steamId == userSteamId).ToArray();
+            if (users.Length == 1)
+            {
+                //We've found the user. Lookup their tribe
+                tribe_id = users[0].tribeId;
+                has_tribe_id = true;
+                return true;
+            }
+            else
+            {
+                //No user found.
+                tribe_id = -1;
+                has_tribe_id = false;
+                return false;
+            }
+        }
 
         public byte[] GetComputedFileHash()
         {

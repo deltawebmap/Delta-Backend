@@ -41,5 +41,7 @@ namespace ArkWebMapMasterServer
         AuthRequired = 5,
         SlaveAuthFailed = 6,
         NotPermitted = 7,
+        ExternalAuthError = 8,
+        AuthFailed = 9
     }
 }

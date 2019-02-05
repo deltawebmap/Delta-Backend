@@ -12,24 +12,64 @@ namespace ArkWebMapMasterServer.Services.Auth
     {
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
         {
-            //Require POST
-            if (Program.FindRequestMethod(e) != RequestHttpMethod.post)
-                throw new StandardError("Method can only be post.", StandardErrorCode.NotFound);
-
             //Check path
-            if (path.StartsWith("password/create"))
+            /*if (path.StartsWith("password/create"))
             {
+                //Require POST
+                if (Program.FindRequestMethod(e) != RequestHttpMethod.post)
+                    throw new StandardError("Method can only be post.", StandardErrorCode.NotFound);
+
                 //Create user.
                 return OnPasswordCreate(e);
             }
             if (path.StartsWith("password/login"))
             {
+                //Require POST
+                if (Program.FindRequestMethod(e) != RequestHttpMethod.post)
+                    throw new StandardError("Method can only be post.", StandardErrorCode.NotFound);
+
                 //Create user.
                 return OnPasswordLogin(e);
+            }*/
+            if (path.StartsWith("steam_auth_return"))
+            {
+                //Handle
+                return OnSteamReturnRequest(e);
             }
+            if (path.StartsWith("steam_auth"))
+            {
+                //Redirect to Steam auth
+                string url = SteamAuth.SteamOpenID.Begin();
+                e.Response.Headers.Add("Location", url);
+                return Program.QuickWriteToDoc(e, "", "text/plain", 302);
+            }
+            
 
             //Not found
             throw new StandardError("Not Found", StandardErrorCode.NotFound);
+        }
+
+        private static Task OnSteamReturnRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        {
+            //Finish Steam auth
+            var info = SteamAuth.SteamOpenID.Finish(e);
+
+            //Get user. If a user account isn't created yet, make one.
+            ArkUser user = UserAuth.GetUserByAuthName(info.steam_id);
+            if(user == null)
+            {
+                user = UserAuth.CreateUserWithSteam(info.steam_id, info.profile);
+            }
+
+            //Update profile
+            user.screen_name = info.profile.personaname;
+            user.profile_image_url = info.profile.avatarfull;
+            user.is_steam_verified = true;
+            user.steam_id = info.steam_id;
+            user.Update();
+
+            //Pass into the next method
+            return OnFinishUserAuth(e, user, "Loaded from Steam profile.", true);
         }
 
         //User is using username/password and would like to create a user.
@@ -73,7 +113,7 @@ namespace ArkWebMapMasterServer.Services.Auth
         }
 
         //Called once the user is authenticated using whatever method.
-        public static Task OnFinishUserAuth(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u, string message)
+        public static Task OnFinishUserAuth(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u, string message, bool redirect = false)
         {
             //Generate reply
             AuthReply reply = new AuthReply
@@ -99,7 +139,16 @@ namespace ArkWebMapMasterServer.Services.Auth
             }
 
             //Write reply
-            return Program.QuickWriteJsonToDoc(e, reply);
+            if(redirect)
+            {
+                //Redirect here
+                e.Response.Headers.Add("Location", "https://ark.romanport.com/");
+                return Program.QuickWriteToDoc(e, "You should be redirected home now.", "text/plain", 302);
+            } else
+            {
+                //Just write for REST
+                return Program.QuickWriteJsonToDoc(e, reply);
+            }
         }
     }
 }

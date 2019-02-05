@@ -22,8 +22,6 @@ namespace ArkWebMapMasterServer.Servers
         {
             var collec = GetCollection();
             var s = collec.FindOne(x => x._id == id);
-            if(s != null)
-                s.image_url = "https://ark.romanport.com/assets/placeholder_icon.png"; //TEMP
             return s;
         }
 

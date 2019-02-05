@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ArkWebMapSlaveServer.NetEntities;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +13,9 @@ namespace ArkWebMapSlaveServer
         {
             try
             {
+                //Authenticate the user
+                ArkHttpServer.Entities.MasterServerArkUser user = JsonConvert.DeserializeObject<ArkHttpServer.Entities.MasterServerArkUser>(e.Request.Headers["X-Ark-User-Auth"]);
+                
                 //Read the first part of the path.
                 string path = e.Request.Path.ToString();
                 if (path.StartsWith("/bridge/"))
@@ -21,7 +26,7 @@ namespace ArkWebMapSlaveServer
                 if (path.StartsWith("/api/"))
                 {
                     //This is a proxy-ed request. Redirect
-                    return ArkHttpServer.ArkWebServer.OnHttpRequest(e);
+                    return ArkHttpServer.ArkWebServer.OnHttpRequest(e, user);
                 }
 
                 //Unknown

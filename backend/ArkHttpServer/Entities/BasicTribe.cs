@@ -26,12 +26,12 @@ namespace ArkHttpServer.Entities
         public string[] diff_dinos_unchanged;
         public string[] dino_ids;
 
-        public BasicTribe(ArkWorld world, string tribeName, string sessionid, List<string> last_dino_list)
+        public BasicTribe(ArkWorld world, int tribeId, string sessionid, List<string> last_dino_list)
         {
             gameTime = world.gameTime;
 
             //Narrow down our search by tribe name, if needed.
-            ArkDinosaur[] searchDinos = world.dinos.Where(x => x.isTamed == true && x.tamerName == tribeName).ToArray();
+            ArkDinosaur[] searchDinos = world.dinos.Where(x => x.isTamed == true && x.tribeId == tribeId).ToArray();
             dinos = new Dictionary<string, BasicArkDino>();
             for (int i = 0; i < searchDinos.Length; i++)
             {
@@ -72,7 +72,7 @@ namespace ArkHttpServer.Entities
             baby_dino_urls = new List<string>();
             foreach(var d in world.dinos)
             {
-                if(d.isBaby == true && d.babyAge < 1f && d.tamerName == tribeName)
+                if(d.isBaby == true && d.babyAge < 1f && d.tribeId == tribeId)
                 {
                     baby_dino_urls.Add(new BasicArkDino(d, world, sessionid).apiUrl);
                 }

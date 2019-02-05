@@ -19,6 +19,9 @@ namespace ArkWebMapMasterServer.PresistEntities
         [JsonProperty("id")]
         public string _id { get; set; } //ID of the user
 
+        public bool is_steam_verified { get; set; }
+        public string steam_id { get; set; }
+
         public void Update()
         {
             Users.UserAuth.GetCollection().Update(this);
@@ -28,6 +31,7 @@ namespace ArkWebMapMasterServer.PresistEntities
     public enum ArkUserSigninMethod
     {
         None, //Used when auth has not yet been configured.
-        UsernamePassword
+        UsernamePassword,
+        SteamProfile
     }
 }

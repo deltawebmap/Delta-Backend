@@ -13,13 +13,20 @@ namespace ArkWebMapMasterServer
     class Program
     {
         public static LiteDatabase db;
+        public static MasterServerConfig config;
         public static Random rand = new Random();
         public const string PREFIX_URL = "https://ark.romanport.com/api";
 
         static void Main(string[] args)
         {
+            //SteamAuth.SteamOpenID.Step1();
+            //Console.ReadLine();
+
             Console.WriteLine("Starting Database...");
             db = new LiteDatabase("ark.db");
+
+            Console.WriteLine("Loading config...");
+            config = JsonConvert.DeserializeObject<MasterServerConfig>(File.ReadAllText("E:\\ark_master_server_config.json"));
 
             Console.WriteLine("Starting Kestrel...");
             MainAsync().GetAwaiter().GetResult();

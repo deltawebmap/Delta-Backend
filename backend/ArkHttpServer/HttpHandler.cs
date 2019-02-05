@@ -21,7 +21,7 @@ namespace ArkHttpServer
 
         public const int CURRENT_CLIENT_VERSION = 1;
 
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, MasterServerArkUser user)
         {
             if (e.Request.Query.ContainsKey("v"))
             {
@@ -42,7 +42,7 @@ namespace ArkHttpServer
                 if (pathname.StartsWith("/create_session"))
                 {
                     //Create a new session. For now, just use the same map.
-                    return OnCreateSessionRequest(e);
+                    return OnCreateSessionRequest(e, user);
                 }
                 if (pathname.StartsWith("/dino_search/"))
                 {
@@ -72,6 +72,7 @@ namespace ArkHttpServer
 
                     //Get session
                     HttpSession session = sessions[sessionId];
+                    session.latest_user = user;
                     ArkWorld world = session.world;
 
                     //Update heartbeat
@@ -136,7 +137,7 @@ namespace ArkHttpServer
                     if (pathname.StartsWith("/tribes/"))
                     {
                         //Convert to a basic Ark world
-                        BasicTribe bworld = new BasicTribe(world, session.tribe_name, sessionId, session.last_dino_list);
+                        BasicTribe bworld = new BasicTribe(world, session.tribe_id, sessionId, session.last_dino_list);
 
                         //Update last dino list
                         List<string> dino_ids = new List<string>();
@@ -183,7 +184,7 @@ namespace ArkHttpServer
             }
         }
 
-        public static Task OnCreateSessionRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        public static Task OnCreateSessionRequest(Microsoft.AspNetCore.Http.HttpContext e, MasterServerArkUser user)
         {
             //Generate a random session ID
             string sessionId = GenerateRandomString(8).ToLower();
@@ -200,16 +201,19 @@ namespace ArkHttpServer
             var session = new HttpSession
             {
                 world = w,
-                tribe_name = "The TSA",
                 new_events = new List<HttpSessionEvent>(),
                 game_file_path = file_path,
                 last_heartbeat_time = DateTime.UtcNow,
                 session_id = sessionId,
-                worldLastSavedAt = File.GetLastWriteTimeUtc(file_path)
+                worldLastSavedAt = File.GetLastWriteTimeUtc(file_path),
+                latest_user = user
             };
 
             //Recompute dino dict
-            session.RecomputeItemDictCache(w.dinos.Where(x => x.isTamed == true && x.tamerName == session.tribe_name).ToList());
+            session.RecomputeItemDictCache(w.dinos.Where(x => x.isTamed == true && x.tribeId == session.tribe_id).ToList());
+
+            //Find tribe ID
+            session.FindTribeId(user);
 
             //Recompute hash
             session.last_file_hash = session.GetComputedFileHash();

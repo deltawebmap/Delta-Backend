@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Linq;
+using ArkWebMapMasterServer.NetEntities;
 
 namespace ArkWebMapMasterServer.Users
 {
@@ -22,6 +23,13 @@ namespace ArkWebMapMasterServer.Users
         {
             var collec = GetCollection();
             var found = collec.FindOne(x => x._id == id);
+            return found;
+        }
+
+        public static ArkUser GetUserByAuthName(string id)
+        {
+            var collec = GetCollection();
+            var found = collec.FindOne(x => x.auth.uid == id);
             return found;
         }
 
@@ -47,6 +55,35 @@ namespace ArkWebMapMasterServer.Users
             //Insert
             collec.Insert(u);
 
+            return u;
+        }
+
+        public static ArkUser CreateUserWithSteam(string steamId, SteamProfile profile)
+        {
+            //Check if this username already exists
+            if (GetCollection().Count(x => x.auth.uid == steamId) != 0)
+                return null;
+
+            //Generate user
+            ArkUser u = GenericCreateUser();
+            u.screen_name = profile.personaname;
+            u.profile_image_url = profile.avatarfull;
+            u.is_steam_verified = true;
+            u.steam_id = steamId;
+
+            //Add auth method
+            u.auth = new AuthMethod_Steam
+            {
+                uid = steamId
+            };
+
+            //Set auth method
+            u.auth_method = ArkUserSigninMethod.SteamProfile;
+
+            //Update
+            u.Update();
+
+            //Respond
             return u;
         }
 
