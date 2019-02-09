@@ -15,12 +15,18 @@ namespace ArkWebMapSlaveServer
             try
             {
                 //Verify the integrity of the connection.
-                /*string calculated_hmac = ArkBridgeSharedEntities.HMACGen.GenerateHMAC(e.Request.Path + e.Request.QueryString.ToString(), e.Request.Method, Convert.FromBase64String(e.Request.Headers["X-Ark-Salt"]), ArkWebMapServer.creds);
-                if(calculated_hmac != e.Request.Headers["X-Ark-Integrity"])
+                if(!e.Request.Headers.ContainsKey("X-Ark-Salt") || !e.Request.Headers.ContainsKey("X-Ark-Integrity"))
                 {
-                    ArkWebMapServer.Log($"Warning: IP {e.Request.Headers["X-Ark-Source-IP"]} sent invalid integrity data. Dropping request.", ConsoleColor.Yellow);
+                    //Missing data
+                    ArkWebMapServer.Log($"Warning: Client did not send required integrity data. Dropping request.", ConsoleColor.Yellow);
+                    throw new StandardError("Integrity check failed. Missing 'X-Ark-Salt' or 'X-Ark-Integrity'.", StandardErrorCode.BridgeIntegrityCheckFailed);
+                }
+                string calculated_hmac = ArkBridgeSharedEntities.HMACGen.GenerateHMAC(Convert.FromBase64String(e.Request.Headers["X-Ark-Salt"]), ArkWebMapServer.creds);
+                if (calculated_hmac != e.Request.Headers["X-Ark-Integrity"])
+                {
+                    ArkWebMapServer.Log($"Warning: IP {e.Request.Headers["X-Ark-Source-IP"]} sent invalid integrity data to {e.Request.Path}. Dropping request.", ConsoleColor.Red);
                     throw new StandardError("Integrity check failed.", StandardErrorCode.BridgeIntegrityCheckFailed);
-                }*/
+                }
 
                 //Authenticate the user
                 ArkHttpServer.Entities.MasterServerArkUser user = JsonConvert.DeserializeObject<ArkHttpServer.Entities.MasterServerArkUser>(e.Request.Headers["X-Ark-User-Auth"]);
@@ -44,11 +50,13 @@ namespace ArkWebMapSlaveServer
             catch (StandardError ex)
             {
                 //Write error
+                ArkWebMapServer.Log($"Request hit an error: {ex.screen_error} ({ex.error_code_string})", ConsoleColor.Yellow);
                 return ArkWebMapServer.QuickWriteJsonToDoc(e, ex, 500);
             }
             catch (Exception ex)
             {
                 //Write error
+                ArkWebMapServer.Log($"Request hit an error: {ex.Message} at {ex.StackTrace.Replace("\n", "")}", ConsoleColor.Yellow);
                 return ArkWebMapServer.QuickWriteJsonToDoc(e, new StandardError(ex.Message + ex.StackTrace, StandardErrorCode.UncaughtException, ex), 500);
             }
         }

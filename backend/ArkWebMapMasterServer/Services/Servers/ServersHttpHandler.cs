@@ -45,15 +45,13 @@ namespace ArkWebMapMasterServer.Services.Servers
                     return RenameServer.OnHttpRequest(e, server);
                 }
 
+                
+
                 try
                 {
                     //Send
                     HttpContent content = new StreamContent(e.Request.Body);
-                    user.steam_id = "76561198300124500"; //Temp
-                    user.is_steam_verified = true;
-
-                    HttpResponseMessage reply = server.OpenHttpRequest(content, "/api/" + proxyUrl+e.Request.QueryString, e.Request.Method, user);
-                    
+                    HttpResponseMessage reply = server.OpenHttpRequest(content, "/api/" + proxyUrl + e.Request.QueryString, e.Request.Method, user);
 
                     //Set response
                     e.Response.StatusCode = (int)reply.StatusCode;

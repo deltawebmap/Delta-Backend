@@ -21,13 +21,6 @@ namespace ArkHttpServer
 
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, MasterServerArkUser user)
         {
-            if (e.Request.Query.ContainsKey("v"))
-            {
-                Console.WriteLine($"Got net request to '{e.Request.Path}' on client version {e.Request.Query["v"].ToString()}.");
-            } else
-            {
-                Console.WriteLine($"Got net request to '{e.Request.Path}'.");
-            }
             try
             {
                 //Set some headers

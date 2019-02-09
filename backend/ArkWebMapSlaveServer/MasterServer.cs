@@ -1,4 +1,5 @@
-﻿using ArkBridgeSharedEntities.Entities;
+﻿using ArkBridgeSharedEntities;
+using ArkBridgeSharedEntities.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,14 @@ namespace ArkWebMapSlaveServer
             {
                 var content = new StringContent(JsonConvert.SerializeObject(request));
 
+                //Set our id
                 content.Headers.Add("X-Ark-Slave-Server-ID", ArkWebMapServer.config.auth.id);
-                content.Headers.Add("X-Ark-Slave-Server-Validation", ArkWebMapServer.config.auth.id);
+
+                //Generate an HMAC
+                byte[] salt = HMACGen.GenerateSalt();
+                string generatedHmac = HMACGen.GenerateHMAC(salt, ArkWebMapServer.creds);
+                content.Headers.Add("X-Ark-Integrity", generatedHmac);
+                content.Headers.Add("X-Ark-Salt", Convert.ToBase64String(salt));
 
                 var response = client.PostAsync(fullURL, content).GetAwaiter().GetResult();
                 var replyString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();

@@ -18,15 +18,26 @@ namespace ArkWebMapMasterServer.Services.Bridge
         {
             //Authenticate the slave server. First, find it by it's id. This is passed in with the header.
             string serverId = e.Request.Headers["X-Ark-Slave-Server-ID"];
-            string serverValidationString = e.Request.Headers["X-Ark-Slave-Server-Validation"];
 
             //Get the server by ID
             ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(serverId);
-            //Worry about validation later...
 
-            //If the server validation failed, stop
+            //If the server ID was invalid, fail
             if (server == null)
                 throw new StandardError("Could not authenticate slave server.", StandardErrorCode.SlaveAuthFailed);
+
+            //Validate the integrity
+            if (!e.Request.Headers.ContainsKey("X-Ark-Salt") || !e.Request.Headers.ContainsKey("X-Ark-Integrity"))
+            {
+                //Missing data
+                throw new StandardError("Integrity check failed. Missing 'X-Ark-Salt' or 'X-Ark-Integrity'.", StandardErrorCode.BridgeIntegrityCheckFailed);
+            }
+            string calculatedHmac = ArkBridgeSharedEntities.HMACGen.GenerateHMAC(Convert.FromBase64String(e.Request.Headers["X-Ark-Salt"]), server.server_creds);
+            if(calculatedHmac != e.Request.Headers["X-Ark-Integrity"])
+            {
+                //Invalid
+                throw new StandardError("Integrity check failed. Invalid HMAC.", StandardErrorCode.BridgeIntegrityCheckFailed);
+            }
 
             //Now, continue normally.
             //Check path

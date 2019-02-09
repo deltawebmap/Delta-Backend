@@ -11,7 +11,7 @@ namespace ArkWebMapMasterServer
     {
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e)
         {
-            Console.WriteLine($"Got request to {e.Request.Path}");
+            Program.Log($"[Incoming request] {e.Request.Path}{e.Request.QueryString}", ConsoleColor.Blue);
             try
             {
                 //Read the first part of the path.

@@ -78,7 +78,7 @@ namespace ArkWebMapSlaveServerConsole
                                 break;
                         }
                     }
-                    Thread.Sleep(3000);
+                    Thread.Sleep(4000);
                 }
             }
             Console.Clear();
@@ -95,11 +95,17 @@ namespace ArkWebMapSlaveServerConsole
 
         static List<ArkSetupProxyMessage> GetMasterMessages()
         {
-            var request = (HttpWebRequest)WebRequest.Create($"https://ark.romanport.com/api/server_setup_proxy/{clientSessionId}?from=Server");
-            request.Method = "GET";
-            var response = (HttpWebResponse)request.GetResponse();
-            string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-            return JsonConvert.DeserializeObject<List<ArkSetupProxyMessage>>(responseString);
+            try
+            {
+                var request = (HttpWebRequest)WebRequest.Create($"https://ark.romanport.com/api/server_setup_proxy/{clientSessionId}?from=Server");
+                request.Method = "GET";
+                var response = (HttpWebResponse)request.GetResponse();
+                string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                return JsonConvert.DeserializeObject<List<ArkSetupProxyMessage>>(responseString); 
+            } catch
+            {
+                return new List<ArkSetupProxyMessage>();
+            }
         }
 
         public static void SendMasterMessage(ArkSetupProxyMessage message)

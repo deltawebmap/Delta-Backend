@@ -1,4 +1,5 @@
-﻿using ArkBridgeSharedEntities.Entities;
+﻿using ArkBridgeSharedEntities;
+using ArkBridgeSharedEntities.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -130,11 +131,21 @@ namespace ArkWebMapMasterServer.PresistEntities
 
         public HttpResponseMessage OpenHttpRequest(HttpContent content, string action, string method, ArkUser user)
         {
+            //Generate salt and create URLs
+            string fullURL = $"http://{latest_proxy_url}{action}";
+            Uri fullURI = new Uri(fullURL);
+            byte[] salt = HMACGen.GenerateSalt();
+
+            //Generate HMAC
+            string hmac = HMACGen.GenerateHMAC(salt, server_creds);
+
             //Add headers and send.
             content.Headers.Add("X-Ark-User-Auth", JsonConvert.SerializeObject(user));
+            content.Headers.Add("X-Ark-Salt", Convert.ToBase64String(salt));
+            content.Headers.Add("X-Ark-Integrity", hmac);
+            content.Headers.Add("X-Ark-Source-IP", "0.0.0.0");
 
-            //Todo: Create validation headers
-            string fullURL = $"http://{latest_proxy_url}{action}";
+            
             HttpResponseMessage reply;
             using (HttpClient client = new HttpClient())
             {

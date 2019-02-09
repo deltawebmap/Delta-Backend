@@ -32,6 +32,13 @@ namespace ArkWebMapMasterServer
             MainAsync().GetAwaiter().GetResult();
         }
 
+        public static void Log(string message, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
         public static Task MainAsync()
         {
             var host = new WebHostBuilder()
