@@ -45,7 +45,10 @@ namespace ArkWebMapMasterServer.Users
             ArkUser u = new ArkUser
             {
                 _id = id,
-                servers = new List<string>(),
+                my_servers = new List<string>(),
+                joined_servers = new List<string>(),
+                is_steam_verified = false,
+                steam_id = "",
                 screen_name = "",
                 profile_image_url = "",
                 auth_method = ArkUserSigninMethod.None,

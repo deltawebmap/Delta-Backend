@@ -111,6 +111,8 @@ namespace ArkHttpServer.Entities
                     foreach(var i in dino_inventory)
                     {
                         string classname = i.classnameString;
+                        if (i.isEngram)
+                            continue;
 
                         //If the item dict does not contain this item, also add an entry
                         if (!item_dict_cache.ContainsKey(classname))

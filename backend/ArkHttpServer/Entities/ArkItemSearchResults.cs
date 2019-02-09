@@ -19,7 +19,7 @@ namespace ArkHttpServer.Entities
 
     public class ArkItemSearchResults
     {
-        public bool listTruncated; //Limit at 100
+        public bool moreListItems; //Limit at 100
         public int hardLimit; //Limit
 
         public int itemEntriesFound;

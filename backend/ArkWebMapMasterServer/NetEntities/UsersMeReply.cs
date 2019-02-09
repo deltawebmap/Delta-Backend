@@ -20,12 +20,17 @@ namespace ArkWebMapMasterServer.NetEntities
             profile_image_url = u.profile_image_url;
             id = u._id;
 
+            //Check
+            if (u.hidden_servers == null)
+                u.hidden_servers = new List<string>();
+
             //Convert servers
             servers = new List<UsersMeReply_Server>();
-            foreach(string id in u.servers)
+            var found_servers = u.GetServers(false);
+            foreach(var id in found_servers)
             {
                 //Get server by ID
-                servers.Add(new UsersMeReply_Server(u, ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(id)));
+                servers.Add(new UsersMeReply_Server(u, id));
             }
         }
     }
@@ -37,6 +42,9 @@ namespace ArkWebMapMasterServer.NetEntities
         public string owner_uid;
         public string id;
 
+        public bool has_ever_gone_online;
+        public bool is_hidden;
+
         public string endpoint_ping;
         public string endpoint_leave;
         public string endpoint_createsession;
@@ -46,8 +54,12 @@ namespace ArkWebMapMasterServer.NetEntities
         {
             display_name = s.display_name;
             image_url = s.image_url;
+            if (image_url == null)
+                image_url = s.GetPlaceholderIcon();
             owner_uid = s.owner_uid;
             id = s._id;
+            has_ever_gone_online = s.has_server_report;
+            is_hidden = u.hidden_servers.Contains(s._id);
 
             string base_endpoint = $"https://ark.romanport.com/api/servers/{id}/";
             endpoint_createinvite = base_endpoint + "invites/create";

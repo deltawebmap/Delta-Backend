@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using ArkBridgeSharedEntities.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -40,9 +42,68 @@ namespace ArkWebMapMasterServer.PresistEntities
         /// </summary>
         public string latest_proxy_url { get; set; }
 
+        /// <summary>
+        /// The latest local accounts the server has. These are Ark accounts, not our accounts.
+        /// </summary>
+        public List<ArkSlaveReport_PlayerAccount> latest_server_local_accounts { get; set; }
+
+        /// <summary>
+        /// The latest map the server was on.
+        /// </summary>
+        public string latest_server_map { get; set; }
+
+        /// <summary>
+        /// Latest time of the Ark server
+        /// </summary>
+        public float latest_server_time { get; set; }
+
+        /// <summary>
+        /// The time the last server report was downloaded.
+        /// </summary>
+        public long latest_server_report_downloaded { get; set; }
+
+        /// <summary>
+        /// If we have the above four values
+        /// </summary>
+        public bool has_server_report { get; set; }
+
         public void Update()
         {
             ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetCollection().Update(this);
+        }
+
+        public string GetPlaceholderIcon()
+        {
+            return StaticGetPlaceholderIcon(display_name);
+        }
+
+        public static string StaticGetPlaceholderIcon(string display_name)
+        {
+            //Find letters
+            string[] words = display_name.Split(' ');
+            char[] charset = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM".ToCharArray();
+            string output = "";
+            for(int i = 0; i<words.Length; i++)
+            {
+                if (output.Length >= 2)
+                    break;
+                if(words[i].Length > 1)
+                {
+                    char c = words[i][0];
+                    if(charset.Contains(c))
+                    {
+                        string sc = new string(new char[] { c });
+                        if (output.Length == 0)
+                            sc = sc.ToUpper();
+                        else
+                            sc = sc.ToLower();
+                        output += sc;
+                    }
+                }
+            }
+
+            //Now, return URL
+            return "https://ark.romanport.com/resources/placeholder_server_images/" + output + ".png";
         }
 
         public T SendRequest<T>(string action, object data, RequestHttpMethod method, ArkUser user)

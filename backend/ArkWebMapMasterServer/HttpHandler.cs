@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArkWebMapMasterServer.NetEntities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,13 +35,10 @@ namespace ArkWebMapMasterServer
                     //Pass onto this part
                     return Services.Auth.AuthHttpHandler.OnHttpRequest(e, path.Substring("/auth/".Length));
                 }
-                if(path.StartsWith("/invites/"))
+                if(path.StartsWith("/server_setup_proxy/"))
                 {
-                    //This is an invite. Respond with it.
-                    var invite = ArkWebMapMasterServer.Servers.ArkServerInviteManager.GetInviteById(path.Substring("/invites/".Length));
-                    if (invite == null)
-                        throw new StandardError("Invite not found", StandardErrorCode.NotFound);
-                    return Program.QuickWriteJsonToDoc(e, new NetEntities.InviteReply(invite));
+                    //This is the setup proxy for communicating with up-and-coming servers.
+                    return Services.Misc.ArkSetupProxy.OnSetupProxyHttpRequest(e, path.Substring("/server_setup_proxy/".Length));
                 }
 
                 //Unknown
@@ -55,5 +53,7 @@ namespace ArkWebMapMasterServer
                 return Program.QuickWriteJsonToDoc(e, new StandardError(ex.Message+ex.StackTrace, StandardErrorCode.UncaughtException, ex), 500);
             }
         }
+
+        
     }
 }

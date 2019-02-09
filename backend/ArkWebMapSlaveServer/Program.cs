@@ -1,4 +1,5 @@
-﻿using ArkHttpServer;
+﻿using ArkBridgeSharedEntities.Entities;
+using ArkHttpServer;
 using ArkSaveEditor.World;
 using ArkWebMapSlaveServer.NetEntities;
 using LiteDB;
@@ -20,13 +21,10 @@ namespace ArkWebMapSlaveServer
 
         public const int MY_VERSION = 1;
 
-        public static Task MainAsync()
+        public static Task MainAsync(ArkSlaveConfig config)
         {
-            Console.WriteLine("Loading configuration...");
-            string config_path = Directory.GetCurrentDirectory().TrimEnd('\\') + "\\config.json";
-            config = JsonConvert.DeserializeObject<ArkSlaveConfig>(File.ReadAllText(config_path));
-
             Console.WriteLine("Contacting master server...");
+            ArkWebMapServer.config = config;
             if (!HandshakeMasterServer(""))
                 return null;
 
@@ -43,6 +41,47 @@ namespace ArkWebMapSlaveServer
                 })
                 .UseStartup<ArkWebMapServer>()
                 .Build();
+
+            //Open the Ark world to submit some data about us.
+            Console.WriteLine("Opening ARK world...");
+            ArkWorld w = new ArkWorld(ArkSaveEditor.Deserializer.ArkSaveDeserializer.OpenDotArk(config.child_config.save_location));
+            ArkSlaveReport report = new ArkSlaveReport();
+            report.accounts = new System.Collections.Generic.List<ArkSlaveReport_PlayerAccount>();
+            foreach (var player in w.players)
+                report.accounts.Add(new ArkSlaveReport_PlayerAccount
+                {
+                    player_name = player.playerName,
+                    allow_player = true,
+                    player_steam_id = player.steamId,
+                    player_tribe_id = player.tribeId,
+                    player_tribe_name = player.playerName
+                });
+            report.map_name = w.map;
+            report.map_time = w.gameTime;
+
+            //Submit
+            Console.WriteLine("Submitting ARK world report to master server...");
+            TrueFalseReply report_reply;
+            try
+            {
+                report_reply = MasterServer.SendRequestToMaster<TrueFalseReply>("world_report", report);
+            }
+            catch (Exception ex)
+            {
+                Console.Clear();
+                if (ex.Message == "Server reply was not valid.")
+                    Console.WriteLine("Could not connect to master server! A connection error occurred. \n\nThe server is probably down for maintenance. Try again later.");
+                else
+                    Console.WriteLine("Could not connect to master server! A connection error occurred: \n\n" + ex.Message + ex.StackTrace + "\n\nThe server is probably down for maintenance. Try again later.");
+                Console.ReadLine();
+                return null;
+            }
+            if(report_reply.ok == false)
+            {
+                Console.WriteLine("Could not connect to master server! The master server failed to process our report.");
+                Console.ReadLine();
+                return null;
+            }
 
             return host.RunAsync();
         }

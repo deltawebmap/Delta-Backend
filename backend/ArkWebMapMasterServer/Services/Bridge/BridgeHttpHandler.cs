@@ -34,6 +34,11 @@ namespace ArkWebMapMasterServer.Services.Bridge
                 //Pass hello request
                 return HelloRequest.OnHttpRequest(e, server);
             }
+            if (path.StartsWith("world_report"))
+            {
+                //Pass hello request
+                return ArkReportRequest.OnHttpRequest(e, server);
+            }
 
             //Not found
             throw new StandardError("Not Found", StandardErrorCode.NotFound);

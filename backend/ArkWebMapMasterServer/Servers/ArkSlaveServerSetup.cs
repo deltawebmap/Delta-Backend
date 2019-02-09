@@ -22,6 +22,8 @@ namespace ArkWebMapMasterServer.Servers
         {
             var collec = GetCollection();
             var s = collec.FindOne(x => x._id == id);
+            if (s.image_url == null)
+                s.image_url = s.GetPlaceholderIcon();
             return s;
         }
 
@@ -38,6 +40,10 @@ namespace ArkWebMapMasterServer.Servers
             string id = Program.GenerateRandomString(24);
             while (collec.Count(x => x._id == id) != 0)
                 id = Program.GenerateRandomString(24);
+
+            //Get placeholder if needed
+            if (icon == null)
+                icon = ArkServer.StaticGetPlaceholderIcon(name);
 
             //Create object
             ArkServer server = new ArkServer

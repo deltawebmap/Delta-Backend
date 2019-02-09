@@ -34,8 +34,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
             };
 
             //Set as active proxy location
-            //THIS WILL HAVE TO BE CHANGED UNDER YOUR OWN ENVIORNMENT!!!! This relies on my Apache reverse proxy. Please fix the url obtaining.
-            string slave_url = e.Request.Headers["X-Forwarded-For"] + ":" + payload.my_port;
+            string slave_url = Program.GetRequestIP(e) + ":" + payload.my_port;
             s.latest_proxy_url = slave_url;
             s.Update();
 

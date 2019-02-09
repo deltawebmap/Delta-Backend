@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>Manager Window</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="manager_view.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="nb_title">Ark Web Map Server Manager</div>
+    <div class="np_sub_title nb_big_padding_bottom">Welcome to the Ark Web Map! You'll need to configurate it before you use it. Take a look at the website for help.</div>
+
+    <div>
+        <div class="nb_input_text_container">Server ID<input class="nb_input_text" id="server_id"/></div>
+        <div class="nb_input_text_container">Server Authentication<input class="nb_input_text" id="server_auth"/></div>
+        <div class="nb_input_text_container">Ark Save Path<input class="nb_input_text" id="ark_path"/></div>
+        <div class="nb_input_text_container">Web Server Port<input class="nb_input_text" id="ark_port"/></div>
+    </div>
+
+    <div style="position:fixed; bottom:15px; left:0; right:0;">
+        <div class="nb_button_blue nb_big_padding_bottom" id="main_btn">Start Server</div>
+    </div>
+
+    <script src="manager_code.js"></script>
+</body>
+</html>

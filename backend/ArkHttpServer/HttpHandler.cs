@@ -17,7 +17,7 @@ namespace ArkHttpServer
     {
         public static Dictionary<string, HttpSession> sessions = new Dictionary<string, HttpSession>();
 
-        public const int TRIBE_ITEM_MAX_RESULTS = 15;
+        public const int TRIBE_ITEMS_MAX_PAGE_RESULTS = 10;
 
         public const int CURRENT_CLIENT_VERSION = 1;
 
@@ -102,30 +102,41 @@ namespace ArkHttpServer
                         //Search for items.
                         string query = e.Request.Query["q"].ToString().ToLower();
 
+                        //Get page offset
+                        int page_offset = int.Parse(e.Request.Query["p"]);
+
                         //Reverse-search this name and find classnames
                         var itemEntries = ArkImports.item_entries.Where(x => x.name.ToLower().Contains(query)).ToArray();
 
+                        //Sort item entries by length closest to the one entered.
+                        Array.Sort(itemEntries, delegate (ArkItemEntry x, ArkItemEntry y) { return x.name.Length.CompareTo(y.name.Length); });
+
                         //Now use the classnames from this to search for items.
                         List<ArkItemSearchResultsItem> tribeItems = new List<ArkItemSearchResultsItem>();
-                        foreach (var i in itemEntries)
+                        int addedIndex = 0;
+                        for(int i = 0; i<itemEntries.Length; i++)
                         {
-                            if (session.item_dict_cache.ContainsKey(i.classname))
-                                tribeItems.Add(session.item_dict_cache[i.classname]);
+                            var item = itemEntries[i];
+                            bool add = session.item_dict_cache.ContainsKey(item.classname);
+                            if (addedIndex >= page_offset * TRIBE_ITEMS_MAX_PAGE_RESULTS && addedIndex < (page_offset+1) * TRIBE_ITEMS_MAX_PAGE_RESULTS && add)
+                            {
+                                tribeItems.Add(session.item_dict_cache[item.classname]);
+                            }
+                            if(add)
+                            {
+                                addedIndex++;
+                            }
                         }
 
                         //Generate an output.
                         int tribeItemsCount = tribeItems.Count;
-                        bool listTruncated = tribeItems.Count > TRIBE_ITEM_MAX_RESULTS;
-
-                        //Limit
-                        while (tribeItems.Count > TRIBE_ITEM_MAX_RESULTS)
-                            tribeItems.RemoveAt(tribeItems.Count - 1);
+                        bool moreListItems = addedIndex > (page_offset + 1) * TRIBE_ITEMS_MAX_PAGE_RESULTS;
 
                         ArkItemSearchResults output = new ArkItemSearchResults
                         {
-                            hardLimit = TRIBE_ITEM_MAX_RESULTS,
+                            hardLimit = TRIBE_ITEMS_MAX_PAGE_RESULTS,
                             itemEntriesFound = itemEntries.Length,
-                            listTruncated = listTruncated,
+                            moreListItems = moreListItems,
                             tribeItemsFound = tribeItemsCount,
                             results = tribeItems,
                             query = query
@@ -209,11 +220,11 @@ namespace ArkHttpServer
                 latest_user = user
             };
 
-            //Recompute dino dict
-            session.RecomputeItemDictCache(w.dinos.Where(x => x.isTamed == true && x.tribeId == session.tribe_id).ToList());
-
             //Find tribe ID
             session.FindTribeId(user);
+
+            //Recompute dino dict
+            session.RecomputeItemDictCache(w.dinos.Where(x => x.isTamed == true && x.tribeId == session.tribe_id).ToList());
 
             //Recompute hash
             session.last_file_hash = session.GetComputedFileHash();

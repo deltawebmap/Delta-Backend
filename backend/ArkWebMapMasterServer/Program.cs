@@ -76,6 +76,14 @@ namespace ArkWebMapMasterServer
             return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(buffer));
         }
 
+        public static Task QuickWriteStatusToDoc(Microsoft.AspNetCore.Http.HttpContext e, bool ok, int code = 200)
+        {
+            return QuickWriteJsonToDoc(e, new ArkBridgeSharedEntities.Entities.TrueFalseReply
+            {
+                ok = ok
+            }, code);
+        }
+
         public static Task QuickWriteJsonToDoc<T>(Microsoft.AspNetCore.Http.HttpContext context, T data, int code = 200)
         {
             return QuickWriteToDoc(context, JsonConvert.SerializeObject(data, Formatting.Indented), "application/json", code);
@@ -83,8 +91,12 @@ namespace ArkWebMapMasterServer
 
         public static string GenerateRandomString(int length)
         {
+            return GenerateRandomStringCustom(length, "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM".ToCharArray());
+        }
+
+        public static string GenerateRandomStringCustom(int length, char[] chars)
+        {
             string output = "";
-            char[] chars = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM".ToCharArray();
             for (int i = 0; i < length; i++)
             {
                 output += chars[rand.Next(0, chars.Length)];
@@ -102,6 +114,12 @@ namespace ArkWebMapMasterServer
         public static RequestHttpMethod FindRequestMethod(Microsoft.AspNetCore.Http.HttpContext context)
         {
             return Enum.Parse<RequestHttpMethod>(context.Request.Method.ToLower());
+        }
+
+        public static string GetRequestIP(Microsoft.AspNetCore.Http.HttpContext context)
+        {
+            //THIS WILL HAVE TO BE CHANGED UNDER YOUR OWN ENVIORNMENT!!!! This relies on my Apache reverse proxy. Please fix the url obtaining.
+            return context.Request.Headers["X-Forwarded-For"];
         }
 
         public static bool CompareByteArrays(byte[] b1, byte[] b2)

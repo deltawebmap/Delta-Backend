@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ArkWebMapMasterServer.Services.Servers
 {
@@ -22,7 +23,7 @@ namespace ArkWebMapMasterServer.Services.Servers
 
             //Authenticate the user
             ArkUser user = Users.UsersHttpHandler.AuthenticateUser(e, true);
-            if (!user.servers.Contains(server._id))
+            if (user.GetServers().Where( x => x._id == server._id).Count() != 1)
                 throw new StandardError("You must be a part of this server to send API calls.", StandardErrorCode.NotPermitted);
 
             //If there is content after this, proxy to this server. Else, return server info.
@@ -32,15 +33,15 @@ namespace ArkWebMapMasterServer.Services.Servers
                 string proxyUrl = path.Substring(serverId.Length + 1).TrimStart('/');
 
                 //Check if this is one of our URLs.
-                if(proxyUrl == "invites/create")
-                {
-                    //Create an invite
-                    return CreateInvite.OnHttpRequest(e, server);
-                }
                 if (proxyUrl == "leave")
                 {
                     //Leave
                     return LeaveServer.OnHttpRequest(e, server);
+                }
+                if(proxyUrl == "rename")
+                {
+                    //Rename
+                    return RenameServer.OnHttpRequest(e, server);
                 }
 
                 try
@@ -50,7 +51,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                     user.steam_id = "76561198300124500"; //Temp
                     user.is_steam_verified = true;
 
-                    HttpResponseMessage reply = server.OpenHttpRequest(content, "/api/" + proxyUrl, e.Request.Method, user);
+                    HttpResponseMessage reply = server.OpenHttpRequest(content, "/api/" + proxyUrl+e.Request.QueryString, e.Request.Method, user);
                     
 
                     //Set response
