@@ -1,4 +1,5 @@
-﻿using ArkWebMapMasterServer.PresistEntities;
+﻿using ArkBridgeSharedEntities.Entities;
+using ArkWebMapMasterServer.PresistEntities;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -33,6 +34,12 @@ namespace ArkWebMapMasterServer.Services.Users
             {
                 //Pass onto server gen
                 return Misc.ArkSetupProxy.OnCreateProxySessionRequest(e, user);
+            }
+            if(path.StartsWith("@me/logout"))
+            {
+                //Delete browser cookie
+                Auth.AuthHttpHandler.SetAuthCookie(e, "");
+                return Program.QuickWriteStatusToDoc(e, true);
             }
             if (path.StartsWith("@me/server_wizard/test_tcp_connection"))
             {

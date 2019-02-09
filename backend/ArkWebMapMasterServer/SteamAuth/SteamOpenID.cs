@@ -1,4 +1,5 @@
-﻿using ArkWebMapMasterServer.NetEntities;
+﻿using ArkBridgeSharedEntities.Entities;
+using ArkWebMapMasterServer.NetEntities;
 using IdentityModel.OidcClient;
 using Newtonsoft.Json;
 using System;

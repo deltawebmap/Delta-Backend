@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ArkBridgeSharedEntities.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

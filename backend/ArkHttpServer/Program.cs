@@ -43,6 +43,13 @@ namespace ArkHttpServer
             event_checker_timer.Start();
         }
 
+        public static void Log(string message, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
         private static void Event_checker_timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             //Check all of our sessions for updated files.
@@ -72,7 +79,13 @@ namespace ArkHttpServer
 
         public static Task QuickWriteJsonToDoc<T>(Microsoft.AspNetCore.Http.HttpContext context, T data, int code = 200)
         {
-            return QuickWriteToDoc(context, JsonConvert.SerializeObject(data, Formatting.Indented), "application/json", code);
+            Formatting format = Formatting.None;
+            if(context.Request.Query.ContainsKey("isDebug"))
+            {
+                if (context.Request.Query["isDebug"] == "true")
+                    format = Formatting.Indented;
+            }
+            return QuickWriteToDoc(context, JsonConvert.SerializeObject(data, format), "application/json", code);
         }
 
         public static string GenerateRandomString(int length)

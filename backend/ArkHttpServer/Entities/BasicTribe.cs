@@ -17,8 +17,7 @@ namespace ArkHttpServer.Entities
     public class BasicTribe
     {
         public float gameTime;
-        public Dictionary<string, BasicArkDino> dinos;
-        public List<string> current_dino_ids;
+        public List<MinifiedBasicArkDino> dinos;
 
         public List<string> baby_dino_urls;
 
@@ -30,27 +29,12 @@ namespace ArkHttpServer.Entities
 
             //Narrow down our search by tribe name, if needed.
             ArkDinosaur[] searchDinos = world.dinos.Where(x => x.isTamed == true && x.tribeId == tribeId).ToArray();
-            dinos = new Dictionary<string, BasicArkDino>();
+            dinos = new List<MinifiedBasicArkDino>();
             for (int i = 0; i < searchDinos.Length; i++)
             {
-                if(dinos.ContainsKey(searchDinos[i].dinosaurId.ToString()))
-                {
-                    //Uh oh. This could be an issue. Check if it matches this dino
-                    var d = dinos[searchDinos[i].dinosaurId.ToString()];
-                    if (d.tamedName != searchDinos[i].tamedName)
-                        throw new Exception("Dino exists with the same ID.");
-                } else
-                {
-                    dinos.Add(searchDinos[i].dinosaurId.ToString(), new BasicArkDino(searchDinos[i], world));
-                }
-                
-            }
+                dinos.Add(new MinifiedBasicArkDino(searchDinos[i], world));
 
-            //Diff dino list
-            //Convert to new dino list
-            current_dino_ids = new List<string>();
-            foreach (var d in dinos.Keys)
-                current_dino_ids.Add(d.ToString());
+            }
 
             //Find new and find missing
             /*dino_ids = new_dino_list.ToArray();
@@ -68,9 +52,9 @@ namespace ArkHttpServer.Entities
 
             //Get baby dinos
             baby_dino_urls = new List<string>();
-            foreach(var d in world.dinos)
+            foreach(var d in searchDinos)
             {
-                if(d.isBaby == true && d.babyAge < 1f && d.tribeId == tribeId)
+                if(d.isBaby == true && d.babyAge < 1f)
                 {
                     baby_dino_urls.Add(new BasicArkDino(d, world).apiUrl);
                 }
@@ -122,29 +106,42 @@ namespace ArkHttpServer.Entities
             //Create the adjusted map pos
             adjusted_map_pos = normalized_pos.Clone();
 
-            //Testing
-            /*Random rand = new Random();
-            switch(rand.Next(0, 5))
-            {
-                case 0:
-                    adjusted_map_pos = new Vector2(0, 0);
-                    break;
-                case 1:
-                    adjusted_map_pos = new Vector2(1, 1);
-                    break;
-                case 2:
-                    adjusted_map_pos = new Vector2(0, 1);
-                    break;
-                case 3:
-                    adjusted_map_pos = new Vector2(1, 0);
-                    break;
-                case 4:
-                    adjusted_map_pos = new Vector2(0.5f, 0.5f);
-                    break;
-            }*/
-
             adjusted_map_pos = w.mapinfo.transformOffsets.Apply(adjusted_map_pos);
             entry = ArkSaveEditor.ArkImports.GetDinoDataByClassname(classname);
+        }
+    }
+
+    /// <summary>
+    /// To be used ONLY by the /tribes endpoint.
+    /// </summary>
+    public class MinifiedBasicArkDino
+    {
+        public Vector2 coord_pos;
+        public Vector2 adjusted_map_pos; //Position for the web map
+
+        public string classname;
+        public string imgUrl;
+        public string apiUrl;
+        public ulong id;
+        public string tamedName;
+
+        public MinifiedBasicArkDino(ArkDinosaur dino, ArkWorld w)
+        {
+            //Convert this dino to this.
+            coord_pos = w.ConvertFromWorldToGameCoords(dino.location);
+            var normalized_pos = w.ConvertFromWorldToNormalizedPos(dino.location);
+
+            classname = dino.classnameString;
+            imgUrl = $"{ArkWebServer.config.resources_url}/dinos/icons/lq/{classname}.png";
+            id = dino.dinosaurId;
+            apiUrl = $"{ArkWebServer.api_prefix}/world/dinos/{id}";
+            tamedName = dino.tamedName;
+
+
+            //Create the adjusted map pos
+            adjusted_map_pos = normalized_pos.Clone();
+
+            adjusted_map_pos = w.mapinfo.transformOffsets.Apply(adjusted_map_pos);
         }
     }
 }

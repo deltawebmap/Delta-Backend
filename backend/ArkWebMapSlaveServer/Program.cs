@@ -11,6 +11,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace ArkWebMapSlaveServer
 {
@@ -18,6 +19,8 @@ namespace ArkWebMapSlaveServer
     {
         public static ArkSlaveConfig config;
         public static Random rand = new Random();
+        public static Timer reportTimer;
+        public static byte[] creds;
 
         public const int MY_VERSION = 1;
 
@@ -25,12 +28,18 @@ namespace ArkWebMapSlaveServer
         {
             Console.WriteLine("Contacting master server...");
             ArkWebMapServer.config = config;
+            ArkWebMapServer.creds = Convert.FromBase64String(config.auth.creds);
             if (!HandshakeMasterServer(""))
                 return null;
 
             Console.WriteLine("Configurating internal server...");
             ArkWebServer.Configure(config.child_config, "https://ark.romanport.com/api/servers/"+config.auth.id);
 
+            //Submit world report
+            Console.WriteLine("Submitting ARK world report to master server...");
+            SendWorldReport();
+
+            //Start server
             Console.WriteLine("Starting HTTP server...");
             var host = new WebHostBuilder()
                 .UseKestrel(options =>
@@ -42,10 +51,44 @@ namespace ArkWebMapSlaveServer
                 .UseStartup<ArkWebMapServer>()
                 .Build();
 
-            //Open the Ark world to submit some data about us.
-            Console.WriteLine("Opening ARK world...");
-            ArkWorld w = new ArkWorld(ArkSaveEditor.Deserializer.ArkSaveDeserializer.OpenDotArk(config.child_config.save_location));
+            //Set timer to transmit the world report every five minutes
+            reportTimer = new Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
+            reportTimer.AutoReset = true;
+            reportTimer.Elapsed += ReportTimer_Elapsed;
+            reportTimer.Start();
+
+            return host.RunAsync();
+        }
+
+        private static void ReportTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            //Transmit report
+            Console.WriteLine("Updating master server with ARK world report...");
+            if(!SendWorldReport())
+            {
+                //Error!
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Failed to update master server with world report! New users will not be authenticated.");
+                Console.ForegroundColor = ConsoleColor.White;
+            } else
+            {
+                Console.WriteLine("Master server ARK world report is now up to date.");
+            }
+        }
+
+        public static void Log(string message, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static bool SendWorldReport()
+        {
+            //Get world
+            ArkWorld w = WorldLoader.GetWorld(out DateTime time);
             ArkSlaveReport report = new ArkSlaveReport();
+            report.lastSaveTime = time;
             report.accounts = new System.Collections.Generic.List<ArkSlaveReport_PlayerAccount>();
             foreach (var player in w.players)
                 report.accounts.Add(new ArkSlaveReport_PlayerAccount
@@ -59,8 +102,7 @@ namespace ArkWebMapSlaveServer
             report.map_name = w.map;
             report.map_time = w.gameTime;
 
-            //Submit
-            Console.WriteLine("Submitting ARK world report to master server...");
+            //Send
             TrueFalseReply report_reply;
             try
             {
@@ -68,22 +110,13 @@ namespace ArkWebMapSlaveServer
             }
             catch (Exception ex)
             {
-                Console.Clear();
-                if (ex.Message == "Server reply was not valid.")
-                    Console.WriteLine("Could not connect to master server! A connection error occurred. \n\nThe server is probably down for maintenance. Try again later.");
-                else
-                    Console.WriteLine("Could not connect to master server! A connection error occurred: \n\n" + ex.Message + ex.StackTrace + "\n\nThe server is probably down for maintenance. Try again later.");
-                Console.ReadLine();
-                return null;
+                return false;
             }
-            if(report_reply.ok == false)
+            if (report_reply.ok == false)
             {
-                Console.WriteLine("Could not connect to master server! The master server failed to process our report.");
-                Console.ReadLine();
-                return null;
+                return false;
             }
-
-            return host.RunAsync();
+            return true;
         }
 
         public static bool HandshakeMasterServer(string mapName)

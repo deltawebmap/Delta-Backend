@@ -11,6 +11,7 @@ namespace ArkBridgeSharedEntities.Entities
     {
         public string map_name;
         public float map_time;
+        public DateTime lastSaveTime;
         public List<ArkSlaveReport_PlayerAccount> accounts;
     }
 

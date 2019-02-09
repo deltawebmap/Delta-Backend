@@ -1,4 +1,5 @@
-﻿using ArkWebMapMasterServer.NetEntities;
+﻿using ArkBridgeSharedEntities.Entities;
+using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Users;
 using System;
@@ -112,6 +113,18 @@ namespace ArkWebMapMasterServer.Services.Auth
                 return OnFinishUserAuth(e, u, "Signed in.");
         }
 
+
+        public static void SetAuthCookie(Microsoft.AspNetCore.Http.HttpContext e, string token)
+        {
+            e.Response.Cookies.Append("user_token", token, new Microsoft.AspNetCore.Http.CookieOptions
+            {
+                IsEssential = true,
+                Expires = DateTime.UtcNow.AddYears(1),
+                Path = "/",
+                SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict
+            });
+        }
+
         //Called once the user is authenticated using whatever method.
         public static Task OnFinishUserAuth(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u, string message, bool redirect = false)
         {
@@ -129,13 +142,7 @@ namespace ArkWebMapMasterServer.Services.Auth
                 string token = UserTokens.GenerateUserToken(u);
 
                 //Set browser cookie
-                e.Response.Cookies.Append("user_token", token, new Microsoft.AspNetCore.Http.CookieOptions
-                {
-                    IsEssential = true,
-                    Expires = DateTime.UtcNow.AddYears(1),
-                    Path = "/",
-                    SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict
-                });
+                SetAuthCookie(e, token);
             }
 
             //Write reply

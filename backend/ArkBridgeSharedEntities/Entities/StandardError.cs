@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArkWebMapMasterServer
+namespace ArkBridgeSharedEntities.Entities
 {
     public class StandardError : Exception
     {
@@ -43,6 +43,7 @@ namespace ArkWebMapMasterServer
         NotPermitted = 7,
         ExternalAuthError = 8,
         AuthFailed = 9,
-        InvalidInput = 10
+        InvalidInput = 10,
+        BridgeIntegrityCheckFailed = 11,
     }
 }

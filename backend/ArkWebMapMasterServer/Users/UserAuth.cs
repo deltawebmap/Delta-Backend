@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Linq;
 using ArkWebMapMasterServer.NetEntities;
+using ArkBridgeSharedEntities.Entities;
 
 namespace ArkWebMapMasterServer.Users
 {

@@ -18,6 +18,7 @@ namespace ArkHttpServer.Entities
         public string endpoint_population_map; //Endpoint for viewing populations
         public string endpoint_game_map; //Endpoint for viewing the actual game map
         public string endpoint_tribes; //Endpoint for viewing tribes
+        public string endpoint_dino_class_search;
         public int heartrate; //Time, in ms, that the client must use to poll for events.
         public string endpoint_events; //Events endpoint
         public string endpoint_tribes_itemsearch; //Item search endpoint
@@ -44,6 +45,7 @@ namespace ArkHttpServer.Entities
             endpoint_events = baseUrl + "events?t="+DateTime.UtcNow.Ticks;
             endpoint_tribes_itemsearch = baseUrl + "tribes/item_search/?q={query}";
             endpoint_tribes_dino = baseUrl + "dinos/{dino}";
+            endpoint_dino_class_search = $"{ArkWebServer.api_prefix}/dino_search/?query={{query}}";
         }
     }
 }
