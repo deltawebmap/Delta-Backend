@@ -49,7 +49,7 @@ namespace ArkWebMapMasterServer.PresistEntities
                     check = s.latest_server_local_accounts.Count(x => x.player_steam_id == steam_id) >= 1;
                 if (check)
                 {
-                    if(!hidden_servers.Contains(s._id) || !excludeHidden) {
+                    if((!hidden_servers.Contains(s._id) || !excludeHidden) && !s.is_deleted) {
                         output.Add(s);
                         if (!output_ids.Contains(s._id))
                             output_ids.Add(s._id);

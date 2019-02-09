@@ -15,6 +15,6 @@ namespace ArkWebMapSlaveServer.NetEntities
         Ok = 0,
         MasterOutOfDate = 1, //Master is a version behind the client somehow
         SlaveOutOfDate = 2, //Slave is too old.
-
+        ServerDeleted = 3, //Deleted
     }
 }

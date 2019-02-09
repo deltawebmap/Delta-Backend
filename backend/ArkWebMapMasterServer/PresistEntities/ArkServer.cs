@@ -68,6 +68,11 @@ namespace ArkWebMapMasterServer.PresistEntities
         /// </summary>
         public bool has_server_report { get; set; }
 
+        /// <summary>
+        /// If the server was deleted, this is set to true.
+        /// </summary>
+        public bool is_deleted { get; set; }
+
         public void Update()
         {
             ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetCollection().Update(this);

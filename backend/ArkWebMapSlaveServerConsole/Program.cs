@@ -9,6 +9,7 @@ using ArkBridgeSharedEntities.Entities;
 using System.Collections.Generic;
 using System.Threading;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace ArkWebMapSlaveServerConsole
 {
@@ -143,7 +144,9 @@ namespace ArkWebMapSlaveServerConsole
         {
             string config_path = GetConfigPath();
             ArkSlaveConfig config = JsonConvert.DeserializeObject<ArkSlaveConfig>(File.ReadAllText(config_path));
-            ArkWebMapServer.MainAsync(config).GetAwaiter().GetResult();
+            Task t = ArkWebMapServer.MainAsync(config, config_path);
+            if(t != null)
+                t.GetAwaiter().GetResult();
         }
 
         static void DrawWithColor(string message, ConsoleColor foreground = ConsoleColor.White, ConsoleColor background = ConsoleColor.Black)

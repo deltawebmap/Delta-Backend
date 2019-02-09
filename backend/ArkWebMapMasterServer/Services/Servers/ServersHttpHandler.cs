@@ -34,10 +34,10 @@ namespace ArkWebMapMasterServer.Services.Servers
                 string proxyUrl = path.Substring(serverId.Length + 1).TrimStart('/');
 
                 //Check if this is one of our URLs.
-                if (proxyUrl == "leave")
+                if (proxyUrl == "delete")
                 {
                     //Leave
-                    return LeaveServer.OnHttpRequest(e, server);
+                    return DeleteServer.OnHttpRequest(e, server, user);
                 }
                 if(proxyUrl == "rename")
                 {

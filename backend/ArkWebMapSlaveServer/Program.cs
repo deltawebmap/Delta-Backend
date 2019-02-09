@@ -18,16 +18,18 @@ namespace ArkWebMapSlaveServer
     public class ArkWebMapServer
     {
         public static ArkSlaveConfig config;
+        public static string config_path;
         public static Random rand = new Random();
         public static Timer reportTimer;
         public static byte[] creds;
 
         public const int MY_VERSION = 1;
 
-        public static Task MainAsync(ArkSlaveConfig config)
+        public static Task MainAsync(ArkSlaveConfig config, string configPath)
         {
             Console.WriteLine("Contacting master server...");
             ArkWebMapServer.config = config;
+            config_path = configPath;
             ArkWebMapServer.creds = Convert.FromBase64String(config.auth.creds);
             if (!HandshakeMasterServer(""))
                 return null;
@@ -151,10 +153,19 @@ namespace ArkWebMapSlaveServer
             else if (reply.status == SlaveHelloReply_MessageType.SlaveOutOfDate)
             {
                 Console.Clear();
-                Console.WriteLine("Could not connect to master server! This version is too out of date.\n\n"+reply.status_info["notes"]+"\n\nPress ENTER to download the new version!");
+                Console.WriteLine("Could not connect to master server! This version is too out of date.\n\n" + reply.status_info["notes"] + "\n\nPress ENTER to download the new version!");
                 Console.ReadLine();
                 System.Diagnostics.Process.Start(reply.status_info["download_url"]);
-            } else
+            }
+            else if (reply.status == SlaveHelloReply_MessageType.ServerDeleted)
+            {
+                Console.Clear();
+                Console.WriteLine("This server was deleted from the web interface. You will need to set up ArkWebMap again if you would like to continue using it.\n\nThe program will now close. Run it again to restart the setup process.");
+                Console.ReadLine();
+                File.Delete(config_path);
+                return false;
+            }
+            else
             {
                 Console.Clear();
                 Console.WriteLine("Could not connect to master server! It returned an unknown reply. You're probably very out of date.");

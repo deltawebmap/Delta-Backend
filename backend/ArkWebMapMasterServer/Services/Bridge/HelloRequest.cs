@@ -25,6 +25,10 @@ namespace ArkWebMapMasterServer.Services.Bridge
                     {"latest_version", BridgeHttpHandler.LATEST_RELEASE_VERSION.ToString() }
                 });
 
+            //Check to see if the server was deleted
+            if (s.is_deleted)
+                return ReplyWithErrorMessage(e, SlaveHelloReply_MessageType.ServerDeleted, new Dictionary<string, string>());
+
             //Create reply
             SlaveHelloReply reply = new SlaveHelloReply
             {
