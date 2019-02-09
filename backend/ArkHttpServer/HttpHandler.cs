@@ -15,8 +15,6 @@ namespace ArkHttpServer
 {
     partial class ArkWebServer
     {
-        public static Dictionary<string, HttpSession> sessions = new Dictionary<string, HttpSession>();
-
         public const int TRIBE_ITEMS_MAX_PAGE_RESULTS = 10;
 
         public const int CURRENT_CLIENT_VERSION = 1;
@@ -53,30 +51,27 @@ namespace ArkHttpServer
                     {
                         if (d.screen_name.ToLower().Contains(query))
                             dinos.Add(d);
+                        if (dinos.Count >= 10)
+                            break;
                     }
-                    return ArkWebServer.QuickWriteJsonToDoc(e, dinos);
+                    return ArkWebServer.QuickWriteJsonToDoc(e, new DinoSearchReply
+                    {
+                        query = query,
+                        results = dinos
+                    });
                 }
 
                 //Continue to map specific things
                 if (pathname.StartsWith("/world/"))
                 {
-                    //Get map name
-                    string sessionId = pathname.Split('/')[2];
+                    //Get world
+                    ArkWorld world = WorldLoader.GetWorld();
 
-                    //Validate session ID
-                    if (!sessions.ContainsKey(sessionId))
-                        return ArkWebServer.QuickWriteToDoc(e, "Invalid session ID", "text/plain", 403);
-
-                    //Trim session ID
-                    pathname = pathname.Substring("/world/".Length + sessionId.Length);
-
-                    //Get session
-                    HttpSession session = sessions[sessionId];
-                    session.latest_user = user;
-                    ArkWorld world = session.world;
-
-                    //Update heartbeat
-                    session.last_heartbeat_time = DateTime.UtcNow;
+                    //Fix pathname
+                    pathname = pathname.Substring("/world".Length);
+                    
+                    //Get user info
+                    int tribeId = world.players.Where(x => x.steamId == user.steam_id).ToArray()[0].tribeId; //I know this won't work. It'll be fixed soon.
 
                     if (pathname.StartsWith("/map/tiles/population/"))
                     {
@@ -84,18 +79,7 @@ namespace ArkHttpServer
                     }
                     if (pathname.StartsWith("/events"))
                     {
-                        Task t;
-                        lock (session.new_events)
-                        {
-                            //Write events
-                            t = QuickWriteJsonToDoc(e, session.new_events);
-
-                            //Nuke events
-                            session.new_events.Clear();
-                        }
-
-                        //Return task
-                        return t;
+                        return EventService.OnEventRequest(e, user);
                     }
                     if (pathname.StartsWith("/tribes/item_search/"))
                     {
@@ -104,6 +88,9 @@ namespace ArkHttpServer
 
                         //Get page offset
                         int page_offset = int.Parse(e.Request.Query["p"]);
+
+                        //Get cache
+                        Dictionary<string, ArkItemSearchResultsItem> itemDictCache = WorldLoader.GetItemDictForTribe(tribeId);
 
                         //Reverse-search this name and find classnames
                         var itemEntries = ArkImports.item_entries.Where(x => x.name.ToLower().Contains(query)).ToArray();
@@ -117,10 +104,10 @@ namespace ArkHttpServer
                         for(int i = 0; i<itemEntries.Length; i++)
                         {
                             var item = itemEntries[i];
-                            bool add = session.item_dict_cache.ContainsKey(item.classname);
+                            bool add = itemDictCache.ContainsKey(item.classname);
                             if (addedIndex >= page_offset * TRIBE_ITEMS_MAX_PAGE_RESULTS && addedIndex < (page_offset+1) * TRIBE_ITEMS_MAX_PAGE_RESULTS && add)
                             {
-                                tribeItems.Add(session.item_dict_cache[item.classname]);
+                                tribeItems.Add(itemDictCache[item.classname]);
                             }
                             if(add)
                             {
@@ -148,13 +135,7 @@ namespace ArkHttpServer
                     if (pathname.StartsWith("/tribes/"))
                     {
                         //Convert to a basic Ark world
-                        BasicTribe bworld = new BasicTribe(world, session.tribe_id, sessionId, session.last_dino_list);
-
-                        //Update last dino list
-                        List<string> dino_ids = new List<string>();
-                        foreach (var d in bworld.dinos.Values)
-                            dino_ids.Add(d.id.ToString());
-                        session.last_dino_list = dino_ids;
+                        BasicTribe bworld = new BasicTribe(world, tribeId);
 
                         //Write
                         return QuickWriteJsonToDoc(e, bworld);
@@ -197,44 +178,9 @@ namespace ArkHttpServer
 
         public static Task OnCreateSessionRequest(Microsoft.AspNetCore.Http.HttpContext e, MasterServerArkUser user)
         {
-            //Generate a random session ID
-            string sessionId = GenerateRandomString(8).ToLower();
-            while(sessions.ContainsKey(sessionId))
-                sessionId = GenerateRandomString(8).ToLower();
-
-            //Get pathname
-            string file_path = config.save_location;
-
-            //Get Ark world
-            ArkWorld w = new ArkWorld(ArkSaveEditor.Deserializer.ArkSaveDeserializer.OpenDotArk(file_path));
-
-            //Create session
-            var session = new HttpSession
-            {
-                world = w,
-                new_events = new List<HttpSessionEvent>(),
-                game_file_path = file_path,
-                last_heartbeat_time = DateTime.UtcNow,
-                session_id = sessionId,
-                worldLastSavedAt = File.GetLastWriteTimeUtc(file_path),
-                latest_user = user
-            };
-
-            //Find tribe ID
-            session.FindTribeId(user);
-
-            //Recompute dino dict
-            session.RecomputeItemDictCache(w.dinos.Where(x => x.isTamed == true && x.tribeId == session.tribe_id).ToList());
-
-            //Recompute hash
-            session.last_file_hash = session.GetComputedFileHash();
-
-            //Add to sessions
-            lock(sessions)
-                sessions.Add(sessionId, session);
-
             //Return basic Ark world
-            return QuickWriteJsonToDoc(e, new BasicArkWorld(w, session));
+            ArkWorld world = WorldLoader.GetWorld(out DateTime lastSavedTime);
+            return QuickWriteJsonToDoc(e, new BasicArkWorld(world, lastSavedTime));
         }
     }
 }

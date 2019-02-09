@@ -25,7 +25,7 @@ namespace ArkHttpServer.HttpServices
 
             //Check if in bounds
             Stream img;
-            if(x < 0 || y < 0)
+            if(x < 0 || y < 0 || x > MathF.Pow(2, zoom) || y > MathF.Pow(2, zoom))
             {
                 //Write blank tile
                 Image<Rgba32> imgData = new Image<Rgba32>(TILE_SIZE, TILE_SIZE);

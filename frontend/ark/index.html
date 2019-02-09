@@ -1,0 +1,175 @@
+<html id="html">
+    <head>
+        <title>Ark Web Map</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel="stylesheet" href="assets/view.css">
+        <link rel="stylesheet" href="assets/bottom_modal.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+    </head>
+    <body>
+        <div id="main_view">
+            <div class="sidebar_part">
+                <!-- No session mask -->
+                <div class="no_session_mask" id="no_session_mask">
+                        <table style="width: 100%; height:100%;" id="default_content" class="font">
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: center;vertical-align: middle;font-weight: 900;font-size: 40px;color: #dddddd;font-family: 'Roboto', sans-serif;">
+                                        <div style="
+                                        max-width: 421px;
+                                        margin: auto;
+                                        text-align: left;
+                                        ">Join an Ark Server or add Ark Web Map to your Own Server</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                <div class="sidebar_map hidden" id="sidebar_map">
+                    <!-- Options sidebar -->
+                    <div class="map_title" id="map_title">
+                                    
+                    </div>
+
+                    <div class="sidebar_button"><img src="/assets/icons/baseline-near_me-24px.svg">Locate Dinos</div>
+                    <div class="sidebar_button" onclick="ark.showSearchWindow('tribeInventory');"><img src="/assets/icons/baseline-search-24px.svg">Search Inventories</div>
+                    <div class="sidebar_button_spacer"></div>
+                    <div class="sidebar_button" onclick="ark.showHeatmapSettings();"><img src="/assets/icons/baseline-map-24px.svg">Heatmap Options</div>
+                    <div class="sidebar_button_spacer"></div>
+                    <div class="sidebar_button sidebar_button_danger" onclick="ark.onHideServerButtonClick();"><img src="/assets/icons/baseline-exit_to_app-24px.svg">Hide Server</div>
+
+                    <!--<div class="container">
+                        <div class="title"><div></div><span>Map Info</span><div></div></div>
+
+                        <div class="form">
+                            <div><formtitle>Map</formtitle><formitem id="map_title_2"></formitem></div>
+                            <div><formtitle>Game Time</formtitle><formitem id="game_time"></formitem></div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="title"><div></div><span>Population Map</span><div></div></div>
+
+                        <div class="form">
+                            <div><formtitle>Enabled</formtitle><formitem><input type="checkbox" id="population_map_check" onchange="map.onPopulationMapToggle(this.checked);"></formitem></div>
+                            <div><formtitle>Filtered Dino</formtitle><formitem><input type="button" value="Choose" style="margin-right:5px;" onclick="ark.showDinoPicker(map.onChangePopulationMapFilter);"><input type="button" value="Clear" onclick="map.onChangePopulationMapFilter(null);"></formitem></div>
+                        </div>
+                    </div>-->
+                </div>
+
+                <!-- Servers list -->
+                <div class="sidebar_servers">
+                    <div id="server_list">
+
+                    </div>
+
+                    <img class="sidebar_user_action_btn" style="bottom:164px;" src="/assets/icons/baseline-add_circle-24px.svg" onclick="create_server_d.onCreate();">
+                    <img class="sidebar_user_action_btn" style="bottom:120px;" src="/assets/icons/baseline-archive-24px.svg" onclick="ark.showHiddenServers();">
+                    <img class="sidebar_user_action_btn" style="bottom:76px;" src="/assets/icons/baseline-exit_to_app-24px.svg">
+                    <div class="sidebar_server_badge sidebar_profile_image_badge" id="my_badge"></div>
+                </div>
+            </div>
+            <div class="map_part hidden" id="map_part">
+                <!-- Actual map -->
+            </div>
+            <!-- Map menu -->
+            <div class="bottom_modal" id="bottom_modal">
+                <div class="bottom_modal_closebtn" onclick="map_menu.hide();"><img src="/assets/icons/baseline-close-24px.svg" style=" position: absolute; top: 15px; left: 10px; "></div>
+                <div class="bottom_modal_bar" id="bottom_modal_bar"></div>
+                <div class="bottom_modal_color_area" id="bottom_modal_color_area"></div>
+                <img class="bottom_modal_dino_icon" id="bottom_modal_dino_icon">
+    
+                <div class="stats_area">
+                    <div class="stats_column" id="stats_column">
+                        <div class="stats_item">
+                            <div class="stats_item_bar">
+                                
+                            </div>
+                            <div class="stats_item_content">
+                                <img src="/resources/ui/status/health.png">
+                                <div class="title">Health</div>
+                                <div class="amount">10,000 / 10,000</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="inventory_area" id="inventory_area">
+                    <div class="inventory_cell">
+                        <img class="inventory_cell_icon" src="https://ark.romanport.com/resources/converted/UwwX9P6SyHX6e2wj7kgz6eZe.png">
+                        <div class="inventory_cell_amount">x100</div>
+                        <div class="inventory_cell_weight">102.2</div>
+                        <div class="inventory_cell_mouseover">
+                            <span class="inventory_cell_mouseover_content">Some Long Content String That Should Be Wide</span>
+                        </div>
+                    </div>
+                    <div class="inventory_cell"></div>
+                    <div class="inventory_cell"></div>
+                    <div class="inventory_cell"></div>
+                    <div class="inventory_cell"></div>
+                    <div class="inventory_cell"></div>
+                    <div class="inventory_cell"></div>
+                    <div class="inventory_cell"></div>
+                    <div class="inventory_cell"></div>
+                </div>
+            </div>
+
+            <!-- Dino selector -->
+            <div class="dino_selector" id="dino_selector">
+                <div class="dino_selector_top">
+                    <input type="text" placeholder="Dinosaur Name" oninput="ark.searchDinoPicker(this.value);">
+                </div>
+                <div id="dino_selector_results" style="transition:all 300ms; overflow:auto; height: calc(100% - 100px);">
+    
+                </div>
+            </div>
+    
+            <!-- Custom -->
+            <div class="dino_selector" id="custom_view"></div>
+    
+            <!-- Dino search window -->
+            <div class="dino_search_window dino_search_window_disabled" id="dino_search_window">
+                <input type="text" id="dino_search_window_input" oninput="ark.onStartSearchTyping(this.value);">
+                <div class="dino_search_window_close" onclick="ark.hideSearchWindow();"><img src="/assets/icons/baseline-close-24px.svg"></div>
+                <div class="dino_search_window_content" id="dino_search_window_content">
+    
+                </div>
+            </div>
+    
+            <!-- Dino notifications cards -->
+            <div class="dino_n_card_holder" id="dino_n_card_holder">
+                
+            </div>
+        </div>
+
+        
+
+        <!-- New custom menu -->
+        <table class="new_custom_area new_custom_area_inactive" id="new_custom_area">
+            <tr>
+                <td style="text-align: center; vertical-align: middle;">
+                    <div class="new_custom_box" id="new_custom_box">
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Rpws bottom modal I stole from my appstore -->
+        <div class="bottom_modal_rpws" id="bottom_modal_rpws"></div>
+        </body>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
+    <script src="assets/map.js"></script>
+    <script src="assets/map_modal.js"></script>
+    <script src="assets/baby_manager.js"></script>
+    <script src="assets/user_portable.js"></script>
+    <script src="assets/bottom_modal.js"></script>
+    <script src="assets/create_server_dialog.js"></script>
+    <script src="assets/main.js"></script>
+
+    <script>
+        ark.init();
+    </script>
+</html>

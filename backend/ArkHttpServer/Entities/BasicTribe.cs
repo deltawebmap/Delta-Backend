@@ -18,15 +18,13 @@ namespace ArkHttpServer.Entities
     {
         public float gameTime;
         public Dictionary<string, BasicArkDino> dinos;
+        public List<string> current_dino_ids;
 
         public List<string> baby_dino_urls;
 
-        public string[] diff_dinos_missing; //Dinos missing since last request
-        public string[] diff_dinos_added; //New dinos
-        public string[] diff_dinos_unchanged;
         public string[] dino_ids;
 
-        public BasicTribe(ArkWorld world, int tribeId, string sessionid, List<string> last_dino_list)
+        public BasicTribe(ArkWorld world, int tribeId)
         {
             gameTime = world.gameTime;
 
@@ -43,19 +41,19 @@ namespace ArkHttpServer.Entities
                         throw new Exception("Dino exists with the same ID.");
                 } else
                 {
-                    dinos.Add(searchDinos[i].dinosaurId.ToString(), new BasicArkDino(searchDinos[i], world, sessionid));
+                    dinos.Add(searchDinos[i].dinosaurId.ToString(), new BasicArkDino(searchDinos[i], world));
                 }
                 
             }
 
             //Diff dino list
             //Convert to new dino list
-            List<string> new_dino_list = new List<string>();
+            current_dino_ids = new List<string>();
             foreach (var d in dinos.Keys)
-                new_dino_list.Add(d.ToString());
+                current_dino_ids.Add(d.ToString());
 
             //Find new and find missing
-            dino_ids = new_dino_list.ToArray();
+            /*dino_ids = new_dino_list.ToArray();
            if(last_dino_list != null)
             {
                 diff_dinos_missing = last_dino_list.Except(new_dino_list).ToArray();
@@ -66,7 +64,7 @@ namespace ArkHttpServer.Entities
                 //Set diff dinos added to them all
                 diff_dinos_added = new_dino_list.ToArray();
                 diff_dinos_unchanged = new_dino_list.ToArray();
-            }
+            }*/
 
             //Get baby dinos
             baby_dino_urls = new List<string>();
@@ -74,7 +72,7 @@ namespace ArkHttpServer.Entities
             {
                 if(d.isBaby == true && d.babyAge < 1f && d.tribeId == tribeId)
                 {
-                    baby_dino_urls.Add(new BasicArkDino(d, world, sessionid).apiUrl);
+                    baby_dino_urls.Add(new BasicArkDino(d, world).apiUrl);
                 }
             }
         }
@@ -100,7 +98,7 @@ namespace ArkHttpServer.Entities
 
         public ArkDinoEntry entry;
 
-        public BasicArkDino(ArkDinosaur dino, ArkWorld w, string sessionId)
+        public BasicArkDino(ArkDinosaur dino, ArkWorld w)
         {
             //Convert this dino to this.
             pos = dino.location;
@@ -110,7 +108,7 @@ namespace ArkHttpServer.Entities
             classname = dino.classnameString;
             imgUrl = $"{ArkWebServer.config.resources_url}/dinos/icons/lq/{classname}.png";
             id = dino.dinosaurId;
-            apiUrl = $"{ArkWebServer.api_prefix}/world/{sessionId}/dinos/{id}";
+            apiUrl = $"{ArkWebServer.api_prefix}/world/dinos/{id}";
             isFemale = dino.isFemale;
             tamedName = dino.tamedName;
             tamerName = dino.tamerName;

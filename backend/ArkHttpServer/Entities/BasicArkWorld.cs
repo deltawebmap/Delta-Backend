@@ -23,7 +23,7 @@ namespace ArkHttpServer.Entities
         public string endpoint_tribes_itemsearch; //Item search endpoint
         public string endpoint_tribes_dino; //Dino endpoint
 
-        public BasicArkWorld(ArkWorld w, HttpSession session)
+        public BasicArkWorld(ArkWorld w, DateTime lastSavedAt)
         {
             //Set world data
             day = w.day;
@@ -32,16 +32,16 @@ namespace ArkHttpServer.Entities
             mapData = w.mapinfo;
 
             //Calculate map time offset
-            mapTimeOffset = (DateTime.UtcNow - session.worldLastSavedAt).TotalSeconds;
+            mapTimeOffset = (DateTime.UtcNow - lastSavedAt).TotalSeconds;
 
             //Set endpoints
-            string baseUrl = $"{ArkWebServer.api_prefix}/world/{session.session_id}/";
+            string baseUrl = $"{ArkWebServer.api_prefix}/world/";
             href = baseUrl;
             endpoint_population_map = baseUrl + "map/tiles/population/?zoom={z}&x={x}&y={y}&filter={filter}&v="+ArkWebServer.CURRENT_CLIENT_VERSION;
             endpoint_game_map = $"https://us-central.tiles.ark.romanport.com/"+mapName+"/{z}_{x}_{y}.png";
             endpoint_tribes = baseUrl + "tribes/";
-            heartrate = ArkWebServer.SESSION_TIMEOUT_MS;
-            endpoint_events = baseUrl + "events";
+            heartrate = ArkWebServer.EVENTS_HEARTRATE;
+            endpoint_events = baseUrl + "events?t="+DateTime.UtcNow.Ticks;
             endpoint_tribes_itemsearch = baseUrl + "tribes/item_search/?q={query}";
             endpoint_tribes_dino = baseUrl + "dinos/{dino}";
         }

@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>Ark Web Map - Sign In</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel="stylesheet" href="/assets/side/base.css">
+    </head>
+    <body>
+        <table style="width: 100%; height:100%;">
+            <tr>
+                <td style="text-align: center; vertical-align: middle;">
+
+                    <div class="frame_box" id="box">
+                        <div class="title">Welcome!</div>
+                        <div class="sub_title">Sign in or sign up to view your Ark servers in your web browser!</div>
+                        <div class="input_text_container">
+                            <input class="input_text" placeholder="Username" type="text" id="input_username">
+                            <input class="input_text" placeholder="Password" type="password" id="input_password">
+                        </div>
+                        <span class="error_text" id="error_txt"></span>
+                        <div class="button_container">
+                            <div class="button" onclick="OnSigninBtnPressed();">Log In</div>
+                            <div class="button" onclick="OnSignupBtnPressed();">Sign Up</div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+
+        <script src="/assets/user_portable.js"></script>
+        <script src="/assets/side/login.js"></script>
+    </body>
+</html>

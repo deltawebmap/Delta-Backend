@@ -19,80 +19,39 @@ namespace ArkHttpServer
     {
         public static ServerConfigFile config;
 
-        public static ArkWorld world;
         public static System.Timers.Timer event_checker_timer;
 
         public static string api_prefix;
 
-        public const int SESSION_TIMEOUT_MS = 10000; //Amount of time before a session is timed out and removed. This is the "heartbeat" of the session. It's also how quickly a client will poll the server.
+        public const int EVENTS_HEARTRATE = 10000; //How often event requests come in.
 
         public static void Configure(ServerConfigFile config, string api_prefix)
         {
             //Load
-            //string config_path = Directory.GetCurrentDirectory().TrimEnd('\\') + "\\config.json";
             ArkWebServer.config = config;
             ArkWebServer.api_prefix = api_prefix;
+
+            //Load save editor entries
+            ArkImports.ImportContent(@"PrimalData/world.json", @"PrimalData/dinos.json", @"PrimalData/items.json");
+
+            //Load map
+            WorldLoader.GetWorld();
 
             //Start event checker timer
             event_checker_timer = new System.Timers.Timer(5000);
             event_checker_timer.Elapsed += Event_checker_timer_Elapsed;
             event_checker_timer.Start();
-
-            //Load save editor entries
-            ArkImports.ImportContent(@"PrimalData/world.json", @"PrimalData/dinos.json", @"PrimalData/items.json");
         }
 
         private static void Event_checker_timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             //Check all of our sessions for updated files.
-
-            lock(sessions)
+            HttpServices.EventService.AddEvent(new Entities.HttpSessionEvent(null, Entities.HttpSessionEventType.TestEvent));
+            
+            //Check for map updates
+            if(WorldLoader.CheckForMapUpdates())
             {
-                //First, loop through and find unique files
-                Dictionary<string, byte[]> hashes = new Dictionary<string, byte[]>();
-                foreach (var s in sessions.Values)
-                {
-                    if (!hashes.ContainsKey(s.game_file_path))
-                        hashes.Add(s.game_file_path, s.GetComputedFileHash());
-                }
-
-                //Now, go through each session and compare the hashes
-                foreach (var s in sessions.Values)
-                {
-                    //Get the hash
-                    byte[] hash = hashes[s.game_file_path];
-
-                    //Compare
-                    bool hasHashChanged = !s.CompareExistingHashWithNewHash(hash);
-
-                    //If the hash has changed, add an event
-                    if (hasHashChanged)
-                    {
-                        s.new_events.Add(new Entities.HttpSessionEvent(null, Entities.HttpSessionEventType.MapUpdate));
-                    }
-
-                    //Update the hash
-                    s.last_file_hash = hash;
-
-                    //Reload the new file from the disk
-                    var newFile = new ArkWorld(ArkSaveEditor.Deserializer.ArkSaveDeserializer.OpenDotArk(s.game_file_path));
-                    s.world = newFile;
-                }
-
-                //Next, loop through clients and find old sessions to remove.
-                int max_timeout_time = SESSION_TIMEOUT_MS + 8000;
-                List<string> sessionsToRemove = new List<string>();
-                foreach (var s in sessions)
-                {
-                    double timeDiff = (DateTime.UtcNow - s.Value.last_heartbeat_time).TotalMilliseconds;
-                    if (timeDiff > max_timeout_time)
-                    {
-                        //Remove the session.
-                        sessionsToRemove.Add(s.Key);
-                    }
-                }
-                foreach (string s in sessionsToRemove)
-                    sessions.Remove(s);
+                HttpServices.EventService.AddEvent(new Entities.HttpSessionEvent(null, Entities.HttpSessionEventType.MapUpdate));
             }
         }
 
