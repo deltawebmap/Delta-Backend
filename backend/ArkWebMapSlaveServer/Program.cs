@@ -1,4 +1,5 @@
 ﻿using ArkBridgeSharedEntities.Entities;
+using ArkBridgeSharedEntities.Entities.RemoteConfig;
 using ArkHttpServer;
 using ArkSaveEditor.World;
 using ArkWebMapSlaveServer.NetEntities;
@@ -18,6 +19,7 @@ namespace ArkWebMapSlaveServer
     public class ArkWebMapServer
     {
         public static ArkSlaveConfig config;
+        public static RemoteConfigFile remote_config;
         public static string config_path;
         public static Random rand = new Random();
         public static Timer reportTimer;
@@ -25,17 +27,18 @@ namespace ArkWebMapSlaveServer
 
         public const int MY_VERSION = 1;
 
-        public static Task MainAsync(ArkSlaveConfig config, string configPath)
+        public static Task MainAsync(ArkSlaveConfig config, string configPath, RemoteConfigFile remote_config)
         {
             Console.WriteLine("Contacting master server...");
             ArkWebMapServer.config = config;
+            ArkWebMapServer.remote_config = remote_config;
             config_path = configPath;
             ArkWebMapServer.creds = Convert.FromBase64String(config.auth.creds);
             if (!HandshakeMasterServer(""))
                 return null;
 
             Console.WriteLine("Configurating internal server...");
-            ArkWebServer.Configure(config.child_config, "https://ark.romanport.com/api/servers/"+config.auth.id);
+            ArkWebServer.Configure(config.child_config, remote_config.sub_server_config.endpoints.server_api_prefix + config.auth.id);
 
             //Submit world report
             Console.WriteLine("Submitting ARK world report to master server...");

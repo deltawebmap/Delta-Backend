@@ -33,7 +33,7 @@ namespace ArkWebMapMasterServer.Servers
         /// <param name="name"></param>
         /// <param name="icon"></param>
         /// <returns></returns>
-        public static ArkServer CreateServer(string name, string icon, ArkUser owner)
+        public static ArkServer CreateServer(string name, string icon, ArkUser owner, bool isDemoServer = false)
         {
             //Generate a unique index
             var collec = GetCollection();
@@ -52,7 +52,10 @@ namespace ArkWebMapMasterServer.Servers
                 _id = id,
                 image_url = icon,
                 owner_uid = owner._id,
-                server_creds = Program.GenerateRandomBytes(64)
+                server_creds = Program.GenerateRandomBytes(64),
+                require_auth_to_view = !isDemoServer,
+                is_demo_server = isDemoServer,
+                is_deleted = false
             };
 
             //Insert

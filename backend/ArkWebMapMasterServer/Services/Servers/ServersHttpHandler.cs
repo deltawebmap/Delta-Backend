@@ -24,7 +24,7 @@ namespace ArkWebMapMasterServer.Services.Servers
 
             //Authenticate the user
             ArkUser user = Users.UsersHttpHandler.AuthenticateUser(e, true);
-            if (user.GetServers().Where( x => x._id == server._id).Count() != 1)
+            if (user.GetServers().Where( x => x._id == server._id).Count() != 1 && server.require_auth_to_view)
                 throw new StandardError("You must be a part of this server to send API calls.", StandardErrorCode.NotPermitted);
 
             //If there is content after this, proxy to this server. Else, return server info.
@@ -64,7 +64,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                         endpoint_ip = server.latest_proxy_url,
                         endpoint_url = proxyUrl,
                         error_description = $"Could not proxy to this server. It is offline."
-                    }, 502);
+                    }, 521);
                 }
                 
             } else

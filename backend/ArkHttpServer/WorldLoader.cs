@@ -82,6 +82,15 @@ namespace ArkHttpServer
             //Update the time
             last_check_world_time = nowFileTime;
 
+            //If the map has been updated, update the memory version
+            if(status)
+            {
+                lock(current_world)
+                {
+                    LoadArkWorldIntoSlot();
+                }
+            }
+
             //Return status
             return status;
         }

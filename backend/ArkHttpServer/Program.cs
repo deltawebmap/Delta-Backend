@@ -43,6 +43,11 @@ namespace ArkHttpServer
             event_checker_timer.Start();
         }
 
+        public static bool CheckPermission(string name)
+        {
+            return config.base_permissions.CheckPermission(name);
+        }
+
         public static void Log(string message, ConsoleColor color)
         {
             Console.ForegroundColor = color;

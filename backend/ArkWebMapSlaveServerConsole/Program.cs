@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using ArkBridgeSharedEntities.Entities.RemoteConfig;
 
 namespace ArkWebMapSlaveServerConsole
 {
@@ -20,9 +21,48 @@ namespace ArkWebMapSlaveServerConsole
     {
         const string CONFIG_FILE_NAME = "config_net.json";
         const int SETUP_VERSION = 1;
+        const float CURRENT_RELEASE_ID = 1.1f;
+
+        static RemoteConfigFile remote_config;
 
         static void Main(string[] args)
         {
+            //Request the remote config file
+            Console.WriteLine("Downloading remote configuration file...");
+            try
+            {
+                using (WebClient wc = new WebClient())
+                {
+                    remote_config = JsonConvert.DeserializeObject<RemoteConfigFile>(wc.DownloadString("https://ark.romanport.com/client_config.json"));
+                }
+            } catch
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Failed to download remote config file. Please try again later.");
+                Console.ReadLine();
+                return;
+            }
+
+            //If we are out of date, display it
+            if(CURRENT_RELEASE_ID < remote_config.sub_server_config.minimum_release_id)
+            {
+                Console.Clear();
+                RemoteConfigFile_Release latest_release = remote_config.latest_release;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("This version of ArkWebMap is out of date!");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\n" + latest_release.release_notes+"\nMore info: "+latest_release.download_page);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("\nPress enter to automatically download and install the new version.");
+                Console.ReadLine();
+
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.White;
+                UpdateInstaller.InstallUpdate(latest_release);
+
+                return;
+            }
+            
             //If the config file exists, jump right to running it.
             if (File.Exists(CONFIG_FILE_NAME))
             {
@@ -98,7 +138,7 @@ namespace ArkWebMapSlaveServerConsole
         {
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create($"https://ark.romanport.com/api/server_setup_proxy/{clientSessionId}?from=Server");
+                var request = (HttpWebRequest)WebRequest.Create(GetProxyEndpoint());
                 request.Method = "GET";
                 var response = (HttpWebResponse)request.GetResponse();
                 string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
@@ -114,7 +154,7 @@ namespace ArkWebMapSlaveServerConsole
             string ser_string = JsonConvert.SerializeObject(message);
             Console.WriteLine("SENT " + ser_string);
             byte[] ser = Encoding.UTF8.GetBytes(ser_string);
-            var request = (HttpWebRequest)WebRequest.Create($"https://ark.romanport.com/api/server_setup_proxy/{clientSessionId}?from=Server");
+            var request = (HttpWebRequest)WebRequest.Create(GetProxyEndpoint());
 
             request.Method = "POST";
             request.ContentLength = ser.Length;
@@ -135,6 +175,11 @@ namespace ArkWebMapSlaveServerConsole
             //Assume response is OK if we did not get an error
         }
 
+        public static string GetProxyEndpoint()
+        {
+            return remote_config.sub_server_config.endpoints.server_setup_proxy.Replace("{clientSessionId}", clientSessionId);
+        }
+
         static string GetConfigPath()
         {
             return Directory.GetCurrentDirectory().TrimEnd('\\') + "\\" + CONFIG_FILE_NAME;
@@ -144,7 +189,7 @@ namespace ArkWebMapSlaveServerConsole
         {
             string config_path = GetConfigPath();
             ArkSlaveConfig config = JsonConvert.DeserializeObject<ArkSlaveConfig>(File.ReadAllText(config_path));
-            Task t = ArkWebMapServer.MainAsync(config, config_path);
+            Task t = ArkWebMapServer.MainAsync(config, config_path, remote_config);
             if(t != null)
                 t.GetAwaiter().GetResult();
         }

@@ -13,6 +13,7 @@ namespace ArkHttpServer.Entities
         public string mapName;
         public ArkMapData mapData;
         public double mapTimeOffset; //Offset from the map time sent. Usually obtained by getting the amount of time since now and the last time the file was saved.
+        public bool isDemoServer;
 
         public string href; //URL of this file. Depending on how this was loaded, this might be different from what was actually requested.
         public string endpoint_population_map; //Endpoint for viewing populations
@@ -24,6 +25,8 @@ namespace ArkHttpServer.Entities
         public string endpoint_tribes_itemsearch; //Item search endpoint
         public string endpoint_tribes_dino; //Dino endpoint
 
+        public ServerPermissionsRole permissions;
+
         public BasicArkWorld(ArkWorld w, DateTime lastSavedAt)
         {
             //Set world data
@@ -31,6 +34,7 @@ namespace ArkHttpServer.Entities
             dayTime = w.gameTime;
             mapName = w.map;
             mapData = w.mapinfo;
+            isDemoServer = ArkWebServer.config.is_demo_server;
 
             //Calculate map time offset
             mapTimeOffset = (DateTime.UtcNow - lastSavedAt).TotalSeconds;
@@ -46,6 +50,14 @@ namespace ArkHttpServer.Entities
             endpoint_tribes_itemsearch = baseUrl + "tribes/item_search/?q={query}";
             endpoint_tribes_dino = baseUrl + "dinos/{dino}";
             endpoint_dino_class_search = $"{ArkWebServer.api_prefix}/dino_search/?query={{query}}";
+
+            permissions = ArkWebServer.config.base_permissions;
+
+            //If this is a demo server, reset the time offsets
+            if(ArkWebServer.config.is_demo_server)
+            {
+                mapTimeOffset = 0;
+            }
         }
     }
 }

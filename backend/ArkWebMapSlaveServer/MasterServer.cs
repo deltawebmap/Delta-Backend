@@ -13,7 +13,7 @@ namespace ArkWebMapSlaveServer
         public static T SendRequestToMaster<T>(string action, object request)
         {
             //Get full URL
-            string fullURL = "https://ark.romanport.com/api/bridge/" + action;
+            string fullURL = ArkWebMapServer.remote_config.sub_server_config.endpoints.base_bridge_url + action;
 
             //Send the HTTP request with our special headers. We'll worry about authentication later.
             T reply;

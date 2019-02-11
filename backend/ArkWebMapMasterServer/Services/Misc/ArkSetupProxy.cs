@@ -22,6 +22,9 @@ namespace ArkWebMapMasterServer.Services.Misc
             //Create server
             ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.CreateServer("Setup Server", null, user);
 
+            //Temporary, only for demo server creation.
+            //server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.CreateServer("ArkWebMap Demo", "https://ark.romanport.com/assets/demo_server_icon.png", user, true);
+
             //Create session
             setupProxySessions.Add(id, new ArkSetupProxySession
             {

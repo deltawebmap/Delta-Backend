@@ -62,11 +62,25 @@ namespace ArkHttpServer
 
                     //Fix pathname
                     pathname = pathname.Substring("/world".Length);
-                    
-                    //Get user info
-                    int tribeId = world.players.Where(x => x.steamId == user.steam_id).ToArray()[0].tribeId; //I know this won't work. It'll be fixed soon.
 
-                    if (pathname.StartsWith("/map/tiles/population/"))
+                    //Look up user based on Steam ID.
+                    bool isInTribe = false;
+                    int tribeId = -1;
+                    var foundPlayers = world.players.Where(x => x.steamId == user.steam_id).ToArray();
+                    if(foundPlayers.Length == 1)
+                    {
+                        tribeId = foundPlayers[0].tribeId;
+                        isInTribe = true;
+                    }
+                    
+                    //If this is a demo server, set the tribe ID to the demo tribe.
+                    if(ArkWebServer.config.is_demo_server)
+                    {
+                        isInTribe = true;
+                        tribeId = ArkWebServer.config.demo_tribe_id;
+                    }
+
+                    if (pathname.StartsWith("/map/tiles/population/") && ArkWebServer.CheckPermission("allowHeatmap"))
                     {
                         return PopulationService.OnHttpRequest(e, world);
                     }
@@ -74,7 +88,7 @@ namespace ArkHttpServer
                     {
                         return EventService.OnEventRequest(e, user);
                     }
-                    if (pathname.StartsWith("/tribes/item_search/"))
+                    if (pathname.StartsWith("/tribes/item_search/") && ArkWebServer.CheckPermission("allowSearchTamedTribeDinoInventories"))
                     {
                         //Search for items.
                         string query = e.Request.Query["q"].ToString().ToLower();
@@ -133,7 +147,7 @@ namespace ArkHttpServer
                         //Write
                         return QuickWriteJsonToDoc(e, bworld);
                     }
-                    if (pathname.StartsWith("/dinos/"))
+                    if (pathname.StartsWith("/dinos/") && ArkWebServer.CheckPermission("allowViewTamedTribeDinoStats"))
                     {
                         //Get the dino ID
                         string id = pathname.Substring("/dinos/".Length);

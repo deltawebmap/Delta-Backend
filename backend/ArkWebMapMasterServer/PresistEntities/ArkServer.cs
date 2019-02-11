@@ -73,6 +73,16 @@ namespace ArkWebMapMasterServer.PresistEntities
         /// </summary>
         public bool is_deleted { get; set; }
 
+        /// <summary>
+        /// If this is set to false, no auth will be required to access this. However, it will not appear in a users' server list.
+        /// </summary>
+        public bool require_auth_to_view { get; set; }
+
+        /// <summary>
+        /// If this is set to true, this will be treated as a demo server.
+        /// </summary>
+        public bool is_demo_server { get; set; }
+
         public void Update()
         {
             ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetCollection().Update(this);

@@ -18,6 +18,7 @@ namespace ArkHttpServer.Entities
     {
         public float gameTime;
         public List<MinifiedBasicArkDino> dinos;
+        public int tribeId;
 
         public List<string> baby_dino_urls;
 
@@ -26,6 +27,7 @@ namespace ArkHttpServer.Entities
         public BasicTribe(ArkWorld world, int tribeId)
         {
             gameTime = world.gameTime;
+            this.tribeId = tribeId;
 
             //Narrow down our search by tribe name, if needed.
             ArkDinosaur[] searchDinos = world.dinos.Where(x => x.isTamed == true && x.tribeId == tribeId).ToArray();

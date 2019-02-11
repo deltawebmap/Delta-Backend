@@ -23,6 +23,10 @@ namespace ArkHttpServer.HttpServices
             int y = int.Parse(e.Request.Query["y"]);
             string filtered_classname = e.Request.Query["filter"];
 
+            //Respect permissions
+            if (!ArkWebServer.CheckPermission("allowHeatmapDinoFilter"))
+                filtered_classname = "";
+
             //Check if in bounds
             Stream img;
             if(x < 0 || y < 0 || x > MathF.Pow(2, zoom) || y > MathF.Pow(2, zoom))
