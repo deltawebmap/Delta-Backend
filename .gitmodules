@@ -1,0 +1,3 @@
+[submodule "backend/Ark-Save-Manager"]
+	path = backend/Ark-Save-Manager
+	url = https://github.com/Roman-Port/Ark-Save-Manager.git
