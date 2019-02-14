@@ -19,6 +19,14 @@ namespace ArkWebMapMasterServer.Services.Users
                 string token = e.Request.Cookies["user_token"];
                 user = ArkWebMapMasterServer.Users.UserTokens.ValidateUserToken(token);
             }
+            if(user == null && e.Request.Headers.ContainsKey("Authorization"))
+            {
+                //Read Authorization header
+                string token = e.Request.Headers["Authorization"];
+                if (token.StartsWith("Bearer "))
+                    token = token.Substring("Bearer ".Length);
+                user = ArkWebMapMasterServer.Users.UserTokens.ValidateUserToken(token);
+            }
             if (user == null && required)
                 throw new StandardError("You're not signed in.", StandardErrorCode.AuthRequired);
             return user;

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using static ArkWebMapMasterServer.SteamAuth.SteamOpenID;
 
 namespace ArkWebMapMasterServer.Services.Auth
 {
@@ -39,10 +40,31 @@ namespace ArkWebMapMasterServer.Services.Auth
             }
             if (path.StartsWith("steam_auth"))
             {
+                //Get mode, if any
+                string mode = "web";
+                if (e.Request.Query.ContainsKey("mode"))
+                    mode = e.Request.Query["mode"];
+                
                 //Redirect to Steam auth
-                string url = SteamAuth.SteamOpenID.Begin();
+                string url = SteamAuth.SteamOpenID.Begin(mode);
                 e.Response.Headers.Add("Location", url);
                 return Program.QuickWriteToDoc(e, "", "text/plain", 302);
+            }
+            if(path.StartsWith("validate_preflight_token"))
+            {
+                //Return the user reply.
+                string id = e.Request.Query["id"];
+                if(url_tokens.ContainsKey(id))
+                {
+                    //Respond with this. Then, delete it.
+                    Task responseTask = Program.QuickWriteJsonToDoc(e, url_tokens[id]);
+                    url_tokens.Remove(id);
+                    return responseTask;
+                } else
+                {
+                    //Not found
+                    throw new StandardError("Preflight ID not found.", StandardErrorCode.NotFound);
+                }
             }
             
 
@@ -125,22 +147,49 @@ namespace ArkWebMapMasterServer.Services.Auth
             });
         }
 
+        /// <summary>
+        /// One-time tokens used to get the real user token.
+        /// </summary>
+        public static Dictionary<string, AuthReply> url_tokens = new Dictionary<string, AuthReply>();
+
         //Called once the user is authenticated using whatever method.
         public static Task OnFinishUserAuth(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u, string message, bool redirect = false)
         {
+            //If the user was authenticated, set a token.
+            string token = null;
+            if(u != null)
+            {
+                token = UserTokens.GenerateUserToken(u);
+            }
+
             //Generate reply
             AuthReply reply = new AuthReply
             {
                 ok = u != null,
                 message = message,
-                user = u
+                user = u,
+                token = token
             };
 
-            if(u != null)
+            //If the mode is set to one of the mobile clients, awake the app.
+            SteamAuthMode mode = Enum.Parse<SteamAuthMode>(e.Request.Query["mode"]);
+            if (mode == SteamAuthMode.AndroidClient)
             {
-                //If the user was authenticated, generate a token for them.
-                string token = UserTokens.GenerateUserToken(u);
+                //Create a temporary token the client can use to lookup the user.
+                string id = Program.GenerateRandomString(24);
+                while (url_tokens.ContainsKey(id))
+                    id = Program.GenerateRandomString(24);
 
+                //Create token and add.
+                url_tokens.Add(id, reply);
+
+                //Redirect back to the app.
+                e.Response.Headers.Add("Location", "ark-web-map-login://login/" + id);
+                return Program.QuickWriteToDoc(e, "You should be redirected back to the app. If not, let me know.", "text/plain", 302);
+            }
+
+            if (u != null)
+            {
                 //Set browser cookie
                 SetAuthCookie(e, token);
             }

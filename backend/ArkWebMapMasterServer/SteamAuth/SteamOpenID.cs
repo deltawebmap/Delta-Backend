@@ -22,18 +22,19 @@ namespace ArkWebMapMasterServer.SteamAuth
         /// </summary>
         /// <param name="returner"></param>
         /// <returns></returns>
-        public static string Begin()
+        public static string Begin(string mode)
         {
             //First, generate a state ID. This should be unique
             string stateId = Program.GenerateRandomString(24);
             while(return_values.ContainsKey(stateId))
                 stateId = Program.GenerateRandomString(24);
 
+
             //Add
             return_values.Add(stateId, "");
 
             //Now, construct a URL to send the user to.
-            string return_url = $"https://ark.romanport.com/api/auth/steam_auth_return/?state={stateId}";
+            string return_url = $"https://ark.romanport.com/api/auth/steam_auth_return/?state={stateId}&mode={mode}";
             string encoded_return_url = System.Web.HttpUtility.UrlEncode(return_url);
             string url = $"https://steamcommunity.com/openid/login?openid.return_to={encoded_return_url}&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns.sreg=http%3A%2F%2Fopenid.net%2Fextensions%2Fsreg%2F1.1&openid.realm={encoded_return_url}";
             return url;
@@ -107,6 +108,12 @@ namespace ArkWebMapMasterServer.SteamAuth
                 profile = profile_full.response.players[0],
                 steam_id = steam_id
             };
+        }
+
+        public enum SteamAuthMode
+        {
+            Web,
+            AndroidClient
         }
     }
 }
