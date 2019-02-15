@@ -1,5 +1,6 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkBridgeSharedEntities.Entities.RemoteConfig;
+using ArkBridgeSharedEntities.Requests;
 using ArkHttpServer;
 using ArkSaveEditor.World;
 using ArkWebMapSlaveServer.NetEntities;
@@ -38,7 +39,18 @@ namespace ArkWebMapSlaveServer
                 return null;
 
             Console.WriteLine("Configurating internal server...");
-            ArkWebServer.Configure(config.child_config, remote_config.sub_server_config.endpoints.server_api_prefix + config.auth.id);
+            ArkWebServer.Configure(config.child_config, remote_config.sub_server_config.endpoints.server_api_prefix + config.auth.id, (int tribeId, TribeNotification n) =>
+            {
+                //Create payload and send it.
+                UserNotificationRequest r = new UserNotificationRequest
+                {
+                    notification = n,
+                    tribeId = tribeId
+                };
+
+                //Transmit
+                MasterServer.SendRequestToMaster<TrueFalseReply>("send_tribe_notification", r);
+            });
 
             //Submit world report
             Console.WriteLine("Submitting ARK world report to master server...");

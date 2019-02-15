@@ -79,6 +79,11 @@ namespace ArkWebMapMasterServer.Services.Users
                 user.Update();
                 return Program.QuickWriteStatusToDoc(e, true);
             }
+            if(path == "@me/notification_token")
+            {
+                //Put notification token.
+                return PostedNotificationToken.OnHttpRequest(e, user);
+            }
             if (path.StartsWith("@me/"))
             {
                 //Requested user info

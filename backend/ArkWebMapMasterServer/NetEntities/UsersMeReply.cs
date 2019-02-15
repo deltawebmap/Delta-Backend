@@ -13,7 +13,7 @@ namespace ArkWebMapMasterServer.NetEntities
 
         public List<UsersMeReply_Server> servers;
 
-        public UsersMeReply(ArkUser u)
+        public UsersMeReply(ArkUser u, bool filterHiddenServers)
         {
             //Set basic values
             screen_name = u.screen_name;
@@ -30,7 +30,9 @@ namespace ArkWebMapMasterServer.NetEntities
             foreach(var id in found_servers)
             {
                 //Get server by ID
-                servers.Add(new UsersMeReply_Server(u, id));
+                var converted = new UsersMeReply_Server(u, id);
+                if ((converted.has_ever_gone_online && !converted.is_hidden) || !filterHiddenServers)
+                    servers.Add(converted);
             }
         }
     }

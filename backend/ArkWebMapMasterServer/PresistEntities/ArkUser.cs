@@ -25,6 +25,8 @@ namespace ArkWebMapMasterServer.PresistEntities
         public bool is_steam_verified { get; set; }
         public string steam_id { get; set; }
 
+        public List<string> notification_tokens { get; set; }
+
         public void Update()
         {
             Users.UserAuth.GetCollection().Update(this);

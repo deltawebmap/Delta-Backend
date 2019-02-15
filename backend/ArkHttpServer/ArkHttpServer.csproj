@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ark-Save-Manager\ArkSaveEditor\ArkSaveEditor.csproj" />
+    <ProjectReference Include="..\ArkBridgeSharedEntities\ArkBridgeSharedEntities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

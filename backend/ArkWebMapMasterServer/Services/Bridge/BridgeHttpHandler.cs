@@ -51,6 +51,10 @@ namespace ArkWebMapMasterServer.Services.Bridge
                 //Pass hello request
                 return ArkReportRequest.OnHttpRequest(e, server);
             }
+            if(path.StartsWith("send_tribe_notification"))
+            {
+                return ServerNotificationRequest.OnHttpRequest(e, server);
+            }
 
             //Not found
             throw new StandardError("Not Found", StandardErrorCode.NotFound);
