@@ -21,6 +21,7 @@ namespace ArkHttpServer.Entities
         public int tribeId;
 
         public List<string> baby_dino_urls;
+        public List<ArkDinoReply> baby_dinos;
 
         public string[] dino_ids;
 
@@ -54,11 +55,13 @@ namespace ArkHttpServer.Entities
 
             //Get baby dinos
             baby_dino_urls = new List<string>();
+            baby_dinos = new List<ArkDinoReply>();
             foreach(var d in searchDinos)
             {
                 if(d.isBaby == true && d.babyAge < 1f)
                 {
                     baby_dino_urls.Add(new BasicArkDino(d, world).apiUrl);
+                    baby_dinos.Add(new ArkDinoReply(d, world)); //Full dino
                 }
             }
         }

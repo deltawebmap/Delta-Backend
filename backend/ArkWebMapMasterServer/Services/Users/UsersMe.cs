@@ -17,9 +17,16 @@ namespace ArkWebMapMasterServer.Services.Users
             {
                 hideInvalid = e.Request.Query["hideInvalid"] == "true";
             }
-            
+
+            //Check if the user wants us to ping all servers.
+            bool pingServers = false;
+            if (e.Request.Query.ContainsKey("pingAllServers"))
+            {
+                pingServers = e.Request.Query["pingAllServers"] == "true";
+            }
+
             //Just convert it.
-            return Program.QuickWriteJsonToDoc(e, new UsersMeReply(u, hideInvalid));
+            return Program.QuickWriteJsonToDoc(e, new UsersMeReply(u, hideInvalid, pingServers));
         }
     }
 }

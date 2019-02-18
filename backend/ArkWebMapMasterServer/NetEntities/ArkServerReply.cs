@@ -17,7 +17,7 @@ namespace ArkWebMapMasterServer.NetEntities
         public bool online;
         public double ping;
 
-        public ArkServerReply(ArkServer s, ArkUser u)
+        public ArkServerReply(ArkServer s, ArkUser u, int timeoutMs = 2000)
         {
             //Set the simple stuff
             display_name = s.display_name;
@@ -32,7 +32,7 @@ namespace ArkWebMapMasterServer.NetEntities
                 s.SendRequest<PingRequest>("/bridge/ping", new PingRequest
                 {
                     content = "user ping"
-                }, RequestHttpMethod.get, u);
+                }, RequestHttpMethod.get, u, timeoutMs);
                 ping = (DateTime.UtcNow - start).TotalMilliseconds;
                 online = true;
             } catch

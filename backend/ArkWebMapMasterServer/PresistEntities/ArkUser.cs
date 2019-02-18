@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using ArkBridgeSharedEntities.Entities;
 
 namespace ArkWebMapMasterServer.PresistEntities
 {
@@ -26,6 +27,7 @@ namespace ArkWebMapMasterServer.PresistEntities
         public string steam_id { get; set; }
 
         public List<string> notification_tokens { get; set; }
+        public Dictionary<string, List<ArkNotificationChannel>> enabled_notifications { get; set; } //Key: Server ID
 
         public void Update()
         {
@@ -62,6 +64,27 @@ namespace ArkWebMapMasterServer.PresistEntities
             Update();
             return output;
         }
+
+        public List<ArkNotificationChannel> GetServerNotificationSettings(string serverId)
+        {
+            if (enabled_notifications == null)
+                return ArkUserDefaults.defaultUserNotifications;
+            if (!enabled_notifications.ContainsKey(serverId))
+                return ArkUserDefaults.defaultUserNotifications;
+            return enabled_notifications[serverId];
+        }
+    }
+
+    class ArkUserDefaults
+    {
+        public static readonly List<ArkNotificationChannel> defaultUserNotifications = new List<ArkNotificationChannel>
+        {
+            ArkNotificationChannel.BabyDino_FoodCritical,
+            ArkNotificationChannel.BabyDino_FoodLow,
+            ArkNotificationChannel.BabyDino_FoodStarving,
+            ArkNotificationChannel.Tribe_TribeDinoDeath,
+            ArkNotificationChannel.Tribe_TribeDinoTame
+        };
     }
 
     public enum ArkUserSigninMethod

@@ -1,4 +1,5 @@
-﻿using ArkWebMapMasterServer.PresistEntities;
+﻿using ArkBridgeSharedEntities.Entities;
+using ArkWebMapMasterServer.PresistEntities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,7 +14,7 @@ namespace ArkWebMapMasterServer.NetEntities
 
         public List<UsersMeReply_Server> servers;
 
-        public UsersMeReply(ArkUser u, bool filterHiddenServers)
+        public UsersMeReply(ArkUser u, bool filterHiddenServers, bool doPingServers)
         {
             //Set basic values
             screen_name = u.screen_name;
@@ -30,10 +31,11 @@ namespace ArkWebMapMasterServer.NetEntities
             foreach(var id in found_servers)
             {
                 //Get server by ID
-                var converted = new UsersMeReply_Server(u, id);
-                if ((converted.has_ever_gone_online && !converted.is_hidden) || !filterHiddenServers)
+                var converted = new UsersMeReply_Server(u, id, doPingServers);
+                if ((!converted.is_hidden || !filterHiddenServers) && converted.has_ever_gone_online)
                     servers.Add(converted);
             }
+
         }
     }
 
@@ -52,8 +54,18 @@ namespace ArkWebMapMasterServer.NetEntities
         public string endpoint_createsession;
         public string endpoint_createinvite;
 
-        public UsersMeReply_Server(ArkUser u, ArkServer s)
+        public List<string> enabled_notifications;
+        public ArkServerReply ping_status;
+
+        public UsersMeReply_Server(ArkUser u, ArkServer s, bool doPing)
         {
+            //If this server has never sent a status, skip
+            if (!s.has_server_report)
+            {
+                has_ever_gone_online = false;
+                return;
+            }
+
             display_name = s.display_name;
             image_url = s.image_url;
             if (image_url == null)
@@ -68,6 +80,16 @@ namespace ArkWebMapMasterServer.NetEntities
             endpoint_createsession = base_endpoint + "create_session";
             endpoint_leave = base_endpoint + "leave";
             endpoint_ping = base_endpoint.TrimEnd('/');
+
+            //Convert permissions
+            List<ArkNotificationChannel> notifications = u.GetServerNotificationSettings(s._id);
+            enabled_notifications = new List<string>();
+            foreach (ArkNotificationChannel ss in notifications)
+                enabled_notifications.Add(ss.ToString());
+
+            //Ping server
+            if(doPing)
+                ping_status = new ArkServerReply(s, null, 600);
         }
     }
 }

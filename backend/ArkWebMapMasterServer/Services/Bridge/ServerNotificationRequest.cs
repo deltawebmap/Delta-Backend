@@ -55,8 +55,6 @@ namespace ArkWebMapMasterServer.Services.Bridge
                 severity = DinoHungerSeverity.Starving;
             else if (foodTimeRemaining.TotalMinutes < 8)
                 severity = DinoHungerSeverity.Critical;
-            else if (foodTimeRemaining.TotalMinutes < 16)
-                severity = DinoHungerSeverity.VeryLow;
             else
                 severity = DinoHungerSeverity.Low;
 
@@ -75,7 +73,6 @@ namespace ArkWebMapMasterServer.Services.Bridge
         {
             Starving, //Minutes < 1
             Critical, //Minutes < 8
-            VeryLow, //Minutes < 16
             Low //Minutes < 30
         }
 
@@ -91,7 +88,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
                 new DinoHungerSeverityStatus
                 {
                     title_name = "starving!",
-                    bottom_text = "Feed {dino} now. {Gender} is losing health."
+                    bottom_text = "{dino} is losing health."
                 }
             },
             {
@@ -99,14 +96,6 @@ namespace ArkWebMapMasterServer.Services.Bridge
                 new DinoHungerSeverityStatus
                 {
                     title_name = "very low on food",
-                    bottom_text = "{dino} will run out of food in {time} minutes."
-                }
-            },
-            {
-                DinoHungerSeverity.VeryLow,
-                new DinoHungerSeverityStatus
-                {
-                    title_name = "low on food",
                     bottom_text = "{dino} will run out of food in {time} minutes."
                 }
             },
