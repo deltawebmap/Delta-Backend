@@ -111,7 +111,7 @@ namespace ArkWebMapSlaveServer
                 {
                     player_name = player.playerName,
                     allow_player = true,
-                    player_steam_id = player.steamId,
+                    player_steam_id = player.steamPlayerId,
                     player_tribe_id = player.tribeId,
                     player_tribe_name = player.playerName
                 });

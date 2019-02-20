@@ -66,7 +66,7 @@ namespace ArkHttpServer
                     //Look up user based on Steam ID.
                     bool isInTribe = false;
                     int tribeId = -1;
-                    var foundPlayers = world.players.Where(x => x.steamId == user.steam_id).ToArray();
+                    var foundPlayers = world.players.Where(x => x.steamPlayerId == user.steam_id).ToArray();
                     if(foundPlayers.Length >= 1)
                     {
                         tribeId = foundPlayers[0].tribeId;

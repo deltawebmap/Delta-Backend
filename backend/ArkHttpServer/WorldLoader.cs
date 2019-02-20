@@ -98,27 +98,11 @@ namespace ArkHttpServer
         //Private
         private static void LoadArkWorldIntoSlot()
         {
-            //Class used to deserialize this
-            DotArkDeserializer deser = new DotArkDeserializer();
-
             //Set the current world time
             DateTime world_time = GetLastWorldEditTime();
 
-            //Load file into memory
-            byte[] world_data = File.ReadAllBytes(world_path);
-
-            //Open MemoryStream and read
-            using(MemoryStream ms = new MemoryStream(world_data))
-            {
-                //Rewind
-                ms.Position = 0;
-
-                //Read
-                deser.OpenArkFile(ms);
-            }
-
             //Get world
-            ArkWorld world = new ArkWorld(deser.ark);
+            ArkWorld world = new ArkWorld(ArkWebServer.config.save_location, ArkWebServer.config.save_map);
 
             //Compute item dict
             Dictionary<string, ArkItemSearchResultsItem> itemDict = ComputeItemDictCache(world, world.dinos);
