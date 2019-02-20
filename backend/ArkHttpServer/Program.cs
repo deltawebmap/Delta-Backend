@@ -70,6 +70,9 @@ namespace ArkHttpServer
             {
                 HttpServices.EventService.AddEvent(new Entities.HttpSessionEvent(null, Entities.HttpSessionEventType.MapUpdate));
             }
+
+            //Find ALL baby dinos and check their stats so we can send notifications to mobile clients
+            MobileNotificationsEngine.BabyDinoNotifications.CheckBabyDinos();
         }
 
         

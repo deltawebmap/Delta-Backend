@@ -41,7 +41,7 @@ namespace ArkWebMapMasterServer.Services.Auth
             if (path.StartsWith("steam_auth"))
             {
                 //Get mode, if any
-                string mode = "web";
+                string mode = "Web";
                 if (e.Request.Query.ContainsKey("mode"))
                     mode = e.Request.Query["mode"];
                 

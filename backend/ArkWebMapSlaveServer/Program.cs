@@ -63,7 +63,6 @@ namespace ArkWebMapSlaveServer
                 {
                     IPAddress addr = IPAddress.Any;
                     options.Listen(addr, config.web_port);
-
                 })
                 .UseStartup<ArkWebMapServer>()
                 .Build();

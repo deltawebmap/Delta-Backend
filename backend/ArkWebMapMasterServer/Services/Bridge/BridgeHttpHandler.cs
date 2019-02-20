@@ -30,7 +30,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
             if (!e.Request.Headers.ContainsKey("X-Ark-Salt") || !e.Request.Headers.ContainsKey("X-Ark-Integrity"))
             {
                 //Missing data
-                throw new StandardError("Integrity check failed. Missing 'X-Ark-Salt' or 'X-Ark-Integrity'.", StandardErrorCode.BridgeIntegrityCheckFailed);
+                throw new StandardError("Integrity check failed. Missing 'X-Ark-Salt' or 'X-Ark-Integrity'. To: "+e.Request.Path, StandardErrorCode.BridgeIntegrityCheckFailed);
             }
             string calculatedHmac = ArkBridgeSharedEntities.HMACGen.GenerateHMAC(Convert.FromBase64String(e.Request.Headers["X-Ark-Salt"]), server.server_creds);
             if(calculatedHmac != e.Request.Headers["X-Ark-Integrity"])

@@ -43,8 +43,8 @@ namespace ArkWebMapMasterServer.Services.Bridge
         static FirebaseNotification ConvertDinoFoodLow(TribeNotification n, ArkServer s)
         {
             //Unpack
-            float foodItemsRemaining = float.Parse(n.data["foodItemsRemaining"]);
-            TimeSpan foodTimeRemaining = new TimeSpan(long.Parse(n.data["foodTimeRemaining"]));
+            double foodItemsRemaining = double.Parse(n.data["foodItemsRemaining"]);
+            TimeSpan foodTimeRemaining = TimeSpan.FromMilliseconds(double.Parse(n.data["foodTimeRemaining"]));
             string dinoName = n.data["dinoName"];
             string dinoClassname = n.data["dinoClassname"];
             string dinoPronoun = n.data["dinoGender"];

@@ -44,6 +44,7 @@ namespace ArkHttpServer.Entities
             href = baseUrl;
             endpoint_population_map = baseUrl + "map/tiles/population/?zoom={z}&x={x}&y={y}&filter={filter}&v="+ArkWebServer.CURRENT_CLIENT_VERSION;
             endpoint_game_map = $"https://us-central.tiles.ark.romanport.com/"+mapName+"/{z}_{x}_{y}.png";
+            endpoint_game_map = $"https://ark.romanport.com/resources/maps/"+mapName+"/tiles/{z}_{x}_{y}.png";
             endpoint_tribes = baseUrl + "tribes/";
             heartrate = ArkWebServer.EVENTS_HEARTRATE;
             endpoint_events = baseUrl + "events?t="+DateTime.UtcNow.Ticks;

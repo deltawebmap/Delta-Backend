@@ -158,10 +158,7 @@ namespace ArkHttpServer
                         //Search with this dinosaur ID
                         var dinos = world.dinos.Where(x => x.dinosaurId == dinoid).ToArray();
                         if (dinos.Length == 1)
-                        {
-                            //Test
-                            TribeNotifications.SendTribeDinoFoodStatus(dinos[0], dinos[0].tribeId);
-                            
+                        {                            
                             //Write this dinosaur.
                             return QuickWriteJsonToDoc(e, new ArkDinoReply(dinos[0], world));
                         }
