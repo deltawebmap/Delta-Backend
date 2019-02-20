@@ -67,7 +67,7 @@ namespace ArkHttpServer
                     bool isInTribe = false;
                     int tribeId = -1;
                     var foundPlayers = world.players.Where(x => x.steamId == user.steam_id).ToArray();
-                    if(foundPlayers.Length == 1)
+                    if(foundPlayers.Length >= 1)
                     {
                         tribeId = foundPlayers[0].tribeId;
                         isInTribe = true;
