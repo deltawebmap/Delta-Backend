@@ -50,6 +50,9 @@ namespace ArkWebMapSlaveServer
 
                 //Transmit
                 MasterServer.SendRequestToMaster<TrueFalseReply>("send_tribe_notification", r);
+            }, (string action, object request, Type t) =>
+            {
+                return MasterServer.SendRequestToMaster(action, request, t);
             });
 
             //Submit world report

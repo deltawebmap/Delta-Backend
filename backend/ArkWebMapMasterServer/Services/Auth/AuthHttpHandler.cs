@@ -66,7 +66,12 @@ namespace ArkWebMapMasterServer.Services.Auth
                     throw new StandardError("Preflight ID not found.", StandardErrorCode.NotFound);
                 }
             }
-            
+            if(path.StartsWith("set_token"))
+            {
+                //Offline login with token
+                SetAuthCookie(e, e.Request.Query["token"]);
+                return Program.QuickWriteToDoc(e, "Token set!", "text/plain");
+            }
 
             //Not found
             throw new StandardError("Not Found", StandardErrorCode.NotFound);

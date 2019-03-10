@@ -11,24 +11,32 @@ namespace ArkWebMapSubServerUpdater
     {
         static void Main(string[] args)
         {
-            //Quietly open the config file
-            UpdaterConfig config;
-            try
+            string output = args[0];
+
+            //Download remote config
+            StartStepWrite("Downloading config file...");
+            RemoteConfigFile remote_config;
+            using (WebClient wc = new WebClient())
             {
-                config = JsonConvert.DeserializeObject<UpdaterConfig>(File.ReadAllText("installer_config.json"));
-            } catch
-            {
-                FailWrite("Failed to open installer config.");
-                return;
+                remote_config = JsonConvert.DeserializeObject<RemoteConfigFile>(wc.DownloadString("https://ark.romanport.com/client_config.json?client=subserver_updater&version=1"));
             }
 
+            //Determine if this is a Windows or Linux machine.
+            bool isWindows = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
+            RemoteConfigFile_Release_Binary binary;
+            if (isWindows)
+                binary = remote_config.latest_release.binaries["windows"];
+            else
+                binary = remote_config.latest_release.binaries["linux"];
+
             //Download the update package.
+            StartStepWrite("Done.");
             StartStepWrite("Downloading update package...");
             byte[] updater_binary;
             try
             {
                 using (WebClient wc = new WebClient())
-                    updater_binary = wc.DownloadData(config.binary_url);
+                    updater_binary = wc.DownloadData(binary.url);
             }
             catch
             {
@@ -37,25 +45,26 @@ namespace ArkWebMapSubServerUpdater
                 Console.ReadLine();
                 return;
             }
-            Console.Write("Done.");
+            StartStepWrite("Done.");
 
             //Unzip
-            Console.Write("\nUnzipping...");
+            StartStepWrite("Unzipping...");
             using (MemoryStream ms = new MemoryStream(updater_binary))
             {
                 using (ZipArchive za = new ZipArchive(ms, ZipArchiveMode.Read))
                 {
-                    za.ExtractToDirectory(config.output_path, true);
+                    za.ExtractToDirectory(output, true);
                 }
             }
-            Console.Write("Done.");
+            StartStepWrite("Done.");
             Console.Clear();
 
             //Restart program
+            StartStepWrite("Restarting...");
             Process.Start(new ProcessStartInfo
             {
-                WorkingDirectory = config.output_path,
-                FileName = config.output_path + config.exe_name
+                WorkingDirectory = output,
+                FileName = output+binary.exe_name
             });
         }
 

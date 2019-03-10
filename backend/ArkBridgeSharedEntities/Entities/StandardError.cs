@@ -45,5 +45,7 @@ namespace ArkBridgeSharedEntities.Entities
         AuthFailed = 9,
         InvalidInput = 10,
         BridgeIntegrityCheckFailed = 11,
+        BridgeBackendServerError = 12, //Error code 500
+        BridgeBackendServerNetFailed = 13, //Any other error on the bridge
     }
 }

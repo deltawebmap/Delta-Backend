@@ -139,6 +139,10 @@ namespace ArkHttpServer
                         //Write
                         return QuickWriteJsonToDoc(e, output);
                     }
+                    if(pathname == "/tribes/overview")
+                    {
+                        return TribeOverviewService.OnHttpRequest(e, world, tribeId);
+                    }
                     if (pathname.StartsWith("/tribes/"))
                     {
                         //Convert to a basic Ark world
@@ -156,7 +160,7 @@ namespace ArkHttpServer
                             //Failed.
                             return QuickWriteToDoc(e, "Failed to parse dinosaur ID.", "text/plain", 400);
                         //Search with this dinosaur ID
-                        var dinos = world.dinos.Where(x => x.dinosaurId == dinoid).ToArray();
+                        var dinos = world.dinos.Where(x => x.dinosaurId == dinoid && x.tribeId == tribeId).ToArray();
                         if (dinos.Length == 1)
                         {                            
                             //Write this dinosaur.
@@ -168,6 +172,7 @@ namespace ArkHttpServer
                             return QuickWriteToDoc(e, $"The dinosaur ID '{dinoid}' was not a valid dinosaur.", "text/plain", 404);
                         }
                     }
+                    
                 }
 
                 //No path exists here.

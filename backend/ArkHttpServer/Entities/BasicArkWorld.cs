@@ -24,6 +24,7 @@ namespace ArkHttpServer.Entities
         public string endpoint_events; //Events endpoint
         public string endpoint_tribes_itemsearch; //Item search endpoint
         public string endpoint_tribes_dino; //Dino endpoint
+        public string endpoint_tribes_overview; //Tribe properties list
 
         public ServerPermissionsRole permissions;
 
@@ -43,14 +44,15 @@ namespace ArkHttpServer.Entities
             string baseUrl = $"{ArkWebServer.api_prefix}/world/";
             href = baseUrl;
             endpoint_population_map = baseUrl + "map/tiles/population/?zoom={z}&x={x}&y={y}&filter={filter}&v="+ArkWebServer.CURRENT_CLIENT_VERSION;
-            endpoint_game_map = $"https://us-central.tiles.ark.romanport.com/"+mapName+"/{z}_{x}_{y}.png";
             endpoint_game_map = $"https://ark.romanport.com/resources/maps/"+mapName+"/tiles/{z}_{x}_{y}.png";
+            //endpoint_game_map = "http://localhost:84/{z}_{x}_{y}.png";
             endpoint_tribes = baseUrl + "tribes/";
             heartrate = ArkWebServer.EVENTS_HEARTRATE;
             endpoint_events = baseUrl + "events?t="+DateTime.UtcNow.Ticks;
             endpoint_tribes_itemsearch = baseUrl + "tribes/item_search/?q={query}";
             endpoint_tribes_dino = baseUrl + "dinos/{dino}";
             endpoint_dino_class_search = $"{ArkWebServer.api_prefix}/dino_search/?query={{query}}";
+            endpoint_tribes_overview = baseUrl + "tribes/overview";
 
             permissions = ArkWebServer.config.base_permissions;
 

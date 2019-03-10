@@ -18,6 +18,7 @@ namespace ArkHttpServer.Entities
         public Dictionary<string, ArkItemEntry> item_class_data = new Dictionary<string, ArkItemEntry>();
         public ArkDinosaurStats max_stats;
         public ArkDinoEntry dino_entry;
+        public string href;
 
         public ArkDinoReply(ArkDinosaur d, ArkWorld w)
         {
@@ -27,7 +28,7 @@ namespace ArkHttpServer.Entities
             //Get the various components
             try
             {
-                inventory_items = d.GetInventoryItems();
+                inventory_items = d.GetInventoryItems(false);
 
                 //If we got the inventory items, get the item data too.
                 foreach (var i in inventory_items)
@@ -48,6 +49,9 @@ namespace ArkHttpServer.Entities
 
             //Set dino entry
             dino_entry = dino.dino_entry;
+
+            //Set href
+            href = $"{ArkWebServer.api_prefix}/world/dinos/{d.dinosaurId.ToString()}";
         }
     }
 }

@@ -39,10 +39,10 @@ namespace ArkWebMapMasterServer.Services.Servers
                     //Leave
                     return DeleteServer.OnHttpRequest(e, server, user);
                 }
-                if(proxyUrl == "rename")
+                if(proxyUrl == "edit")
                 {
                     //Rename
-                    return RenameServer.OnHttpRequest(e, server);
+                    return EditServerListing.OnHttpRequest(e, server);
                 }
 
                 

@@ -55,6 +55,10 @@ namespace ArkWebMapMasterServer.Services.Bridge
             {
                 return ServerNotificationRequest.OnHttpRequest(e, server);
             }
+            if(path.StartsWith("mass_request_steam_info"))
+            {
+                return MassRequestSteamDataRequest.OnHttpRequest(e, server);
+            }
 
             //Not found
             throw new StandardError("Not Found", StandardErrorCode.NotFound);

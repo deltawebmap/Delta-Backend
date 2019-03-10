@@ -17,11 +17,13 @@ using ArkBridgeSharedEntities.Requests;
 namespace ArkHttpServer
 {
     public delegate void SendTribeNotification(int tribeId, TribeNotification n);
+    public delegate object SendRequestToMaster(string action, object request, Type t);
 
     public partial class ArkWebServer
     {
         public static ServerConfigFile config;
         public static SendTribeNotification tribeNotificationCode;
+        public static SendRequestToMaster sendRequestToMasterCode;
 
         public static System.Timers.Timer event_checker_timer;
 
@@ -29,12 +31,13 @@ namespace ArkHttpServer
 
         public const int EVENTS_HEARTRATE = 10000; //How often event requests come in.
 
-        public static void Configure(ServerConfigFile config, string api_prefix, SendTribeNotification tribeNotificationCode)
+        public static void Configure(ServerConfigFile config, string api_prefix, SendTribeNotification tribeNotificationCode, SendRequestToMaster sendToMasterCode)
         {
             //Load
             ArkWebServer.config = config;
             ArkWebServer.api_prefix = api_prefix;
             ArkWebServer.tribeNotificationCode = tribeNotificationCode;
+            ArkWebServer.sendRequestToMasterCode = sendToMasterCode;
 
             //Load save editor entries
             ArkImports.ImportContent(@"PrimalData/world.json", @"PrimalData/dinos.json", @"PrimalData/items.json");

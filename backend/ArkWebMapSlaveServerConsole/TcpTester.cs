@@ -13,23 +13,24 @@ namespace ArkWebMapSlaveServerConsole
 
         public static void OnBeginRequest(ArkSetupProxyMessage message)
         {
-            //Start listener on port
-            int port = int.Parse(message.data["port"]);
-
-            //If it is already set, kill
-            if(test_tcp_listener != null)
-            {
-                try
-                {
-                    test_tcp_listener.Stop();
-                } catch
-                {
-
-                }
-            }
-            
             try
             {
+                //Start listener on port
+                int port = int.Parse(message.data["port"]);
+
+                //If it is already set, kill
+                if (test_tcp_listener != null)
+                {
+                    try
+                    {
+                        test_tcp_listener.Stop();
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
                 test_tcp_listener = new TcpListener(new IPEndPoint(IPAddress.Any, port));
                 test_tcp_listener.Start();
 

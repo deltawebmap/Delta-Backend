@@ -74,6 +74,19 @@ namespace ArkWebMapMasterServer.SteamAuth
             object state = return_values[state_id];
 
             //Also request this users' Steam profile.
+            SteamProfile profile = RequestSteamUserData(steam_id);
+
+            //Output
+            return new SteamValidationResponse
+            {
+                ok = true,
+                profile = profile,
+                steam_id = steam_id
+            };
+        }
+
+        public static SteamProfile RequestSteamUserData(string steam_id)
+        {
             string profile_return;
             string profile_url = $"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={Program.config.steam_api_key}&steamids={steam_id}";
             try
@@ -101,13 +114,7 @@ namespace ArkWebMapMasterServer.SteamAuth
             if (profile_full.response.players.Count != 1)
                 throw new StandardError("Steam profile response did not contain your player info.", StandardErrorCode.AuthFailed);
 
-            //Output
-            return new SteamValidationResponse
-            {
-                ok = true,
-                profile = profile_full.response.players[0],
-                steam_id = steam_id
-            };
+            return profile_full.response.players[0];
         }
 
         public enum SteamAuthMode

@@ -111,7 +111,7 @@ namespace ArkHttpServer.Entities
             //Create the adjusted map pos
             adjusted_map_pos = normalized_pos.Clone();
 
-            adjusted_map_pos = w.mapinfo.transformOffsets.Apply(adjusted_map_pos);
+            adjusted_map_pos = w.mapinfo.ConvertFromGamePositionToNormalized(new Vector2(dino.location.x, dino.location.y));
             entry = ArkSaveEditor.ArkImports.GetDinoDataByClassname(classname);
         }
     }
@@ -127,7 +127,7 @@ namespace ArkHttpServer.Entities
         public string classname;
         public string imgUrl;
         public string apiUrl;
-        public ulong id;
+        public string id;
         public string tamedName;
 
         public MinifiedBasicArkDino(ArkDinosaur dino, ArkWorld w)
@@ -138,15 +138,14 @@ namespace ArkHttpServer.Entities
 
             classname = dino.classnameString;
             imgUrl = $"{ArkWebServer.config.resources_url}/dinos/icons/lq/{classname}.png";
-            id = dino.dinosaurId;
+            id = dino.dinosaurId.ToString();
             apiUrl = $"{ArkWebServer.api_prefix}/world/dinos/{id}";
             tamedName = dino.tamedName;
 
 
             //Create the adjusted map pos
-            adjusted_map_pos = normalized_pos.Clone();
-
-            adjusted_map_pos = w.mapinfo.transformOffsets.Apply(adjusted_map_pos);
+            adjusted_map_pos = w.mapinfo.ConvertFromGamePositionToNormalized(new Vector2(dino.location.x, dino.location.y));
+            //adjusted_map_pos = w.mapinfo.transformOffsets.Apply(adjusted_map_pos);
         }
     }
 }

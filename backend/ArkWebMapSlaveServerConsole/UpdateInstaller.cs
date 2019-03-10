@@ -8,6 +8,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ArkWebMapSlaveServerConsole
 {
@@ -57,24 +58,18 @@ namespace ArkWebMapSlaveServerConsole
             }
             Console.Write("Done.");
 
-            //Write config
-            Console.WriteLine("\nWriting config...");
-            UpdaterConfig config = new UpdaterConfig
-            {
-                binary_url = binary.url,
-                output_path = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('/').TrimEnd('\\')+"/",
-                source_version = 1,
-                exe_name = binary.exe_name
-            };
-            File.WriteAllText(tempDir + "installer/installer_config.json", JsonConvert.SerializeObject(config));
-            Console.Write("Done.");
+            //Temp
+            tempDir = @"E:\ArkWebMap\test_temp\";
 
             //Execute the helper
+            string output = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('/').TrimEnd('\\') + "/";
             Process p = Process.Start(new ProcessStartInfo
             {
                 WorkingDirectory = tempDir + "installer/",
                 FileName = tempDir + "installer/" + binary.updater_cmd,
-                WindowStyle = ProcessWindowStyle.Hidden
+                WindowStyle = ProcessWindowStyle.Hidden,
+                Arguments = "\"" + Regex.Replace(output, @"(\\+)$", @"$1$1") + "\"" //Thanks to https://stackoverflow.com/questions/5510343/escape-command-line-arguments-in-c-sharp for helping with this insanity
+
             });
 
             //End ourselves.

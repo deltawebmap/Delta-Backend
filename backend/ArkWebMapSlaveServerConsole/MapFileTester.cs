@@ -13,6 +13,7 @@ namespace ArkWebMapSlaveServerConsole
         {
             //Check and open ARK file
             string path = message.data["path"];
+            string rid = message.data["rid"];
 
             //Check if file exists
             if(File.Exists(path))
@@ -21,19 +22,19 @@ namespace ArkWebMapSlaveServerConsole
                 try
                 {
                     var map = ArkSaveEditor.Deserializer.ArkSaveDeserializer.OpenDotArk(path);
-                    Respond(true, map != null);
+                    Respond(true, map != null, rid);
                 } catch (Exception ex)
                 {
-                    Respond(true, false);
+                    Respond(true, false, rid);
                 }
             } else
             {
                 //Does not even exist.
-                Respond(false, false);
+                Respond(false, false, rid);
             }
         }
 
-        static void Respond(bool fileExists, bool isValidArk)
+        static void Respond(bool fileExists, bool isValidArk, string rid)
         {
             Program.SendMasterMessage(new ArkSetupProxyMessage
             {
@@ -41,7 +42,8 @@ namespace ArkWebMapSlaveServerConsole
                 data = new Dictionary<string, string>
                 {
                     {"exists", fileExists.ToString().ToLower() },
-                    {"isValidArk", isValidArk.ToString().ToLower() }
+                    {"isValidArk", isValidArk.ToString().ToLower() },
+                    {"rid",rid }
                 }
             });
         }

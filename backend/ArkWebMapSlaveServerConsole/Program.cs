@@ -33,7 +33,7 @@ namespace ArkWebMapSlaveServerConsole
             {
                 using (WebClient wc = new WebClient())
                 {
-                    remote_config = JsonConvert.DeserializeObject<RemoteConfigFile>(wc.DownloadString("https://ark.romanport.com/client_config.json"));
+                    remote_config = JsonConvert.DeserializeObject<RemoteConfigFile>(wc.DownloadString($"https://ark.romanport.com/client_config.json?client=subserver&version={CURRENT_RELEASE_ID.ToString()}"));
                 }
             } catch
             {
@@ -53,10 +53,8 @@ namespace ArkWebMapSlaveServerConsole
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\n" + latest_release.release_notes+"\nMore info: "+latest_release.download_page);
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("\nPress enter to automatically download and install the new version.");
-                Console.ReadLine();
+                Console.WriteLine("\nAutomatically downloading and installing the new version...");
 
-                Console.Clear();
                 Console.ForegroundColor = ConsoleColor.White;
                 UpdateInstaller.InstallUpdate(latest_release);
 
@@ -119,13 +117,14 @@ namespace ArkWebMapSlaveServerConsole
                                 break;
                         }
                     }
-                    Thread.Sleep(4000);
+                    Thread.Sleep(2000);
                 }
+                Console.Clear();
+                DrawWithColor("Done! Starting as usual now...", ConsoleColor.Blue);
+                Console.ForegroundColor = ConsoleColor.White;
+                Run();
             }
-            Console.Clear();
-            DrawWithColor("Done! Starting as usual now...", ConsoleColor.Blue);
-            Console.ForegroundColor = ConsoleColor.White;
-            Run();
+            
         }
 
 
