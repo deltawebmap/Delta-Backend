@@ -90,54 +90,7 @@ namespace ArkHttpServer
                     }
                     if (pathname.StartsWith("/tribes/item_search/") && ArkWebServer.CheckPermission("allowSearchTamedTribeDinoInventories"))
                     {
-                        //Search for items.
-                        string query = e.Request.Query["q"].ToString().ToLower();
-
-                        //Get page offset
-                        int page_offset = int.Parse(e.Request.Query["p"]);
-
-                        //Get cache
-                        Dictionary<string, ArkItemSearchResultsItem> itemDictCache = WorldLoader.GetItemDictForTribe(tribeId);
-
-                        //Reverse-search this name and find classnames
-                        var itemEntries = ArkImports.item_entries.Where(x => x.name.ToLower().Contains(query)).ToArray();
-
-                        //Sort item entries by length closest to the one entered.
-                        Array.Sort(itemEntries, delegate (ArkItemEntry x, ArkItemEntry y) { return x.name.Length.CompareTo(y.name.Length); });
-
-                        //Now use the classnames from this to search for items.
-                        List<ArkItemSearchResultsItem> tribeItems = new List<ArkItemSearchResultsItem>();
-                        int addedIndex = 0;
-                        for(int i = 0; i<itemEntries.Length; i++)
-                        {
-                            var item = itemEntries[i];
-                            bool add = itemDictCache.ContainsKey(item.classname);
-                            if (addedIndex >= page_offset * TRIBE_ITEMS_MAX_PAGE_RESULTS && addedIndex < (page_offset+1) * TRIBE_ITEMS_MAX_PAGE_RESULTS && add)
-                            {
-                                tribeItems.Add(itemDictCache[item.classname]);
-                            }
-                            if(add)
-                            {
-                                addedIndex++;
-                            }
-                        }
-
-                        //Generate an output.
-                        int tribeItemsCount = tribeItems.Count;
-                        bool moreListItems = addedIndex > (page_offset + 1) * TRIBE_ITEMS_MAX_PAGE_RESULTS;
-
-                        ArkItemSearchResults output = new ArkItemSearchResults
-                        {
-                            hardLimit = TRIBE_ITEMS_MAX_PAGE_RESULTS,
-                            itemEntriesFound = itemEntries.Length,
-                            moreListItems = moreListItems,
-                            tribeItemsFound = tribeItemsCount,
-                            results = tribeItems,
-                            query = query
-                        };
-
-                        //Write
-                        return QuickWriteJsonToDoc(e, output);
+                        return TribeInventorySearchService.OnHttpRequest(e, world, tribeId);
                     }
                     if(pathname == "/tribes/overview")
                     {
