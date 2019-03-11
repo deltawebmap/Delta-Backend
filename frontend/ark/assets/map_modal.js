@@ -16,8 +16,7 @@ map_menu.hide = function() {
         return false;
     }
     map_menu.isClosing = true;
-    map_menu.e.classList.remove("bottom_modal_active");
-    document.getElementById('map_part').classList.remove("map_modal");
+    collap.setState("dino_modal", false);
 
     window.setTimeout(function() {
         map_menu.isOpen = false;
@@ -91,8 +90,7 @@ map_menu.show = function(url) {
             map_menu.resizeMenu();
 
             //Next, activate modal and deactivate map
-            map_menu.e.classList.add("bottom_modal_active");
-            document.getElementById('map_part').classList.add("map_modal");
+            collap.setState("dino_modal", true);
 
             window.setTimeout(function() {
                 map_menu.isOpen = true;

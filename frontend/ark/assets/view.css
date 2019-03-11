@@ -2,24 +2,41 @@
     position:fixed;
     top:0;
     right:0;
-    left: 289px;
+    left: 0px;
     background-color:#ddd;
-    transition: all 200ms;
-    transition-timing-function: cubic-bezier(0.51, 0.62, 0.23, 0.96);
     height:100vh;
-    transition-property: background-color;
 }
 
 .sidebar_part {
     position: fixed;
     top:0px;
     bottom:0px;
-    left:0px;
+    left:-360px;
     width: 360px;
     color: white;
     font-family: 'Roboto', sans-serif;
     background-color: #33363c;
     z-index: 9;
+}
+
+.sidebar_part_togglebtn {
+    border-radius: 100%;
+    position: absolute;
+    top: 15px;
+    left:375px;
+    width: 50px;
+    height: 50px;
+    vertical-align: center;
+    background-color: #33363c;
+    border: 1px solid #44474b;
+    background-image: url(/assets/icons/baseline-menu-24px.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+
+.sidebar_part_active {
+    left:0;
 }
 
 .sidebar_servers {
@@ -65,21 +82,120 @@
     border: 1px solid #e87777;
 }
 
+.sidebar_button_accent {
+    border: 1px solid #5585e6;
+}
+
 .sidebar_button img {
     float: left;
     height: 24px;
     margin-right: 10px;
 }
 
+.sidebar_button_templateimg {
+    float: left;
+    height: 24px;
+    width:24px;
+    margin-right: 10px;
+    background-color: #404144;
+    border-radius: 24px;
+}
+
 .sidebar_part .map_title {
     color: white;
     font-weight: 500;
-    font-size: 20px;
-    padding: 15px;
-    margin-bottom: 10px;
-    text-align: center;
-    height: 24px;
+    font-size: 18px;
+    padding: 10px;
+    text-align: left;
     background-color: #5585e6;
+    position: relative;
+}
+
+.map_title_input {
+    background-color: #5585e6;
+    padding: 5px;
+    margin: 0;
+    border: 0;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 1px solid #5585e6;
+    width: 225px;
+    transition:all 150ms;
+    animation-timing-function: cubic-bezier(0.51, 0.62, 0.23, 0.96);
+}
+
+.map_title_input_selected {
+    background-color: #4973c9;
+    border: 1px solid #3e4e6d;
+    margin-left: 40px;
+    width: 187px;
+}
+
+.server_edit_btn {
+    cursor: pointer;
+    background-image: url(/assets/icons/baseline-edit-24px.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 18px;
+    position: absolute;
+    right: 12px;
+    height: 30px;
+    width: 30px;
+    top: 11px;
+    transition:all 150ms;
+    animation-timing-function: cubic-bezier(0.51, 0.62, 0.23, 0.96);
+}
+
+.server_edit_btn_save {
+    background-image: url(/assets/icons/baseline-save-24px.svg);
+}
+
+.server_edit_btn:hover {
+    background-color: #4973c9;
+}
+
+/* For some reason, I used 'server_edit_icon' for the icon selector */
+.server_edit_icon {
+    border-radius: 50%;
+    background-color: #4973c9;
+    border: 1px solid #3e4e6d;
+    cursor: pointer;
+    background-position: center;
+    background-size: cover;
+
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    left: -30px;
+    opacity:0;
+    transition:all 150ms;
+    animation-timing-function: cubic-bezier(0.51, 0.62, 0.23, 0.96);
+}
+
+.server_edit_icon_active {
+    left:10px;
+    opacity:1;
+}
+
+.server_edit_icon div {
+    position: absolute;
+    top:0;
+    bottom:0;
+    right:0;
+    left:0;
+    background-image:url("/assets/icons/outline-add_photo_alternate-24px.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 18px;
+}
+
+.sidebar_part .map_sub_title {
+    padding: 15px;
+    background-color: #3f4248;
+    margin-bottom: 10px;
+    font-size: 15px;
+    height: unset;
 }
 
 .sidebar_part .container {
@@ -248,8 +364,8 @@
 
 .bottom_modal {
     position:fixed;
-    right:0;
-    left: 360px;
+    right:0px;
+    left: 0px;
     bottom:-270px;
     height:248px;
     transition: all 200ms;
@@ -592,7 +708,7 @@
 }
 
 .dino_n_card {
-    background-color:#33363c;
+    background-color: #252629;
     width:300px;
     padding:10px;
     position: relative;
@@ -600,11 +716,12 @@
     color:white;
     margin-bottom:5px;
     border-radius: 5px;
-    border-right: 5px solid #5585e6;
-    -webkit-box-shadow: 0px 3px 12px 0px rgba(0,0,0,0.25);
+    /* border-right: 5px solid #5585e6; */
+    /* -webkit-box-shadow: 0px 3px 12px 0px rgba(0,0,0,0.25); */
     -moz-box-shadow: 0px 3px 12px 0px rgba(0,0,0,0.25);
-    box-shadow: 0px 3px 12px 0px rgba(0,0,0,0.25);
+    /* box-shadow: 0px 3px 12px 0px rgba(0,0,0,0.25); */
     font-family: 'Roboto', sans-serif;
+    border: 1px solid #44474b;
 }
 
 .dino_n_card_bar_bg {
@@ -648,13 +765,13 @@
     position: absolute;
     top:8px;
     left:10px;
-    font-size:20px;
-    font-weight: 600;
+    font-size: 18px;
+    /* font-weight: 600; */
 }
 
 .dino_n_card_title span {
     font-weight: 400;
-    font-size:15px;
+    font-size: 13px;
 }
 
 .dino_n_card_form {
@@ -662,11 +779,12 @@
     right:8px;
     top: 35px;
     position: absolute;
+    font-size: 14px;
 }
 
 .dino_n_card_form table {
     max-width: 100%;
-    font-size:15px;
+    font-size: 14px;
     color: white;
     text-align: left;
 }
@@ -685,6 +803,17 @@
     height: calc(70px - 10px - 10px);
     border-radius: 50%;
     position: relative;
+}
+
+.sidebar_server_badge_active {
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: -10px;
+    width: 5px;
+    background-color: white;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .sidebar_server_badge_text {
@@ -834,9 +963,19 @@
     font-size: 17px;
 }
 
+.nb_button_blue_inline {
+    margin: 2px;
+    width: auto;
+    display: inline-block;
+}
+
 .nb_button_blue_inverted {
     background-color: #ffffff;
     color: #5585e6;
+}
+
+.nb_button_red_color {
+    background-color:#e65555;
 }
 
 .nb_code {
@@ -944,6 +1083,7 @@
     right:0;
     background-color: #33363c;
     z-index:0;
+    padding:18px;
 }
 
 .no_session_mask_disable {
@@ -1137,4 +1277,61 @@
     background-position: center;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.welcome_box {
+    max-width: 600px;
+    max-height: 300px;
+    height: 100vh;
+    width: calc(100% - 50px);
+    border-top: 6px solid #5585e6;
+    background-color: #252629;
+    border-radius: 8px;
+    -webkit-box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.22);
+    -moz-box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.22);
+    box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.07);
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    padding: 18px;
+    text-align: left;
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.legal {
+    position: absolute;
+    bottom:0;
+    right:0;
+    left:0;
+    padding:15px;
+    color:#858689;
+    font-size:11px;
+    text-align: center;
+}
+
+.smooth_anim {
+    transition:all 150ms;
+    animation-timing-function: cubic-bezier(0.51, 0.62, 0.23, 0.96);
+}
+
+.map_part_active_rightsidebar {
+    right:360px;
+}
+
+.map_part_active_leftsidebar {
+    left:360px;
+}
+
+@keyframes glowing_anim {
+    0% {opacity:1;}
+    50% {opacity:0.75;}
+    100% {opacity:1;}
+}
+
+.glowing {
+    animation-name: glowing_anim;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.51, 0.62, 0.23, 0.96);
 }

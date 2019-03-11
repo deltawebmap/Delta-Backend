@@ -38,6 +38,9 @@ ark_users.serverRequest = function(url, args, callback) {
     }
     xmlhttp.open(args.method, url, true);
     xmlhttp.withCredentials = true;
+    if(args.nocreds != null) {
+        xmlhttp.withCredentials = !args.nocreds;
+    }
     xmlhttp.send(args.body);
 }
 

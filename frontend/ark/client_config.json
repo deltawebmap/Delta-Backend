@@ -1,0 +1,32 @@
+{
+    "latest_release": {
+        "version_id":1.1,
+        "release_notes":"Welcome to ArkWebMap!\nThis is a test of the updater.",
+        "download_page":"https://ark.romanport.com/releases/?id=1.1",
+        "binaries":{
+            "windows":{
+                "url":"https://ark.romanport.com/releases/download/1.1/windows.zip",
+                "updater_url":"https://ark.romanport.com/releases/download/1.1/windows_updater.zip",
+                "updater_cmd":"ArkWebMapSubServerUpdater.exe",
+                "exe_name":"ArkWebMapSlaveServerConsole.exe",
+                "virustotal":"https://virustotal.com/"
+            },
+            "linux":{
+                "url":"https://ark.romanport.com/releases/download/1.1/linux.zip",
+                "updater_url":"https://ark.romanport.com/releases/download/1.1/linux_updater.zip",
+                "updater_cmd":"",
+                "exe_name":"ArkWebMapSlaveServerConsole.exe",
+                "virustotal":"https://virustotal.com/"
+            }
+        }
+    },
+    "sub_server_config": {
+        "minimum_release_id":1.1,
+        "startup_message":null,
+        "endpoints":{
+            "server_setup_proxy": "https://ark.romanport.com/api/server_setup_proxy/{clientSessionId}?from=Server",
+            "base_bridge_url":"https://ark.romanport.com/api/bridge/",
+            "server_api_prefix":"https://ark.romanport.com/api/servers/"
+        }
+    }
+}

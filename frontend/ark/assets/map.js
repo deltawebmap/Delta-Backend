@@ -11,16 +11,12 @@ map.init = function() {
         minZoom: 0
     }).setView([-128, 128], 2);
 
-    
-
-    //Create main population
-    /*L.tileLayer('https://ark.romanport.com/api/map/tiles/population/?z={z}&x={x}&y={y}&filter=', {
-        attribution: 'AllGameMaps.com',
-        maxZoom: 5,
-        id: 'ark_map',
-        opacity: 1,
-        zIndex: 1
-    }).addTo(map.map);*/
+    //Set background color
+    if(ark.session.mapBackgroundColor != null) {
+        map.setBackground(ark.session.mapBackgroundColor);
+    } else {
+        map.restoreDefaultBackgroundColor();
+    }
 };
 
 map.resetPopulationMap = function(isOn, filteredClassname) {
@@ -42,7 +38,7 @@ map.resetPopulationMap = function(isOn, filteredClassname) {
 map.addGameMapLayer = function() {
     //Create main tile layer
     L.tileLayer(ark.session.endpoint_game_map, {
-        attribution: 'AllGameMaps.com',
+        attribution: 'Studio Wildcard',
         maxNativeZoom: 5,
         maxZoom:12,
         id: 'ark_map',
@@ -102,7 +98,7 @@ map.dino_marker_list = {};
 map.dino_marker_list_index = 0;
 
 /* Tribe dinos */
-map.onEnableTribeDinos = function() {
+map.onEnableTribeDinos = function(callback) {
     //Query tribe dinos
     ark.serverRequest(ark.session.endpoint_tribes, {"customErrorText":"Failed to refresh tribe data."}, function(d) {
         //Update or add existing dinos
@@ -126,9 +122,8 @@ map.onEnableTribeDinos = function() {
         }*/
 
         //Add dinos
-        for(var i = 0; i<d.current_dino_ids.length; i+=1) {
-            var dino_id = d.current_dino_ids[i];
-            var dino = d.dinos[dino_id];
+        for(var i = 0; i<d.dinos.length; i+=1) {
+            var dino = d.dinos[i];
             if(dino == null) {
                 console.warn("Warning: Dino ID "+dino_id+" was not found, but was referenced.");
             }
@@ -137,12 +132,15 @@ map.onEnableTribeDinos = function() {
         }
 
         //Add babies
-        for(var i = 0; i<d.baby_dino_urls.length; i+=1) {
+        /*for(var i = 0; i<d.baby_dino_urls.length; i+=1) {
             bman.addDinoTimer(d.baby_dino_urls[i]);
-        }
+        }*/
 
         //Start rendering map layer. We waited to save bandwidth.
         map.addGameMapLayer();
+
+        //Callback
+        callback();
     });
 }
 
@@ -235,4 +233,12 @@ map.onDinoClicked = function(e) {
 
     //Open
     map_menu.show(url);
+}
+
+map.setBackground = function(color) {
+    document.getElementById('map_part').style.backgroundColor = color;
+}
+
+map.restoreDefaultBackgroundColor = function() {
+    map.setBackground("#1c1d21");
 }

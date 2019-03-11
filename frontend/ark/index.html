@@ -4,57 +4,53 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet" href="assets/view.css">
         <link rel="stylesheet" href="assets/bottom_modal.css">
+        <link rel="stylesheet" href="assets/dino_list_sidebar.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+        <style>
+            .leaflet-left {
+                top: 70px;
+                left: 13px;
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+        <link rel="manifest" href="/icons/site.webmanifest">
+        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="shortcut icon" href="/icons/favicon.ico">
+        <meta name="msapplication-TileColor" content="#00a300">
+        <meta name="msapplication-config" content="/icons/browserconfig.xml">
+        <meta name="theme-color" content="#ffffff">
     </head>
     <body>
         <div id="main_view">
-            <div class="sidebar_part">
-                <!-- No session mask -->
-                <div class="no_session_mask" id="no_session_mask">
-                        <table style="width: 100%; height:100%;" id="default_content" class="font">
-                            <tbody>
-                                <tr>
-                                    <td style="text-align: center;vertical-align: middle;font-weight: 900;font-size: 40px;color: #dddddd;font-family: 'Roboto', sans-serif;">
-                                        <div style="
-                                        max-width: 421px;
-                                        margin: auto;
-                                        text-align: left;
-                                        ">Join an Ark Server or add Ark Web Map to your Own Server</div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                <div class="sidebar_map hidden" id="sidebar_map">
+            <div class="sidebar_part smooth_anim sidebar_part_active" id="sidebar_part">
+                <div class="sidebar_map" id="sidebar_map">
                     <!-- Options sidebar -->
-                    <div class="map_title" id="map_title">
-                                    
+                    <div class="map_title" id="map_title_main" style="display:none;">
+                        <div onclick="ark.onImagePickerClick();" id="image_picker_image" class="server_edit_icon">
+                            
+                        </div>
+                        <input type="text" id="map_title" class="map_title_input" readonly="readonly">
+                        <div class="server_edit_btn" id="server_edit_button" onclick="ark.toggleServerNameEdit(!ark.isInServerEditState);"></div>
+                        <input id="image_picker" type="file" name="f" style="display: none;" onchange="ark.onImagePickerChooseImage();">
                     </div>
+                    <div class="map_title" id="map_title_template">
+                        <div class="map_title_input">
 
-                    <div class="sidebar_button"><img src="/assets/icons/baseline-near_me-24px.svg">Locate Dinos</div>
-                    <div class="sidebar_button" onclick="ark.showSearchWindow('tribeInventory');"><img src="/assets/icons/baseline-search-24px.svg">Search Inventories</div>
-                    <div class="sidebar_button_spacer"></div>
-                    <div class="sidebar_button" onclick="ark.showHeatmapSettings();"><img src="/assets/icons/baseline-map-24px.svg">Heatmap Options</div>
-                    <div class="sidebar_button_spacer"></div>
-                    <div class="sidebar_button sidebar_button_danger" onclick="ark.onHideServerButtonClick();"><img src="/assets/icons/baseline-exit_to_app-24px.svg">Hide Server</div>
-
-                    <!--<div class="container">
-                        <div class="title"><div></div><span>Map Info</span><div></div></div>
-
-                        <div class="form">
-                            <div><formtitle>Map</formtitle><formitem id="map_title_2"></formitem></div>
-                            <div><formtitle>Game Time</formtitle><formitem id="game_time"></formitem></div>
                         </div>
                     </div>
+                    <div class="map_title map_sub_title" id="map_sub_title"></div>
 
-                    <div class="container">
-                        <div class="title"><div></div><span>Population Map</span><div></div></div>
+                    <div id="sidebar_btns">
+                    </div>
 
-                        <div class="form">
-                            <div><formtitle>Enabled</formtitle><formitem><input type="checkbox" id="population_map_check" onchange="map.onPopulationMapToggle(this.checked);"></formitem></div>
-                            <div><formtitle>Filtered Dino</formtitle><formitem><input type="button" value="Choose" style="margin-right:5px;" onclick="ark.showDinoPicker(map.onChangePopulationMapFilter);"><input type="button" value="Clear" onclick="map.onChangePopulationMapFilter(null);"></formitem></div>
-                        </div>
-                    </div>-->
+                    <div class="legal">
+                        ArkWebMap by RomanPort<br><br>
+                        Map content is believed to be used under Fair Use<br>ArkWebMap is not affiliated with the game publisher
+                    </div>
                 </div>
 
                 <!-- Servers list -->
@@ -65,15 +61,52 @@
 
                     <img class="sidebar_user_action_btn" style="bottom:164px;" src="/assets/icons/baseline-add_circle-24px.svg" onclick="create_server_d.onCreate();">
                     <img class="sidebar_user_action_btn" style="bottom:120px;" src="/assets/icons/baseline-archive-24px.svg" onclick="ark.showHiddenServers();">
-                    <img class="sidebar_user_action_btn" style="bottom:76px;" src="/assets/icons/baseline-exit_to_app-24px.svg">
+                    <img class="sidebar_user_action_btn" style="bottom:76px;" src="/assets/icons/baseline-exit_to_app-24px.svg" onclick="ark.logoutBtnPressed();">
                     <div class="sidebar_server_badge sidebar_profile_image_badge" id="my_badge"></div>
                 </div>
+
+                <!-- Toggle button -->
+                <div class="sidebar_part_togglebtn" onclick="collap.toggle('left_sidebar');"></div>
+
+                <!-- No session mask -->
+                <div class="no_session_mask smooth_anim" id="no_session_mask">
+                    <div class="nb_title nb_big_padding_bottom">Welcome to ArkWebMap!</div>
+                    <div class="np_sub_title nb_big_padding_bottom">ArkWebMap is the only website for viewing your Ark: Survival Evolved tames in your web browser. ArkWebMap supports the ability to...</div>
+                    <div class="np_sub_title nb_big_padding_bottom">
+                        <ul>
+                            <li>View your Ark: Survival Evolved tribe tames in your web browser on a map</li>
+                            <li>View stats and inventories of your tribe dinos</li>
+                            <li>Check on baby dinos food and imprints and get feeding time estimates and alarms</li>
+                            <li>Search tribe inventories</li>
+                            <li>Use a wild dino heatmap, filterable to certain dinos</li>
+                        </ul>
+                    </div>
+                    <div class="np_sub_title nb_big_padding_bottom">ArkWebMap is also a great tool for server owners. ArkWebMap is...</div>
+                    <div class="np_sub_title nb_big_padding_bottom">
+                        <ul>
+                            <li>Open source</li>
+                            <li>Easy for players to get going. Just sign into ArkWebMap with Steam and it'll work out servers and tribes they belong to</li>
+                            <li>A small companion program you'll need to download to read your Ark server saves</li>
+                            <li>Configurable. You can enable or disable certain features to your users</li>
+                        </ul>
+                    </div>
+                    <div class="np_sub_title nb_big_padding_bottom">Not sure ArkWebMap is right for your server? Try the demo!</div>
+                    <div class="nb_button_blue nb_button_blue_inline" onclick="ark.openDemoServer();">View Demo Server</div>
+                    <div class="nb_button_blue nb_button_blue_inline" onclick="create_server_d.onCreate();">Create your Own Server</div>
+                </div>
             </div>
-            <div class="map_part hidden" id="map_part">
+            <div class="map_part smooth_anim map_part_active_leftsidebar map_part_active_rightsidebar" id="map_part" style="background-color:#1c1d21;">
                 <!-- Actual map -->
             </div>
+            <!-- Sidebar dino list -->
+            <div class="dino_sidebar smooth_anim dino_sidebar_open" id="dino_sidebar_container">
+                <div class="dino_sidebar_togglebtn" onclick="collap.toggle('right_sidebar');"></div>
+                <div id="dino_sidebar" class="dino_sidebar_helper">
+
+                </div>
+            </div>
             <!-- Map menu -->
-            <div class="bottom_modal" id="bottom_modal">
+            <div class="bottom_modal smooth_anim map_part_active_leftsidebar map_part_active_rightsidebar" id="bottom_modal">
                 <div class="bottom_modal_closebtn" onclick="map_menu.hide();"><img src="/assets/icons/baseline-close-24px.svg" style=" position: absolute; top: 15px; left: 10px; "></div>
                 <div class="bottom_modal_bar" id="bottom_modal_bar"></div>
                 <div class="bottom_modal_color_area" id="bottom_modal_color_area"></div>
@@ -166,7 +199,9 @@
     <script src="assets/baby_manager.js"></script>
     <script src="assets/user_portable.js"></script>
     <script src="assets/bottom_modal.js"></script>
-    <script src="assets/create_server_dialog.js"></script>
+    <script src="assets/permissions.js"></script>
+    <script src="assets/collapsible.js"></script>
+    <script src="assets/dino_list_sidebar.js"></script>
     <script src="assets/main.js"></script>
 
     <script>

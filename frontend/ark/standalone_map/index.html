@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>ArkWebMap Standalone Map</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+        <style>
+            body {
+                margin:0;
+                padding:0;
+                background-color:#33363c;
+            }
+
+            .html {
+                background-color:#33363c;
+            }
+
+            .leaflet-control-attribution {
+                display:none;
+            }
+
+            .leaflet-control-zoom {
+                display:none;
+            }
+
+            .leaflet-container {
+                background-color:#33363c;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="map_part" style="width:100%; height:100%;">
+        </div>
+
+        <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
+        <script src="standalone.js"></script>
+        <script>
+            st.init();
+        </script>
+    </body>
+</html>

@@ -66,6 +66,9 @@ ark.serverRequest = function(url, args, callback) {
             var err = JSON.parse(this.responseText);
             bottom_modal.forceHideBottomModalNoArgs();
             bottom_modal.reportError("Couldn't fetch data.\n\nError: "+err.message);
+        } else if (this.readyState == 4 && this.status == 521) {
+            //This is the error code returned by the Ark master server proxy. Abort.
+            ark.onConnectedServerStop();
         } else if (this.readyState == 4) {
             //Parse the response and display the error
             ark.onNetError(this.status + " ("+this.statusText+")", args);
@@ -90,6 +93,9 @@ ark.serverRequest = function(url, args, callback) {
     }
     xmlhttp.open(args.type, url, true);
     xmlhttp.withCredentials = true;
+    if(args.nocreds != null) {
+        xmlhttp.withCredentials = !args.nocreds;
+    }
     xmlhttp.send(args.body);
 }
 
@@ -110,6 +116,9 @@ ark.openSession = function(callback, url) {
 
         //Reset start time
         ark.session_start_time = new Date();
+
+        //Set last updated time
+        ark.updateLastEditedUi();
 
         //Start running events
         ark.session.eventLoop = window.setInterval(ark.onHeartbeat, d.heartrate);
@@ -139,6 +148,9 @@ ark.onHeartbeat = function() {
             code(e.data, e.time);
         }
     });
+
+    //Update last updated time
+    ark.updateLastEditedUi();
 }
 
 ark.onEvent_MapUpdate = function(d, time) {
@@ -152,42 +164,114 @@ ark.eventDict = {
     0: ark.onEvent_MapUpdate
 };
 
+ark.currentServer = null;
+
 ark.switchServer = function(serverData) {
+    //Ignore if we're still loading a server
+    if(ark.loadingStatus != 0) {
+        console.log("Will not switch server; A server is already loading!");
+        return;
+    }
+
+    //Check if the server is online
+    if(!serverData.has_pinged) {
+        //Not pinged. Do so
+        ark.serverRequest(serverData.endpoint_ping, {}, function(ping) {
+            ark.onFinishPing(ping);
+            ark.switchServer(document.getElementById("server_badge_"+ping.id).x_server_data);
+        });
+        return;
+    } else {
+        //If the ping failed, show message.
+        if(!serverData.ping_ok) {
+            ark.onClickOfflineServer(serverData.display_name, serverData.owner_uid == ark_users.me.id, serverData.id);
+            return;            
+        }
+    }
+
     //If a session is already open, kill
     if(ark.session != null) {
         ark.deinitCurrentServer();
     }
     ark.currentServerId = serverData.id;
 
+    //Remove the active markers, if any
+    var activeBadges = document.getElementsByClassName('sidebar_server_badge_active');
+    for(var i = 0; i<activeBadges.length; i+=1) {
+        activeBadges[i].remove();
+    }
+
     //First, open a session.
-    bottom_modal.showLoaderBottom("Loading ARK map...", function(e) {
-        ark.openSession(function(session) {
-            //Kill window
-            ark.hideCustomArea();
-            
-            //Init the map
-            map.init(session.endpoint_game_map);
-
-            //Fetch tribes
-            map.onEnableTribeDinos();
+    ark.currentServer = serverData;
+    ark.forceJoinServer(serverData.endpoint_createsession, serverData.id, serverData.display_name);
     
-            //Clear out the tribe item search
-            ark.refreshTribeItemSearch("");
-            
-            //Fill UI
-            document.getElementById('map_title').innerText = serverData.display_name;
-            //document.getElementById('map_title_2').innerText = session.mapName;
-            //document.getElementById('game_time').innerText = session.dayTime;
+}
 
-            //Show
-            ark.setMainContentVis(true);
-    
-            //Done
-            e();
+ark.loadingStatus = 0; //Counts down as items are loaded
+//0: Done loading
+//1: Awaiting the 0.5 second cooldown between switching servers
+//2: Tribes endpoint loading
+//3: Overview endpoint loading
+//4: Main data loading
+
+ark.forceJoinServer = function(url, id, name) {
+    if(ark.loadingStatus != 0) {
+        console.log("Already loading a map. Ignoring!");
+        return;
+    }
+    //Show
+    ark.setMainContentVis(true);
+    ark.loadingStatus = 4;
+    ark.openSession(function(session) {
+        //Kill window
+        ark.hideCustomArea();
+        
+        //Init the map
+        map.init(session.endpoint_game_map);
+
+        //Set pemrissions
+        perms.p = session.permissions;
+        perms.refreshPerms();
+
+        //Clear out the tribe item search
+        ark.refreshTribeItemSearch("");
+
+        //Add active badge
+        var badge = document.getElementById('server_badge_'+id);
+        if(badge != null) {
+            ark.createDom("div", "sidebar_server_badge_active", badge);
+        }        
+        
+        //Fill UI
+        document.getElementById('map_title').value = name;
+
+        //Bring map title back
+        document.getElementById('map_title_main').style.display = "block";
+        document.getElementById('map_title_template').style.display = "none";
+
+        //Show sidebar buttons
+        ark.createAndInflateMainMenu(session);
+
+        //Fetch tribes
+        map.onEnableTribeDinos(function() { 
             document.getElementById('no_session_mask').classList.add("no_session_mask_disable");
-        }, serverData.endpoint_createsession);
-    }, "bottom_modal_good", function(){});
-    
+            ark.loadingStatus--;
+        });
+
+        //Fetch overview
+        dinosidebar.fetchAndGenerate(function() {
+            ark.loadingStatus--;
+        });
+
+        //Loaded
+        ark.loadingStatus--;
+
+        //Add a cooldown to avoid subtle bugs
+        /*window.setTimeout(function() {
+            ark.loadingStatus--;
+        }, 500);*/
+        ark.loadingStatus--;
+    }, url);
 }
 
 ark.refreshServers = function(callback) {
@@ -213,6 +297,7 @@ ark.refreshServers = function(callback) {
             e.id = "server_badge_"+s.id;
             e.style.backgroundImage = "url("+s.image_url+")";
             e.x_server_data = s;
+            e.x_server_data.has_pinged = false;
             e.addEventListener('click', function() {
                 ark.switchServer(this.x_server_data);
             });
@@ -220,24 +305,29 @@ ark.refreshServers = function(callback) {
             e.addEventListener('mouseout', ark.onEndMouseOverSidebarServer);
 
             //Start pinging
-            ark.serverRequest(s.endpoint_ping, {}, function(ping) {
-                var ele = document.getElementById("server_badge_"+ping.id).e_modal;
-                if(ping.online) {
-                    //Show ping
-                    ele.firstChild.innerText = ping.display_name+" ("+Math.round(ping.ping).toString()+" ms)";
-                } else {
-                    //Set to offline icon
-                    ele.firstChild.innerText = ping.display_name + " (Server Offline)";
-                    ele.style.backgroundImage = "url(/assets/server_offline.png), url("+s.image_url+")";
-                    ele.firstChild.classList.add("badge_errbg");
-                    ele.lastChild.classList.add("badge_errbg_triangle");
-                }
-            });
+            ark.serverRequest(s.endpoint_ping, {}, ark.onFinishPing);
         }
 
         //Call callback
         callback(user);
     });
+}
+
+ark.onFinishPing = function(ping){
+    var pele = document.getElementById("server_badge_"+ping.id);
+    var ele = pele.e_modal;
+    pele.x_server_data.ping_ok = ping.online;
+    pele.x_server_data.has_pinged = true;
+    if(ping.online) {
+        //Show ping
+        ele.firstChild.innerText = ping.display_name+" ("+Math.round(ping.ping).toString()+" ms)";
+    } else {
+        //Set to offline icon
+        ele.firstChild.innerText = ping.display_name + " (Server Offline)";
+        pele.style.backgroundImage = "url(/assets/server_offline.png), url("+pele.x_server_data.image_url+")";
+        ele.firstChild.classList.add("badge_errbg");
+        ele.lastChild.classList.add("badge_errbg_triangle");
+    }
 }
 
 ark.init = function() {
@@ -248,6 +338,9 @@ ark.init = function() {
         //Set the icon image
         document.getElementById('my_badge').style.backgroundImage = "url("+user.profile_image_url+")";
     });
+
+    //Create template view
+    ark.createTemplateView();
 }
 
 ark.hiddenServersToUnhide = "";
@@ -335,7 +428,7 @@ ark.searchDinoPicker = function(search, callback) {
     box.classList.add("dino_search_content_load");
 
     //Web request
-    ark.serverRequest("https://ark.romanport.com/api/servers/TFLEI5S8GMxHdZzpRrWbvtf3/dino_search/?query="+encodeURIComponent(search), {}, function(d) {
+    ark.serverRequest(ark.session.endpoint_dino_class_search.replace("{query}",encodeURIComponent(search)), {}, function(d) {
         //Ensure this is the most recent requset
         if(d.query != ark.latestDinoPickerSearch) {
             return;
@@ -402,7 +495,11 @@ ark.createForm = function(names, items, parent) {
     var tbl = ark.createDom("table", "np_form", parent);
     for(var i = 0; i<names.length; i+=1) {
         var h1 = ark.createDom("tr", "", tbl);
-        ark.createDom("td", "np_form_title", h1).innerText = names[i];
+        if(typeof(names[i]) == "string") {
+            ark.createDom("td", "np_form_title", h1).innerText = names[i];
+        } else {
+            ark.createDom("td", "np_form_title", h1).appendChild(names[i]);
+        }
         ark.createDom("td", "", h1).appendChild(items[i]);
     }
     return tbl;
@@ -486,8 +583,8 @@ ark.appendToDinoItemSearch = function(query, page, doClear) {
         }
 
         //Create for each
-        for(var i = 0; i<d.results.length; i+=1) {
-            var r = d.results[i];
+        for(var i = 0; i<d.items.length; i+=1) {
+            var r = d.items[i];
 
             //Create structure.
             var e = ark.createDom("div", "sidebar_item_search_entry", parent);
@@ -497,27 +594,17 @@ ark.appendToDinoItemSearch = function(query, page, doClear) {
             var e_dinos = ark.createDom("div", "sidebar_item_search_entry_dinos", e);
 
             //Set some values
-            e_icon.src = "https://ark.romanport.com/resources/missing_icon.png";
-            if(r.entry.icon != null) {
-                e_icon.src = r.entry.icon.icon_url;
-            }
-            e_title.innerText = r.entry.name;
+            e_icon.src = r.item_icon;
+            e_title.innerText = r.item_displayname;
             e_sub.innerText = ark.createNumberWithCommas(r.total_count)+" total";
-
-            //Sort
-            r.owner_ids = ark.sortDict(r.owner_ids);
             
             //Add all of the dinos.
-            var keys = Object.keys(r.owner_ids);
-            for(var j = 0; j< keys.length; j+=1) {
-                var jd = r.owner_dinos[keys[j]];
-                var e_dom;
-                if(jd.entry == null) {
-                    e_dom = (ark.createCustomDinoEntry("https://ark.romanport.com/resources/missing_icon.png", jd.tamedName, jd.classname + " - x"+ark.createNumberWithCommas(r.owner_ids[keys[j]]), "dino_entry_offset"));
-                } else {
-                    e_dom = (ark.createCustomDinoEntry(jd.entry.icon_url, jd.tamedName, jd.entry.screen_name + " - x"+ark.createNumberWithCommas(r.owner_ids[keys[j]]), "dino_entry_offset"));
-                }
-                e_dom.x_dino_id = jd.id;
+            for(var j = 0; j< r.owner_inventories.length; j+=1) {
+                var inventory = r.owner_inventories[j];
+                var dino = d.owner_inventory_dino[inventory.id];
+                
+                var e_dom = (ark.createCustomDinoEntry(dino.img, dino.displayName, dino.displayClassName + " - x"+ark.createNumberWithCommas(inventory.count), "dino_entry_offset"));
+                e_dom.x_dino_id = dino.id;
                 e_dom.addEventListener('click', function() {
                     ark.locateDinoById(this.x_dino_id);
                 });
@@ -528,7 +615,7 @@ ark.appendToDinoItemSearch = function(query, page, doClear) {
         }
 
         //Add "show more" if needed
-        if(d.moreListItems) {
+        if(d.more) {
             var e = ark.createDom("div", "nb_button_blue", parent);
             e.style.marginTop = "20px";
             e.innerText = "Load More";
@@ -585,6 +672,9 @@ ark.deinitCurrentServer = function() {
     //Deinit map
     map.map.remove();
 
+    //Restore default background color
+    map.restoreDefaultBackgroundColor();
+
     //Kill heartbeat
     clearInterval(ark.session.eventLoop);
 
@@ -600,26 +690,11 @@ ark.deinitCurrentServer = function() {
     //Delete session data
     ark.session = null;
 
-    //Hide
-    document.getElementById('no_session_mask').classList.remove("no_session_mask_disable");
-    ark.setMainContentVis(false);
+    //Show the template view
+    ark.createTemplateView();
 }
 
-ark.mainContentIds = [
-    "sidebar_map",
-    "map_part"
-]
-
 ark.setMainContentVis = function(active) {
-    for(var i = 0; i<ark.mainContentIds.length; i+=1) {
-        var d = document.getElementById(ark.mainContentIds[i]);
-        if(active){
-            d.classList.remove("hidden");
-        } else {
-            d.classList.add("hidden");
-        }
-    }
-
     //Set message
     if(!active) {
         document.getElementById('no_session_mask').classList.remove("no_session_mask_disable");
@@ -627,6 +702,7 @@ ark.setMainContentVis = function(active) {
         document.getElementById('no_session_mask').classList.add("no_session_mask_disable");
     }
 }
+
 
 ark.onMouseOverSidebarServer = function() {
     //Show modal there.
@@ -775,3 +851,352 @@ ark.heatmapDinoEntryClicked = function(dinoData) {
     ark.chosen_filter_heatmap_dino = dinoData;
     ark.showHeatmapSettings();
 }
+
+ark.logoutBtnPressed = function() {
+    var d = ark.createDom("div", "");
+    ark.createDom("div","nb_title nb_big_padding_bottom", d).innerText = "Logout?";
+    ark.createDom("div","np_sub_title nb_big_padding_bottom", d).innerText = "Are you sure you'd like to log out of ArkGameMap? You may sign in at any time using Steam to restore your servers."
+
+    var b = ark.createDom("div", "nb_button_blue nb_button_back", d);
+    b.innerText = "Cancel";
+    b.addEventListener('click', function() {
+        ark.hideCustomArea();
+    });
+
+    var bf = ark.createDom("div", "nb_button_blue nb_button_forward", d);
+    bf.innerText = "Logout";
+    bf.addEventListener('click', function() {
+        ark.serverRequest("https://ark.romanport.com/api/users/@me/servers/logout", {}, function() {
+            window.location.reload();
+        });
+    });
+
+    ark.showNewCustomMenu(d, "");
+};
+
+ark.onClickOfflineServer = function(name, isOwner, id) {
+    var d = ark.createDom("div", "");
+    ark.createDom("div","nb_title nb_big_padding_bottom", d).innerText = "Server Offline";
+    if(isOwner) {
+        ark.createDom("div","np_sub_title nb_big_padding_bottom", d).innerText = "Your server, '"+name+"', is offline. Start the ArkWebMap service, or delete the server if you no longer use ArkWebMap. Deleting a server will remove the ability to access ArkWebMap from all users."
+    } else {
+        ark.createDom("div","np_sub_title nb_big_padding_bottom", d).innerText = "'"+name+"' is offline. Ask your server owner to start the ArkWebMap service to use it, or hide the server to remove it."
+    }
+
+    var bf = ark.createDom("div", "nb_button_blue nb_button_forward nb_button_red_color", d);
+    if(isOwner) {
+        bf.innerText = "Delete Server";
+        bf.addEventListener('click', function() {
+            ark.promptDeleteServer(id);
+        });
+    } else {
+        bf.innerText = "Hide Server";
+        bf.addEventListener('click', function() {
+            ark.hideCustomArea();
+        });
+    }
+
+    ark.createDom("div", "window_close_btn", d).addEventListener('click', function() {
+        ark.hideCustomArea();
+    });
+
+    ark.showNewCustomMenu(d, "");
+}
+
+ark.promptDeleteServer = function(serverId) {
+    var d = ark.createDom("div", "");
+    ark.createDom("div","nb_title nb_big_padding_bottom", d).innerText = "Delete Server";
+    ark.createDom("div","np_sub_title nb_big_padding_bottom", d).innerText = "You are about to delete this server. This action cannot be undone, however it can be restored by recompleting the ArkWebMap setup. This will not impact your Ark server, but will remove access to the ArkWebMap from all users."
+
+    var bf = ark.createDom("div", "nb_button_blue nb_button_forward nb_button_red_color", d);
+    bf.innerText = "Confirm Deletion";
+    bf.addEventListener('click', function() {
+        ark.serverRequest("https://ark.romanport.com/api/servers/"+serverId+"/delete", {"type":"post"}, function(d) {
+            //Reload
+            window.location.reload();
+        });
+        
+    });
+
+    ark.createDom("div", "window_close_btn", d).addEventListener('click', function() {
+        ark.hideCustomArea();
+    });
+
+    ark.showNewCustomMenu(d, "");   
+}
+
+ark.onConnectedServerStop = function() {
+    //Deinit
+    ark.deinitCurrentServer();
+
+    //Refresh user server list
+    ark.refreshServers(function(){});
+
+    //Show message
+    var d = ark.createDom("div", "");
+    ark.createDom("div","nb_title nb_big_padding_bottom", d).innerText = "Server Offline";
+    ark.createDom("div","np_sub_title nb_big_padding_bottom", d).innerText = "The server you were connected to went offline. Try again later.";
+
+    ark.createDom("div", "window_close_btn", d).addEventListener('click', function() {
+        ark.hideCustomArea();
+    });
+
+    ark.showNewCustomMenu(d, "");
+}
+
+ark.convertTimeSpan = function(ms) {
+    var output = {};
+    var totalMs = ms;
+
+    output.days = Math.floor(ms / (1000 * 60 * 60 * 24));
+    ms -=  output.days * (1000 * 60 * 60 * 24);
+
+    output.hours = Math.floor(ms / (1000 * 60 * 60));
+    ms -= output.hours * (1000 * 60 * 60);
+
+    output.mins = Math.floor(ms / (1000 * 60));
+    ms -= output.mins * (1000 * 60);
+
+    output.seconds = Math.floor(ms / (1000));
+    ms -= output.seconds * (1000);
+
+    output.totalMilliseconds = totalMs;
+    output.totalSeconds = output.seconds + (output.mins * 60) + (output.hours * 60 * 60) + (output.days * 60 * 60 * 24);
+    output.totalMinutes = (output.mins) + (output.hours * 60) + (output.days * 60 * 24);
+    output.totalHours = (output.hours) + (output.days * 24);
+    output.totalDays = output.days;
+
+    return output;
+}
+
+ark.pluralToString = function(num, name) {
+	if(num == 1) {
+		return num+" "+name;
+    } else {
+		return num+" "+name+"s";
+    }
+}
+
+ark.createLastUpdatedString = function(span) {
+    //Check if it's been less than 1 minute
+	if(span.totalMinutes == 0) {
+		return "Last updated less than a minute ago";
+    }
+	
+	//If it's under an hour, say the number of minutes ago it was updated only
+	if(span.totalHours == 0) {
+		return "Last updated "+ark.pluralToString(span.mins, "minute")+" ago";
+    }
+
+	//If it's under a day, say the number of hours and minutes
+	if(span.totalDays == 0) {
+		return "Last updated "+ark.pluralToString(span.hours, "hour")+", "+ark.pluralToString(span.mins, "minute")+" ago";
+    }
+
+	//Now, fallback to hours and days
+	return "Last updated "+ark.pluralToString(span.days, "day")+", "+ark.pluralToString(span.hours, "hour")+" ago";
+}
+
+ark.updateLastEditedUi = function() {
+    //Get the timespan
+    var span = ark.convertTimeSpan(ark.getGameTimeOffset() * 1000);
+
+    //Create string
+    var stringName = ark.createLastUpdatedString(span);
+
+    //Set in UI
+    document.getElementById('map_sub_title').innerText = stringName;
+}
+
+ark.openDemoServer = function() {
+    var demoServerId = "EzUn7Rab7e4BSM9JFrOsPpn0";
+    ark.forceJoinServer("https://ark.romanport.com/api/servers/"+demoServerId+"/create_session", demoServerId, "ArkWebMap Demo");
+}
+
+ark.inflateMainMenu = function(data) {
+    //Data is split into sections. Loop through
+    var a = document.getElementById('sidebar_btns');
+    a.innerHTML = "";
+    for(var sectionId = 0; sectionId < data.length; sectionId+=1) {
+        var section = data[sectionId];
+        for(var i = 0; i<section.length; i+=1) {
+            var item = section[i];
+            var e = ark.createDom('div', 'sidebar_button '+item.customClass, a);
+            e.innerText = item.name;
+            var img = ark.createDom('img', '', e);
+            img.src = item.img;
+            e.addEventListener('click', item.callback);
+        }
+        if(sectionId != data.length - 1) {
+            ark.createDom("div", "sidebar_button_spacer", a);
+        }
+    }
+}
+
+ark.inflateTemplateMainMenu = function(count) {
+    //Data is split into sections. Loop through
+    var a = document.getElementById('sidebar_btns');
+    a.innerHTML = "";
+    for(var i = 0; i<count; i+=1) {
+        var e = ark.createDom('div', 'sidebar_button', a);
+        e.appendChild(ark.generateTextTemplate(22, "#404144", 200));
+        var img = ark.createDom('div', 'sidebar_button_templateimg', e);
+    }
+}
+
+ark.createAndInflateMainMenu = function(session) {
+    //Base menu
+    var b = [
+        [
+            {
+                "img":"/assets/icons/baseline-search-24px.svg",
+                "name":"Search Inventories",
+                "customClass":"",
+                "callback":function() {
+                    ark.showSearchWindow('tribeInventory');
+                }
+            }
+        ],
+        [
+
+        ]
+    ]
+
+    //If permitted, add the heatmap options
+    if(session.permissions.includes("allowHeatmap")) {
+        b[0].push({
+            "img":"/assets/icons/baseline-map-24px.svg",
+            "name":"Heatmap Options",
+            "customClass":"",
+            "callback":function() {
+                ark.showHeatmapSettings();
+            }
+        })
+    }
+
+    //Add server leave buttons
+    if(session.isDemoServer) {
+        b[1].push({
+            "img":"/assets/icons/baseline-add_circle-24px.svg",
+            "name":"Add Your Own Server",
+            "customClass":"sidebar_button_accent",
+            "callback":function() {
+                create_server_d.onCreate();
+            }
+        });
+    } else {
+        b[1].push({
+            "img":"/assets/icons/baseline-exit_to_app-24px.svg",
+            "name":"Hide Server",
+            "customClass":"sidebar_button_danger",
+            "callback":function() {
+                ark.onHideServerButtonClick();
+            }
+        });
+    }
+
+    //Inflate
+    ark.inflateMainMenu(b);
+}
+
+ark.isInServerEditState = false;
+ark.serverEditState = {};
+ark.toggleServerNameEdit = function(isActive) {
+    var ibox = document.getElementById('map_title');
+    var ipbox = document.getElementById('image_picker_image');
+    var button = document.getElementById('server_edit_button');
+    ark.isInServerEditState = isActive;
+    if(isActive) {
+        ibox.classList.add("map_title_input_selected");
+        ipbox.classList.add("server_edit_icon_active");
+        ibox.removeAttribute("readonly");
+        button.classList.add("server_edit_btn_save");
+
+        //Set image
+        ipbox.style.backgroundImage = "url(\""+ark.currentServer.image_url+"\")";
+
+        //Reset state 
+        ark.serverEditState = {};
+    } else {
+        ibox.classList.remove("map_title_input_selected");
+        ipbox.classList.remove("server_edit_icon_active");
+        ibox.setAttribute("readonly", "readonly");
+        button.classList.remove("server_edit_btn_save");
+
+        //Send data
+        ark.serverEditState["name"] = ibox.value;
+
+        //Send data
+        ark.serverRequest("https://ark.romanport.com/api/servers/"+ark.currentServerId+"/edit", {"type":"post","body":JSON.stringify(ark.serverEditState)}, function(e) {
+            console.log("Submitted new server settings");
+        });
+    }
+}
+
+ark.onImagePickerClick = function() {
+    //Open file picker for image
+    document.getElementById('image_picker').click();
+}
+
+ark.onImagePickerChooseImage = function() {
+    console.log("Chose server image. Uploading...");
+
+    //Create form data
+    var formData = new FormData();
+    formData.append("f", document.getElementById('image_picker').files[0]);
+
+    //Send
+    ark.serverRequest("https://user-content.romanport.com/upload?application_id=Pc2Pk44XevX6C42m6Xu3Ag6J", {
+        "type":"post",
+        "body":formData,
+        "nocreds":true
+    }, function(f) {
+        //Update the image here
+        var e = document.getElementById('image_picker_image');
+        e.style.backgroundImage = "url('"+f.url+"')";
+        ark.serverEditState["iconToken"] = f.token;
+    });
+}
+
+ark.generateTextTemplate = function(fontHeight, color, maxWidth) {
+    //Generate a random length
+    var length = maxWidth * ((Math.random() * 0.5) + 0.25);
+    var height = (fontHeight - 2);
+
+    //Create element
+    var e = ark.createDom("div", "glowing");
+    e.style.width = length.toString()+"px";
+    e.style.height = height.toString()+"px";
+    e.style.marginTop = "1px";
+    e.style.marginBottom = "1px";
+    e.style.borderRadius = height.toString()+"px";
+    e.style.backgroundColor = color;
+    e.style.display = "inline-block";
+
+    return e;
+}
+
+ark.createTemplateView = function() {
+    //Create a view that is shown while we load data
+    ark.inflateTemplateMainMenu(4);
+    dinosidebar.createTemplate(20);
+
+    //Show the template title and set content
+    var title = document.getElementById('map_title_template');
+    var title_content = title.firstElementChild;
+    title_content.innerHTML = "";
+    title_content.appendChild(ark.generateTextTemplate(18, "#4973c9", 270));
+    title.style.display = "block";
+    document.getElementById('map_title_main').style.display = "none";
+
+    //Now, set the template of the sub title
+    var sub = document.getElementById('map_sub_title');
+    sub.innerHTML = "";
+    sub.appendChild(ark.generateTextTemplate(15, "#565758", 270));
+}
+
+var create_server_d = {
+    onCreate: function() {
+        window.location = "/create";
+    }
+};

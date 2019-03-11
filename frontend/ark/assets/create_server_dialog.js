@@ -1,5 +1,32 @@
 var create_server_d = {};
 
+create_server_d.permissions_list = [
+    {
+        "internal_name":"allowViewTamedTribeDinoStats",
+        "display_name":"Allow Viewsing Tamed Dino Stats",
+        "description":"Allows a user to view the stats or inventory of a tamed tribe dino.",
+        "default":true
+    },
+    {
+        "internal_name":"allowSearchTamedTribeDinoInventories",
+        "display_name":"Allow Tribe Inventory Search",
+        "description":"Allows a user to search all inventories in their tribe for items.",
+        "default":true
+    },
+    {
+        "internal_name":"allowHeatmap",
+        "display_name":"Allow Heatmap",
+        "description":"Allows a user to view the heatmap of wild dinos.",
+        "default":true
+    },
+    {
+        "internal_name":"allowHeatmapDinoFilter",
+        "display_name":"Allow Heatmap Filter",
+        "description":"Allows a user to filter the heatmap to only show specific dinos",
+        "default":true
+    },
+]
+
 create_server_d.steps = [
     function(id) {
         var d = ark.createDom("div", "");

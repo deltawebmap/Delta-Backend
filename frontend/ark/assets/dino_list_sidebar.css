@@ -1,0 +1,116 @@
+.dino_sidebar {
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    right: -360px;
+    width: 360px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    background-color: #33363c;
+}
+
+.dino_sidebar_open {
+    right:0px;
+}
+
+.dino_sidebar_helper {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: absolute;
+    top:0;
+    bottom:0;
+    right:0;
+    left:0;
+    padding:15px;
+    padding-right: 34px;
+    padding-top: 10px;
+}
+
+.dino_sidebar_section_header {
+    color:white;
+    font-size: 15px;
+    padding-top: 4px;
+    padding-bottom: 8px;
+
+    width: 320px;
+    height: 4px;
+    background-color: #50545b;
+    padding: 0;
+    margin-top: 14px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+}
+
+.dino_sidebar_item {
+    width: 320px;
+    margin-bottom: 6px;
+    background-color: #252629;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid #44474b;
+    position: relative;
+    cursor:pointer;
+}
+
+.dino_sidebar_item img {
+    margin: 10px;
+    height: 30px;
+    width: 30px;
+    
+}
+
+.dino_sidebar_item_templateimg {
+    margin: 10px;
+    height: 30px;
+    width: 30px;
+    background-color: #404144;
+    border-radius: 30px;
+}
+
+.dino_sidebar_item_invertedimg {
+    filter: invert(100%);
+}
+
+.dino_sidebar_item_title {
+    position: absolute;
+    top: 10px;
+    left: 55px;
+    font-size: 16px;
+    color: white;
+    line-height: 16px;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+    height: 16px;
+    text-overflow: ellipsis;
+    right:10px;
+}
+
+.dino_sidebar_item_sub {
+    position: absolute;
+    top: 30px;
+    left: 55px;
+    font-size: 12px;
+    color: #bfbfbf;
+    line-height: 12px;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    right:10px;
+}
+
+.dino_sidebar_togglebtn {
+    border-radius: 100%;
+    position: absolute;
+    top:15px;
+    left:-65px;
+    width:50px;
+    height:50px;
+    vertical-align: center;
+    text-align: center;
+    background-color: #33363c;
+    border: 1px solid #44474b;
+    background-image: url(/assets/icons/baseline-people-24px.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}

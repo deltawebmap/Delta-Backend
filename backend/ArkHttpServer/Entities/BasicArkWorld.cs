@@ -14,6 +14,7 @@ namespace ArkHttpServer.Entities
         public ArkMapData mapData;
         public double mapTimeOffset; //Offset from the map time sent. Usually obtained by getting the amount of time since now and the last time the file was saved.
         public bool isDemoServer;
+        public string mapBackgroundColor;
 
         public string href; //URL of this file. Depending on how this was loaded, this might be different from what was actually requested.
         public string endpoint_population_map; //Endpoint for viewing populations
@@ -36,6 +37,7 @@ namespace ArkHttpServer.Entities
             mapName = w.map;
             mapData = w.mapinfo;
             isDemoServer = ArkWebServer.config.is_demo_server;
+            mapBackgroundColor = w.mapinfo.backgroundColor;
 
             //Calculate map time offset
             mapTimeOffset = (DateTime.UtcNow - lastSavedAt).TotalSeconds;

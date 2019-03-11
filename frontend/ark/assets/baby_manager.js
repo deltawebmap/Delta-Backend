@@ -5,7 +5,24 @@ bman.timer = null;
 bman.sessions = [];
 bman.playing_audio = [];
 
-bman.addDinoTimer = function(url) {
+bman.addDinoTimer = function(d) {
+    var embed = bman.generateEmbed(d);
+    bman.sessions.push({
+        "url":d.href,
+        "embed":embed,
+        "data":d
+    });
+    bman.recent_dino = d;
+
+    //If the timeout is not set, set 
+    if(bman.timer == null) {
+        bman.timer = window.setInterval(bman.onTick, 1000);
+    }
+
+    return embed;
+};
+
+/* bman.addDinoTimer = function(d) {
     //Check if we already have this url
     for(var i = 0; i<bman.sessions.length; i+=1) {
         if(bman.sessions[i].url == url) {
@@ -33,7 +50,7 @@ bman.addDinoTimer = function(url) {
             bman.timer = window.setInterval(bman.onTick, 1000);
         }
     });
-};
+};*/
 
 bman.removeAllSessions = function() {
     document.getElementById('dino_n_card_holder').innerHTML = "";
@@ -121,22 +138,12 @@ bman.createTimeString = function(diff) {
         return "-"+bman.createTimeString(Math.abs(diff));
     }
 
-    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    diff -=  days * (1000 * 60 * 60 * 24);
-
-    var hours = Math.floor(diff / (1000 * 60 * 60));
-    diff -= hours * (1000 * 60 * 60);
-
-    var mins = Math.floor(diff / (1000 * 60));
-    diff -= mins * (1000 * 60);
-
-    var seconds = Math.floor(diff / (1000));
-    diff -= seconds * (1000);
+    var span = ark.convertTimeSpan(diff);
 
     //Do conversions
-    var baseString = bman.padNum(hours)+":"+bman.padNum(mins)+":"+bman.padNum(seconds);
-    if(days != 0) {
-        baseString = bman.padNum(days)+":"+baseString;
+    var baseString = bman.padNum(span.hours)+":"+bman.padNum(span.mins)+":"+bman.padNum(span.seconds);
+    if(span.days != 0) {
+        baseString = bman.padNum(span.days)+":"+baseString;
     }
     return baseString;
 }
@@ -183,10 +190,9 @@ bman.generateEmbed = function(dinoData) {
 
     var title = ark.createDom("div", "dino_n_card_title", card);
     title.innerText = dinoData.dino.tamedName+" ";
-    var title_sub = ark.createDom("span", "", title);
-
     
-    title_sub.innerText = "("+dinoData.dino_entry.screen_name+", Lvl "+dinoData.dino.baseLevel+")";
+    //var title_sub = ark.createDom("span", "", title);
+    //title_sub.innerText = "("+dinoData.dino_entry.screen_name+", Lvl "+dinoData.dino.baseLevel+")";
 
     var form = ark.createDom("div", "dino_n_card_form", card);
     var table = ark.createDom("table", "", form);
@@ -291,6 +297,8 @@ bman.current_audio = null;
 bman.current_audio_priority = null;
 
 bman.playAlert = function(alertId, message) {
+    console.warn("Alerts have been disabled for now.");
+    return;
     //0: Food warn
     //2: Food crit
     //1: Imprint
