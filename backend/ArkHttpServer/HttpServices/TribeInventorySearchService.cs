@@ -19,7 +19,13 @@ namespace ArkHttpServer.HttpServices
             string query = e.Request.Query["q"].ToString().ToLower();
 
             //Get page offset
-            int page_offset = int.Parse(e.Request.Query["p"]);
+            int page_offset = 0;
+            if(e.Request.Query.ContainsKey("p"))
+            {
+                if (!int.TryParse(e.Request.Query["p"], out page_offset))
+                    throw new StandardError(StandardErrorType.InvalidArg, "Failed to parse page query as an integer.", "Check the 'p' parameter.");
+            }
+                
 
             //Find all item entries with this name. We'll search for their classname in the inventories.
             var itemEntries = ArkImports.item_entries.Where(x => x.name.ToLower().Contains(query)).ToArray();

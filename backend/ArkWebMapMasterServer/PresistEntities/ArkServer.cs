@@ -122,7 +122,7 @@ namespace ArkWebMapMasterServer.PresistEntities
             return "https://ark.romanport.com/resources/placeholder_server_images/" + output + ".png";
         }
 
-        public T SendRequest<T>(string action, object data, RequestHttpMethod method, ArkUser user, int timeoutMs = 2000)
+        public T SendRequest<T>(string action, object data, RequestHttpMethod method, ArkUser user, int timeoutMs = 10000)
         {
             HttpResponseMessage response = OpenHttpRequest(new StringContent(JsonConvert.SerializeObject(data)), action, method.ToString(), user, timeoutMs);
             var replyString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -144,7 +144,7 @@ namespace ArkWebMapMasterServer.PresistEntities
             }
         }
 
-        public HttpResponseMessage OpenHttpRequest(HttpContent content, string action, string method, ArkUser user, int timeoutMs = 2000)
+        public HttpResponseMessage OpenHttpRequest(HttpContent content, string action, string method, ArkUser user, int timeoutMs = 10000)
         {
             //Generate salt and create URLs
             string fullURL = $"http://{latest_proxy_url}{action}";
