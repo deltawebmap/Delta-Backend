@@ -13,6 +13,8 @@ namespace ArkHttpServer.HttpServices
 {
     public static class TribeInventorySearchService
     {
+        public const int PAGE_SIZE = 3;
+
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkWorld world, int tribeId)
         {
             //Get query.
@@ -31,7 +33,7 @@ namespace ArkHttpServer.HttpServices
             var itemEntries = ArkImports.item_entries.Where(x => x.name.ToLower().Contains(query)).ToArray();
 
             //Now, search all tribe dinos and see if their inventory contains any of these classnames.
-            Dictionary<string, WebArkInventoryItemResult> inventories = SearchDinoInventories(world, tribeId, itemEntries, out Dictionary<string, ArkDinosaur> dinos);
+            Dictionary<string, WebArkInventoryItemResult> inventories = SearchDinoInventories(world, tribeId, itemEntries, out Dictionary<string, ArkDinosaur> dinos, page_offset * PAGE_SIZE, (page_offset + 1) * PAGE_SIZE, out bool doMoreExist, out int totalItemCount);
 
             //Mix the inventories down to a list
             List<WebArkInventoryItemResult> inventoriesList = new List<WebArkInventoryItemResult>();
@@ -77,16 +79,18 @@ namespace ArkHttpServer.HttpServices
             WebArkInventoryItemReply reply = new WebArkInventoryItemReply
             {
                 items = itemsReply,
-                more = false,
+                more = doMoreExist,
                 owner_inventory_dino = basicDinos,
-                query = query
+                query = query,
+                page_offset = page_offset,
+                total_item_count = totalItemCount
             };
 
             //Write the reply
             return ArkWebServer.QuickWriteJsonToDoc(e, reply);
         }
 
-        static Dictionary<string, WebArkInventoryItemResult> SearchDinoInventories(ArkWorld w, int tribeId, ArkItemEntry[] searchItemEntries, out Dictionary<string, ArkDinosaur> dinos)
+        static Dictionary<string, WebArkInventoryItemResult> SearchDinoInventories(ArkWorld w, int tribeId, ArkItemEntry[] searchItemEntries, out Dictionary<string, ArkDinosaur> dinos, int rangeMin, int rangeMax, out bool doMoreExist, out int totalItemEntries)
         {
             //First, find tribe dinos
             var tribeDinos = w.dinos.Where(x => x.tribeId == tribeId);
@@ -96,6 +100,8 @@ namespace ArkHttpServer.HttpServices
             dinos = new Dictionary<string, ArkDinosaur>();
 
             //Now, find all dinos with this item in their inventory
+            int itemIndex = 0;
+            doMoreExist = false;
             foreach (var d in tribeDinos)
             {
                 var inventory = d.GetInventoryItems(false);
@@ -108,14 +114,31 @@ namespace ArkHttpServer.HttpServices
                         continue;
                     ArkItemEntry entry = itemEntryResults[0];
 
-                    //Match. Add the item to the results.
-                    if(!results.ContainsKey(entry.classname))
+                    //This is a match. Check page range
+                    //This won't work. Oops.
+                    /*if (itemIndex < rangeMin || itemIndex > rangeMax)
                     {
+                        doMoreExist = itemIndex > rangeMax;
+                        itemIndex++;
+                        continue;
+                    }
+                    else
+                    {
+                        itemIndex++;
+                    }*/
+                    itemIndex++;
+
+                    //Match. Add the item to the results.
+                    if (!results.ContainsKey(entry.classname))
+                    {
+                        string icon = "https://ark.romanport.com/assets/img_failed.png";
+                        if (entry.icon != null)
+                            icon = entry.icon.icon_url;
                         results.Add(entry.classname, new WebArkInventoryItemResult
                         {
                             item_classname = entry.classname,
                             item_displayname = entry.name,
-                            item_icon = entry.icon.icon_url,
+                            item_icon = icon,
                             owner_inventories = new List<WebArkInventoryItemResultInventory>
                             {
                                 new WebArkInventoryItemResultInventory
@@ -153,7 +176,7 @@ namespace ArkHttpServer.HttpServices
                         dinos.Add(d.dinosaurId.ToString(), d);
                 }
             }
-
+            totalItemEntries = itemIndex-1;
             return results;
         }
     }
