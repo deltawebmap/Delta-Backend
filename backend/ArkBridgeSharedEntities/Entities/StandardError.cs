@@ -47,5 +47,6 @@ namespace ArkBridgeSharedEntities.Entities
         BridgeIntegrityCheckFailed = 11,
         BridgeBackendServerError = 12, //Error code 500
         BridgeBackendServerNetFailed = 13, //Any other error on the bridge
+        MissingData = 14, //Expected data was not found.
     }
 }

@@ -27,6 +27,16 @@ namespace ArkWebMapMasterServer.Services.Servers
             if (user.GetServers().Where( x => x._id == server._id).Count() != 1 && server.require_auth_to_view)
                 throw new StandardError("You must be a part of this server to send API calls.", StandardErrorCode.NotPermitted);
 
+            //Look up the user's tribe by their steam ID
+            int tribeId = -1;
+            bool hasTribe = false;
+            var foundArkPlayers = server.latest_server_local_accounts.Where(x => x.player_steam_id == user.steam_id);
+            if(foundArkPlayers.Count() == 1)
+            {
+                tribeId = foundArkPlayers.First().player_tribe_id;
+                hasTribe = true;
+            }
+
             //If there is content after this, proxy to this server. Else, return server info.
             if(split.Length > 1)
             {
@@ -44,9 +54,19 @@ namespace ArkWebMapMasterServer.Services.Servers
                     //Rename
                     return EditServerListing.OnHttpRequest(e, server);
                 }
-
+                if(proxyUrl == "offline_data")
+                {
+                    //Send back their offline tribe data, if they're in a tribe
+                    if (!hasTribe)
+                        throw new StandardError("Could not find player tribe.", StandardErrorCode.NotPermitted);
+                    if (server.latest_offline_data == null)
+                        throw new StandardError("This server has never sent offline data.", StandardErrorCode.MissingData);
+                    if (!server.latest_offline_data.ContainsKey(tribeId))
+                        throw new StandardError("No offline data was found for this tribe.", StandardErrorCode.MissingData);
+                    return Program.QuickWriteToDoc(e, server.latest_offline_data[tribeId], "application/json");
+                }
                 
-
+                //Proxy 
                 try
                 {
                     //Send

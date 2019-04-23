@@ -41,6 +41,11 @@ namespace ArkWebMapMasterServer
                     //This is the setup proxy for communicating with up-and-coming servers.
                     return Services.Misc.ArkSetupProxy.OnSetupProxyHttpRequest(e, path.Substring("/server_setup_proxy/".Length));
                 }
+                if(path.StartsWith("/ark_interface/"))
+                {
+                    //ARK interface from an Ark server. Take care.
+                    return Services.ArkInterface.ArkInterfaceHttpHandler.OnHttpRequest(e, path.Substring("/ark_interface/".Length));
+                }
 
                 //Unknown
                 throw new StandardError("Not Found", StandardErrorCode.NotFound);

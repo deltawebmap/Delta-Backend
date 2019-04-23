@@ -9,6 +9,7 @@ namespace ArkWebMapSlaveServer
         public int web_port;
         public ArkHttpServer.ServerConfigFile child_config;
         public ArkSlaveConnection auth;
+        public bool debug_mode; //Enables additional logging and disables the security check when HTTP requests come in.
     }
 
     public class ArkSlaveConnection

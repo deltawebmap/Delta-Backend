@@ -13,16 +13,22 @@ namespace ArkWebMapMasterServer.Services.Users
     {
         public static ArkUser AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, bool required)
         {
+            return AuthenticateUser(e, required, out string t);
+        }
+
+        public static ArkUser AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, bool required, out string token)
+        {
             ArkUser user = null;
+            token = null;
             if (e.Request.Cookies.ContainsKey("user_token"))
             {
-                string token = e.Request.Cookies["user_token"];
+                token = e.Request.Cookies["user_token"];
                 user = ArkWebMapMasterServer.Users.UserTokens.ValidateUserToken(token);
             }
             if(user == null && e.Request.Headers.ContainsKey("Authorization"))
             {
                 //Read Authorization header
-                string token = e.Request.Headers["Authorization"];
+                token = e.Request.Headers["Authorization"];
                 if (token.StartsWith("Bearer "))
                     token = token.Substring("Bearer ".Length);
                 user = ArkWebMapMasterServer.Users.UserTokens.ValidateUserToken(token);
@@ -35,7 +41,7 @@ namespace ArkWebMapMasterServer.Services.Users
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
         {
             //Every path here requies authentication. Do it.
-            ArkUser user = AuthenticateUser(e, true);
+            ArkUser user = AuthenticateUser(e, true, out string userToken);
 
             //Check path
             if (path.StartsWith("@me/server_wizard/start"))
@@ -65,7 +71,18 @@ namespace ArkWebMapMasterServer.Services.Users
                 user.Update();
                 return Program.QuickWriteStatusToDoc(e, true);
             }
-            if(path.StartsWith("@me/servers/remove_ignore_mass/"))
+            if (path.StartsWith("@me/servers/remove_ignore/"))
+            {
+                //Add this server to the ignore list.
+                string serverId = e.Request.Query["id"];
+                if (user.hidden_servers == null)
+                    user.hidden_servers = new List<string>();
+                if (user.hidden_servers.Contains(serverId))
+                    user.hidden_servers.Remove(serverId);
+                user.Update();
+                return Program.QuickWriteStatusToDoc(e, true);
+            }
+            if (path.StartsWith("@me/servers/remove_ignore_mass/"))
             {
                 //Loop through servers
                 string[] serverIds = e.Request.Query["ids"].ToString().Split(',');
@@ -87,6 +104,18 @@ namespace ArkWebMapMasterServer.Services.Users
             {
                 //Put notification token.
                 return PostedNotificationToken.OnHttpRequest(e, user);
+            }
+            if (path == "@me/hub")
+            {
+                return HubService.OnHttpRequest(e, user);
+            }
+            if(path == "@me/tokens/@this/devalidate")
+            {
+                return TokenDevalidateService.OnSingleDevalidate(e, user, userToken);
+            }
+            if (path == "@me/tokens/@all/devalidate")
+            {
+                return TokenDevalidateService.OnAllDevalidate(e, user);
             }
             if (path.StartsWith("@me/"))
             {

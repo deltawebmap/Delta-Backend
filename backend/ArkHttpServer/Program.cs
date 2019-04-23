@@ -13,6 +13,7 @@ using System.Threading;
 using System.IO;
 using System.Collections.Generic;
 using ArkBridgeSharedEntities.Requests;
+using LiteDB;
 
 namespace ArkHttpServer
 {
@@ -31,6 +32,8 @@ namespace ArkHttpServer
 
         public const int EVENTS_HEARTRATE = 10000; //How often event requests come in.
 
+        public static LiteDatabase db;
+
         public static void Configure(ServerConfigFile config, string api_prefix, SendTribeNotification tribeNotificationCode, SendRequestToMaster sendToMasterCode)
         {
             //Load
@@ -38,6 +41,9 @@ namespace ArkHttpServer
             ArkWebServer.api_prefix = api_prefix;
             ArkWebServer.tribeNotificationCode = tribeNotificationCode;
             ArkWebServer.sendRequestToMasterCode = sendToMasterCode;
+
+            //Load database
+            db = new LiteDatabase("ark.db");
 
             //Load save editor entries
             ArkImports.ImportContent(@"PrimalData/world.json", @"PrimalData/dinos.json", @"PrimalData/items.json");
@@ -116,6 +122,26 @@ namespace ArkHttpServer
             return output;
         }
 
-        
+        public static RequestHttpMethod FindRequestMethod(Microsoft.AspNetCore.Http.HttpContext context)
+        {
+            return Enum.Parse<RequestHttpMethod>(context.Request.Method.ToLower());
+        }
+
+        public static T DecodePostBody<T>(Microsoft.AspNetCore.Http.HttpContext context)
+        {
+            string buf;
+            using (StreamReader sr = new StreamReader(context.Request.Body))
+                buf = sr.ReadToEnd();
+            return JsonConvert.DeserializeObject<T>(buf);
+        }
+    }
+
+    public enum RequestHttpMethod
+    {
+        get,
+        post,
+        put,
+        delete,
+        options
     }
 }

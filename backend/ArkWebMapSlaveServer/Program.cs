@@ -76,6 +76,14 @@ namespace ArkWebMapSlaveServer
             reportTimer.Elapsed += ReportTimer_Elapsed;
             reportTimer.Start();
 
+            //If we're in debug mode, warn
+            if(config.debug_mode)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("WARNING! This server is running in debug mode. Debug mode enables additional logging and disables security checks for incoming requests. THIS MEANS ANYONE CAN REQUEST ANY DATA ON THIS SERVER!");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
             return host.RunAsync();
         }
 
@@ -104,22 +112,7 @@ namespace ArkWebMapSlaveServer
 
         public static bool SendWorldReport()
         {
-            //Get world
-            ArkWorld w = WorldLoader.GetWorld(out DateTime time);
-            ArkSlaveReport report = new ArkSlaveReport();
-            report.lastSaveTime = time;
-            report.accounts = new System.Collections.Generic.List<ArkSlaveReport_PlayerAccount>();
-            foreach (var player in w.players)
-                report.accounts.Add(new ArkSlaveReport_PlayerAccount
-                {
-                    player_name = player.playerName,
-                    allow_player = true,
-                    player_steam_id = player.steamPlayerId,
-                    player_tribe_id = player.tribeId,
-                    player_tribe_name = player.playerName
-                });
-            report.map_name = w.map;
-            report.map_time = w.gameTime;
+            ArkSlaveReport report = WorldReportBuilder.GenerateTribeOverview();
 
             //Send
             TrueFalseReply report_reply;

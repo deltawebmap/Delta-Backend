@@ -3,6 +3,7 @@ using ArkWebMapSlaveServer.NetEntities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,22 +16,27 @@ namespace ArkWebMapSlaveServer
             try
             {
                 //Verify the integrity of the connection.
-                if(!e.Request.Headers.ContainsKey("X-Ark-Salt") || !e.Request.Headers.ContainsKey("X-Ark-Integrity"))
+                if(!ArkWebMapServer.config.debug_mode)
                 {
-                    //Missing data
-                    ArkWebMapServer.Log($"Warning: Client did not send required integrity data. Dropping request.", ConsoleColor.Yellow);
-                    throw new StandardError("Integrity check failed. Missing 'X-Ark-Salt' or 'X-Ark-Integrity'.", StandardErrorCode.BridgeIntegrityCheckFailed);
-                }
-                string calculated_hmac = ArkBridgeSharedEntities.HMACGen.GenerateHMAC(Convert.FromBase64String(e.Request.Headers["X-Ark-Salt"]), ArkWebMapServer.creds);
-                if (calculated_hmac != e.Request.Headers["X-Ark-Integrity"])
-                {
-                    ArkWebMapServer.Log($"Warning: IP {e.Request.Headers["X-Ark-Source-IP"]} sent invalid integrity data to {e.Request.Path}. Dropping request.", ConsoleColor.Red);
-                    throw new StandardError("Integrity check failed.", StandardErrorCode.BridgeIntegrityCheckFailed);
+                    if (!e.Request.Headers.ContainsKey("X-Ark-Salt") || !e.Request.Headers.ContainsKey("X-Ark-Integrity"))
+                    {
+                        //Missing data
+                        ArkWebMapServer.Log($"Warning: Client did not send required integrity data. Dropping request.", ConsoleColor.Yellow);
+                        throw new StandardError("Integrity check failed. Missing 'X-Ark-Salt' or 'X-Ark-Integrity'.", StandardErrorCode.BridgeIntegrityCheckFailed);
+                    }
+                    string calculated_hmac = ArkBridgeSharedEntities.HMACGen.GenerateHMAC(Convert.FromBase64String(e.Request.Headers["X-Ark-Salt"]), ArkWebMapServer.creds);
+                    if (calculated_hmac != e.Request.Headers["X-Ark-Integrity"])
+                    {
+                        ArkWebMapServer.Log($"Warning: Client sent invalid integrity data to {e.Request.Path}. Dropping request.", ConsoleColor.Red);
+                        throw new StandardError("Integrity check failed.", StandardErrorCode.BridgeIntegrityCheckFailed);
+                    }
                 }
 
                 //Authenticate the user
-                ArkHttpServer.Entities.MasterServerArkUser user = JsonConvert.DeserializeObject<ArkHttpServer.Entities.MasterServerArkUser>(e.Request.Headers["X-Ark-User-Auth"]);
-                
+                ArkHttpServer.Entities.MasterServerArkUser user = null;
+                if(e.Request.Headers.ContainsKey("X-Ark-User-Auth"))
+                    user = JsonConvert.DeserializeObject<ArkHttpServer.Entities.MasterServerArkUser>(e.Request.Headers["X-Ark-User-Auth"]);
+
                 //Read the first part of the path.
                 string path = e.Request.Path.ToString();
                 if (path.StartsWith("/bridge/"))
@@ -42,6 +48,13 @@ namespace ArkWebMapSlaveServer
                 {
                     //This is a proxy-ed request. Redirect
                     return ArkHttpServer.ArkWebServer.OnHttpRequest(e, user);
+                }
+                if (path.StartsWith("/ark_api/"))
+                {
+                    Console.WriteLine("TEST REQUEST TO " + path+e.Request.QueryString);
+                    using (StreamReader sr = new StreamReader(e.Request.Body))
+                        Console.WriteLine(sr.ReadToEnd());
+                    return ArkWebMapServer.QuickWriteToDoc(e, "testing reply");
                 }
 
                 //Unknown

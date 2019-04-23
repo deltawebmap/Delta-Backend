@@ -8,4 +8,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Ark-Save-Manager\ArkSaveEditor\ArkSaveEditor.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Entities\External\" />
+  </ItemGroup>
+
 </Project>

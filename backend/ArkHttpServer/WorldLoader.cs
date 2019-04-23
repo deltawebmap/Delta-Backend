@@ -5,6 +5,7 @@ using ArkSaveEditor.World.WorldTypes;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace ArkHttpServer
@@ -50,6 +51,15 @@ namespace ArkHttpServer
         public static ArkWorld GetWorld()
         {
             return GetWorld(out DateTime time);
+        }
+
+        public static int GetTribeIdForSteamId(string steamId)
+        {
+            //Look up player
+            var players = GetWorld().players.Where(x => x.steamPlayerId == steamId).ToArray();
+            if (players.Length != 1)
+                return -1;
+            return players[0].tribeId;
         }
 
         public static Dictionary<string, ArkItemSearchResultsItem> GetItemDictForTribe(int tribeId)

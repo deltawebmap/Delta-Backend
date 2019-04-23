@@ -96,6 +96,21 @@ namespace ArkHttpServer
                     {
                         return TribeOverviewService.OnHttpRequest(e, world, tribeId);
                     }
+                    if(pathname == "/tribes/hub")
+                    {
+                        //Hub for the frontpage.
+                        return TribeHubService.OnHttpRequest(e, world, tribeId);
+                    }
+                    if (pathname == "/tribes/notes/edit")
+                    {
+                        //Hub for the frontpage.
+                        return HttpServices.TribeNotes.TribeNoteService.OnPinRequest(e, user, tribeId);
+                    }
+                    if (pathname == "/tribes/notes/sync")
+                    {
+                        //Hub for the frontpage.
+                        return HttpServices.TribeNotes.TribeNoteService.OnSyncRequest(e, user, tribeId);
+                    }
                     if (pathname.StartsWith("/tribes/"))
                     {
                         //Convert to a basic Ark world

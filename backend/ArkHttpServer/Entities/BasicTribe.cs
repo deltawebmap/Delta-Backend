@@ -129,6 +129,8 @@ namespace ArkHttpServer.Entities
         public string apiUrl;
         public string id;
         public string tamedName;
+        public string displayClassname;
+        public int level;
 
         public MinifiedBasicArkDino(ArkDinosaur dino, ArkWorld w)
         {
@@ -141,6 +143,10 @@ namespace ArkHttpServer.Entities
             id = dino.dinosaurId.ToString();
             apiUrl = $"{ArkWebServer.api_prefix}/world/dinos/{id}";
             tamedName = dino.tamedName;
+            displayClassname = dino.classnameString;
+            if (dino.dino_entry != null)
+                displayClassname = dino.dino_entry.screen_name;
+            level = dino.level;
 
 
             //Create the adjusted map pos

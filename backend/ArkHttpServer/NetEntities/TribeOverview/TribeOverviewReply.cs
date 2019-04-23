@@ -10,5 +10,6 @@ namespace ArkHttpServer.NetEntities.TribeOverview
         public List<TribeOverviewPlayer> tribemates;
         public List<TribeOverviewDino> dinos;
         public List<ArkDinoReply> baby_dinos;
+        public string tribeName;
     }
 }

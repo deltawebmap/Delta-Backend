@@ -26,5 +26,12 @@ namespace ArkBridgeSharedEntities.Requests
          * data["dinoClassname"] = (String) The classsname of the dino
          * data["dinoGender"] = (String) The pronoun of the dino. For example, He
          */
+         TribeNoteEdit,
+         /* 
+          * data["note_name"] = (String) The name of the note,
+          * data["editor_name"] = (String) The name of the user who edited the pin.
+          * data["action"] = (String) What happened. Usually "edited" or "created".
+          * data["body"] = (String) The body of the notification.
+          */
     }
 }

@@ -64,6 +64,11 @@ namespace ArkWebMapMasterServer.PresistEntities
         public long latest_server_report_downloaded { get; set; }
 
         /// <summary>
+        /// Latest offline data for this server, by tribe ID.
+        /// </summary>
+        public Dictionary<int, string> latest_offline_data { get; set; }
+
+        /// <summary>
         /// If we have the above four values
         /// </summary>
         public bool has_server_report { get; set; }

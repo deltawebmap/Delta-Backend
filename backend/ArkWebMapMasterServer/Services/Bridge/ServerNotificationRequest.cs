@@ -23,6 +23,9 @@ namespace ArkWebMapMasterServer.Services.Bridge
                 case TribeNotificationType.BabyDinoFoodLow:
                     notification = ConvertDinoFoodLow(request.notification, s);
                     break;
+                case TribeNotificationType.TribeNoteEdit:
+                    notification = ConvertTribeNoteEdit(request.notification, s);
+                    break;
                 default:
                     throw new StandardError("Unknown notification type.", StandardErrorCode.InvalidInput);
             }
@@ -65,6 +68,21 @@ namespace ArkWebMapMasterServer.Services.Bridge
             return new FirebaseNotification
             {
                 title = $"{dinoName} on Ark '{s.display_name}' is {status.title_name}",
+                body = body
+            };
+        }
+
+        static FirebaseNotification ConvertTribeNoteEdit(TribeNotification n, ArkServer s)
+        {
+            //Unpack
+            string noteName = n.data["note_name"];
+            string editorName = n.data["editor_name"];
+            string action = n.data["action"];
+            string body = n.data["body"];
+
+            return new FirebaseNotification
+            {
+                title = $"{editorName} {action} note \"{noteName}\" on Ark \"{s.display_name}\"",
                 body = body
             };
         }

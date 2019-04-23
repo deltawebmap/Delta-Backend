@@ -19,9 +19,6 @@ namespace ArkWebMapMasterServer
 
         static void Main(string[] args)
         {
-            //SteamAuth.SteamOpenID.Step1();
-            //Console.ReadLine();
-
             Console.WriteLine("Starting Database...");
             db = new LiteDatabase("ark.db");
 
@@ -75,12 +72,12 @@ namespace ArkWebMapMasterServer
 
         public static T DecodePostBody<T>(Microsoft.AspNetCore.Http.HttpContext context)
         {
-            //Read post body
-            byte[] buffer = new byte[(int)context.Request.ContentLength];
-            context.Request.Body.Read(buffer, 0, buffer.Length);
+            string buffer;
+            using (StreamReader sr = new StreamReader(context.Request.Body))
+                buffer = sr.ReadToEnd();
 
             //Deserialize
-            return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(buffer));
+            return JsonConvert.DeserializeObject<T>(buffer);
         }
 
         public static Task QuickWriteStatusToDoc(Microsoft.AspNetCore.Http.HttpContext e, bool ok, int code = 200)

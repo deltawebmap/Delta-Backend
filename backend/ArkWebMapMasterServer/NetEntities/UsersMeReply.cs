@@ -11,6 +11,7 @@ namespace ArkWebMapMasterServer.NetEntities
         public string screen_name;
         public string profile_image_url;
         public string id;
+        public string steam_id;
 
         public List<UsersMeReply_Server> servers;
 
@@ -20,6 +21,7 @@ namespace ArkWebMapMasterServer.NetEntities
             screen_name = u.screen_name;
             profile_image_url = u.profile_image_url;
             id = u._id;
+            steam_id = u.steam_id;
 
             //Check
             if (u.hidden_servers == null)
@@ -46,13 +48,17 @@ namespace ArkWebMapMasterServer.NetEntities
         public string owner_uid;
         public string id;
 
+        public string map_id;
+        public string map_name;
+
         public bool has_ever_gone_online;
         public bool is_hidden;
+        public DateTime lastReportTime;
 
         public string endpoint_ping;
         public string endpoint_leave;
         public string endpoint_createsession;
-        public string endpoint_createinvite;
+        public string endpoint_hub;
 
         public List<string> enabled_notifications;
         public ArkServerReply ping_status;
@@ -74,12 +80,16 @@ namespace ArkWebMapMasterServer.NetEntities
             id = s._id;
             has_ever_gone_online = s.has_server_report;
             is_hidden = u.hidden_servers.Contains(s._id);
+            lastReportTime = new DateTime(s.latest_server_report_downloaded);
 
             string base_endpoint = $"https://ark.romanport.com/api/servers/{id}/";
-            endpoint_createinvite = base_endpoint + "invites/create";
+            endpoint_hub = base_endpoint + "world/tribes/hub";
             endpoint_createsession = base_endpoint + "create_session";
             endpoint_leave = base_endpoint + "leave";
             endpoint_ping = base_endpoint.TrimEnd('/');
+
+            map_id = s.latest_server_map;
+            map_name = map_id;
 
             //Convert permissions
             List<ArkNotificationChannel> notifications = u.GetServerNotificationSettings(s._id);
