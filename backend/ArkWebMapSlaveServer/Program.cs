@@ -150,9 +150,7 @@ namespace ArkWebMapSlaveServer
             {
                 Console.Clear();
                 if(ex.Message == "Server reply was not valid.")
-                    Console.WriteLine("Could not connect to master server! A connection error occurred. \n\nThe server is probably down for maintenance. Try again later.");
-                else
-                    Console.WriteLine("Could not connect to master server! A connection error occurred: \n\n" + ex.Message + ex.StackTrace + "\n\nThe server is probably down for maintenance. Try again later.");
+                    Console.WriteLine("Could not communicate with the master server. \n\nThe server is probably down for maintenance. Try again later.");
                 Console.ReadLine();
                 return false;
             }

@@ -13,5 +13,7 @@ namespace ArkWebMapMasterServer.NetEntities
 
         public ArkUser user;
         public ArkServer server;
+
+        public bool up;
     }
 }

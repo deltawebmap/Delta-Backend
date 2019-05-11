@@ -1,6 +1,7 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
+using ArkWebMapMasterServer.Services.Servers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,34 +13,63 @@ namespace ArkWebMapMasterServer.Services.Misc
     {
         public static Dictionary<string, ArkSetupProxySession> setupProxySessions = new Dictionary<string, ArkSetupProxySession>();
 
-        public static Task OnCreateProxySessionRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkUser user)
+        public static Task OnObtainCode(Microsoft.AspNetCore.Http.HttpContext e)
         {
             //Generate a unique session ID
             string id = Program.GenerateRandomStringCustom(6, "1234567890".ToCharArray());
             while (setupProxySessions.ContainsKey(id))
                 id = Program.GenerateRandomStringCustom(6, "1234567890".ToCharArray());
 
-            //Create server
-            ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.CreateServer("Setup Server", null, user);
-
-            //Temporary, only for demo server creation.
-            //server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.CreateServer("ArkWebMap Demo", "https://ark.romanport.com/assets/demo_server_icon.png", user, true);
-
             //Create session
             setupProxySessions.Add(id, new ArkSetupProxySession
             {
-                server = server,
                 toServer = new List<ArkBridgeSharedEntities.Entities.ArkSetupProxyMessage>(),
                 toWeb = new List<ArkBridgeSharedEntities.Entities.ArkSetupProxyMessage>(),
-                user = user
+                up = false
             });
+
+            return Program.QuickWriteJsonToDoc(e, new SetupServerProxy_ObtainCode
+            {
+                code = id
+            });
+        }
+
+        public static Task OnCreateProxySessionRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkUser user)
+        {
+            //Get the session.
+            string sessionId = e.Request.Query["session_id"];
+            if (!setupProxySessions.ContainsKey(sessionId))
+            {
+                //Failed
+                return Program.QuickWriteJsonToDoc(e, new ServerSetupWizard_BeginReply
+                {
+                    display_id = sessionId,
+                    ok = false
+                });
+            }
+
+            //Grab payload for server creation
+            EditServerListingPayload payload = Program.DecodePostBody<EditServerListingPayload>(e);
+
+            //Create server
+            ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.CreateServer("Setup Server", null, user);
+
+            //Edit
+            EditServerListing.EditServer(server, payload);
+            server.Update();
+
+            //Create session
+            setupProxySessions[sessionId].server = server;
+            setupProxySessions[sessionId].user = user;
+            setupProxySessions[sessionId].up = true;
 
             //Return 
             return Program.QuickWriteJsonToDoc(e, new ServerSetupWizard_BeginReply
             {
-                display_id = id,
-                request_url = $"https://ark.romanport.com/api/server_setup_proxy/{id}?from=WebClient",
-                server = server
+                display_id = sessionId,
+                request_url = $"https://ark.romanport.com/api/server_setup_proxy/{sessionId}?from=WebClient",
+                server = server,
+                ok = true
             });
         }
 

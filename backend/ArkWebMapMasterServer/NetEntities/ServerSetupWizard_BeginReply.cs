@@ -8,6 +8,7 @@ namespace ArkWebMapMasterServer.NetEntities
     public class ServerSetupWizard_BeginReply
     {
         public string display_id;
+        public bool ok;
         public string request_url;
         public ArkServer server;
     }

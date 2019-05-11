@@ -12,6 +12,7 @@ namespace ArkWebMapMasterServer.NetEntities
         public string profile_image_url;
         public string id;
         public string steam_id;
+        public ArkUserSettings user_settings;
 
         public List<UsersMeReply_Server> servers;
 
@@ -22,6 +23,7 @@ namespace ArkWebMapMasterServer.NetEntities
             profile_image_url = u.profile_image_url;
             id = u._id;
             steam_id = u.steam_id;
+            user_settings = u.user_settings;
 
             //Check
             if (u.hidden_servers == null)
@@ -33,7 +35,7 @@ namespace ArkWebMapMasterServer.NetEntities
             foreach(var id in found_servers)
             {
                 //Get server by ID
-                var converted = new UsersMeReply_Server(u, id, doPingServers);
+                var converted = new UsersMeReply_Server(u, id.Item1, id.Item2, doPingServers);
                 if ((!converted.is_hidden || !filterHiddenServers) && converted.has_ever_gone_online)
                     servers.Add(converted);
             }
@@ -47,6 +49,10 @@ namespace ArkWebMapMasterServer.NetEntities
         public string image_url;
         public string owner_uid;
         public string id;
+
+        public int tribeId;
+        public string tribeName;
+        public string arkName;
 
         public string map_id;
         public string map_name;
@@ -63,7 +69,7 @@ namespace ArkWebMapMasterServer.NetEntities
         public List<string> enabled_notifications;
         public ArkServerReply ping_status;
 
-        public UsersMeReply_Server(ArkUser u, ArkServer s, bool doPing)
+        public UsersMeReply_Server(ArkUser u, ArkServer s, ArkSlaveReport_PlayerAccount ps, bool doPing)
         {
             //If this server has never sent a status, skip
             if (!s.has_server_report)
@@ -81,6 +87,13 @@ namespace ArkWebMapMasterServer.NetEntities
             has_ever_gone_online = s.has_server_report;
             is_hidden = u.hidden_servers.Contains(s._id);
             lastReportTime = new DateTime(s.latest_server_report_downloaded);
+
+            if(ps != null)
+            {
+                tribeId = ps.player_tribe_id;
+                tribeName = ps.player_tribe_name;
+                arkName = ps.player_name;
+            }
 
             string base_endpoint = $"https://ark.romanport.com/api/servers/{id}/";
             endpoint_hub = base_endpoint + "world/tribes/hub";

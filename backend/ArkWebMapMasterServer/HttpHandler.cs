@@ -41,7 +41,12 @@ namespace ArkWebMapMasterServer
                     //This is the setup proxy for communicating with up-and-coming servers.
                     return Services.Misc.ArkSetupProxy.OnSetupProxyHttpRequest(e, path.Substring("/server_setup_proxy/".Length));
                 }
-                if(path.StartsWith("/ark_interface/"))
+                if (path.StartsWith("/obtain_server_setup_proxy_code"))
+                {
+                    //This is the setup proxy for communicating with up-and-coming servers.
+                    return Services.Misc.ArkSetupProxy.OnObtainCode(e);
+                }
+                if (path.StartsWith("/ark_interface/"))
                 {
                     //ARK interface from an Ark server. Take care.
                     return Services.ArkInterface.ArkInterfaceHttpHandler.OnHttpRequest(e, path.Substring("/ark_interface/".Length));
@@ -52,11 +57,14 @@ namespace ArkWebMapMasterServer
             } catch (StandardError ex)
             {
                 //Write error
-                return Program.QuickWriteJsonToDoc(e, ex, 500);
+                int errorCode = 500;
+                if (ex.error_code == StandardErrorCode.AuthRequired)
+                    errorCode = 401;
+                return Program.QuickWriteJsonToDoc(e, ex, errorCode);
             } catch (Exception ex)
             {
                 //Write error
-                return Program.QuickWriteJsonToDoc(e, new StandardError(ex.Message+ex.StackTrace, StandardErrorCode.UncaughtException, ex), 500);
+                return Program.QuickWriteJsonToDoc(e, new StandardError(ex.Message + ex.StackTrace, StandardErrorCode.UncaughtException, ex), 500);
             }
         }
 

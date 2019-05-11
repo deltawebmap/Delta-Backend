@@ -24,7 +24,7 @@ namespace ArkWebMapMasterServer.Services.Servers
 
             //Authenticate the user
             ArkUser user = Users.UsersHttpHandler.AuthenticateUser(e, true);
-            if (user.GetServers().Where( x => x._id == server._id).Count() != 1 && server.require_auth_to_view)
+            if (user.GetServers().Where( x => x.Item1._id == server._id).Count() != 1 && server.require_auth_to_view)
                 throw new StandardError("You must be a part of this server to send API calls.", StandardErrorCode.NotPermitted);
 
             //Look up the user's tribe by their steam ID

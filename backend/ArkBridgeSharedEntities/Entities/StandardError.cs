@@ -48,5 +48,6 @@ namespace ArkBridgeSharedEntities.Entities
         BridgeBackendServerError = 12, //Error code 500
         BridgeBackendServerNetFailed = 13, //Any other error on the bridge
         MissingData = 14, //Expected data was not found.
+        BadMethod = 15, //Only certain methods are permitted
     }
 }

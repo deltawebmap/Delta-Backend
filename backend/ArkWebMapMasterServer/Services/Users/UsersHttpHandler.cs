@@ -117,6 +117,17 @@ namespace ArkWebMapMasterServer.Services.Users
             {
                 return TokenDevalidateService.OnAllDevalidate(e, user);
             }
+            if(path == "@me/user_settings")
+            {
+                //Verify method
+                if (Program.FindRequestMethod(e) != RequestHttpMethod.post)
+                    throw new StandardError("Only POST or post requests are valid here.", StandardErrorCode.BadMethod);
+                
+                //Update
+                user.user_settings = Program.DecodePostBody<ArkUserSettings>(e);
+                user.Update();
+                return Program.QuickWriteStatusToDoc(e, true);
+            }
             if (path.StartsWith("@me/"))
             {
                 //Requested user info

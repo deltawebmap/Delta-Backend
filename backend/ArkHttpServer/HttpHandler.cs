@@ -26,6 +26,19 @@ namespace ArkHttpServer
                 //Set some headers
                 e.Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
+                //Get world
+                ArkWorld world = WorldLoader.GetWorld();
+
+                //Look up user based on Steam ID.
+                bool isInTribe = false;
+                int tribeId = -1;
+                var foundPlayers = world.players.Where(x => x.steamPlayerId == user.steam_id).ToArray();
+                if (foundPlayers.Length >= 1)
+                {
+                    tribeId = foundPlayers[0].tribeId;
+                    isInTribe = true;
+                }
+
                 //Since we don't have to worry about permissions or anything, we'll just have a list of services created at compile time.
                 string pathname = e.Request.Path.ToString().ToLower().Substring("/api".Length);
 
@@ -57,21 +70,8 @@ namespace ArkHttpServer
                 //Continue to map specific things
                 if (pathname.StartsWith("/world/"))
                 {
-                    //Get world
-                    ArkWorld world = WorldLoader.GetWorld();
-
                     //Fix pathname
                     pathname = pathname.Substring("/world".Length);
-
-                    //Look up user based on Steam ID.
-                    bool isInTribe = false;
-                    int tribeId = -1;
-                    var foundPlayers = world.players.Where(x => x.steamPlayerId == user.steam_id).ToArray();
-                    if(foundPlayers.Length >= 1)
-                    {
-                        tribeId = foundPlayers[0].tribeId;
-                        isInTribe = true;
-                    }
                     
                     //If this is a demo server, set the tribe ID to the demo tribe.
                     if(ArkWebServer.config.is_demo_server)

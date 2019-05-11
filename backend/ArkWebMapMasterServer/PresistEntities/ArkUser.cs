@@ -26,6 +26,8 @@ namespace ArkWebMapMasterServer.PresistEntities
         public bool is_steam_verified { get; set; }
         public string steam_id { get; set; }
 
+        public ArkUserSettings user_settings { get; set; } = new ArkUserSettings();
+
         public List<string> notification_tokens { get; set; }
         public Dictionary<string, List<ArkNotificationChannel>> enabled_notifications { get; set; } //Key: Server ID
 
@@ -34,27 +36,36 @@ namespace ArkWebMapMasterServer.PresistEntities
             Users.UserAuth.GetCollection().Update(this);
         }
 
-        public List<ArkServer> GetServers(bool excludeHidden = false)
+        public List<Tuple<ArkServer, ArkSlaveReport_PlayerAccount>> GetServers(bool excludeHidden = false)
         {
             //Loop through all servers and see if I am in their accounts
             if (!is_steam_verified)
-                return new List<ArkServer>();
+                return new List<Tuple<ArkServer, ArkSlaveReport_PlayerAccount>>();
 
             if (hidden_servers == null)
                 hidden_servers = new List<string>();
 
-            List<ArkServer> output = new List<ArkServer>();
+            List<Tuple<ArkServer, ArkSlaveReport_PlayerAccount>> output = new List<Tuple<ArkServer, ArkSlaveReport_PlayerAccount>>();
             var serversToTry = Servers.ArkSlaveServerSetup.GetCollection().Find(x => x.has_server_report || x.owner_uid == _id).ToArray();
             List<string> output_ids = new List<string>();
             foreach(var s in serversToTry)
             {
                 bool check = s.owner_uid == _id;
-                if (!check)
-                    check = s.latest_server_local_accounts.Count(x => x.player_steam_id == steam_id) >= 1;
+                ArkSlaveReport_PlayerAccount playerAcc = null;
+                if(s.latest_server_local_accounts != null)
+                {
+                    var results = s.latest_server_local_accounts.Where(x => x.player_steam_id == steam_id);
+                    if (results.Count() >= 1)
+                    {
+                        playerAcc = results.First();
+                        check = true;
+                    }
+                }
+
                 if (check)
                 {
                     if((!hidden_servers.Contains(s._id) || !excludeHidden) && !s.is_deleted) {
-                        output.Add(s);
+                        output.Add(new Tuple<ArkServer, ArkSlaveReport_PlayerAccount>(s, playerAcc));
                         if (!output_ids.Contains(s._id))
                             output_ids.Add(s._id);
                     }
@@ -73,6 +84,13 @@ namespace ArkWebMapMasterServer.PresistEntities
                 return ArkUserDefaults.defaultUserNotifications;
             return enabled_notifications[serverId];
         }
+    }
+
+    public class ArkUserSettings
+    {
+        public List<string> custom_vulgar_words { get; set; } = new List<string>();
+        public bool vulgar_filter_on { get; set; } = true;
+        public bool vulgar_show_censored_on { get; set; } = false; //If this is on, blocked names will still show, but censored.
     }
 
     class ArkUserDefaults

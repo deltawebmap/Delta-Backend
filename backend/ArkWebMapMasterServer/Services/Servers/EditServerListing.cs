@@ -24,8 +24,20 @@ namespace ArkWebMapMasterServer.Services.Servers
             if (user._id != s.owner_uid)
                 throw new StandardError("You do not own this server.", StandardErrorCode.NotPermitted);
 
+            //Update
+            EditServer(s, payload);            
+
+            //Apply to server
+            s.Update();
+
+            //Return OK
+            return Program.QuickWriteStatusToDoc(e, true);
+        }
+
+        public static void EditServer(ArkServer s, EditServerListingPayload payload)
+        {
             //Update name if sent
-            if(payload.name != null)
+            if (payload.name != null)
             {
                 //Validate name
                 string name = payload.name;
@@ -37,7 +49,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             }
 
             //Update icon if sent
-            if(payload.iconToken != null)
+            if (payload.iconToken != null)
             {
                 //Fetch additional details.
                 UserContentTokenPayload tokenPayload;
@@ -50,12 +62,6 @@ namespace ArkWebMapMasterServer.Services.Servers
                 //We've validated this image. Set it
                 s.image_url = tokenPayload.url;
             }
-
-            //Apply to server
-            s.Update();
-
-            //Return OK
-            return Program.QuickWriteStatusToDoc(e, true);
         }
     }
 }

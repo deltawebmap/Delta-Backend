@@ -69,7 +69,7 @@ namespace ArkWebMapSlaveServerConsole
             else
             {
                 //Not set up. Show prompt and ask for info
-                IntroAndPromptUserForCode();
+                clientSessionId = IntroAndPromptUserForCode();
 
                 //Now that we have the code, we can start to do setup. 
                 //Send ready
@@ -81,11 +81,6 @@ namespace ArkWebMapSlaveServerConsole
                     },
                     type = ArkSetupProxyMessage_Type.ServerHello
                 });
-
-                //Set text
-                Console.Clear();
-                DrawWithColor("You're almost ready to go! ", ConsoleColor.Blue);
-                DrawWithColor("Head back into your web browser to finish configuring the server.\n");
 
                 //Begin checking for events and responding to them.
                 bool continueLoop = true;
@@ -117,10 +112,10 @@ namespace ArkWebMapSlaveServerConsole
                                 break;
                         }
                     }
-                    Thread.Sleep(2000);
+                    Thread.Sleep(1000);
                 }
                 Console.Clear();
-                DrawWithColor("Done! Starting as usual now...", ConsoleColor.Blue);
+                DrawWithColor("Finished! Starting...", ConsoleColor.Blue);
                 Console.ForegroundColor = ConsoleColor.White;
                 Run();
             }
@@ -151,7 +146,6 @@ namespace ArkWebMapSlaveServerConsole
         public static void SendMasterMessage(ArkSetupProxyMessage message)
         {
             string ser_string = JsonConvert.SerializeObject(message);
-            Console.WriteLine("SENT " + ser_string);
             byte[] ser = Encoding.UTF8.GetBytes(ser_string);
             var request = (HttpWebRequest)WebRequest.Create(GetProxyEndpoint());
 
