@@ -23,6 +23,11 @@ namespace ArkWebMapMasterServer.PresistEntities
         public string image_url { get; set; }
 
         /// <summary>
+        /// Has a custom icon
+        /// </summary>
+        public bool has_custom_image { get; set; }
+
+        /// <summary>
         /// ID of the owner of the server
         /// </summary>
         public string owner_uid { get; set; }
@@ -88,8 +93,20 @@ namespace ArkWebMapMasterServer.PresistEntities
         /// </summary>
         public bool is_demo_server { get; set; }
 
+        /// <summary>
+        /// Is published and public
+        /// </summary>
+        public bool is_published { get; set; }
+
         public void Update()
         {
+            //If needed, get a new icon
+            if(!has_custom_image)
+            {
+                image_url = GetPlaceholderIcon();
+            }
+            
+            //Save
             ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetCollection().Update(this);
         }
 
@@ -178,6 +195,40 @@ namespace ArkWebMapMasterServer.PresistEntities
                 }).GetAwaiter().GetResult();
             }
             return reply;
+        }
+
+        public bool TryGetTribeId(string steamId, out int tribeId)
+        {
+            tribeId = -1;
+            var foundArkPlayers = latest_server_local_accounts.Where(x => x.player_steam_id == steamId);
+            if (foundArkPlayers.Count() == 1)
+            {
+                tribeId = foundArkPlayers.First().player_tribe_id;
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+
+        public bool TryGetOfflineDataForTribe(string steamId, out string offlineData)
+        {
+            offlineData = "";
+            if (has_server_report)
+            {
+                if (TryGetTribeId(steamId, out int tribeId))
+                {
+                    if (latest_offline_data != null)
+                    {
+                        if (latest_offline_data.ContainsKey(tribeId))
+                        {
+                            offlineData = latest_offline_data[tribeId];
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         }
     }
 }

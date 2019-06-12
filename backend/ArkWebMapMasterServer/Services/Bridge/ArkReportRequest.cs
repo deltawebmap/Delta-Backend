@@ -29,6 +29,19 @@ namespace ArkWebMapMasterServer.Services.Bridge
                 //Save
                 s.Update();
 
+                //Also update published server listing
+                ArkPublishedServerListing listing = ServerPublishingManager.GetPublishedServer(s._id);
+                if(listing != null)
+                {
+                    if (listing.saved_active_players != report.accounts.Count || listing.saved_total_players != report.accounts.Count)
+                    {
+                        //Dirty. Update
+                        listing.saved_active_players = report.accounts.Count; //TODO: Actually count active players
+                        listing.saved_total_players = report.accounts.Count;
+                        ServerPublishingManager.SavePublishedServer(listing, s);
+                    }
+                }
+
                 //Write OK
                 return Program.QuickWriteJsonToDoc(e, new TrueFalseReply
                 {

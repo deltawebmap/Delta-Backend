@@ -61,6 +61,7 @@ namespace ArkWebMapMasterServer.Services.Servers
 
                 //We've validated this image. Set it
                 s.image_url = tokenPayload.url;
+                s.has_custom_image = true;
             }
         }
     }

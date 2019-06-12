@@ -15,7 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapSlaveServerConsole
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkBridgeSharedEntities", "ArkBridgeSharedEntities\ArkBridgeSharedEntities.csproj", "{F30AA03E-1117-415C-AA04-407F0DA804B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapSubServerUpdater", "ArkWebMapSubServerUpdater\ArkWebMapSubServerUpdater.csproj", "{75CB5459-9E54-4B32-8265-F287E59022CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapLauncher", "ArkWebMapLauncher\ArkWebMapLauncher.csproj", "{94E20903-8660-4ECE-8B34-4E4688970F56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArkWebMapGateway", "ArkWebMapGateway\ArkWebMapGateway.csproj", "{B97FD7BA-5F17-4063-AA27-C2400B0C5B3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArkWebMapGatewayClient", "ArkWebMapGatewayClient\ArkWebMapGatewayClient.csproj", "{B8587E99-E1BF-4348-AF6C-37F4136CA310}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +51,18 @@ Global
 		{F30AA03E-1117-415C-AA04-407F0DA804B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F30AA03E-1117-415C-AA04-407F0DA804B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F30AA03E-1117-415C-AA04-407F0DA804B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75CB5459-9E54-4B32-8265-F287E59022CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75CB5459-9E54-4B32-8265-F287E59022CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75CB5459-9E54-4B32-8265-F287E59022CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75CB5459-9E54-4B32-8265-F287E59022CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94E20903-8660-4ECE-8B34-4E4688970F56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94E20903-8660-4ECE-8B34-4E4688970F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94E20903-8660-4ECE-8B34-4E4688970F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94E20903-8660-4ECE-8B34-4E4688970F56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B97FD7BA-5F17-4063-AA27-C2400B0C5B3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B97FD7BA-5F17-4063-AA27-C2400B0C5B3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B97FD7BA-5F17-4063-AA27-C2400B0C5B3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B97FD7BA-5F17-4063-AA27-C2400B0C5B3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8587E99-E1BF-4348-AF6C-37F4136CA310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8587E99-E1BF-4348-AF6C-37F4136CA310}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8587E99-E1BF-4348-AF6C-37F4136CA310}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8587E99-E1BF-4348-AF6C-37F4136CA310}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

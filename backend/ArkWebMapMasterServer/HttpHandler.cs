@@ -51,6 +51,11 @@ namespace ArkWebMapMasterServer
                     //ARK interface from an Ark server. Take care.
                     return Services.ArkInterface.ArkInterfaceHttpHandler.OnHttpRequest(e, path.Substring("/ark_interface/".Length));
                 }
+                if (path.StartsWith("/discover/"))
+                {
+                    //ARK interface from an Ark server. Take care.
+                    return Services.ServerDiscovery.ServerDiscoveryHttpHandler.OnHttpRequest(e, path.Substring("/discover/".Length));
+                }
 
                 //Unknown
                 throw new StandardError("Not Found", StandardErrorCode.NotFound);

@@ -130,7 +130,16 @@ namespace ArkHttpServer
                         //Search with this dinosaur ID
                         var dinos = world.dinos.Where(x => x.dinosaurId == dinoid && x.tribeId == tribeId).ToArray();
                         if (dinos.Length == 1)
-                        {                            
+                        {
+                            //Get the method
+                            var method = ArkWebServer.FindRequestMethod(e);
+                            if(method == RequestHttpMethod.post)
+                            {
+                                //Edit dino
+                                DinoServerData newSettings = ArkWebServer.DecodePostBody<DinoServerData>(e);
+                                newSettings.dinoId = dinos[0].dinosaurId.ToString();
+                                newSettings.tribeId = dinos[0].tribeId;
+                            }
                             //Write this dinosaur.
                             return QuickWriteJsonToDoc(e, new ArkDinoReply(dinos[0], world));
                         }

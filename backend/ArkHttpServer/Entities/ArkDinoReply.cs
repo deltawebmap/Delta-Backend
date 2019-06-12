@@ -18,12 +18,18 @@ namespace ArkHttpServer.Entities
         public Dictionary<string, ArkItemEntry> item_class_data = new Dictionary<string, ArkItemEntry>();
         public ArkDinosaurStats max_stats;
         public ArkDinoEntry dino_entry;
+        public DinoServerData dino_settings;
         public string href;
 
-        public ArkDinoReply(ArkDinosaur d, ArkWorld w)
+        public ArkDinoReply(ArkDinosaur d, ArkWorld w, DinoServerData dinoSettings = null)
         {
             //Set the dino data
             dino = d;
+
+            //If we did not send dino settings, get them
+            if (dinoSettings == null)
+                dinoSettings = UserServerDataManager.GetDinoData(d);
+            dino_settings = dinoSettings;
 
             //Get the various components
             try

@@ -34,16 +34,14 @@ namespace ArkHttpServer
 
         public static LiteDatabase db;
 
-        public static void Configure(ServerConfigFile config, string api_prefix, SendTribeNotification tribeNotificationCode, SendRequestToMaster sendToMasterCode)
+        public static void Configure(ServerConfigFile config, string api_prefix, SendTribeNotification tribeNotificationCode, SendRequestToMaster sendToMasterCode, LiteDatabase db)
         {
             //Load
             ArkWebServer.config = config;
             ArkWebServer.api_prefix = api_prefix;
             ArkWebServer.tribeNotificationCode = tribeNotificationCode;
             ArkWebServer.sendRequestToMasterCode = sendToMasterCode;
-
-            //Load database
-            db = new LiteDatabase("ark.db");
+            ArkWebServer.db = db;
 
             //Load save editor entries
             ArkImports.ImportContent(@"PrimalData/world.json", @"PrimalData/dinos.json", @"PrimalData/items.json");

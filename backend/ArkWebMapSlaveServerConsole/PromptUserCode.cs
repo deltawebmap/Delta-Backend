@@ -17,8 +17,8 @@ namespace ArkWebMapSlaveServerConsole
             while(true)
             {
                 Console.Clear();
-                DrawWithColor("Welcome!", ConsoleColor.Blue);
-                DrawWithColor(" Welcome to the ArkWebMap companion program. This program simply processes your Ark save file and will not touch it.\n\nFetching code...");
+                DrawWithColor("Welcome!", ConsoleColor.Cyan);
+                DrawWithColor(" Welcome to the ArkWebMap companion software.\n\nFetching code...");
                 try
                 {
                     var request = (HttpWebRequest)WebRequest.Create("https://ark.romanport.com/api/obtain_server_setup_proxy_code");

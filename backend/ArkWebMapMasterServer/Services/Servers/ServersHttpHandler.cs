@@ -22,26 +22,26 @@ namespace ArkWebMapMasterServer.Services.Servers
             //Get the server by this ID
             ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(serverId);
 
-            //Authenticate the user
-            ArkUser user = Users.UsersHttpHandler.AuthenticateUser(e, true);
-            if (user.GetServers().Where( x => x.Item1._id == server._id).Count() != 1 && server.require_auth_to_view)
-                throw new StandardError("You must be a part of this server to send API calls.", StandardErrorCode.NotPermitted);
-
-            //Look up the user's tribe by their steam ID
-            int tribeId = -1;
-            bool hasTribe = false;
-            var foundArkPlayers = server.latest_server_local_accounts.Where(x => x.player_steam_id == user.steam_id);
-            if(foundArkPlayers.Count() == 1)
-            {
-                tribeId = foundArkPlayers.First().player_tribe_id;
-                hasTribe = true;
-            }
-
             //If there is content after this, proxy to this server. Else, return server info.
             if(split.Length > 1)
             {
                 //Do proxy. Get full url
                 string proxyUrl = path.Substring(serverId.Length + 1).TrimStart('/');
+
+                //Check if this is a path that requires no auth
+                if (proxyUrl == "users")
+                {
+                    //Send back tribe users
+                    return Program.QuickWriteJsonToDoc(e, server.latest_server_local_accounts);
+                }
+
+                //Authenticate the user
+                ArkUser user = Users.UsersHttpHandler.AuthenticateUser(e, true);
+                if (user.GetServers().Where(x => x.Item1._id == server._id).Count() != 1 && server.require_auth_to_view)
+                    throw new StandardError("You must be a part of this server to send API calls.", StandardErrorCode.NotPermitted);
+
+                //Look up the user's tribe by their steam ID
+                bool hasTribe = server.TryGetTribeId(user.steam_id, out int tribeId);
 
                 //Check if this is one of our URLs.
                 if (proxyUrl == "delete")
@@ -53,6 +53,10 @@ namespace ArkWebMapMasterServer.Services.Servers
                 {
                     //Rename
                     return EditServerListing.OnHttpRequest(e, server);
+                }
+                if(proxyUrl == "publish")
+                {
+                    return ServerPublishing.OnHttpRequest(e, server);
                 }
                 if(proxyUrl == "offline_data")
                 {

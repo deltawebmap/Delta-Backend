@@ -4,6 +4,8 @@ using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
 using CodeHollow.FeedReader;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +21,21 @@ namespace ArkWebMapMasterServer.Services.Users
             //Start download of ARK news in the background
             Task<ArkHubWildcardNews> arkNewsDownloader = DownloadArkNews();
 
-            //Load the UsersMe data. Ping each server and only send OK servers
-            UsersMeReply usersMe = new UsersMeReply(u, true, true);
+            //Load the UsersMe data.
+            UsersMeReply usersMe = new UsersMeReply(u, true, false);
+
+            //Grab tribe hub data from offline data
+            Dictionary<string, JToken> servers_hub = new Dictionary<string, JToken>();
+            foreach (var s in u.GetServers())
+            {
+                ArkServer server = s.Item1;
+                if(server.TryGetOfflineDataForTribe(u.steam_id, out string offlineData))
+                {
+                    JObject jo = JObject.Parse(offlineData);
+                    JToken hubData = jo["hub"];
+                    servers_hub.Add(server._id, hubData);
+                }
+            }
 
             //Await the Ark news to finish downloading.
             ArkHubWildcardNews news = arkNewsDownloader.GetAwaiter().GetResult();
@@ -29,7 +44,8 @@ namespace ArkWebMapMasterServer.Services.Users
             ArkHubReply reply = new ArkHubReply
             {
                 ark_news = news,
-                servers = usersMe.servers
+                servers = usersMe.servers,
+                servers_hub = servers_hub
             };
 
             //Respond

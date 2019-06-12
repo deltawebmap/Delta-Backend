@@ -19,14 +19,33 @@ namespace ArkWebMapSlaveServerConsole
     /// </summary>
     partial class Program
     {
-        const string CONFIG_FILE_NAME = "config_net.json";
         const int SETUP_VERSION = 1;
         const float CURRENT_RELEASE_ID = 1.1f;
 
         static RemoteConfigFile remote_config;
+        static LaunchOptions launchOptions;
 
         static void Main(string[] args)
         {
+            //If the config filename was passed as an arg, use it. Else, assume debug enviornment
+            if(args.Length >= 1)
+            {
+                string configJson = Encoding.UTF8.GetString(Convert.FromBase64String(args[0]));
+                launchOptions = JsonConvert.DeserializeObject<LaunchOptions>(configJson);
+            } else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("WARNING: No settings path was passed into the program. This is not being run inside of the usual launcher enviornment. Assuming this is a debug enviornment...");
+                launchOptions = new LaunchOptions
+                {
+                    launcher_version = -1,
+                    path_config = "debug_net_config.json",
+                    path_db = "debug_userdb.db",
+                    path_root = "../"
+                };
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            
             //Request the remote config file
             Console.WriteLine("Downloading remote configuration file...");
             try
@@ -42,27 +61,9 @@ namespace ArkWebMapSlaveServerConsole
                 Console.ReadLine();
                 return;
             }
-
-            //If we are out of date, display it
-            if(CURRENT_RELEASE_ID < remote_config.sub_server_config.minimum_release_id)
-            {
-                Console.Clear();
-                RemoteConfigFile_Release latest_release = remote_config.latest_release;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("This version of ArkWebMap is out of date!");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("\n" + latest_release.release_notes+"\nMore info: "+latest_release.download_page);
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("\nAutomatically downloading and installing the new version...");
-
-                Console.ForegroundColor = ConsoleColor.White;
-                UpdateInstaller.InstallUpdate(latest_release);
-
-                return;
-            }
             
             //If the config file exists, jump right to running it.
-            if (File.Exists(CONFIG_FILE_NAME))
+            if (File.Exists(GetConfigPath()))
             {
                 Run();
             }
@@ -175,14 +176,14 @@ namespace ArkWebMapSlaveServerConsole
 
         static string GetConfigPath()
         {
-            return Directory.GetCurrentDirectory().TrimEnd('\\') + "\\" + CONFIG_FILE_NAME;
+            return launchOptions.path_config;
         }
 
         static void Run()
         {
             string config_path = GetConfigPath();
             ArkSlaveConfig config = JsonConvert.DeserializeObject<ArkSlaveConfig>(File.ReadAllText(config_path));
-            Task t = ArkWebMapServer.MainAsync(config, config_path, remote_config);
+            Task t = ArkWebMapServer.MainAsync(config, config_path, remote_config, launchOptions.path_db);
             if(t != null)
                 t.GetAwaiter().GetResult();
         }

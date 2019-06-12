@@ -16,6 +16,11 @@ namespace ArkWebMapMasterServer.NetEntities
 
         public List<UsersMeReply_Server> servers;
 
+        public UsersMeReply()
+        {
+
+        }
+
         public UsersMeReply(ArkUser u, bool filterHiddenServers, bool doPingServers)
         {
             //Set basic values
@@ -59,6 +64,8 @@ namespace ArkWebMapMasterServer.NetEntities
 
         public bool has_ever_gone_online;
         public bool is_hidden;
+        public bool is_public;
+        public ArkPublishedServerListing public_listing;
         public DateTime lastReportTime;
 
         public string endpoint_ping;
@@ -68,6 +75,11 @@ namespace ArkWebMapMasterServer.NetEntities
 
         public List<string> enabled_notifications;
         public ArkServerReply ping_status;
+
+        public UsersMeReply_Server()
+        {
+
+        }
 
         public UsersMeReply_Server(ArkUser u, ArkServer s, ArkSlaveReport_PlayerAccount ps, bool doPing)
         {
@@ -113,6 +125,14 @@ namespace ArkWebMapMasterServer.NetEntities
             //Ping server
             if(doPing)
                 ping_status = new ArkServerReply(s, null, 600);
+
+            //Get the published server listing, if we have it
+            if(s.is_published)
+            {
+                ArkPublishedServerListing listing = ServerPublishingManager.GetPublishedServer(s._id);
+                public_listing = listing;
+                is_public = listing != null;
+            }
         }
     }
 }

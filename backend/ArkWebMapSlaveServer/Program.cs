@@ -25,10 +25,11 @@ namespace ArkWebMapSlaveServer
         public static Random rand = new Random();
         public static Timer reportTimer;
         public static byte[] creds;
+        public static LiteDatabase db;
 
         public const int MY_VERSION = 1;
 
-        public static Task MainAsync(ArkSlaveConfig config, string configPath, RemoteConfigFile remote_config)
+        public static Task MainAsync(ArkSlaveConfig config, string configPath, RemoteConfigFile remote_config, string dbPath)
         {
             Console.WriteLine("Contacting master server...");
             ArkWebMapServer.config = config;
@@ -37,6 +38,9 @@ namespace ArkWebMapSlaveServer
             ArkWebMapServer.creds = Convert.FromBase64String(config.auth.creds);
             if (!HandshakeMasterServer(""))
                 return null;
+
+            Console.WriteLine("Opening database...");
+            db = new LiteDatabase(dbPath);
 
             Console.WriteLine("Configurating internal server...");
             ArkWebServer.Configure(config.child_config, remote_config.sub_server_config.endpoints.server_api_prefix + config.auth.id, (int tribeId, TribeNotification n) =>
@@ -53,7 +57,7 @@ namespace ArkWebMapSlaveServer
             }, (string action, object request, Type t) =>
             {
                 return MasterServer.SendRequestToMaster(action, request, t);
-            });
+            }, db);
 
             //Submit world report
             Console.WriteLine("Submitting ARK world report to master server...");

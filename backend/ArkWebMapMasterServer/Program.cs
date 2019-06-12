@@ -1,4 +1,6 @@
-﻿using LiteDB;
+﻿using ArkWebMapGatewayClient;
+using ArkWebMapMasterServer.PresistEntities;
+using LiteDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
@@ -13,6 +15,7 @@ namespace ArkWebMapMasterServer
     class Program
     {
         public static LiteDatabase db;
+        public static AWMGatewayClient gateway;
         public static MasterServerConfig config;
         public static Random rand = new Random();
         public const string PREFIX_URL = "https://ark.romanport.com/api";
@@ -24,6 +27,9 @@ namespace ArkWebMapMasterServer
 
             Console.WriteLine("Loading config...");
             config = JsonConvert.DeserializeObject<MasterServerConfig>(File.ReadAllText("E:\\ark_master_server_config.json"));
+
+            Console.WriteLine("Connecting to GATEWAY...");
+            gateway = AWMGatewayClient.CreateClient(GatewayClientType.MasterServer, "master", "", 1, 0, true, null, "token");
 
             Console.WriteLine("Starting Kestrel...");
             MainAsync().GetAwaiter().GetResult();
