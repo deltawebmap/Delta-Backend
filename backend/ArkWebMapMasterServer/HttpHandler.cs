@@ -41,6 +41,11 @@ namespace ArkWebMapMasterServer
                     //This is the setup proxy for communicating with up-and-coming servers.
                     return Services.Misc.ArkSetupProxy.OnSetupProxyHttpRequest(e, path.Substring("/server_setup_proxy/".Length));
                 }
+                if (path.StartsWith("/server_validation"))
+                {
+                    //This is the setup proxy for communicating with up-and-coming servers.
+                    return Services.Misc.ServerValidation.OnHttpRequest(e);
+                }
                 if (path.StartsWith("/obtain_server_setup_proxy_code"))
                 {
                     //This is the setup proxy for communicating with up-and-coming servers.
