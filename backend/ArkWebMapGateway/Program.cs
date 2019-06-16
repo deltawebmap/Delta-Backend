@@ -14,7 +14,6 @@ namespace ArkWebMapGateway
         static void Main(string[] args)
         {
             Console.WriteLine("Starting ArkWebMap WebSocket Gateway...");
-            MessageSender.StartBgThread();
             MainAsync().GetAwaiter().GetResult();
         }
 

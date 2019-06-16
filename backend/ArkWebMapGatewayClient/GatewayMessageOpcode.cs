@@ -6,6 +6,7 @@ namespace ArkWebMapGatewayClient
 {
     public enum GatewayMessageOpcode
     {
-        None = 0
+        PingRequest = 0,
+        PingResponse
     }
 }

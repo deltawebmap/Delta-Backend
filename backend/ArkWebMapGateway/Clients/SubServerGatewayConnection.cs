@@ -7,6 +7,8 @@ namespace ArkWebMapGateway.Clients
 {
     public class SubServerGatewayConnection : GatewayConnection
     {
+
+
         public static async Task<SubServerGatewayConnection> HandleIncomingConnection(Microsoft.AspNetCore.Http.HttpContext e, string version)
         {
             //Start

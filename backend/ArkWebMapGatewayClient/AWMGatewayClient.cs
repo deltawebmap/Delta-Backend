@@ -26,7 +26,7 @@ namespace ArkWebMapGatewayClient
         public int client_version_minor;
         public bool logging_enabled;
         public string token;
-        public GatewayMessageInterface handler;
+        public GatewayMessageHandler handler;
 
         private GatewayConfigFile config;
 
@@ -48,7 +48,7 @@ namespace ArkWebMapGatewayClient
         /// <param name="client_version_major"></param>
         /// <param name="client_version_minor"></param>
         /// <returns></returns>
-        public static AWMGatewayClient CreateClient(GatewayClientType type, string client_name, string client_name_extra, int client_version_major, int client_version_minor, bool logging_enabled, GatewayMessageInterface inter, string token)
+        public static AWMGatewayClient CreateClient(GatewayClientType type, string client_name, string client_name_extra, int client_version_major, int client_version_minor, bool logging_enabled, GatewayMessageHandler handler, string token)
         {
             //Create object and add args
             AWMGatewayClient client = new AWMGatewayClient
@@ -59,7 +59,7 @@ namespace ArkWebMapGatewayClient
                 client_version_major = client_version_major,
                 client_version_minor = client_version_minor,
                 logging_enabled = logging_enabled,
-                handler = inter,
+                handler = handler,
                 txQueue = new Queue<GatewayMessageBase>(),
                 token = token
             };
@@ -272,7 +272,7 @@ namespace ArkWebMapGatewayClient
             LogMsg("OnMsgRx", "Message payload: " + msg);
 
             //Handle
-            GatewayMessageHandler.HandleMsg(b.opcode, msg, handler);
+            handler.HandleMsg(b.opcode, msg, this);
         }
     }
 }

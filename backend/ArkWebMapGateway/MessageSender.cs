@@ -1,4 +1,5 @@
 ﻿using ArkBridgeSharedEntities.Entities;
+using ArkWebMapGatewayClient;
 using ArkWebMapGatewayClient.Messages;
 using Newtonsoft.Json;
 using System;
@@ -11,17 +12,6 @@ namespace ArkWebMapGateway
 {
     public static class MessageSender
     {
-        private static Queue<QueuedMessage> txQueue;
-        private static Thread bgThread;
-
-        public static void StartBgThread()
-        {
-            txQueue = new Queue<QueuedMessage>();
-            bgThread = new Thread(TxBgThread);
-            bgThread.IsBackground = true;
-            bgThread.Start();
-        }
-
         public static void SendMsgToUserAWMId(GatewayMessageBase msg, string id)
         {
             //Loop through and send
@@ -59,37 +49,7 @@ namespace ArkWebMapGateway
 
         private static void InternalQueueMsg(GatewayMessageBase msg, GatewayConnection conn)
         {
-            txQueue.Enqueue(new QueuedMessage
-            {
-                client = conn,
-                msg = msg
-            });
+            conn.SendMsg(msg);
         }
-
-        private static void TxBgThread()
-        {
-            while(true)
-            {
-                if (txQueue.TryDequeue(out QueuedMessage msg))
-                {
-                    try
-                    {
-                        //Serialize
-                        string payload = JsonConvert.SerializeObject(msg.msg);
-                        msg.client.SendMsg(payload).GetAwaiter().GetResult();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Failed to send msg with error: " + ex.Message + ex.StackTrace);
-                    }
-                }
-            }
-        }
-    }
-
-    class QueuedMessage
-    {
-        public GatewayMessageBase msg;
-        public GatewayConnection client;
     }
 }

@@ -1,4 +1,5 @@
-﻿using ArkWebMapMasterServer.NetEntities;
+﻿using ArkWebMapGateway.ClientHandlers;
+using ArkWebMapMasterServer.NetEntities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace ArkWebMapGateway.Clients
     {
         public string userId;
         public UsersMeReply user;
+        public FrontendGatewayHandler handler;
 
         public static async Task<FrontendGatewayConnection> HandleIncomingConnection(Microsoft.AspNetCore.Http.HttpContext e, string version)
         {
@@ -38,7 +40,9 @@ namespace ArkWebMapGateway.Clients
             {
                 user = user,
                 userId = user.id
+                
             };
+            conn.handler = new FrontendGatewayHandler(conn);
 
             //Run
             await conn.Run(e, () =>
@@ -51,11 +55,11 @@ namespace ArkWebMapGateway.Clients
                 }
 
                 //Test
-                MessageSender.SendMsgToTribe(new ArkWebMapGatewayClient.Messages.GatewayMessageBase
+                /*MessageSender.SendMsgToTribe(new ArkWebMapGatewayClient.Messages.GatewayMessageBase
                 {
                     opcode = ArkWebMapGatewayClient.GatewayMessageOpcode.None,
                     headers = new Dictionary<string, string>()
-                }, "x5wyzx9myzU3AKkdzlWHBzAt", 1702654661);
+                }, "x5wyzx9myzU3AKkdzlWHBzAt", 1702654661);*/
             });
 
             return conn;

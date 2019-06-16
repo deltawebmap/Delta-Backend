@@ -22,14 +22,18 @@ namespace ArkWebMapMasterServer
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Starting Database...");
-            db = new LiteDatabase("ark.db");
-
             Console.WriteLine("Loading config...");
             config = JsonConvert.DeserializeObject<MasterServerConfig>(File.ReadAllText("E:\\ark_master_server_config.json"));
 
+            Console.WriteLine("Starting Database...");
+            db = new LiteDatabase(config.database_pathname);
+
+            Console.WriteLine("Test...");
+            Console.WriteLine(SnowflakeGenerator.GenerateSnowflake(DateTime.UtcNow, 0));
+            Console.ReadLine();
+
             Console.WriteLine("Connecting to GATEWAY...");
-            gateway = AWMGatewayClient.CreateClient(GatewayClientType.MasterServer, "master", "", 1, 0, true, null, "token");
+            gateway = AWMGatewayClient.CreateClient(GatewayClientType.MasterServer, "master", "", 1, 0, true, null, config.system_server_keys["master"]);
 
             Console.WriteLine("Starting Kestrel...");
             MainAsync().GetAwaiter().GetResult();

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ArkWebMapGatewayClient;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.WebSockets;
 using System.Text;
@@ -16,12 +18,19 @@ namespace ArkWebMapGateway
         public abstract Task<bool> OnClose(WebSocketCloseStatus? status);
 
         public WebSocket sock;
+        public Task bgTask;
+
+        public WebsocketConnection()
+        {
+            
+        }
 
         public async Task Run(Microsoft.AspNetCore.Http.HttpContext e, OnWebsocketCreatedCallback readyCallback)
         {
             //Accept WebSocket
             WebSocket wc = await e.WebSockets.AcceptWebSocketAsync();
             sock = wc;
+            bgTask = BgSender();
             readyCallback();
             try
             {
@@ -51,10 +60,32 @@ namespace ArkWebMapGateway
             return true;
         }
 
-        public async Task SendMsg(string msg)
+        public void SendMsg(string msg)
         {
-            byte[] buffer = Encoding.UTF8.GetBytes(msg);
-            await sock.SendAsync(new ArraySegment<byte>(buffer, 0, buffer.Length), WebSocketMessageType.Text, true, CancellationToken.None);
+            lock (sendQueue)
+                sendQueue.Enqueue(msg);
+        }
+
+        public void SendMsg(GatewayMessageBase msg)
+        {
+            SendMsg(JsonConvert.SerializeObject(msg));
+        }
+
+        private Queue<string> sendQueue = new Queue<string>();
+
+        private async Task BgSender()
+        {
+            while(sock.State == WebSocketState.Open)
+            {
+                if(sendQueue.TryDequeue(out string msg))
+                {
+                    byte[] buffer = Encoding.UTF8.GetBytes(msg);
+                    await sock.SendAsync(new ArraySegment<byte>(buffer, 0, buffer.Length), WebSocketMessageType.Text, true, CancellationToken.None);
+                } else
+                {
+                    await Task.Delay(3);
+                }
+            }
         }
     }
 }

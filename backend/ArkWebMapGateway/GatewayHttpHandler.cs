@@ -88,7 +88,7 @@ namespace ArkWebMapGateway
                 int clientTribeId = c.serverIds[serverId];
                 if(clientTribeId == targetTribeId)
                 {
-                    await c.SendMsg(message);
+                    c.SendMsg(message);
                 }
             }
 
