@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ArkWebMapGatewayClient;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +21,18 @@ namespace ArkWebMapGateway.Clients
             });
 
             return conn;
+        }
+
+        public override Task<bool> OnMsg(string msg)
+        {
+            //Deserialize as base type to get the opcode
+            GatewayMessageBase b = JsonConvert.DeserializeObject<GatewayMessageBase>(msg);
+
+            //Now, let it be handled like normal.
+            //handler.HandleMsg(b.opcode, msg, this); //TODO
+
+            //Return OK
+            return Task.FromResult<bool>(true);
         }
     }
 }

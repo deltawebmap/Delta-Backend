@@ -78,13 +78,16 @@ namespace ArkHttpServer.HttpServices
 
         private static Task<List<TribeOverviewPlayer>> MassFetchPlayerData(List<TribeOverviewPlayer> players)
         {
-            //Create a payload to send
-            MassFetchSteamDataPayload request = new MassFetchSteamDataPayload();
-            request.ids = new List<string>();
+            //Find IDs to download
+            List<string> ids = new List<string>();
             foreach (var p in players)
-                request.ids.Add(p.steamId);
-            List<SteamProfile> profiles = (List<SteamProfile>)ArkWebServer.sendRequestToMasterCode("mass_request_steam_info", request, typeof(List<SteamProfile>));
-            foreach(var p in profiles)
+                ids.Add(p.steamId);
+
+            //Request new IDs
+            List<SteamProfile> results = Tools.SteamIdLookup.MassFetchPlayerData(ids).GetAwaiter().GetResult();
+
+            //Match this up with profiles
+            foreach(var p in results)
             {
                 foreach(var pp in players)
                 {
@@ -96,6 +99,8 @@ namespace ArkHttpServer.HttpServices
                     }
                 }
             }
+
+            //Return results
             return Task.FromResult(players);
         }
     }

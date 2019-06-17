@@ -8,6 +8,7 @@ using ArkSaveEditor.World.WorldTypes;
 using ArkSaveEditor.Entities.LowLevel.DotArk;
 using ArkSaveEditor.Entities;
 using ArkSaveEditor.ArkEntries;
+using ArkBridgeSharedEntities.Entities;
 
 namespace ArkHttpServer.Entities
 {
@@ -22,6 +23,8 @@ namespace ArkHttpServer.Entities
 
         public List<string> baby_dino_urls;
         public List<ArkDinoReply> baby_dinos;
+
+        public List<MinifiedBasicArkPlayerCharacter> player_characters;
 
         public string[] dino_ids;
 
@@ -39,20 +42,6 @@ namespace ArkHttpServer.Entities
 
             }
 
-            //Find new and find missing
-            /*dino_ids = new_dino_list.ToArray();
-           if(last_dino_list != null)
-            {
-                diff_dinos_missing = last_dino_list.Except(new_dino_list).ToArray();
-                diff_dinos_added = new_dino_list.Except(last_dino_list).ToArray();
-                diff_dinos_unchanged = new_dino_list.Intersect(last_dino_list).ToArray();
-            } else
-            {
-                //Set diff dinos added to them all
-                diff_dinos_added = new_dino_list.ToArray();
-                diff_dinos_unchanged = new_dino_list.ToArray();
-            }*/
-
             //Get baby dinos
             baby_dino_urls = new List<string>();
             baby_dinos = new List<ArkDinoReply>();
@@ -63,6 +52,22 @@ namespace ArkHttpServer.Entities
                     baby_dino_urls.Add(new BasicArkDino(d, world).apiUrl);
                     baby_dinos.Add(new ArkDinoReply(d, world)); //Full dino
                 }
+            }
+
+            //Get tribemembers
+            var tribeMembers = world.playerCharacters.Where(x => x.tribeId == tribeId);
+            List<string> idsToDownload = new List<string>();
+            player_characters = new List<MinifiedBasicArkPlayerCharacter>();
+            foreach (var t in tribeMembers)
+                player_characters.Add(new MinifiedBasicArkPlayerCharacter(t, world, ref idsToDownload));
+
+            //Mass request all the steam IDs for this
+            List<SteamProfile> tribeProfiles = Tools.SteamIdLookup.MassFetchPlayerData(idsToDownload).GetAwaiter().GetResult();
+            foreach(var p in tribeProfiles)
+            {
+                //Find the index of this in the IDs to download, as that'll match the player index
+                int index = idsToDownload.IndexOf(p.steamid);
+                player_characters[index].steamProfile = p;
             }
         }
     }
@@ -136,7 +141,6 @@ namespace ArkHttpServer.Entities
         {
             //Convert this dino to this.
             coord_pos = w.ConvertFromWorldToGameCoords(dino.location);
-            var normalized_pos = w.ConvertFromWorldToNormalizedPos(dino.location);
 
             classname = dino.classnameString;
             imgUrl = $"{ArkWebServer.config.resources_url}/dinos/icons/lq/{classname}.png";
@@ -151,7 +155,29 @@ namespace ArkHttpServer.Entities
 
             //Create the adjusted map pos
             adjusted_map_pos = w.mapinfo.ConvertFromGamePositionToNormalized(new Vector2(dino.location.x, dino.location.y));
-            //adjusted_map_pos = w.mapinfo.transformOffsets.Apply(adjusted_map_pos);
+        }
+    }
+
+    public class MinifiedBasicArkPlayerCharacter
+    {
+        public Vector2 coord_pos;
+        public Vector2 adjusted_map_pos; //Position for the web map
+
+        public ArkPlayerProfile profile;
+        public SteamProfile steamProfile; //This will be set outside of our constructor
+
+        public MinifiedBasicArkPlayerCharacter(ArkPlayer player, ArkWorld w, ref List<string> idsToFetch)
+        {
+            //Get pos
+            coord_pos = w.ConvertFromWorldToGameCoords(player.location);
+            adjusted_map_pos = w.mapinfo.ConvertFromGamePositionToNormalized(new Vector2(player.location.x, player.location.y));
+
+            //Add to Steam request queue
+            if (!idsToFetch.Contains(player.steamId))
+                idsToFetch.Add(player.steamId);
+
+            //Copy
+            profile = player.GetPlayerProfile();
         }
     }
 }

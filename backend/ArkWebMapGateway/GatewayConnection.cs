@@ -18,14 +18,7 @@ namespace ArkWebMapGateway
 
         public override Task<bool> OnMsg(string msg)
         {
-            //Deserialize as base type to get the opcode
-            GatewayMessageBase b = JsonConvert.DeserializeObject<GatewayMessageBase>(msg);
-
-            //Now, let it be handled like normal.
-            handler.HandleMsg(b.opcode, msg, this);
-
-            //Return OK
-            return Task.FromResult<bool>(true);
+            throw new NotImplementedException();
         }
 
         public override Task<bool> OnClose(WebSocketCloseStatus? status)
