@@ -41,6 +41,7 @@ namespace ArkWebMapGateway.Clients
             //Start
             MasterServerGatewayConnection conn = new MasterServerGatewayConnection();
             conn.handler = new MasterServerGatewayHandler(conn);
+            conn.OnSetHandler(conn.handler);
             await conn.Run(e, () =>
             {
                 //Attach

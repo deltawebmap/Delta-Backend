@@ -65,9 +65,11 @@ namespace ArkHttpServer.Entities
             List<SteamProfile> tribeProfiles = Tools.SteamIdLookup.MassFetchPlayerData(idsToDownload).GetAwaiter().GetResult();
             foreach(var p in tribeProfiles)
             {
-                //Find the index of this in the IDs to download, as that'll match the player index
-                int index = idsToDownload.IndexOf(p.steamid);
-                player_characters[index].steamProfile = p;
+                foreach(var t in player_characters)
+                {
+                    if (t.profile.steamPlayerId == p.steamid)
+                        t.steamProfile = p;
+                }
             }
         }
     }
@@ -165,6 +167,7 @@ namespace ArkHttpServer.Entities
 
         public ArkPlayerProfile profile;
         public SteamProfile steamProfile; //This will be set outside of our constructor
+        public bool is_alive;
 
         public MinifiedBasicArkPlayerCharacter(ArkPlayer player, ArkWorld w, ref List<string> idsToFetch)
         {
@@ -178,6 +181,7 @@ namespace ArkHttpServer.Entities
 
             //Copy
             profile = player.GetPlayerProfile();
+            is_alive = player.isAlive;
         }
     }
 }

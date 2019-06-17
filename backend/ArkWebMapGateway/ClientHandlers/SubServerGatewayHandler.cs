@@ -9,7 +9,7 @@ namespace ArkWebMapGateway.ClientHandlers
     {
         public SubServerGatewayConnection connection;
 
-        public SubServerGatewayHandler(SubServerGatewayConnection conn)
+        public SubServerGatewayHandler(SubServerGatewayConnection conn) : base()
         {
             this.connection = conn;
         }

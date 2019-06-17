@@ -11,9 +11,12 @@ namespace ArkWebMapGateway
 {
     class Program
     {
+        static Random rand;
+
         static void Main(string[] args)
         {
             Console.WriteLine("Starting ArkWebMap WebSocket Gateway...");
+            rand = new Random();
             MainAsync().GetAwaiter().GetResult();
         }
 
@@ -36,7 +39,10 @@ namespace ArkWebMapGateway
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseWebSockets();
+            app.UseWebSockets(new WebSocketOptions
+            {
+                ReceiveBufferSize = 1024 * 16
+            });
             app.Run(GatewayHttpHandler.OnHttpRequest);
         }
 
@@ -61,6 +67,21 @@ namespace ArkWebMapGateway
 
             //Deserialize
             return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(buffer));
+        }
+
+        public static string GenerateRandomString(int length)
+        {
+            return GenerateRandomStringCustom(length, "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM".ToCharArray());
+        }
+
+        public static string GenerateRandomStringCustom(int length, char[] chars)
+        {
+            string output = "";
+            for (int i = 0; i < length; i++)
+            {
+                output += chars[rand.Next(0, chars.Length)];
+            }
+            return output;
         }
     }
 }

@@ -17,6 +17,9 @@ namespace ArkWebMapGatewayClient
             {
                 case GatewayMessageOpcode.PingRequest: HandleMsgType<MessagePing>(Msg_PingRequest, msg, context); break;
                 case GatewayMessageOpcode.PingResponse: HandleMsgType<MessagePing>(Msg_PingResponse, msg, context); break;
+                case GatewayMessageOpcode.TribeMapInput: HandleMsgType<MessageMapDrawingInput>(Msg_TribeMapInput, msg, context); break;
+                case GatewayMessageOpcode.TribeMapFrontendOutput: HandleMsgType<MessageMapDrawingOutput>(Msg_TribeMapFrontendOutput, msg, context); break;
+                case GatewayMessageOpcode.SetSessionId: HandleMsgType<MessageSetSessionID>(Msg_SetSessionId, msg, context); break;
             }
         }
 
@@ -26,9 +29,11 @@ namespace ArkWebMapGatewayClient
             code(o, context);
         }
 
-        public void Msg_PingRequest(MessagePing data, object context) { }
-        public void Msg_PingResponse(MessagePing data, object context) { }
-
+        public virtual void Msg_PingRequest(MessagePing data, object context) { }
+        public virtual void Msg_PingResponse(MessagePing data, object context) { }
+        public virtual void Msg_TribeMapInput(MessageMapDrawingInput data, object context) { }
+        public virtual void Msg_TribeMapFrontendOutput(MessageMapDrawingOutput data, object context) { }
+        public virtual void Msg_SetSessionId(MessageSetSessionID data, object context) { }
     }
 
     public delegate void GatewayIncomingMessageCallback<T>(T data, object context);

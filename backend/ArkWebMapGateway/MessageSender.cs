@@ -40,6 +40,12 @@ namespace ArkWebMapGateway
 
         public static void SendMsgToTribe(GatewayMessageBase msg, string serverId, int tribeId)
         {
+            //Set headers
+            if (!msg.headers.ContainsKey("tribe_id"))
+                msg.headers.Add("tribe_id", tribeId.ToString());
+            if (!msg.headers.ContainsKey("server_id"))
+                msg.headers.Add("server_id", serverId);
+
             //Get the server data
             List<ArkSlaveReport_PlayerAccount> serverMembers = ServerDataHolder.GetServerMembers(serverId);
             var tribeMembers = serverMembers.Where(x => x.player_tribe_id == tribeId);

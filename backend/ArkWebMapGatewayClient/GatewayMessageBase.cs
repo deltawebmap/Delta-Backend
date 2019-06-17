@@ -14,6 +14,6 @@ namespace ArkWebMapGatewayClient
         /// <summary>
         /// Extra data
         /// </summary>
-        public Dictionary<string, string> headers;
+        public Dictionary<string, string> headers = new Dictionary<string, string>();
     }
 }

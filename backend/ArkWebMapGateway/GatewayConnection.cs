@@ -4,6 +4,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using ArkWebMapGatewayClient;
+using ArkWebMapGatewayClient.Messages;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -24,6 +25,16 @@ namespace ArkWebMapGateway
         public override Task<bool> OnClose(WebSocketCloseStatus? status)
         {
             return Task.FromResult<bool>(true);
+        }
+
+        public void OnSetHandler(GatewayHandler handler)
+        {
+            //Send set ID
+            SendMsg(new MessageSetSessionID
+            {
+                opcode = GatewayMessageOpcode.SetSessionId,
+                sessionId = handler.sessionId
+            });
         }
     }
 }

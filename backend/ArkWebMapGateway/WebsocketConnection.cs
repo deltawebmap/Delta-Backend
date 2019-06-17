@@ -34,11 +34,11 @@ namespace ArkWebMapGateway
             readyCallback();
             try
             {
-                byte[] buffer = new byte[1024 * 4];
+                byte[] buffer = new byte[1024 * 16];
                 WebSocketReceiveResult result = await sock.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                 OnOpen(e).GetAwaiter();
                 while (!result.CloseStatus.HasValue)
-                {
+                {                  
                     //Read buffer and call handler
                     string msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
                     OnMsg(msg).GetAwaiter();
@@ -56,7 +56,7 @@ namespace ArkWebMapGateway
 
         public async Task<bool> Close(byte[] reason)
         {
-            await sock.SendAsync(new ArraySegment<byte>(reason), WebSocketMessageType.Close, true, CancellationToken.None);
+            await sock.CloseAsync(WebSocketCloseStatus.Empty, "", CancellationToken.None);
             return true;
         }
 

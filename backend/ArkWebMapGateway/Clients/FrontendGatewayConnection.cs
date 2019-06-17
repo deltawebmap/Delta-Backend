@@ -1,9 +1,11 @@
 ﻿using ArkWebMapGateway.ClientHandlers;
+using ArkWebMapGateway.Entities;
 using ArkWebMapGatewayClient;
 using ArkWebMapMasterServer.NetEntities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.WebSockets;
 using System.Text;
@@ -44,6 +46,7 @@ namespace ArkWebMapGateway.Clients
                 
             };
             conn.handler = new FrontendGatewayHandler(conn);
+            conn.OnSetHandler(conn.handler);
 
             //Run
             await conn.Run(e, () =>
@@ -80,8 +83,28 @@ namespace ArkWebMapGateway.Clients
             //Deserialize as base type to get the opcode
             GatewayMessageBase b = JsonConvert.DeserializeObject<GatewayMessageBase>(msg);
 
+            //Get the required header
+            if (!b.headers.ContainsKey("server_id"))
+                return Task.FromResult(false);
+            string serverId = b.headers["server_id"];
+
+            //Find servers
+            var matches = user.servers.Where(x => x.id == serverId);
+            if (matches.Count() != 1)
+                return Task.FromResult(false);
+            UsersMeReply_Server server = matches.First();
+
+            //Create context
+            GatewayFrontendMsgMeta context = new GatewayFrontendMsgMeta
+            {
+                server = server,
+                server_id = server.id,
+                tribe_id = server.tribeId,
+                user_id = userId
+            };
+
             //Now, let it be handled like normal.
-            handler.HandleMsg(b.opcode, msg, this);
+            handler.HandleMsg(b.opcode, msg, context);
 
             //Return OK
             return Task.FromResult<bool>(true);

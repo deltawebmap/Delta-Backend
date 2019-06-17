@@ -15,6 +15,8 @@ namespace ArkWebMapGateway.Clients
         {
             //Start
             SubServerGatewayConnection conn = new SubServerGatewayConnection();
+            //Set handler
+            //conn.OnSetHandler(conn.handler);
             await conn.Run(e, () =>
             {
                 //Ready
