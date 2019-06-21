@@ -58,6 +58,12 @@ namespace ArkWebMapMasterServer.Services.Servers
                 {
                     return ServerPublishing.OnHttpRequest(e, server);
                 }
+                if(proxyUrl.StartsWith("maps"))
+                {
+                    if (!hasTribe)
+                        throw new StandardError("Could not find player tribe.", StandardErrorCode.NotPermitted);
+                    return ServerMaps.OnHttpRequest(e, server, tribeId, proxyUrl.Substring("maps".Length));
+                }
                 if(proxyUrl == "offline_data")
                 {
                     //Send back their offline tribe data, if they're in a tribe

@@ -45,35 +45,28 @@ namespace ArkWebMapGateway.Clients
             await conn.Run(e, () =>
             {
                 //Attach
-                if (ConnectionHolder.master == null)
+                ConnectionHolder.master = conn;
+                Console.WriteLine("Attached master server.");
+
+                //Send queued messages
+                Console.WriteLine("Sending " + MessageSender.masterQueue.Count + " pending messages to master server...");
+                lock(MessageSender.masterQueue)
                 {
-                    ConnectionHolder.master = conn;
-                } else
-                {
-                    lock (ConnectionHolder.master)
+                    while(MessageSender.masterQueue.Count > 0)
                     {
-                        ConnectionHolder.master.DisconectOld().GetAwaiter().GetResult();
-                        ConnectionHolder.master = conn;
+                        conn.SendMsg(MessageSender.masterQueue.Dequeue());
                     }
                 }
-                Console.WriteLine("Attached.");
+                Console.WriteLine("Sent pending messages to master server!");
             });
 
             return conn;
         }
 
-        /// <summary>
-        /// Disconnects an old master server if it was running for some reason.
-        /// </summary>
-        /// <returns></returns>
-        public async Task DisconectOld()
-        {
-            await Close(new byte[0]);
-        }
-
         public override Task<bool> OnClose(WebSocketCloseStatus? status)
         {
-            lock(ConnectionHolder.master)
+            Console.WriteLine("Connection to master server closed.");
+            lock (ConnectionHolder.master)
             {
                 //Remove this client from the binder
                 if (ConnectionHolder.master == this)

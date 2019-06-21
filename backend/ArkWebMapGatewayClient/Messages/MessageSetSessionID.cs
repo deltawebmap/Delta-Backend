@@ -6,6 +6,6 @@ namespace ArkWebMapGatewayClient.Messages
 {
     public class MessageSetSessionID : GatewayMessageBase
     {
-        public string sessionId;
+        public string sessionId { get; set; }
     }
 }

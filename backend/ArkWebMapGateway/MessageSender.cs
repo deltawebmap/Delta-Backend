@@ -27,6 +27,11 @@ namespace ArkWebMapGateway
 
         public static void SendMsgToUserSteamID(GatewayMessageBase msg, string steamId)
         {
+            SendMsgToUserSteamID(JsonConvert.SerializeObject(msg), steamId);
+        }
+
+        public static void SendMsgToUserSteamID(string msg, string steamId)
+        {
             //Loop through and send
             lock (ConnectionHolder.users)
             {
@@ -46,6 +51,14 @@ namespace ArkWebMapGateway
             if (!msg.headers.ContainsKey("server_id"))
                 msg.headers.Add("server_id", serverId);
 
+            //Send
+            SendMsgToTribe(JsonConvert.SerializeObject(msg), serverId, tribeId);
+        }
+
+        public static void SendMsgToTribe(string msg, string serverId, int tribeId)
+        {
+            //WARNING: Ensure the tribe_id and server_id headers are added before sending this message.
+
             //Get the server data
             List<ArkSlaveReport_PlayerAccount> serverMembers = ServerDataHolder.GetServerMembers(serverId);
             var tribeMembers = serverMembers.Where(x => x.player_tribe_id == tribeId);
@@ -53,7 +66,27 @@ namespace ArkWebMapGateway
                 SendMsgToUserSteamID(msg, t.player_steam_id);
         }
 
+        public static Queue<GatewayMessageBase> masterQueue = new Queue<GatewayMessageBase>(); //Stores messages to send to the master server while it is offline.
+        public static void SendMsgToMasterServer(GatewayMessageBase msg)
+        {
+            //If the master is currently connected, send the messages
+            if(ConnectionHolder.master != null)
+            {
+                //Send
+                InternalQueueMsg(msg, ConnectionHolder.master);
+            } else
+            {
+                //Queue
+                masterQueue.Enqueue(msg);
+            }
+        }
+
         private static void InternalQueueMsg(GatewayMessageBase msg, GatewayConnection conn)
+        {
+            conn.SendMsg(msg);
+        }
+
+        private static void InternalQueueMsg(string msg, GatewayConnection conn)
         {
             conn.SendMsg(msg);
         }

@@ -6,8 +6,8 @@ namespace ArkWebMapGatewayClient.Messages.Entities
 {
     public class ArkTribeMapDrawingPoint
     {
-        public float ex; //Pos X
-        public float ey; //Pos Y
-        public bool n; //Is new
+        public float ex { get; set; } //Pos X
+        public float ey { get; set; } //Pos Y
+        public bool n { get; set; } //Is new
     }
 }

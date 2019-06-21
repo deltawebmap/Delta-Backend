@@ -56,15 +56,15 @@ namespace ArkWebMapMasterServer
                     //This is the setup proxy for communicating with up-and-coming servers.
                     return Services.Misc.ArkSetupProxy.OnObtainCode(e);
                 }
-                if (path.StartsWith("/ark_interface/"))
-                {
-                    //ARK interface from an Ark server. Take care.
-                    return Services.ArkInterface.ArkInterfaceHttpHandler.OnHttpRequest(e, path.Substring("/ark_interface/".Length));
-                }
                 if (path.StartsWith("/discover/"))
                 {
                     //ARK interface from an Ark server. Take care.
                     return Services.ServerDiscovery.ServerDiscoveryHttpHandler.OnHttpRequest(e, path.Substring("/discover/".Length));
+                }
+                if (path == "/mirror/events")
+                {
+                    //ARK interface from an Ark server. Take care.
+                    return Services.Mirror.MirrorService.OnHttpRequest(e);
                 }
 
                 //Unknown

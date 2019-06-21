@@ -7,8 +7,8 @@ namespace ArkWebMapGatewayClient.Messages
 {
     public class MessageMapDrawingOutput : GatewayMessageBase
     {
-        public List<ArkTribeMapDrawingPoint> points;
-        public int mapId;
-        public string senderSessionId;
+        public List<ArkTribeMapDrawingPoint> points { get; set; }
+        public int mapId { get; set; }
+        public string senderSessionId { get; set; }
     }
 }

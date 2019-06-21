@@ -117,6 +117,9 @@ namespace ArkHttpServer
             //Compute item dict
             Dictionary<string, ArkItemSearchResultsItem> itemDict = ComputeItemDictCache(world, world.dinos);
 
+            //Gather info for the Ark Web Map Mirror plugin
+            MirrorPlugin.OnMapSave(world);
+
             //Set values
             current_world = world;
             item_dict_cache = itemDict;

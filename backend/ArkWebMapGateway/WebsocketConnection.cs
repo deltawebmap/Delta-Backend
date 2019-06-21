@@ -37,14 +37,20 @@ namespace ArkWebMapGateway
                 byte[] buffer = new byte[1024 * 16];
                 WebSocketReceiveResult result = await sock.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                 OnOpen(e).GetAwaiter();
-                while (!result.CloseStatus.HasValue)
-                {                  
-                    //Read buffer and call handler
-                    string msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    OnMsg(msg).GetAwaiter();
+                try
+                {
+                    while (!result.CloseStatus.HasValue)
+                    {
+                        //Read buffer and call handler
+                        string msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                        OnMsg(msg).GetAwaiter();
 
-                    //Get next result
-                    result = await sock.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                        //Get next result
+                        result = await sock.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                    }
+                }
+                catch (Exception ex) {
+                    Console.WriteLine("Shutting down connection because of an error: " + ex.Message + ex.StackTrace);
                 }
                 await sock.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
                 await OnClose(result.CloseStatus);

@@ -35,6 +35,17 @@ namespace ArkWebMapGateway.ClientHandlers
                 senderSessionId = sessionId
             };
             MessageSender.SendMsgToTribe(e, meta.server_id, meta.tribe_id);
+
+            //Send to master server
+            MessageMapDrawingMaster em = new MessageMapDrawingMaster
+            {
+                map_id = data.mapId,
+                points = data.points,
+                server_id = meta.server_id,
+                tribe_id = meta.tribe_id,
+                opcode = GatewayMessageOpcode.TribeMapBackendOutput
+            };
+            MessageSender.SendMsgToMasterServer(em);
         }
     }
 }

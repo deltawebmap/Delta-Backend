@@ -6,6 +6,6 @@ namespace ArkWebMapGatewayClient.Messages
 {
     public class MessagePing : GatewayMessageBase
     {
-        public string data;
+        public string data { get; set; }
     }
 }

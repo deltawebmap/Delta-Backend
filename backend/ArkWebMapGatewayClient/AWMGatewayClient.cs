@@ -99,6 +99,14 @@ namespace ArkWebMapGatewayClient
         }
 
         /// <summary>
+        /// Queues a message
+        /// </summary>
+        public void SendMessage(GatewayMessageBase msg)
+        {
+            txQueue.Enqueue(msg);
+        }
+
+        /// <summary>
         /// Creates URL params for HTTP requests with the client info
         /// </summary>
         /// <returns></returns>
@@ -211,7 +219,7 @@ namespace ArkWebMapGatewayClient
                 }
                 catch (Exception ex)
                 {
-                    LogMsg("RxBgThread", "Unexpected fatal error, dropping: " + ex.Message);
+                    LogMsg("RxBgThread", "Unexpected fatal error, dropping: " + ex.Message + ex.StackTrace);
                     OnShutdown();
                 }
             }

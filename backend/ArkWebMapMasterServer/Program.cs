@@ -15,9 +15,11 @@ namespace ArkWebMapMasterServer
     class Program
     {
         public static LiteDatabase db;
+        public static LiteDatabase map_db;
         public static AWMGatewayClient gateway;
         public static MasterServerConfig config;
         public static Random rand = new Random();
+        public static Gateway.GatewayHandler gatewayHandler;
         public const string PREFIX_URL = "https://ark.romanport.com/api";
 
         static void Main(string[] args)
@@ -27,13 +29,11 @@ namespace ArkWebMapMasterServer
 
             Console.WriteLine("Starting Database...");
             db = new LiteDatabase(config.database_pathname);
-
-            Console.WriteLine("Test...");
-            Console.WriteLine(SnowflakeGenerator.GenerateSnowflake(DateTime.UtcNow, 0));
-            Console.ReadLine();
+            map_db = new LiteDatabase(config.map_database_pathname);
 
             Console.WriteLine("Connecting to GATEWAY...");
-            gateway = AWMGatewayClient.CreateClient(GatewayClientType.MasterServer, "master", "", 1, 0, true, null, config.system_server_keys["master"]);
+            gatewayHandler = new Gateway.GatewayHandler();
+            gateway = AWMGatewayClient.CreateClient(GatewayClientType.MasterServer, "master", "", 1, 0, true, gatewayHandler, config.system_server_keys["master"]);
 
             Console.WriteLine("Starting Kestrel...");
             MainAsync().GetAwaiter().GetResult();
