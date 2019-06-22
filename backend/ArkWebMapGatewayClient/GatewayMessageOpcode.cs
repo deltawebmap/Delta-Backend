@@ -13,6 +13,7 @@ namespace ArkWebMapGatewayClient
         SetSessionId = 4,
         TribeMapBackendOutput = 5,
         EchoToTribe = 6,
-        OnDrawableMapChange = 7
+        OnDrawableMapChange = 7,
+        RealtimeMapMovement = 8
     }
 }

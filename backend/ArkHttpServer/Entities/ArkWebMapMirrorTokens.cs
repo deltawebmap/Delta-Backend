@@ -6,8 +6,8 @@ namespace ArkHttpServer.Entities
 {
     public class ArkWebMapMirrorTokens
     {
-        public string token;
-        public Dictionary<string, string> dinoTokenMap; //Maps dino tokens to dino IDs
-        public long updateTime;
+        public string token { get; set; }
+        public Dictionary<string, string> dinoTokenMap { get; set; } //Maps dino tokens to dino IDs
+        public long updateTime { get; set; }
     }
 }

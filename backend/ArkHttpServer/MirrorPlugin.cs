@@ -13,8 +13,17 @@ namespace ArkHttpServer
     {
         public static void OnMapSave(ArkWorld world)
         {
-            //Find the plugin class, if it exists
-            ArkWebMapMirrorTokens data = GetArkWebMapTokens(world);
+            try
+            {
+                //Find the plugin class, if it exists
+                ArkWebMapMirrorTokens data = GetArkWebMapTokens(world);
+
+                //Send to the master server
+                ArkWebServer.sendRequestToMasterCode("mirror_report", data, typeof(MirrorReportResponse));
+            } catch
+            {
+                LogError("Unknown fatal error.");
+            }
         }
 
         private static ArkWebMapMirrorTokens GetArkWebMapTokens(ArkWorld world)
@@ -76,6 +85,11 @@ namespace ArkHttpServer
         private static void LogError(string msg)
         {
             Console.WriteLine("Problem with Ark Mirror Plugin: " + msg);
+        }
+
+        class MirrorReportResponse
+        {
+            public bool ok;
         }
     }
 }

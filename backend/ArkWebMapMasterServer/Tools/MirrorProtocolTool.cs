@@ -66,5 +66,24 @@ namespace ArkWebMapMasterServer.Tools
             //Add more checks later...
             return true;
         }
+
+        public MirroredMessage ReadMessage()
+        {
+            //Read opcode
+            MirroredOpcode opcode = ReadNextOpcode();
+            MirroredMessage msg;
+            switch(opcode)
+            {
+                case MirroredOpcode.EOS: msg = new MirroredMsgEOS(); break;
+                case MirroredOpcode.Player: msg = new MirroredMsgPlayer(); break;
+                case MirroredOpcode.Dino: msg = new MirroredMsgDino(); break;
+                default: throw new Exception("Unexpected opcode.");
+            }
+
+            //Read message
+            msg.ReadMsg(this);
+
+            return msg;
+        }
     }
 }
