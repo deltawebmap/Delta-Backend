@@ -1,4 +1,6 @@
-﻿using ArkWebMapMasterServer.PresistEntities;
+﻿using ArkWebMapGatewayClient.Messages;
+using ArkWebMapGatewayClient.Messages.Entities;
+using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Tools;
 using System;
 using System.Collections.Generic;
@@ -14,9 +16,9 @@ namespace ArkWebMapMasterServer.MirrorEntities
             opcode = MirroredOpcode.EOS;
         }
 
-        public override void ProcessMsg(ArkServer s, ArkMirrorToken auth)
+        public override Tuple<UpdateEntityRealtimePosition, int> ProcessMsg(ArkServer s, ArkMirrorToken auth)
         {
-            
+            return null;
         }
     }
 }

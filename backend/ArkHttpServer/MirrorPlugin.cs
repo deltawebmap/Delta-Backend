@@ -18,11 +18,20 @@ namespace ArkHttpServer
                 //Find the plugin class, if it exists
                 ArkWebMapMirrorTokens data = GetArkWebMapTokens(world);
 
+                //Log
+                if(data != null)
+                {
+                    Console.WriteLine("Submitted mod token " + data.token + " with " + data.dinoTokenMap.Keys.Count + " map entries.");
+                } else
+                {
+                    Console.WriteLine("No mod token found.");
+                }
+
                 //Send to the master server
                 ArkWebServer.sendRequestToMasterCode("mirror_report", data, typeof(MirrorReportResponse));
-            } catch
+            } catch (Exception ex)
             {
-                LogError("Unknown fatal error.");
+                LogError("Unknown fatal error; "+ex.Message+ex.StackTrace);
             }
         }
 
@@ -42,7 +51,8 @@ namespace ArkHttpServer
             //Now, gather info from inside of the class
             string token = (string)data.GetPropByName<StrProperty>("token").data;
             var refs = data.GetPropByName<ArrayProperty<ObjectProperty>>("dinoRefs");
-            var refsTokens = data.GetPropByName<ArrayProperty<StrProperty>>("dinoRefsToken");
+            var refsTokensRaw = data.GetPropByName("dinoRefsToken");
+            var refsToken = (ArrayProperty<string>)refsTokensRaw;
 
             //Put it into our own data class
             ArkWebMapMirrorTokens output = new ArkWebMapMirrorTokens
@@ -51,7 +61,7 @@ namespace ArkHttpServer
                 dinoTokenMap = new Dictionary<string, string>(),
                 updateTime = DateTime.UtcNow.Ticks
             };
-            if (refs.items.Count != refsTokens.items.Count)
+            if (refs.items.Count != refsToken.items.Count)
             {
                 LogError("Dino token length mismatch.");
                 return null;
@@ -59,7 +69,7 @@ namespace ArkHttpServer
             for(int i = 0; i<refs.items.Count; i++)
             {
                 DotArkGameObject r = refs.items[i].gameObjectRef;
-                string t = (string)refs.items[i].data;
+                string t = refsToken.items[i];
                 string id = GetDinoId(r);
                 output.dinoTokenMap.Add(t, id);
             }
