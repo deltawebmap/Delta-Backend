@@ -39,7 +39,7 @@ namespace ArkHttpServer
                 }
 
                 //Since we don't have to worry about permissions or anything, we'll just have a list of services created at compile time.
-                string pathname = e.endpoint.ToLower().Substring("/api".Length);
+                string pathname = e.endpoint.ToLower();
 
                 //Handle things that are not map specific
                 if (pathname.StartsWith("/create_session"))

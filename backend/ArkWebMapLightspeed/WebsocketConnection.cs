@@ -36,14 +36,38 @@ namespace ArkWebMapLightspeed
             try
             {
                 byte[] buffer = new byte[1024 * 4];
+                List<byte> extendedBuffer = null;
                 WebSocketReceiveResult result = await sock.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                 OnOpen(e).GetAwaiter();
                 while (!result.CloseStatus.HasValue)
                 {
-                    //Read buffer and call handler
-                    byte[] msgBuffer = new byte[result.Count];
-                    Array.Copy(buffer, msgBuffer, result.Count);
-                    OnMsg(msgBuffer).GetAwaiter();
+                    if(result.EndOfMessage)
+                    {
+                        //If the extended buffer was used, send that, or just respond with this
+                        if(extendedBuffer == null)
+                        {
+                            byte[] msgBuffer = new byte[result.Count];
+                            Array.Copy(buffer, msgBuffer, result.Count);
+                            OnMsg(msgBuffer).GetAwaiter();
+                        } else
+                        {
+                            //Copy this, then return the extended buffer
+                            for (int i = 0; i < result.Count; i++)
+                                extendedBuffer.Add(buffer[i]);
+                            byte[] msgBuffer = extendedBuffer.ToArray();
+                            extendedBuffer.Clear();
+                            extendedBuffer = null;
+                            OnMsg(msgBuffer).GetAwaiter();
+                        }
+                        
+                    } else
+                    {
+                        //Write to extended buffer
+                        if (extendedBuffer == null)
+                            extendedBuffer = new List<byte>();
+                        for (int i = 0; i < result.Count; i++)
+                            extendedBuffer.Add(buffer[i]);
+                    }
 
                     //Get next result
                     result = await sock.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);

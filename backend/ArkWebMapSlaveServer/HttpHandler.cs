@@ -20,20 +20,9 @@ namespace ArkWebMapSlaveServer
                 //Authenticate the user
                 MasterServerArkUser user = e.auth;
 
-                //Read the first part of the path.
-                string path = e.endpoint.ToString();
-                if (path.StartsWith("/bridge/"))
-                {
-                    //Pass onto this part
-                    await Services.Bridge.BridgeClientHttpHandler.OnHttpRequest(e, path.Substring("/bridge/".Length));
-                    return;
-                }
-                if (path.StartsWith("/api/"))
-                {
-                    //This is a proxy-ed request. Redirect
-                    await ArkHttpServer.ArkWebServer.OnHttpRequest(e, user);
-                    return;
-                }
+                //Handle
+                await ArkHttpServer.ArkWebServer.OnHttpRequest(e, user);
+                return;
 
                 //Unknown
                 throw new StandardError("Not Found", StandardErrorCode.NotFound);
