@@ -13,6 +13,9 @@ namespace ArkWebMapLightspeed
     {
         public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e)
         {
+            //Add server header
+            e.Response.Headers.Add("Server", "ArkWebMap LIGHTSPEED Proxy");
+            
             //If this is a WebSocket request, assume this is for a server.
             if(e.WebSockets.IsWebSocketRequest)
             {
@@ -28,7 +31,7 @@ namespace ArkWebMapLightspeed
                     return;
                 }
                 string id = split[1];
-                string next = path.Substring(2 + id.Length);
+                string next = path.Substring(1 + id.Length);
                 await HandleProxyRequest(e, id, next);
 
             }
@@ -89,6 +92,13 @@ namespace ArkWebMapLightspeed
             }
 
             //Let the websocket handle the request
+            try
+            {
+                await connection.HandleHttpRequest(e, user, next);
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message + ex.StackTrace);
+            }
         }
     }
 }

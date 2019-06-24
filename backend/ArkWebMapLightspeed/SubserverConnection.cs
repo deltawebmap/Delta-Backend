@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
+using ArkWebMapLightspeedClient.Entities;
+using ArkWebMapMasterServer.NetEntities;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -93,9 +97,40 @@ namespace ArkWebMapLightspeed
 
         public override Task OnMsg(byte[] msg)
         {
-            SendMsg(msg);
+            try
+            {
+                //Read the token, status, and length of the response
+                int token = BinaryIntEncoder.BytesToInt32(msg, 0);
+                int status = BinaryIntEncoder.BytesToInt32(msg, 4);
+                int bodyLength = BinaryIntEncoder.BytesToInt32(msg, 8);
+                int headerLength = BinaryIntEncoder.BytesToInt32(msg, 12);
 
-            return Task.CompletedTask;
+                //Read header
+                byte[] header = new byte[headerLength];
+                Array.Copy(msg, 16, header, 0, headerLength);
+
+                //Read body
+                byte[] body = new byte[bodyLength];
+                Array.Copy(msg, 16 + headerLength, body, 0, bodyLength);
+
+                //Get this from the pending requests
+                if (!pendingRequests.TryGetValue(token, out PendingRequest request))
+                    return Task.CompletedTask;
+
+                //Respond
+                request.e.Response.StatusCode = status;
+                request.e.Response.ContentType = Encoding.UTF8.GetString(header);
+                request.e.Response.Body.Write(body, 0, bodyLength);
+
+                //Remove from pending requests
+                pendingRequests.TryRemove(token, out request);
+
+                return Task.CompletedTask;
+            } catch (Exception ex)
+            {
+                Console.WriteLine("Failed to process incoming response: " + ex.Message + ex.StackTrace);
+                return Task.CompletedTask;
+            }
         }
 
         public override Task OnOpen(HttpContext e)
@@ -106,6 +141,73 @@ namespace ArkWebMapLightspeed
         public override Task OnClose(WebSocketCloseStatus? status)
         {
             return Task.CompletedTask;
+        }
+
+        public int nextToken = 0;
+        public ConcurrentDictionary<int, PendingRequest> pendingRequests = new ConcurrentDictionary<int, PendingRequest>();
+
+        public async Task HandleHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, UsersMeReply user, string nextEndpoint)
+        {
+            //Create user
+            MasterServerArkUser authUser = new MasterServerArkUser
+            {
+                id = user.id,
+                is_steam_verified = true,
+                profile_image_url = user.profile_image_url,
+                screen_name = user.screen_name,
+                servers = null,
+                steam_id = user.steam_id
+            };
+
+            //Obtain token
+            int token = nextToken++;
+
+            //Create metadata
+            RequestMetadata meta = new RequestMetadata
+            {
+                auth = authUser,
+                endpoint = nextEndpoint,
+                method = e.Request.Method,
+                requestToken = token,
+                version = 0
+            };
+
+            //Encode metadata as JSON and then encode the body (if sent)
+            string metaString = JsonConvert.SerializeObject(meta);
+            byte[] metaBytes = Encoding.UTF8.GetBytes(metaString);
+
+            //Get the body
+            byte[] body;
+            if(e.Request.ContentLength.HasValue)
+            {
+                body = new byte[e.Request.ContentLength.Value];
+                e.Request.Body.Read(body, 0, body.Length);
+            } else
+            {
+                body = new byte[0];
+            }
+
+            //Encode the message content
+            byte[] content = new byte[4 + metaBytes.Length + 4 + body.Length];
+            BinaryIntEncoder.Int32ToBytes(metaBytes.Length).CopyTo(content, 0);
+            metaBytes.CopyTo(content, 4);
+            BinaryIntEncoder.Int32ToBytes(body.Length).CopyTo(content, metaBytes.Length + 4);
+            body.CopyTo(content, metaBytes.Length + 8);
+
+            //Insert to awaiting
+            PendingRequest request = new PendingRequest
+            {
+                e = e,
+                token = token
+            };
+            pendingRequests.TryAdd(token, request);
+
+            //Now, send on the WebSocket
+            SendMsg(content);
+
+            //Stall
+            while (pendingRequests.ContainsKey(token))
+                await Task.Delay(10);
         }
     }
 }

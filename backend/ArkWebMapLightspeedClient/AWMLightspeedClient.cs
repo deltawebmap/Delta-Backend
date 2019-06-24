@@ -1,4 +1,4 @@
-﻿using ArkWebMapGatewayClient.Messages;
+﻿using ArkWebMapLightspeedClient.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -10,31 +10,26 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace ArkWebMapGatewayClient
+namespace ArkWebMapLightspeedClient
 {
-    public class AWMGatewayClient
+    public delegate Task LightspeedHandler(LightspeedRequest request);
+    public class AWMLightspeedClient
     {
-        public const string REMOTE_CONFIG_ENDPOINT = "https://ark.romanport.com/config/gateway_config.json";
-        public const int CLIENT_LIB_VERSION_MAJOR = 1;
-        public const int CLIENT_LIB_VERSION_MINOR = 0;
+        public const string REMOTE_CONFIG_ENDPOINT = "https://ark.romanport.com/config/lightspeed_config.json";
 
-        public GatewayClientType connectionType;
-
-        public string client_name;
-        public string client_name_extra;
-        public int client_version_major;
-        public int client_version_minor;
         public bool logging_enabled;
-        public string token;
-        public GatewayMessageHandler handler;
+        public string clientId;
+        public string clientToken;
+        public int clientGame;
+        public LightspeedHandler handler;
 
-        private GatewayConfigFile config;
+        private LightspeedConfigFile config;
 
         private ClientWebSocket sock;
         private Thread rxThread;
         private Thread txThread;
 
-        private Queue<GatewayMessageBase> txQueue;
+        private Queue<byte[]> txQueue;
         private System.Timers.Timer retryTimer;
 
         public bool is_connected;
@@ -48,20 +43,17 @@ namespace ArkWebMapGatewayClient
         /// <param name="client_version_major"></param>
         /// <param name="client_version_minor"></param>
         /// <returns></returns>
-        public static AWMGatewayClient CreateClient(GatewayClientType type, string client_name, string client_name_extra, int client_version_major, int client_version_minor, bool logging_enabled, GatewayMessageHandler handler, string token)
+        public static AWMLightspeedClient CreateClient(string clientId, string clientToken, int clientGame, LightspeedHandler handler, bool logging_enabled)
         {
             //Create object and add args
-            AWMGatewayClient client = new AWMGatewayClient
+            AWMLightspeedClient client = new AWMLightspeedClient
             {
-                connectionType = type,
-                client_name = client_name,
-                client_name_extra = client_name_extra,
-                client_version_major = client_version_major,
-                client_version_minor = client_version_minor,
+                clientId = clientId,
+                clientToken = clientToken,
+                clientGame = clientGame,
                 logging_enabled = logging_enabled,
                 handler = handler,
-                txQueue = new Queue<GatewayMessageBase>(),
-                token = token
+                txQueue = new Queue<byte[]>(),
             };
 
             //Make a request to the client config endpoint to download the remote configuration file
@@ -69,12 +61,13 @@ namespace ArkWebMapGatewayClient
             try
             {
                 using (WebClient wc = new WebClient())
-                    configText = wc.DownloadString(REMOTE_CONFIG_ENDPOINT + client.CreateUrlParams());
-            } catch (Exception ex)
+                    configText = wc.DownloadString(REMOTE_CONFIG_ENDPOINT);
+            }
+            catch (Exception ex)
             {
                 throw new Exception("Failed to download remote configuration file.");
             }
-            GatewayConfigFile config = JsonConvert.DeserializeObject<GatewayConfigFile>(configText);
+            LightspeedConfigFile config = JsonConvert.DeserializeObject<LightspeedConfigFile>(configText);
             client.config = config;
 
             //Try to make a connection.
@@ -101,35 +94,9 @@ namespace ArkWebMapGatewayClient
         /// <summary>
         /// Queues a message
         /// </summary>
-        public void SendMessage(GatewayMessageBase msg)
+        public void SendMessage(byte[] msg)
         {
             txQueue.Enqueue(msg);
-        }
-
-        /// <summary>
-        /// Creates URL params for HTTP requests with the client info
-        /// </summary>
-        /// <returns></returns>
-        public string CreateUrlParams()
-        {
-            return $"?clientName={HttpUtility.UrlEncode(client_name)}&clientNameExtra={HttpUtility.UrlEncode(client_name_extra)}&clientVersionMajor={client_version_major}&clientVersionMinor={client_version_minor}&clientLibVersionMajor={CLIENT_LIB_VERSION_MAJOR}&clientLibVersionMinor={CLIENT_LIB_VERSION_MINOR}&auth_token={token}";
-        }
-
-        /// <summary>
-        /// Converts the type we got into the endpoint name for the GATEWAY. REQUIRES the config file
-        /// </summary>
-        /// <returns></returns>
-        public string GetEndpointPathname()
-        {
-            if (config == null)
-                throw new Exception("Config file is null.");
-            switch(connectionType)
-            {
-                case GatewayClientType.Frontend: return config.gateway_endpoints.frontend;
-                case GatewayClientType.MasterServer: return config.gateway_endpoints.master;
-                case GatewayClientType.SubServer: return config.gateway_endpoints.subserver;
-            }
-            throw new Exception("Unexpected GatewayClientType.");
         }
 
         /// <summary>
@@ -139,8 +106,8 @@ namespace ArkWebMapGatewayClient
         private async Task TryMakeConnection()
         {
             //Try and make a connection.
-            LogMsg("TryMakeConnection", "Attempting connection to GATEWAY.");
-            LogMsg("TryMakeConnection", "GATEWAY connection params: "+CreateGatewayURI().ToString());
+            LogMsg("TryMakeConnection", "Attempting connection to LIGHTSPEED.");
+            LogMsg("TryMakeConnection", "LIGHTSPEED connection params: " + CreateGatewayURI().ToString());
             try
             {
                 await CreateConnection();
@@ -150,7 +117,8 @@ namespace ArkWebMapGatewayClient
                 if (retryTimer != null)
                     retryTimer.Stop();
                 retryTimer = null;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 //Failed. If we haven't started the retry timer, try
                 LogMsg("TryMakeConnection", "Connection to GATEWAY failed.");
@@ -176,7 +144,7 @@ namespace ArkWebMapGatewayClient
         /// <returns></returns>
         private Uri CreateGatewayURI()
         {
-            Uri uri = new Uri($"{config.gateway_proto}://{config.gateway_host}/v{CLIENT_LIB_VERSION_MAJOR}/{GetEndpointPathname()}{CreateUrlParams()}");
+            Uri uri = new Uri(config.server_endpoint.Replace("{clientId}", WebUtility.UrlEncode(clientId)).Replace("{clientToken}", WebUtility.UrlEncode(clientToken)).Replace("{clientGame}", clientGame.ToString()));
             return uri;
         }
 
@@ -205,16 +173,17 @@ namespace ArkWebMapGatewayClient
                     WebSocketReceiveResult ar = sock.ReceiveAsync(new ArraySegment<byte>(buf), CancellationToken.None).GetAwaiter().GetResult();
                     if (ar.MessageType == WebSocketMessageType.Close)
                         OnShutdown();
-                    else if (ar.MessageType == WebSocketMessageType.Binary)
-                    {
-                        //Binary messages are not supported. Drop.
-                        LogMsg("RxBgThread", "Binary messagesa are not supported. Are you sure we're talking to the right server?");
-                    }
                     else if (ar.MessageType == WebSocketMessageType.Text)
                     {
+                        //Binary messages are not supported. Drop.
+                        LogMsg("RxBgThread", "Text messages are not supported. Are you sure we're talking to the right server?");
+                    }
+                    else if (ar.MessageType == WebSocketMessageType.Binary)
+                    {
                         //Expected this. Handle.
-                        string msg = Encoding.UTF8.GetString(buf, 0, ar.Count);
-                        OnMsgRx(msg);
+                        byte[] bufInput = new byte[ar.Count];
+                        Array.Copy(buf, bufInput, ar.Count);
+                        OnMsgRx(bufInput);
                     }
                 }
                 catch (Exception ex)
@@ -231,16 +200,11 @@ namespace ArkWebMapGatewayClient
             {
                 while (!is_connected)
                     Thread.Sleep(2);
-                if (txQueue.TryDequeue(out GatewayMessageBase msg))
+                if (txQueue.TryDequeue(out byte[] msg))
                 {
                     try
                     {
-                        //Serialize msg
-                        string msgPayload = JsonConvert.SerializeObject(msg);
-                        byte[] msgSer = Encoding.UTF8.GetBytes(msgPayload);
-                        LogMsg("TxBgThread", "Sending message with opcode " + msg.opcode.ToString() + " (" + (int)msg.opcode + ") and size " + msgSer.Length + ".");
-                        LogMsg("TxBgThread", "Message payload: " + msgPayload);
-                        sock.SendAsync(new ArraySegment<byte>(msgSer), WebSocketMessageType.Text, true, CancellationToken.None);
+                        sock.SendAsync(new ArraySegment<byte>(msg), WebSocketMessageType.Binary, true, CancellationToken.None);
                     }
                     catch (Exception ex)
                     {
@@ -270,17 +234,35 @@ namespace ArkWebMapGatewayClient
             TryMakeConnection();
         }
 
-        private void OnMsgRx(string msg)
+        private void OnMsgRx(byte[] msg)
         {
-            //First, deserialize and get the opcode.
-            GatewayMessageBase b = JsonConvert.DeserializeObject<GatewayMessageBase>(msg);
-
             //Log
-            LogMsg("OnMsgRx", "Got incoming message with opcode " + b.opcode.ToString() + " (" + (int)b.opcode + ")");
-            LogMsg("OnMsgRx", "Message payload: " + msg);
+            LogMsg("OnMsgRx", "Got incoming message.");
+
+            //Read the data
+            Console.WriteLine(msg.Length);
+            int headerLength = BinaryIntEncoder.BytesToInt32(msg, 0);
+            int bodyLength = BinaryIntEncoder.BytesToInt32(msg, 4 + headerLength);
+            byte[] headerBytes = new byte[headerLength];
+            byte[] bodyBytes = new byte[bodyLength];
+            Array.Copy(msg, 4, headerBytes, 0, headerLength);
+            Array.Copy(msg, 4 + headerLength + 4, bodyBytes, 0, bodyLength);
+
+            //Deserialize header
+            RequestMetadata metadata = JsonConvert.DeserializeObject<RequestMetadata>(Encoding.UTF8.GetString(headerBytes));
+
+            //Now, create an object to send clients
+            LightspeedRequest packet = new LightspeedRequest
+            {
+                auth = metadata.auth,
+                endpoint = metadata.endpoint,
+                method = metadata.method,
+                token = metadata.requestToken,
+                client = this
+            };
 
             //Handle
-            handler.HandleMsg(b.opcode, msg, this);
+            handler(packet);
         }
     }
 }
