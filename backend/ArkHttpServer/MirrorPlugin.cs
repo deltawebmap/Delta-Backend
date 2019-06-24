@@ -69,9 +69,12 @@ namespace ArkHttpServer
             for(int i = 0; i<refs.items.Count; i++)
             {
                 DotArkGameObject r = refs.items[i].gameObjectRef;
-                string t = refsToken.items[i];
-                string id = GetDinoId(r);
-                output.dinoTokenMap.Add(t, id);
+                if(r != null)
+                {
+                    string t = refsToken.items[i];
+                    string id = GetDinoId(r);
+                    output.dinoTokenMap.Add(t, id);
+                }
             }
 
             //We did it!

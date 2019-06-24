@@ -76,6 +76,9 @@ namespace ArkWebMapMasterServer
                 throw new StandardError("Not Found", StandardErrorCode.NotFound);
             } catch (StandardError ex)
             {
+                //Log error
+                ErrorLogger.LogStandardError(ex, e);
+                
                 //Write error
                 int errorCode = 500;
                 if (ex.error_code == StandardErrorCode.AuthRequired)
@@ -83,6 +86,9 @@ namespace ArkWebMapMasterServer
                 return Program.QuickWriteJsonToDoc(e, ex, errorCode);
             } catch (Exception ex)
             {
+                //Log error
+                ErrorLogger.LogException(ex, e);
+
                 //Write error
                 return Program.QuickWriteJsonToDoc(e, new StandardError(ex.Message + ex.StackTrace, StandardErrorCode.UncaughtException, ex), 500);
             }

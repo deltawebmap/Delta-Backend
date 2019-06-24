@@ -25,6 +25,7 @@ namespace ArkHttpServer.Entities
         public List<ArkDinoReply> baby_dinos;
 
         public List<MinifiedBasicArkPlayerCharacter> player_characters;
+        public List<BasicArkStructure> structures;
 
         public string[] dino_ids;
 
@@ -70,6 +71,16 @@ namespace ArkHttpServer.Entities
                     if (t.profile.steamPlayerId == p.steamid)
                         t.steamProfile = p;
                 }
+            }
+
+            //Add structures of this tribe
+            structures = new List<BasicArkStructure>();
+            for(var i = 0; i<world.structures.Count; i++)
+            {
+                var s = world.structures[i];
+                if (s.tribeId != tribeId)
+                    continue;
+                structures.Add(new BasicArkStructure(s, world, i));
             }
         }
     }
@@ -182,6 +193,30 @@ namespace ArkHttpServer.Entities
             //Copy
             profile = player.GetPlayerProfile();
             is_alive = player.isAlive;
+        }
+    }
+
+    public class BasicArkStructure
+    {
+        public string imgUrl;
+        public Vector2 map_pos;
+        public float rot;
+        public float ppm;
+        public int priority;
+        public bool hasInventory;
+        public string apiUrl; //Only if has inventory
+
+        public BasicArkStructure(ArkStructure s, ArkWorld w, int index)
+        {
+            imgUrl = $"https://ark.romanport.com/resources/structures/{s.displayMetadata.img}.png";
+            map_pos = w.mapinfo.ConvertFromGamePositionToNormalized(new Vector2(s.location.x, s.location.y));
+            map_pos.Multiply(100);
+            rot = s.location.yaw;
+            ppm = s.displayMetadata.pixelsPerMeter;
+            priority = (int)s.displayMetadata.priority;
+            hasInventory = s.hasInventory;
+            if (hasInventory)
+                apiUrl = $"{ArkWebServer.api_prefix}/world/structures/{index}";
         }
     }
 }

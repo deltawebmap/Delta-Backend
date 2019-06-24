@@ -44,7 +44,7 @@ namespace ArkHttpServer
             ArkWebServer.db = db;
 
             //Load save editor entries
-            ArkImports.ImportContent(@"PrimalData/world.json", @"PrimalData/dinos.json", @"PrimalData/items.json");
+            ArkImports.ImportContent(@"PrimalData/");
 
             //Load map
             WorldLoader.GetWorld();
