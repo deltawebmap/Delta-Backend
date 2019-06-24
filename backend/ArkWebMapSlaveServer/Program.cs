@@ -3,6 +3,7 @@ using ArkBridgeSharedEntities.Entities.RemoteConfig;
 using ArkBridgeSharedEntities.Requests;
 using ArkHttpServer;
 using ArkSaveEditor.World;
+using ArkWebMapLightspeedClient;
 using ArkWebMapSlaveServer.NetEntities;
 using LiteDB;
 using Microsoft.AspNetCore.Builder;
@@ -26,6 +27,7 @@ namespace ArkWebMapSlaveServer
         public static Timer reportTimer;
         public static byte[] creds;
         public static LiteDatabase db;
+        public static AWMLightspeedClient lightspeed;
 
         public const int MY_VERSION = 1;
 
@@ -42,8 +44,12 @@ namespace ArkWebMapSlaveServer
             Console.WriteLine("Opening database...");
             db = new LiteDatabase(dbPath);
 
+            //Get LIGHTSPEED config
+            LightspeedConfigFile lightspeedConfig = AWMLightspeedClient.GetConfigFile();
+
             Console.WriteLine("Configurating internal server...");
-            ArkWebServer.Configure(config.child_config, remote_config.sub_server_config.endpoints.server_api_prefix + config.auth.id, (int tribeId, TribeNotification n) =>
+            string apiPrefix = lightspeedConfig.client_endpoint_prefix.Replace("{serverId}", config.auth.id).Replace("{serverGame}", 0.ToString());
+            ArkWebServer.Configure(config.child_config, apiPrefix, (int tribeId, TribeNotification n) =>
             {
                 //Create payload and send it.
                 UserNotificationRequest r = new UserNotificationRequest
@@ -63,16 +69,8 @@ namespace ArkWebMapSlaveServer
             Console.WriteLine("Submitting ARK world report to master server...");
             SendWorldReport();
 
-            //Start server
-            Console.WriteLine("Starting HTTP server...");
-            var host = new WebHostBuilder()
-                .UseKestrel(options =>
-                {
-                    IPAddress addr = IPAddress.Any;
-                    options.Listen(addr, config.web_port);
-                })
-                .UseStartup<ArkWebMapServer>()
-                .Build();
+            //Connect to the LIGHTSPEED network.
+            lightspeed = AWMLightspeedClient.CreateClient(config.auth.id, config.auth.creds, 0, HttpHandler.OnHttpRequest, true);
 
             //Set timer to transmit the world report every five minutes
             reportTimer = new Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
@@ -88,7 +86,7 @@ namespace ArkWebMapSlaveServer
                 Console.ForegroundColor = ConsoleColor.White;
             }
 
-            return host.RunAsync();
+            return Task.Delay(-1);
         }
 
         private static void ReportTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -185,11 +183,6 @@ namespace ArkWebMapSlaveServer
             }
 
             return false;
-        }
-
-        public void Configure(IApplicationBuilder app)
-        {
-            app.Run(HttpHandler.OnHttpRequest);
         }
 
         public static Task QuickWriteToDoc(Microsoft.AspNetCore.Http.HttpContext context, string content, string type = "text/html", int code = 200)

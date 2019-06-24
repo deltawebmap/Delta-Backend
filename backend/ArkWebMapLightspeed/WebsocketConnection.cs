@@ -1,4 +1,5 @@
-﻿using ArkWebMapMasterServer.NetEntities;
+﻿using ArkWebMapLightspeedClient.Entities;
+using ArkWebMapMasterServer.NetEntities;
 using System;
 using System.Collections.Generic;
 using System.Net.WebSockets;
@@ -80,27 +81,6 @@ namespace ArkWebMapLightspeed
                     await Task.Delay(5);
                 }
             }
-        }
-
-        //
-
-        public async Task HandleIncomingRequest(Microsoft.AspNetCore.Http.HttpContext e, string next, UsersMeReply user)
-        {
-            //First, convert this to the MasterServerArkUser format the client expects.
-            ArkHttpServer.Entities.MasterServerArkUser c = new ArkHttpServer.Entities.MasterServerArkUser
-            {
-                id = user.id,
-                steam_id = user.steam_id,
-                is_steam_verified = true,
-                profile_image_url = user.profile_image_url,
-                screen_name = user.screen_name,
-                servers = new List<string>()
-            };
-            foreach (var s in user.servers)
-                c.servers.Add(s.id);
-
-            //Now, create a session and token.
-            //TODO
         }
     }
 }

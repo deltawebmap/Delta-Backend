@@ -3,6 +3,7 @@ using ArkSaveEditor;
 using ArkSaveEditor.ArkEntries;
 using ArkSaveEditor.World;
 using ArkSaveEditor.World.WorldTypes;
+using ArkWebMapLightspeedClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,16 +16,16 @@ namespace ArkHttpServer.HttpServices
     {
         public const int PAGE_SIZE = 3;
 
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkWorld world, int tribeId)
+        public static async Task OnHttpRequest(LightspeedRequest e, ArkWorld world, int tribeId)
         {
             //Get query.
-            string query = e.Request.Query["q"].ToString().ToLower();
+            string query = e.query["q"].ToString().ToLower();
 
             //Get page offset
             int page_offset = 0;
-            if(e.Request.Query.ContainsKey("p"))
+            if(e.query.ContainsKey("p"))
             {
-                if (!int.TryParse(e.Request.Query["p"], out page_offset))
+                if (!int.TryParse(e.query["p"], out page_offset))
                     throw new StandardError(StandardErrorType.InvalidArg, "Failed to parse page query as an integer.", "Check the 'p' parameter.");
             }
                 
@@ -87,7 +88,7 @@ namespace ArkHttpServer.HttpServices
             };
 
             //Write the reply
-            return ArkWebServer.QuickWriteJsonToDoc(e, reply);
+            await e.DoRespondJson(reply);
         }
 
         static Dictionary<string, WebArkInventoryItemResult> SearchDinoInventories(ArkWorld w, int tribeId, ArkItemEntry[] searchItemEntries, out Dictionary<string, ArkDinosaur> dinos, int rangeMin, int rangeMax, out bool doMoreExist, out int totalItemEntries)

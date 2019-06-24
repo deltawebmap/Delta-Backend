@@ -4,6 +4,7 @@ using ArkHttpServer.Entities;
 using ArkHttpServer.NetEntities.TribeOverview;
 using ArkSaveEditor.ArkEntries;
 using ArkSaveEditor.World;
+using ArkWebMapLightspeedClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,13 @@ namespace ArkHttpServer.HttpServices
 {
     public class TribeOverviewService
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkWorld world, int tribeId)
+        public static async Task OnHttpRequest(LightspeedRequest e, ArkWorld world, int tribeId)
         {
             //Generate reply
             TribeOverviewReply reply = GenerateReply(world, tribeId);
 
             //Serialize and send
-            return ArkWebServer.QuickWriteJsonToDoc(e, reply);
+            await e.DoRespondJson(reply);
         }
 
         public static TribeOverviewReply GenerateReply(ArkWorld world, int tribeId)

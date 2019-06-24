@@ -169,8 +169,11 @@ namespace ArkWebMapLightspeed
                 endpoint = nextEndpoint,
                 method = e.Request.Method,
                 requestToken = token,
-                version = 0
+                version = 0,
+                query = new Dictionary<string, string>()
             };
+            foreach (var h in e.Request.Query)
+                meta.query.Add(h.Key, h.Value);
 
             //Encode metadata as JSON and then encode the body (if sent)
             string metaString = JsonConvert.SerializeObject(meta);

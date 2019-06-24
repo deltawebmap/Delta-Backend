@@ -1,5 +1,6 @@
 ﻿using ArkHttpServer.Entities;
 using ArkSaveEditor.World.WorldTypes;
+using ArkWebMapLightspeedClient.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;

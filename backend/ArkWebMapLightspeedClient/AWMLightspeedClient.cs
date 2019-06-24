@@ -23,7 +23,7 @@ namespace ArkWebMapLightspeedClient
         public int clientGame;
         public LightspeedHandler handler;
 
-        private LightspeedConfigFile config;
+        public static LightspeedConfigFile config;
 
         private ClientWebSocket sock;
         private Thread rxThread;
@@ -56,19 +56,8 @@ namespace ArkWebMapLightspeedClient
                 txQueue = new Queue<byte[]>(),
             };
 
-            //Make a request to the client config endpoint to download the remote configuration file
-            string configText;
-            try
-            {
-                using (WebClient wc = new WebClient())
-                    configText = wc.DownloadString(REMOTE_CONFIG_ENDPOINT);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to download remote configuration file.");
-            }
-            LightspeedConfigFile config = JsonConvert.DeserializeObject<LightspeedConfigFile>(configText);
-            client.config = config;
+            //Get config file
+            GetConfigFile();
 
             //Try to make a connection.
             client.TryMakeConnection().GetAwaiter().GetResult();
@@ -83,6 +72,27 @@ namespace ArkWebMapLightspeedClient
             client.txThread.Start();
 
             return client;
+        }
+
+        public static LightspeedConfigFile GetConfigFile()
+        {
+            if (config != null)
+                return config;
+
+            //Make a request to the client config endpoint to download the remote configuration file
+            string configText;
+            try
+            {
+                using (WebClient wc = new WebClient())
+                    configText = wc.DownloadString(REMOTE_CONFIG_ENDPOINT);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to download remote LIGHTSPEED configuration file.");
+            }
+            config = JsonConvert.DeserializeObject<LightspeedConfigFile>(configText);
+
+            return config;
         }
 
         public void LogMsg(string topic, string msg)
@@ -258,7 +268,9 @@ namespace ArkWebMapLightspeedClient
                 endpoint = metadata.endpoint,
                 method = metadata.method,
                 token = metadata.requestToken,
-                client = this
+                client = this,
+                body = bodyBytes,
+                query = metadata.query
             };
 
             //Handle

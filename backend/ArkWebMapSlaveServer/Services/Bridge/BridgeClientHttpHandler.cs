@@ -1,4 +1,5 @@
 ﻿using ArkBridgeSharedEntities.Entities;
+using ArkWebMapLightspeedClient;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,14 +9,8 @@ namespace ArkWebMapSlaveServer.Services.Bridge
 {
     public class BridgeClientHttpHandler
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
+        public static async Task OnHttpRequest(LightspeedRequest e, string path)
         {
-            if(path == "ping")
-            {
-                //Return the same content back.
-                return e.Request.Body.CopyToAsync(e.Response.Body);
-            }
-
             //Not found
             throw new StandardError("Not Found", StandardErrorCode.NotFound);
         }

@@ -1,5 +1,6 @@
 ﻿using ArkSaveEditor.World;
 using ArkSaveEditor.World.WorldTypes;
+using ArkWebMapLightspeedClient;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
@@ -15,13 +16,13 @@ namespace ArkHttpServer.HttpServices
         public const int POPULATION_DETAIL = 16;
         public const int TILE_SIZE = 512;
 
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkWorld world)
+        public static async Task OnHttpRequest(LightspeedRequest e, ArkWorld world)
         {
             //Process a tile request. Get the locations
-            int zoom = int.Parse(e.Request.Query["zoom"]);
-            int x = int.Parse(e.Request.Query["x"]);
-            int y = int.Parse(e.Request.Query["y"]);
-            string filtered_classname = e.Request.Query["filter"];
+            int zoom = int.Parse(e.query["zoom"]);
+            int x = int.Parse(e.query["x"]);
+            int y = int.Parse(e.query["y"]);
+            string filtered_classname = e.query["filter"];
 
             //Respect permissions
             if (!ArkWebServer.CheckPermission("allowHeatmapDinoFilter"))
@@ -48,13 +49,10 @@ namespace ArkHttpServer.HttpServices
                 img = Tools.TileTool.ProduceTile(zoom, x, y, colorData, POPULATION_DETAIL, TILE_SIZE);
             }
 
-            //Set headers
-            e.Response.ContentLength = img.Length;
-            e.Response.Headers.Add("Cache-Control", "max-age=5");
-            e.Response.ContentType = "image/png";
-
             //Write
-            return img.CopyToAsync(e.Response.Body);
+            byte[] data = new byte[img.Length];
+            img.Read(data, 0, data.Length);
+            await e.DoRespond(200, "image/png", data);
         }
 
         private static List<ArkDinosaur>[,] GetFilteredPopulationData(string filter, ArkWorld world)

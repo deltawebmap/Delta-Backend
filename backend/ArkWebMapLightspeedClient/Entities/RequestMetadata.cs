@@ -11,5 +11,6 @@ namespace ArkWebMapLightspeedClient.Entities
         public MasterServerArkUser auth;
         public int version;
         public string endpoint;
+        public Dictionary<string, string> query;
     }
 }

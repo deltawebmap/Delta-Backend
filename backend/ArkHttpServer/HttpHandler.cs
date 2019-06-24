@@ -10,6 +10,8 @@ using ArkSaveEditor.Entities;
 using ArkSaveEditor.ArkEntries;
 using ArkSaveEditor;
 using System.IO;
+using ArkWebMapLightspeedClient;
+using ArkWebMapLightspeedClient.Entities;
 
 namespace ArkHttpServer
 {
@@ -19,13 +21,10 @@ namespace ArkHttpServer
 
         public const int CURRENT_CLIENT_VERSION = 1;
 
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, MasterServerArkUser user)
+        public static async Task OnHttpRequest(LightspeedRequest e, MasterServerArkUser user)
         {
             try
             {
-                //Set some headers
-                e.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-
                 //Get world
                 ArkWorld world = WorldLoader.GetWorld();
 
@@ -40,18 +39,19 @@ namespace ArkHttpServer
                 }
 
                 //Since we don't have to worry about permissions or anything, we'll just have a list of services created at compile time.
-                string pathname = e.Request.Path.ToString().ToLower().Substring("/api".Length);
+                string pathname = e.endpoint.ToLower().Substring("/api".Length);
 
                 //Handle things that are not map specific
                 if (pathname.StartsWith("/create_session"))
                 {
                     //Create a new session. For now, just use the same map.
-                    return OnCreateSessionRequest(e, user);
+                    await OnCreateSessionRequest(e, user);
+                    return;
                 }
                 if (pathname.StartsWith("/dino_search/"))
                 {
                     //Search for dinos in the dino entry table.
-                    string query = e.Request.Query["query"].ToString().ToLower();
+                    string query = e.query["query"].ToString().ToLower();
                     List<ArkDinoEntry> dinos = new List<ArkDinoEntry>();
                     foreach (var d in ArkImports.dino_entries)
                     {
@@ -60,11 +60,12 @@ namespace ArkHttpServer
                         if (dinos.Count >= 10)
                             break;
                     }
-                    return ArkWebServer.QuickWriteJsonToDoc(e, new DinoSearchReply
+                    await e.DoRespondJson(new DinoSearchReply
                     {
                         query = query,
                         results = dinos
                     });
+                    return;
                 }
 
                 //Continue to map specific things
@@ -82,34 +83,24 @@ namespace ArkHttpServer
 
                     if (pathname.StartsWith("/map/tiles/population/") && ArkWebServer.CheckPermission("allowHeatmap"))
                     {
-                        return PopulationService.OnHttpRequest(e, world);
-                    }
-                    if (pathname.StartsWith("/events"))
-                    {
-                        return EventService.OnEventRequest(e, user);
+                        await PopulationService.OnHttpRequest(e, world);
+                        return;
                     }
                     if (pathname.StartsWith("/tribes/item_search/") && ArkWebServer.CheckPermission("allowSearchTamedTribeDinoInventories"))
                     {
-                        return TribeInventorySearchService.OnHttpRequest(e, world, tribeId);
+                        await TribeInventorySearchService.OnHttpRequest(e, world, tribeId);
+                        return;
                     }
                     if(pathname == "/tribes/overview")
                     {
-                        return TribeOverviewService.OnHttpRequest(e, world, tribeId);
+                        await TribeOverviewService.OnHttpRequest(e, world, tribeId);
+                        return;
                     }
                     if(pathname == "/tribes/hub")
                     {
                         //Hub for the frontpage.
-                        return TribeHubService.OnHttpRequest(e, world, tribeId);
-                    }
-                    if (pathname == "/tribes/notes/edit")
-                    {
-                        //Hub for the frontpage.
-                        return HttpServices.TribeNotes.TribeNoteService.OnPinRequest(e, user, tribeId);
-                    }
-                    if (pathname == "/tribes/notes/sync")
-                    {
-                        //Hub for the frontpage.
-                        return HttpServices.TribeNotes.TribeNoteService.OnSyncRequest(e, user, tribeId);
+                        await TribeHubService.OnHttpRequest(e, world, tribeId);
+                        return;
                     }
                     if (pathname.StartsWith("/tribes/"))
                     {
@@ -117,7 +108,8 @@ namespace ArkHttpServer
                         BasicTribe bworld = new BasicTribe(world, tribeId);
 
                         //Write
-                        return QuickWriteJsonToDoc(e, bworld);
+                        await e.DoRespondJson(bworld);
+                        return;
                     }
                     if (pathname.StartsWith("/dinos/") && ArkWebServer.CheckPermission("allowViewTamedTribeDinoStats"))
                     {
@@ -125,8 +117,11 @@ namespace ArkHttpServer
                         string id = pathname.Substring("/dinos/".Length);
                         //Parse this into a Dino ID
                         if (!ulong.TryParse(id, out ulong dinoid))
+                        {
                             //Failed.
-                            return QuickWriteToDoc(e, "Failed to parse dinosaur ID.", "text/plain", 400);
+                            await e.DoRespondString("Failed to parse dinosaur ID.", "text/plain", 400);
+                            return;
+                        }
                         //Search with this dinosaur ID
                         var dinos = world.dinos.Where(x => x.dinosaurId == dinoid && x.tribeId == tribeId).ToArray();
                         if (dinos.Length == 1)
@@ -141,35 +136,39 @@ namespace ArkHttpServer
                                 newSettings.tribeId = dinos[0].tribeId;
                             }
                             //Write this dinosaur.
-                            return QuickWriteJsonToDoc(e, new ArkDinoReply(dinos[0], world));
+                            await e.DoRespondJson(new ArkDinoReply(dinos[0], world));
+                            return;
                         }
                         else
                         {
                             //Failed to find.
-                            return QuickWriteToDoc(e, $"The dinosaur ID '{dinoid}' was not a valid dinosaur.", "text/plain", 404);
+                            await e.DoRespondString($"The dinosaur ID '{dinoid}' was not a valid dinosaur.", "text/plain", 404);
+                            return;
                         }
                     }
                     
                 }
 
                 //No path exists here.
-                return QuickWriteToDoc(e, "Not Found at " + pathname, "text/plain", 404);
+                await e.DoRespondString("Not Found at " + pathname, "text/plain", 404);
+                return;
             } catch (Exception ex)
             {
-                return QuickWriteJsonToDoc(e, new ServerErrorReturn
+                await e.DoRespondJson(new ServerErrorReturn
                 {
                     caught = false,
                     message = ex.Message,
                     stack = ex.StackTrace
                 }, 500);
+                return;
             }
         }
 
-        public static Task OnCreateSessionRequest(Microsoft.AspNetCore.Http.HttpContext e, MasterServerArkUser user)
+        public static async Task OnCreateSessionRequest(LightspeedRequest e, MasterServerArkUser user)
         {
             //Return basic Ark world
             ArkWorld world = WorldLoader.GetWorld(out DateTime lastSavedTime);
-            return QuickWriteJsonToDoc(e, new BasicArkWorld(world, lastSavedTime));
+            await e.DoRespondJson(new BasicArkWorld(world, lastSavedTime));
         }
     }
 }

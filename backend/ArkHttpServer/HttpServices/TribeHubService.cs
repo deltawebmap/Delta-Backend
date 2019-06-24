@@ -2,6 +2,7 @@
 using ArkBridgeSharedEntities.Requests;
 using ArkSaveEditor.World;
 using ArkSaveEditor.World.WorldTypes.ArkTribeLogEntries;
+using ArkWebMapLightspeedClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,11 @@ namespace ArkHttpServer.HttpServices
 {
     public class TribeHubService
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkWorld world, int tribeId)
+        public static async Task OnHttpRequest(LightspeedRequest e, ArkWorld world, int tribeId)
         {
             //Generate reply
-            return ArkWebServer.QuickWriteJsonToDoc(e, GenerateReply(world, tribeId));
+            await e.DoRespondJson(GenerateReply(world, tribeId));
+            return;
         }
 
         public static TribeHubReply GenerateReply(ArkWorld world, int tribeId)

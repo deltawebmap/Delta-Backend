@@ -14,6 +14,7 @@ using System.IO;
 using System.Collections.Generic;
 using ArkBridgeSharedEntities.Requests;
 using LiteDB;
+using ArkWebMapLightspeedClient;
 
 namespace ArkHttpServer
 {
@@ -70,42 +71,16 @@ namespace ArkHttpServer
         private static void Event_checker_timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             //Check all of our sessions for updated files.
-            HttpServices.EventService.AddEvent(new Entities.HttpSessionEvent(null, Entities.HttpSessionEventType.TestEvent));
+            //HttpServices.EventService.AddEvent(new Entities.HttpSessionEvent(null, Entities.HttpSessionEventType.TestEvent));
             
             //Check for map updates
             if(WorldLoader.CheckForMapUpdates())
             {
-                HttpServices.EventService.AddEvent(new Entities.HttpSessionEvent(null, Entities.HttpSessionEventType.MapUpdate));
+                //HttpServices.EventService.AddEvent(new Entities.HttpSessionEvent(null, Entities.HttpSessionEventType.MapUpdate));
             }
 
             //Find ALL baby dinos and check their stats so we can send notifications to mobile clients
             MobileNotificationsEngine.BabyDinoNotifications.CheckBabyDinos();
-        }
-
-        
-
-        public static Task QuickWriteToDoc(Microsoft.AspNetCore.Http.HttpContext context, string content, string type = "text/html", int code = 200)
-        {
-            var response = context.Response;
-            response.StatusCode = code;
-            response.ContentType = type;
-
-            //Load the template.
-            string html = content;
-            var data = Encoding.UTF8.GetBytes(html);
-            response.ContentLength = data.Length;
-            return response.Body.WriteAsync(data, 0, data.Length);
-        }
-
-        public static Task QuickWriteJsonToDoc<T>(Microsoft.AspNetCore.Http.HttpContext context, T data, int code = 200)
-        {
-            Formatting format = Formatting.None;
-            if(context.Request.Query.ContainsKey("isDebug"))
-            {
-                if (context.Request.Query["isDebug"] == "true")
-                    format = Formatting.Indented;
-            }
-            return QuickWriteToDoc(context, JsonConvert.SerializeObject(data, format), "application/json", code);
         }
 
         public static string GenerateRandomString(int length)
@@ -120,16 +95,14 @@ namespace ArkHttpServer
             return output;
         }
 
-        public static RequestHttpMethod FindRequestMethod(Microsoft.AspNetCore.Http.HttpContext context)
+        public static RequestHttpMethod FindRequestMethod(LightspeedRequest context)
         {
-            return Enum.Parse<RequestHttpMethod>(context.Request.Method.ToLower());
+            return Enum.Parse<RequestHttpMethod>(context.method.ToLower());
         }
 
-        public static T DecodePostBody<T>(Microsoft.AspNetCore.Http.HttpContext context)
+        public static T DecodePostBody<T>(LightspeedRequest context)
         {
-            string buf;
-            using (StreamReader sr = new StreamReader(context.Request.Body))
-                buf = sr.ReadToEnd();
+            string buf = Encoding.UTF8.GetString(context.body);
             return JsonConvert.DeserializeObject<T>(buf);
         }
     }

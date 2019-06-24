@@ -11,7 +11,7 @@ namespace ArkHttpServer.HttpServices
 {
     public class ProceduralTiles
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        /*public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e)
         {
             //Get values
             int zoom = int.Parse(e.Request.Query["zoom"]);
@@ -33,7 +33,7 @@ namespace ArkHttpServer.HttpServices
             //Compute
             CreateProceduralTile(zoom, x, y, null, e.Response.Body);
             return null;
-        }
+        }*/
 
         public static void CreateProceduralTile(int zoom, int x, int y, Image<Rgba32> source, Stream output)
         {

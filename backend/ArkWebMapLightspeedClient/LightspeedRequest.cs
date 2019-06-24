@@ -1,7 +1,9 @@
 ﻿using ArkWebMapLightspeedClient.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ArkWebMapLightspeedClient
 {
@@ -11,10 +13,24 @@ namespace ArkWebMapLightspeedClient
         public string method;
         public MasterServerArkUser auth;
         public string endpoint;
+        public Dictionary<string, string> query;
+        public byte[] body;
 
         public AWMLightspeedClient client;
 
-        public void DoRespond(int status, string contentType, byte[] data)
+        public async Task DoRespondJson<T>(T data, int status = 200, string contentType = "application/json")
+        {
+            string content = JsonConvert.SerializeObject(data);
+            await DoRespondString(content, contentType, status);
+        }
+
+        public async Task DoRespondString(string strData, string contentType, int status)
+        {
+            byte[] data = Encoding.UTF8.GetBytes(strData);
+            await DoRespond(status, contentType, data);
+        }
+
+        public async Task DoRespond(int status, string contentType, byte[] data)
         {
             //Encode, then send
             byte[] contentTypeBytes = Encoding.UTF8.GetBytes(contentType);
