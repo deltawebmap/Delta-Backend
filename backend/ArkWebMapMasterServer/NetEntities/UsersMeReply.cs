@@ -109,7 +109,7 @@ namespace ArkWebMapMasterServer.NetEntities
 
             string base_endpoint = $"https://ark.romanport.com/api/servers/{id}/";
             endpoint_hub = base_endpoint + "world/tribes/hub";
-            endpoint_createsession = base_endpoint + "create_session";
+            endpoint_createsession = $"https://lightspeed-ark.romanport.com/{id}/" + "create_session";
             endpoint_leave = base_endpoint + "leave";
             endpoint_ping = base_endpoint.TrimEnd('/');
 

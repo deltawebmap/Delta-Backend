@@ -23,5 +23,6 @@ namespace ArkWebMapGatewayClient
         public string master;
         public string subserver;
         public string frontend;
+        public string system;
     }
 }

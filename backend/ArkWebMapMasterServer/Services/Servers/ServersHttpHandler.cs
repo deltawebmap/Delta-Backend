@@ -25,11 +25,10 @@ namespace ArkWebMapMasterServer.Services.Servers
             //If there is content after this, proxy to this server. Else, return server info.
             if(split.Length > 1)
             {
-                //Do proxy. Get full url
-                string proxyUrl = path.Substring(serverId.Length + 1).TrimStart('/');
+                string nextUrl = path.Substring(serverId.Length + 1).TrimStart('/');
 
                 //Check if this is a path that requires no auth
-                if (proxyUrl == "users")
+                if (nextUrl == "users")
                 {
                     //Send back tribe users
                     return Program.QuickWriteJsonToDoc(e, server.latest_server_local_accounts);
@@ -44,27 +43,27 @@ namespace ArkWebMapMasterServer.Services.Servers
                 bool hasTribe = server.TryGetTribeId(user.steam_id, out int tribeId);
 
                 //Check if this is one of our URLs.
-                if (proxyUrl == "delete")
+                if (nextUrl == "delete")
                 {
                     //Leave
                     return DeleteServer.OnHttpRequest(e, server, user);
                 }
-                if(proxyUrl == "edit")
+                if(nextUrl == "edit")
                 {
                     //Rename
                     return EditServerListing.OnHttpRequest(e, server);
                 }
-                if(proxyUrl == "publish")
+                if(nextUrl == "publish")
                 {
                     return ServerPublishing.OnHttpRequest(e, server);
                 }
-                if(proxyUrl.StartsWith("maps"))
+                if(nextUrl.StartsWith("maps"))
                 {
                     if (!hasTribe)
                         throw new StandardError("Could not find player tribe.", StandardErrorCode.NotPermitted);
-                    return ServerMaps.OnHttpRequest(e, server, tribeId, proxyUrl.Substring("maps".Length));
+                    return ServerMaps.OnHttpRequest(e, server, tribeId, nextUrl.Substring("maps".Length));
                 }
-                if(proxyUrl == "offline_data")
+                if(nextUrl == "offline_data")
                 {
                     //Send back their offline tribe data, if they're in a tribe
                     if (!hasTribe)
@@ -75,28 +74,8 @@ namespace ArkWebMapMasterServer.Services.Servers
                         throw new StandardError("No offline data was found for this tribe.", StandardErrorCode.MissingData);
                     return Program.QuickWriteToDoc(e, server.latest_offline_data[tribeId], "application/json");
                 }
-                
-                //Proxy 
-                try
-                {
-                    //Send
-                    HttpContent content = new StreamContent(e.Request.Body);
-                    HttpResponseMessage reply = server.OpenHttpRequest(content, "/api/" + proxyUrl + e.Request.QueryString, e.Request.Method, user);
 
-                    //Set response
-                    e.Response.StatusCode = (int)reply.StatusCode;
-                    return reply.Content.CopyToAsync(e.Response.Body);
-                } catch
-                {
-                    //Error out.
-                    return Program.QuickWriteJsonToDoc(e, new ProxyError
-                    {
-                        endpoint_ip = server.latest_proxy_url,
-                        endpoint_url = proxyUrl,
-                        error_description = $"Could not proxy to this server. It is offline."
-                    }, 521);
-                }
-                
+                throw new StandardError("Not Found in Server", StandardErrorCode.NotFound);
             } else
             {
                 //Return with some server info

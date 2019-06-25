@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using ArkWebMapGatewayClient;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
@@ -10,6 +11,8 @@ namespace ArkWebMapLightspeed
 {
     class Program
     {
+        public static AWMGatewayClient gateway;
+
         static void Main(string[] args)
         {
             MainAsync().GetAwaiter().GetResult();
@@ -17,14 +20,19 @@ namespace ArkWebMapLightspeed
 
         public static Task MainAsync()
         {
+            //Connect to the GATEWAY
+            gateway = AWMGatewayClient.CreateClient(GatewayClientType.System, "LIGHTSPEED", "", 1, 1, true, new GatewayHandler(), SystemKeys.ObtainKey());
+
+            //Start session
             var host = new WebHostBuilder()
                 .UseKestrel(options =>
                 {
                     IPAddress addr = IPAddress.Any;
                     options.Listen(addr, 43296, listenOptions =>
                     {
-                        listenOptions.UseHttps("certificate.pfx", "password");
+                        listenOptions.UseHttps("certificate.pfx", SystemKeys.ObtainCertKey());
                     });
+                    options.Listen(addr, 43295);
                 })
                 .UseStartup<Program>()
                 .Build();

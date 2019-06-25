@@ -8,6 +8,7 @@ namespace ArkWebMapGatewayClient
     {
         MasterServer = 0,
         SubServer = 1,
-        Frontend = 2
+        Frontend = 2,
+        System = 3
     }
 }

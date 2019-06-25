@@ -29,7 +29,6 @@ namespace ArkWebMapMasterServer.SteamAuth
             while(return_values.ContainsKey(stateId))
                 stateId = Program.GenerateRandomString(24);
 
-
             //Add
             return_values.Add(stateId, "");
 

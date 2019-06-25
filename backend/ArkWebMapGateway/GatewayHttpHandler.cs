@@ -43,6 +43,8 @@ namespace ArkWebMapGateway
                         await FrontendGatewayConnection.HandleIncomingConnection(e, version);
                     else if (endpoint == "notifications")
                         await NotificationConnection.HandleIncomingConnection(e, version);
+                    else if (endpoint == "system")
+                        await SystemGatewayConnection.HandleIncomingConnection(e, version);
                     else
                         await Program.QuickWriteToDoc(e, "Unknown endpoint.", "text/plain", 404);
                 } else

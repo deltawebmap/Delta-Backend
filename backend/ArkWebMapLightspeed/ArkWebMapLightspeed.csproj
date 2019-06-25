@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ArkWebMapGatewayClient\ArkWebMapGatewayClient.csproj" />
     <ProjectReference Include="..\ArkWebMapLightspeedClient\ArkWebMapLightspeedClient.csproj" />
     <ProjectReference Include="..\ArkWebMapMasterServer\ArkWebMapMasterServer.csproj" />
   </ItemGroup>

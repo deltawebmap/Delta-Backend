@@ -14,25 +14,6 @@ namespace ArkWebMapMasterServer.Services.Auth
     {
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
         {
-            //Check path
-            /*if (path.StartsWith("password/create"))
-            {
-                //Require POST
-                if (Program.FindRequestMethod(e) != RequestHttpMethod.post)
-                    throw new StandardError("Method can only be post.", StandardErrorCode.NotFound);
-
-                //Create user.
-                return OnPasswordCreate(e);
-            }
-            if (path.StartsWith("password/login"))
-            {
-                //Require POST
-                if (Program.FindRequestMethod(e) != RequestHttpMethod.post)
-                    throw new StandardError("Method can only be post.", StandardErrorCode.NotFound);
-
-                //Create user.
-                return OnPasswordLogin(e);
-            }*/
             if (path.StartsWith("steam_auth_return"))
             {
                 //Handle
@@ -176,39 +157,26 @@ namespace ArkWebMapMasterServer.Services.Auth
                 token = token
             };
 
+            //Create a temporary token the client can use to lookup the user.
+            string id = Program.GenerateRandomString(24);
+            while (url_tokens.ContainsKey(id))
+                id = Program.GenerateRandomString(24);
+
+            //Create token and add.
+            url_tokens.Add(id, reply);
+
             //If the mode is set to one of the mobile clients, awake the app.
             SteamAuthMode mode = Enum.Parse<SteamAuthMode>(e.Request.Query["mode"]);
             if (mode == SteamAuthMode.AndroidClient)
             {
-                //Create a temporary token the client can use to lookup the user.
-                string id = Program.GenerateRandomString(24);
-                while (url_tokens.ContainsKey(id))
-                    id = Program.GenerateRandomString(24);
-
-                //Create token and add.
-                url_tokens.Add(id, reply);
-
                 //Redirect back to the app.
                 e.Response.Headers.Add("Location", "ark-web-map-login://login/" + id);
                 return Program.QuickWriteToDoc(e, "You should be redirected back to the app. If not, let me know.", "text/plain", 302);
-            }
-
-            if (u != null)
-            {
-                //Set browser cookie
-                SetAuthCookie(e, token);
-            }
-
-            //Write reply
-            if(redirect)
-            {
-                //Redirect here
-                e.Response.Headers.Add("Location", "https://ark.romanport.com/");
-                return Program.QuickWriteToDoc(e, "You should be redirected home now.", "text/plain", 302);
             } else
             {
-                //Just write for REST
-                return Program.QuickWriteJsonToDoc(e, reply);
+                //Redirect to the login page and pass in the token
+                e.Response.Headers.Add("Location", "https://ark.romanport.com/login/return/#"+id);
+                return Program.QuickWriteToDoc(e, "You should be redirected now.", "text/plain", 302);
             }
         }
     }

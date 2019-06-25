@@ -128,6 +128,7 @@ namespace ArkWebMapGatewayClient
                 case GatewayClientType.Frontend: return config.gateway_endpoints.frontend;
                 case GatewayClientType.MasterServer: return config.gateway_endpoints.master;
                 case GatewayClientType.SubServer: return config.gateway_endpoints.subserver;
+                case GatewayClientType.System: return config.gateway_endpoints.system;
             }
             throw new Exception("Unexpected GatewayClientType.");
         }

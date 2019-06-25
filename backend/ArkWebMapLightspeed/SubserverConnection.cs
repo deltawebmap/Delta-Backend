@@ -35,22 +35,24 @@ namespace ArkWebMapLightspeed
                 //Disconnect any other subservers with this ID (there shouldn't be any) and add us
                 lock (ConnectionHolder.serverConnections)
                 {
-                    if (ConnectionHolder.serverConnections.ContainsKey(auth.server_id))
-                    {
-                        try
-                        {
-                            ConnectionHolder.serverConnections[auth.server_id].Close(new byte[0]).GetAwaiter();
-                        }
-                        catch { }
-                        ConnectionHolder.serverConnections.Remove(auth.server_id, out SubserverConnection value);
-                    }
+                    //Remove from list of clients if it's added
+                    lock (ConnectionHolder.serverConnections)
+                        ConnectionHolder.serverConnections.TryRemove(auth.server_id, out SubserverConnection oldConn);
+
+                    //Add
                     ConnectionHolder.serverConnections.AddOrUpdate(auth.server_id, conn, (string s, SubserverConnection c) =>
                     {
                         throw new Exception("Unexpected error: SubServer is already registered!");
                     });
                 }
 
-                //TODO: Send off some notifications after this
+                //Send a notification to server members now
+                Program.gateway.SendMessage(new ArkWebMapGatewayClient.Messages.MessageServerStateChange
+                {
+                    isUp = true,
+                    opcode = ArkWebMapGatewayClient.GatewayMessageOpcode.MessageServerStateChange,
+                    serverId = auth.server_id
+                });
             });
             return conn;
         }
@@ -140,6 +142,18 @@ namespace ArkWebMapLightspeed
 
         public override Task OnClose(WebSocketCloseStatus? status)
         {
+            //Send a notification to server members now
+            Program.gateway.SendMessage(new ArkWebMapGatewayClient.Messages.MessageServerStateChange
+            {
+                isUp = false,
+                opcode = ArkWebMapGatewayClient.GatewayMessageOpcode.MessageServerStateChange,
+                serverId = server.server_id
+            });
+
+            //Remove from list of clients
+            lock (ConnectionHolder.serverConnections)
+                ConnectionHolder.serverConnections.TryRemove(server.server_id, out SubserverConnection oldConn);
+
             return Task.CompletedTask;
         }
 

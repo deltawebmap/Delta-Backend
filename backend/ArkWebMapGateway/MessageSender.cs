@@ -55,6 +55,13 @@ namespace ArkWebMapGateway
             SendMsgToTribe(JsonConvert.SerializeObject(msg), serverId, tribeId);
         }
 
+        public static void SendMsgToServerMembers(GatewayMessageBase msg, string serverId)
+        {
+            List<ArkSlaveReport_PlayerAccount> serverMembers = ServerDataHolder.GetServerMembers(serverId);
+            foreach (var t in serverMembers)
+                SendMsgToUserSteamID(msg, t.player_steam_id);
+        }
+
         public static void SendMsgToTribe(string msg, string serverId, int tribeId)
         {
             //WARNING: Ensure the tribe_id and server_id headers are added before sending this message.

@@ -23,6 +23,9 @@ namespace ArkWebMapGatewayClient
                 case GatewayMessageOpcode.TribeMapBackendOutput: HandleMsgType<MessageMapDrawingMaster>(Msg_TribeMapBackendOutput, msg, context); break;
                 case GatewayMessageOpcode.EchoToTribe: HandleMsgType<MessageEchoToTribe>(Msg_EchoToTribe, msg, context); break;
                 case GatewayMessageOpcode.OnDrawableMapChange: HandleMsgType<MessageOnDrawableMapChange>(Msg_OnDrawableMapChange, msg, context); break;
+                case GatewayMessageOpcode.MessageServerStateChange: HandleMsgType<MessageServerStateChange>(Msg_MessageServerStateChange, msg, context); break;
+                case GatewayMessageOpcode.UserAddServer: HandleMsgType<MessageUserAddServer>(Msg_UserAddServer, msg, context); break;
+                case GatewayMessageOpcode.UserLogOut: HandleMsgType<MessageUserLogOut>(Msg_UserLogOut, msg, context); break;
             }
         }
 
@@ -40,6 +43,9 @@ namespace ArkWebMapGatewayClient
         public virtual void Msg_TribeMapBackendOutput(MessageMapDrawingMaster data, object context) { }
         public virtual void Msg_EchoToTribe(MessageEchoToTribe data, object context) { }
         public virtual void Msg_OnDrawableMapChange(MessageOnDrawableMapChange data, object context) { }
+        public virtual void Msg_MessageServerStateChange(MessageServerStateChange data, object context) { }
+        public virtual void Msg_UserAddServer(MessageUserAddServer data, object context) { }
+        public virtual void Msg_UserLogOut(MessageUserLogOut data, object context) { }
     }
 
     public delegate void GatewayIncomingMessageCallback<T>(T data, object context);

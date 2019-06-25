@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -19,6 +20,7 @@ namespace ArkWebMapMasterServer
         public static AWMGatewayClient gateway;
         public static MasterServerConfig config;
         public static Random rand = new Random();
+        public static List<string> onlineServers;
         public static Gateway.GatewayHandler gatewayHandler;
         public const string PREFIX_URL = "https://ark.romanport.com/api";
 
@@ -35,8 +37,26 @@ namespace ArkWebMapMasterServer
             gatewayHandler = new Gateway.GatewayHandler();
             gateway = AWMGatewayClient.CreateClient(GatewayClientType.MasterServer, "master", "", 1, 0, true, gatewayHandler, config.system_server_keys["master"]);
 
+            Console.WriteLine("Fetching online servers from LIGHTSPEED...");
+            FetchOnlineServers();
+
             Console.WriteLine("Starting Kestrel...");
             MainAsync().GetAwaiter().GetResult();
+        }
+
+        private static void FetchOnlineServers()
+        {
+            string text;
+            try
+            {
+                using (WebClient wc = new WebClient())
+                    text = wc.DownloadString("https://lightspeed-ark.romanport.com/online");
+                onlineServers = JsonConvert.DeserializeObject<List<string>>(text);
+            }
+            catch (Exception ex)
+            {
+                onlineServers = new List<string>();
+            }
         }
 
         public static void Log(string message, ConsoleColor color)

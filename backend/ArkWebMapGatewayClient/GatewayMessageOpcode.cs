@@ -14,6 +14,9 @@ namespace ArkWebMapGatewayClient
         TribeMapBackendOutput = 5,
         EchoToTribe = 6,
         OnDrawableMapChange = 7,
-        RealtimeMapMovement = 8
+        RealtimeMapMovement = 8,
+        MessageServerStateChange = 9,
+        UserAddServer = 10,
+        UserLogOut = 11
     }
 }
