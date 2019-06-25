@@ -14,8 +14,6 @@ namespace ArkWebMapMasterServer.NetEntities
         public string image_url;
         public string owner_uid;
         public string id;
-        public bool online;
-        public double ping;
 
         public ArkServerReply(ArkServer s, ArkUser u, int timeoutMs = 2000)
         {
@@ -24,22 +22,6 @@ namespace ArkWebMapMasterServer.NetEntities
             image_url = s.image_url;
             owner_uid = s.owner_uid;
             id = s._id;
-
-            //Ping
-            try
-            {
-                DateTime start = DateTime.UtcNow;
-                s.SendRequest<PingRequest>("/bridge/ping", new PingRequest
-                {
-                    content = "user ping"
-                }, RequestHttpMethod.get, u, timeoutMs);
-                ping = (DateTime.UtcNow - start).TotalMilliseconds;
-                online = true;
-            } catch
-            {
-                ping = -1;
-                online = false;
-            }
         }
     }
 }

@@ -17,7 +17,6 @@ namespace ArkBridgeSharedEntities.Entities
         public float map_time;
         public DateTime lastSaveTime;
         public List<ArkSlaveReport_PlayerAccount> accounts;
-        public Dictionary<int, string> offline_tribes;
     }
 
     public class ArkSlaveReport_PlayerAccount

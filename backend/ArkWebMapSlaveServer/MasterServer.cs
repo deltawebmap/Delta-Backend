@@ -12,17 +12,17 @@ namespace ArkWebMapSlaveServer
     {
         public static T SendRequestToMaster<T>(string action, object request)
         {
-            byte[] data = SendRequestToMasterGetBytes(action, request);
+            byte[] data = SendRequestToMasterGetBytes(action, new StringContent(JsonConvert.SerializeObject(request)));
             return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(data));
         }
 
         public static object SendRequestToMaster(string action, object request, Type type)
         {
-            byte[] data = SendRequestToMasterGetBytes(action, request);
+            byte[] data = SendRequestToMasterGetBytes(action, new StringContent(JsonConvert.SerializeObject(request)));
             return JsonConvert.DeserializeObject(Encoding.UTF8.GetString(data), type);
         }
 
-        public static byte[] SendRequestToMasterGetBytes(string action, object request)
+        public static byte[] SendRequestToMasterGetBytes(string action, HttpContent content)
         {
             //Get full URL
             string fullURL = ArkWebMapServer.remote_config.sub_server_config.endpoints.base_bridge_url + action;
@@ -31,8 +31,6 @@ namespace ArkWebMapSlaveServer
             byte[] reply;
             using (HttpClient client = new HttpClient())
             {
-                var content = new StringContent(JsonConvert.SerializeObject(request));
-
                 //Set our id
                 content.Headers.Add("X-Ark-Slave-Server-ID", ArkWebMapServer.config.auth.id);
 

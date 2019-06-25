@@ -43,27 +43,10 @@ namespace ArkWebMapSlaveServer
             report.map_name = w.map;
             report.map_time = w.gameTime;
 
-            //Generate offline tribes
-            report.offline_tribes = new Dictionary<int, string>();
-            foreach(var t in w.tribes)
-            {
-                //Generate offline tribe
-                ArkSlaveReport_OfflineTribe ot = GenerateOverviewForSingleTribe(w, t.tribeId, time);
-                report.offline_tribes.Add(t.tribeId, JsonConvert.SerializeObject(ot));
-            }
+            
 
             //Return report
             return report;
-        }
-
-        static ArkSlaveReport_OfflineTribe GenerateOverviewForSingleTribe(ArkWorld w, int tribeId, DateTime lastSavedAtTime)
-        {
-            ArkSlaveReport_OfflineTribe result = new ArkSlaveReport_OfflineTribe();
-            result.hub = TribeHubService.GenerateReply(w, tribeId);
-            result.overview = TribeOverviewService.GenerateReply(w, tribeId);
-            result.tribe = new BasicTribe(w, tribeId);
-            result.session = new BasicArkWorld(w, lastSavedAtTime);
-            return result;
         }
     }
 }

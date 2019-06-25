@@ -29,7 +29,7 @@ namespace ArkWebMapMasterServer.Services.Users
             foreach (var s in u.GetServers())
             {
                 ArkServer server = s.Item1;
-                if(server.TryGetOfflineDataForTribe(u.steam_id, out string offlineData))
+                if(server.TryGetOfflineDataForTribe(u.steam_id, out DateTime time, out string offlineData))
                 {
                     JObject jo = JObject.Parse(offlineData);
                     JToken hubData = jo["hub"];

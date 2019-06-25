@@ -68,11 +68,12 @@ namespace ArkWebMapMasterServer.Services.Servers
                     //Send back their offline tribe data, if they're in a tribe
                     if (!hasTribe)
                         throw new StandardError("Could not find player tribe.", StandardErrorCode.NotPermitted);
-                    if (server.latest_offline_data == null)
-                        throw new StandardError("This server has never sent offline data.", StandardErrorCode.MissingData);
-                    if (!server.latest_offline_data.ContainsKey(tribeId))
-                        throw new StandardError("No offline data was found for this tribe.", StandardErrorCode.MissingData);
-                    return Program.QuickWriteToDoc(e, server.latest_offline_data[tribeId], "application/json");
+                    e.Response.ContentType = "application/json";
+                    bool ok = Tools.OfflineTribeDataTool.GetArkDataDecompressedStreamed(server._id, tribeId, out DateTime time, e.Response.Body);
+                    if (!ok)
+                        throw new StandardError("Offline data did not exist.", StandardErrorCode.MissingData);
+                    else
+                        return e.Response.Body.WriteAsync(new byte[0], 0, 0);
                 }
 
                 throw new StandardError("Not Found in Server", StandardErrorCode.NotFound);

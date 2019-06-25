@@ -25,6 +25,7 @@ namespace ArkWebMapSlaveServer
         public static string config_path;
         public static Random rand = new Random();
         public static Timer reportTimer;
+        public static Timer offlineDataTimer;
         public static byte[] creds;
         public static LiteDatabase db;
         public static AWMLightspeedClient lightspeed;
@@ -70,7 +71,12 @@ namespace ArkWebMapSlaveServer
             SendWorldReport();
 
             //Connect to the LIGHTSPEED network.
+            Console.WriteLine("Connecting...");
             lightspeed = AWMLightspeedClient.CreateClient(config.auth.id, config.auth.creds, 0, HttpHandler.OnHttpRequest, true);
+
+            //Submit offline data
+            Console.WriteLine("Submitting ARK offline data to master server...");
+            SendOfflineData();
 
             //Set timer to transmit the world report every five minutes
             reportTimer = new Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
@@ -78,8 +84,14 @@ namespace ArkWebMapSlaveServer
             reportTimer.Elapsed += ReportTimer_Elapsed;
             reportTimer.Start();
 
+            //Set timer to transmit the world offline data every 15 minutes
+            offlineDataTimer = new Timer(TimeSpan.FromMinutes(15).TotalMilliseconds);
+            offlineDataTimer.AutoReset = true;
+            offlineDataTimer.Elapsed += OfflineDataTimer_Elapsed;
+            offlineDataTimer.Start();
+
             //If we're in debug mode, warn
-            if(config.debug_mode)
+            if (config.debug_mode)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("WARNING! This server is running in debug mode. Debug mode enables additional logging and disables security checks for incoming requests. THIS MEANS ANYONE CAN REQUEST ANY DATA ON THIS SERVER!");
@@ -102,6 +114,23 @@ namespace ArkWebMapSlaveServer
             } else
             {
                 Console.WriteLine("Master server ARK world report is now up to date.");
+            }
+        }
+
+        private static void OfflineDataTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            //Transmit report
+            Console.WriteLine("Updating master server with ARK offline data...");
+            if (!SendWorldReport())
+            {
+                //Error!
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Failed to update offline data.");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else
+            {
+                Console.WriteLine("Master server ARK offline data is now up to date.");
             }
         }
 
@@ -131,6 +160,18 @@ namespace ArkWebMapSlaveServer
                 return false;
             }
             return true;
+        }
+
+        public static bool SendOfflineData()
+        {
+            try
+            {
+                OfflineDataReportBuilder.SendOfflineData();
+                return true;
+            } catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public static bool HandshakeMasterServer(string mapName)

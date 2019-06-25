@@ -63,6 +63,10 @@ namespace ArkWebMapMasterServer.Services.Bridge
             {
                 return MirrorReportService.OnHttpRequest(e, server);
             }
+            if (path.StartsWith("offline_data_report"))
+            {
+                return ArkOfflineDataReportRequest.OnHttpRequest(e, server);
+            }
 
             //Not found
             throw new StandardError("Not Found", StandardErrorCode.NotFound);

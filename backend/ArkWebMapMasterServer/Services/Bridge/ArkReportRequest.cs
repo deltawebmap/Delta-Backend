@@ -24,7 +24,6 @@ namespace ArkWebMapMasterServer.Services.Bridge
                 s.latest_server_time = report.map_time;
                 s.latest_server_report_downloaded = DateTime.UtcNow.Ticks;
                 s.has_server_report = true;
-                s.latest_offline_data = report.offline_tribes;
 
                 //Save
                 s.Update();

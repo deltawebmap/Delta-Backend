@@ -35,7 +35,7 @@ namespace ArkWebMapMasterServer
 
             Console.WriteLine("Connecting to GATEWAY...");
             gatewayHandler = new Gateway.GatewayHandler();
-            gateway = AWMGatewayClient.CreateClient(GatewayClientType.MasterServer, "master", "", 1, 0, true, gatewayHandler, config.system_server_keys["master"]);
+            gateway = AWMGatewayClient.CreateClient(GatewayClientType.MasterServer, "master", "", 1, 0, false, gatewayHandler, config.system_server_keys["master"]);
 
             Console.WriteLine("Fetching online servers from LIGHTSPEED...");
             FetchOnlineServers();

@@ -3,6 +3,7 @@ using ArkBridgeSharedEntities.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -67,11 +68,6 @@ namespace ArkWebMapMasterServer.PresistEntities
         /// The time the last server report was downloaded.
         /// </summary>
         public long latest_server_report_downloaded { get; set; }
-
-        /// <summary>
-        /// Latest offline data for this server, by tribe ID.
-        /// </summary>
-        public Dictionary<int, string> latest_offline_data { get; set; }
 
         /// <summary>
         /// If we have the above four values
@@ -144,59 +140,6 @@ namespace ArkWebMapMasterServer.PresistEntities
             return "https://ark.romanport.com/resources/placeholder_server_images/" + output + ".png";
         }
 
-        public T SendRequest<T>(string action, object data, RequestHttpMethod method, ArkUser user, int timeoutMs = 10000)
-        {
-            HttpResponseMessage response = OpenHttpRequest(new StringContent(JsonConvert.SerializeObject(data)), action, method.ToString(), user, timeoutMs);
-            var replyString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-
-            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-            {
-                //Parse error and throw it
-                throw JsonConvert.DeserializeObject<StandardError>(replyString);
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                //Continue normally
-                return JsonConvert.DeserializeObject<T>(replyString);
-            }
-            else
-            {
-                //Unknown
-                throw new Exception("Server reply was not valid.");
-            }
-        }
-
-        public HttpResponseMessage OpenHttpRequest(HttpContent content, string action, string method, ArkUser user, int timeoutMs = 10000)
-        {
-            //Generate salt and create URLs
-            string fullURL = $"http://{latest_proxy_url}{action}";
-            Uri fullURI = new Uri(fullURL);
-            byte[] salt = HMACGen.GenerateSalt();
-
-            //Generate HMAC
-            string hmac = HMACGen.GenerateHMAC(salt, server_creds);
-
-            //Add headers and send.
-            content.Headers.Add("X-Ark-User-Auth", JsonConvert.SerializeObject(user));
-            content.Headers.Add("X-Ark-Salt", Convert.ToBase64String(salt));
-            content.Headers.Add("X-Ark-Integrity", hmac);
-            content.Headers.Add("X-Ark-Source-IP", "0.0.0.0");
-
-            
-            HttpResponseMessage reply;
-            using (HttpClient client = new HttpClient())
-            {
-                client.Timeout = new TimeSpan(0, 0, 0, 0, timeoutMs);
-                reply = client.SendAsync(new HttpRequestMessage
-                {
-                    Content = content, 
-                    Method = new HttpMethod(method),
-                    RequestUri = new Uri(fullURL),
-                }).GetAwaiter().GetResult();
-            }
-            return reply;
-        }
-
         public bool TryGetTribeId(string steamId, out int tribeId)
         {
             tribeId = -1;
@@ -211,24 +154,32 @@ namespace ArkWebMapMasterServer.PresistEntities
             }
         }
 
-        public bool TryGetOfflineDataForTribe(string steamId, out string offlineData)
+        public bool TryGetOfflineDataForTribeStreamed(string steamId, out DateTime time, Stream outputStream)
         {
-            offlineData = "";
             if (has_server_report)
             {
                 if (TryGetTribeId(steamId, out int tribeId))
                 {
-                    if (latest_offline_data != null)
-                    {
-                        if (latest_offline_data.ContainsKey(tribeId))
-                        {
-                            offlineData = latest_offline_data[tribeId];
-                            return true;
-                        }
-                    }
+                    return Tools.OfflineTribeDataTool.GetArkDataDecompressedStreamed(this._id, tribeId, out time, outputStream);
                 }
             }
+            time = DateTime.MinValue;
             return false;
+        }
+
+        public bool TryGetOfflineDataForTribe(string steamId, out DateTime time, out string data)
+        {
+            time = DateTime.MinValue;
+            data = null;
+            if (has_server_report)
+            {
+                if (TryGetTribeId(steamId, out int tribeId))
+                {
+                    data = Tools.OfflineTribeDataTool.GetArkDataDecompressed(this._id, tribeId, out time);
+                }
+            }
+            
+            return data != null;
         }
     }
 }
