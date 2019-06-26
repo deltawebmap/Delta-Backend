@@ -1,4 +1,6 @@
-﻿using ArkSaveEditor.World.WorldTypes.ArkTribeLogEntries;
+﻿using ArkBridgeSharedEntities.Entities;
+using ArkBridgeSharedEntities.Entities.BasicTribeLog;
+using ArkSaveEditor.World.WorldTypes.ArkTribeLogEntries;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,8 @@ namespace ArkWebMapMasterServer.NetEntities
     {
         public ArkHubWildcardNews ark_news;
         public List<UsersMeReply_Server> servers;
-        public Dictionary<string, JToken> servers_hub;
+        public BasicTribeLogEntry[] log;
+        public Dictionary<string, SteamProfile> steam_profiles;
     }
 
     public class ArkHubWildcardNews

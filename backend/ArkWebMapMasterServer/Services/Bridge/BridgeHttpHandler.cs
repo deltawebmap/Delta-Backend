@@ -67,6 +67,10 @@ namespace ArkWebMapMasterServer.Services.Bridge
             {
                 return ArkOfflineDataReportRequest.OnHttpRequest(e, server);
             }
+            if(path.StartsWith("latest_tribe_log_tribes"))
+            {
+                return HubReportRequest.OnHttpRequest(e, server);
+            }
 
             //Not found
             throw new StandardError("Not Found", StandardErrorCode.NotFound);

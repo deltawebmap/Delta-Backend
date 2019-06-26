@@ -1,7 +1,10 @@
-﻿using ArkSaveEditor.World.WorldTypes;
+﻿using ArkBridgeSharedEntities.Entities;
+using ArkBridgeSharedEntities.Entities.BasicTribeLog;
+using ArkSaveEditor.World.WorldTypes;
 using ArkSaveEditor.World.WorldTypes.ArkTribeLogEntries;
 using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
+using ArkWebMapMasterServer.Tools;
 using CodeHollow.FeedReader;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
@@ -24,16 +27,20 @@ namespace ArkWebMapMasterServer.Services.Users
             //Load the UsersMe data.
             UsersMeReply usersMe = new UsersMeReply(u, true, false);
 
-            //Grab tribe hub data from offline data
-            Dictionary<string, JToken> servers_hub = new Dictionary<string, JToken>();
-            foreach (var s in u.GetServers())
+            //Grab tribe hub data
+            List<Tuple<string, int>> serverTribeIds = new List<Tuple<string, int>>();
+            foreach (var s in u.GetServers(true))
+                serverTribeIds.Add(new Tuple<string, int>(s.Item1._id, s.Item2.player_tribe_id));
+            BasicTribeLogEntry[] hubEntries = TribeHubTool.GetTribeLogEntries(serverTribeIds);
+
+            //Grab Steam profiles from hub data
+            Dictionary<string, SteamProfile> steamProfiles = new Dictionary<string, SteamProfile>();
+            foreach(var entr in hubEntries)
             {
-                ArkServer server = s.Item1;
-                if(server.TryGetOfflineDataForTribe(u.steam_id, out DateTime time, out string offlineData))
+                foreach(var sid in entr.steamIds)
                 {
-                    JObject jo = JObject.Parse(offlineData);
-                    JToken hubData = jo["hub"];
-                    servers_hub.Add(server._id, hubData);
+                    if (!steamProfiles.ContainsKey(sid))
+                        steamProfiles.Add(sid, SteamUserRequest.GetSteamProfile(sid));
                 }
             }
 
@@ -45,7 +52,8 @@ namespace ArkWebMapMasterServer.Services.Users
             {
                 ark_news = news,
                 servers = usersMe.servers,
-                servers_hub = servers_hub
+                log = hubEntries,
+                steam_profiles = steamProfiles
             };
 
             //Respond

@@ -120,6 +120,15 @@ namespace ArkHttpServer
             //Gather info for the Ark Web Map Mirror plugin
             MirrorPlugin.OnMapSave(world);
 
+            //Submit new tribe ID entries
+            try
+            {
+                Tools.SubmitHubDataTool.SubmitHubData(world, world_time);
+            } catch (Exception ex)
+            {
+                Console.WriteLine("Failed to submit tribe log entries with error " + ex.Message + ex.StackTrace);
+            }
+
             //Set values
             current_world = world;
             item_dict_cache = itemDict;
