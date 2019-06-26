@@ -15,6 +15,7 @@ namespace ArkWebMapMasterServer.MirrorEntities
         public int playerId;
         public int tribeId;
         public MirroredVector3 pos;
+        public MirroredVector3 rotation;
 
         public override void ReadMsg(MirrorProtocolReader reader)
         {
@@ -22,6 +23,7 @@ namespace ArkWebMapMasterServer.MirrorEntities
             playerId = reader.ReadNextInt();
             tribeId = reader.ReadNextInt();
             pos = reader.ReadNextVector3();
+            rotation = reader.ReadNextVector3();
         }
 
         public override Tuple<UpdateEntityRealtimePosition, int> ProcessMsg(ArkServer s, ArkMirrorToken auth)

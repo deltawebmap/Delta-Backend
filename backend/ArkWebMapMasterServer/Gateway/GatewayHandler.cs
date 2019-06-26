@@ -13,5 +13,13 @@ namespace ArkWebMapMasterServer.Gateway
         {
             DrawableMapTool.AddMapPoints(data.server_id, data.tribe_id, data.map_id, data.points);
         }
+
+        public override void Msg_MessageServerStateChange(MessageServerStateChange data, object context)
+        {
+            if (data.isUp && !Program.onlineServers.Contains(data.serverId))
+                Program.onlineServers.Add(data.serverId);
+            else if (!data.isUp && Program.onlineServers.Contains(data.serverId))
+                Program.onlineServers.Remove(data.serverId);
+        }
     }
 }

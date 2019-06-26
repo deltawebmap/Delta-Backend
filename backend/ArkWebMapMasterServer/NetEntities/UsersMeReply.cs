@@ -68,13 +68,12 @@ namespace ArkWebMapMasterServer.NetEntities
         public ArkPublishedServerListing public_listing;
         public DateTime lastReportTime;
 
-        public string endpoint_ping;
-        public string endpoint_leave;
         public string endpoint_createsession;
         public string endpoint_hub;
 
         public List<string> enabled_notifications;
-        public ArkServerReply ping_status;
+
+        public bool is_online;
 
         public UsersMeReply_Server()
         {
@@ -110,21 +109,16 @@ namespace ArkWebMapMasterServer.NetEntities
             string base_endpoint = $"https://ark.romanport.com/api/servers/{id}/";
             endpoint_hub = base_endpoint + "world/tribes/hub";
             endpoint_createsession = $"https://lightspeed-ark.romanport.com/{id}/" + "create_session";
-            endpoint_leave = base_endpoint + "leave";
-            endpoint_ping = base_endpoint.TrimEnd('/');
 
             map_id = s.latest_server_map;
             map_name = map_id;
+            is_online = Program.onlineServers.Contains(s._id);
 
             //Convert permissions
             List<ArkNotificationChannel> notifications = u.GetServerNotificationSettings(s._id);
             enabled_notifications = new List<string>();
             foreach (ArkNotificationChannel ss in notifications)
                 enabled_notifications.Add(ss.ToString());
-
-            //Ping server
-            if(doPing)
-                ping_status = new ArkServerReply(s, null, 600);
 
             //Get the published server listing, if we have it
             if(s.is_published)

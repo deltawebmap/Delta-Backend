@@ -25,12 +25,6 @@ namespace ArkWebMapMasterServer.Services.Mirror
             if(auth != null)
                 server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(auth._id);
 
-            //Log
-            if (server == null)
-                Console.WriteLine($"Client auth failed with token {token}");
-            else
-                Console.WriteLine($"Authenticated client event for server {server._id}");
-
             //Abort if failed
             if (server == null)
                 return Program.QuickWriteStatusToDoc(e, false, 401);
