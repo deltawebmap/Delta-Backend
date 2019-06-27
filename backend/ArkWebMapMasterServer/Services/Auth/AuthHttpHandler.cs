@@ -53,6 +53,11 @@ namespace ArkWebMapMasterServer.Services.Auth
                 SetAuthCookie(e, e.Request.Query["token"]);
                 return Program.QuickWriteToDoc(e, "Token set!", "text/plain");
             }
+            if(path.StartsWith("providers/"))
+            {
+                //Provider/managers
+                return ManagerAuthHttpHandler.OnHttpRequest(e, path.Substring("providers/".Length));
+            }
 
             //Not found
             throw new StandardError("Not Found", StandardErrorCode.NotFound);

@@ -17,7 +17,10 @@ namespace ArkWebMapMasterServer.Services.Bridge
             //Add each submission to DB
             var collec = Tools.TribeHubTool.GetCollection();
             foreach (var sub in submission.entries)
+            {
+                sub.serverId = s._id;
                 collec.Insert(sub);
+            }
 
             //Return OK
             return Program.QuickWriteStatusToDoc(e, true);

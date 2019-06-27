@@ -49,11 +49,7 @@ namespace ArkWebMapGateway
                         await Program.QuickWriteToDoc(e, "Unknown endpoint.", "text/plain", 404);
                 } else
                 {
-                    //Use the endpoint to determine type
-                    if (endpoint == "send_notification")
-                        await OnHttpRequestSendNotification(e);
-                    else
-                        await Program.QuickWriteToDoc(e, "WebSocket expected to the GATEWAY.", "text/plain", 429);
+                    await Program.QuickWriteToDoc(e, "WebSocket expected to the GATEWAY.", "text/plain", 429);
                 }
             } catch (Exception ex)
             {
@@ -64,38 +60,6 @@ namespace ArkWebMapGateway
                 }
                 catch { }
             }
-        }
-
-        public static int latestNotificationId = 0;
-
-        public static async Task OnHttpRequestSendNotification(Microsoft.AspNetCore.Http.HttpContext e)
-        {
-            //TODO: VERIFY AND AUTHENTICATE SERVER
-            string serverId = "x5wyzx9myzU3AKkdzlWHBzAt";
-
-            //Deserialize POST and prepare message
-            ArkV2NotificationRequest request = Program.DecodePostBody<ArkV2NotificationRequest>(e);
-            if (request.payload == null)
-                return;
-            request.payload.uuid = latestNotificationId++;
-            request.payload.serverName = ServerNameCache.GetServerName(serverId);
-            string message = JsonConvert.SerializeObject(request.payload);
-
-            int targetTribeId = request.targetTribeId;
-
-            //Find clients to send to and send them the message
-            var clients = ConnectionHolder.notificationClients.Where(x => x.serverIds.ContainsKey(serverId));
-            foreach(var c in clients)
-            {
-                int clientTribeId = c.serverIds[serverId];
-                if(clientTribeId == targetTribeId)
-                {
-                    c.SendMsg(message);
-                }
-            }
-
-            //Send OK
-            await Program.QuickWriteToDoc(e, "{\"ok\":true}", "application/json");
         }
     }
 }

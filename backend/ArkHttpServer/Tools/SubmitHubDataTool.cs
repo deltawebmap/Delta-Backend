@@ -101,7 +101,6 @@ namespace ArkHttpServer.Tools
                 type = b.type,
                 tribeId = b.tribeId,
                 time = time,
-                serverId = b.serverId,
                 priority = b.priority,
                 gameTime = b.gameTime,
                 gameDay = b.gameDay,

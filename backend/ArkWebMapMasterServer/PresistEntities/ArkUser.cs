@@ -46,33 +46,30 @@ namespace ArkWebMapMasterServer.PresistEntities
                 hidden_servers = new List<string>();
 
             List<Tuple<ArkServer, ArkSlaveReport_PlayerAccount>> output = new List<Tuple<ArkServer, ArkSlaveReport_PlayerAccount>>();
-            var serversToTry = Servers.ArkSlaveServerSetup.GetCollection().Find(x => x.has_server_report || x.owner_uid == _id).ToArray();
-            List<string> output_ids = new List<string>();
-            foreach(var s in serversToTry)
+            var foundServers = Servers.ArkSlaveServerSetup.GetCollection().Find(x => (x.has_server_report) || x.owner_uid == _id).ToArray();
+            foreach(var s in foundServers)
             {
-                bool check = s.owner_uid == _id;
-                ArkSlaveReport_PlayerAccount playerAcc = null;
-                if(s.latest_server_local_accounts != null)
+                //Get attributes
+                bool isOwner = s.owner_uid == this._id;
+
+                //If this is a hidden server, ignore
+                if (hidden_servers.Contains(s._id))
+                    continue;
+
+                //Try and find our player profile
+                ArkSlaveReport_PlayerAccount profile = null;
+                if(s.has_server_report)
                 {
-                    var results = s.latest_server_local_accounts.Where(x => x.player_steam_id == steam_id);
-                    if (results.Count() >= 1)
-                    {
-                        playerAcc = results.First();
-                        check = true;
-                    }
+                    var matchingProfiles = s.latest_server_local_accounts.Where(y => y.allow_player && y.player_steam_id == steam_id);
+                    if (matchingProfiles.Count() == 1)
+                        profile = matchingProfiles.First();
                 }
 
-                if (check)
-                {
-                    if((!hidden_servers.Contains(s._id) || !excludeHidden) && !s.is_deleted) {
-                        output.Add(new Tuple<ArkServer, ArkSlaveReport_PlayerAccount>(s, playerAcc));
-                        if (!output_ids.Contains(s._id))
-                            output_ids.Add(s._id);
-                    }
-                }
+                //Add
+                if (profile != null || isOwner)
+                    output.Add(new Tuple<ArkServer, ArkSlaveReport_PlayerAccount>(s, profile));
             }
-            joined_servers = output_ids;
-            Update();
+
             return output;
         }
 

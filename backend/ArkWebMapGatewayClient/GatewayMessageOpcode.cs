@@ -17,6 +17,8 @@ namespace ArkWebMapGatewayClient
         RealtimeMapMovement = 8,
         MessageServerStateChange = 9,
         UserAddServer = 10,
-        UserLogOut = 11
+        UserLogOut = 11,
+        RealtimeOnlinePlayerUpdate = 12,
+        SendPushNotificationToTribe = 13
     }
 }

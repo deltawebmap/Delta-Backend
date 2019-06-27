@@ -94,6 +94,21 @@ namespace ArkWebMapMasterServer.PresistEntities
         /// </summary>
         public bool is_published { get; set; }
 
+        /// <summary>
+        /// If this managed by a provider
+        /// </summary>
+        public bool is_managed { get; set; }
+
+        /// <summary>
+        /// The ID of the provider managing this server.
+        /// </summary>
+        public string provider_id { get; set; }
+
+        /// <summary>
+        /// The linked provider server ID
+        /// </summary>
+        public string provider_server_id { get; set; }
+
         public void Update()
         {
             //If needed, get a new icon

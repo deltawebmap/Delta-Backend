@@ -27,7 +27,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
                 throw new StandardError("Could not authenticate slave server.", StandardErrorCode.SlaveAuthFailed);
 
             //Validate the integrity
-            if (!e.Request.Headers.ContainsKey("X-Ark-Salt") || !e.Request.Headers.ContainsKey("X-Ark-Integrity"))
+            /*if (!e.Request.Headers.ContainsKey("X-Ark-Salt") || !e.Request.Headers.ContainsKey("X-Ark-Integrity"))
             {
                 //Missing data
                 throw new StandardError("Integrity check failed. Missing 'X-Ark-Salt' or 'X-Ark-Integrity'. To: "+e.Request.Path, StandardErrorCode.BridgeIntegrityCheckFailed);
@@ -37,7 +37,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
             {
                 //Invalid
                 throw new StandardError("Integrity check failed. Invalid HMAC.", StandardErrorCode.BridgeIntegrityCheckFailed);
-            }
+            }*/
 
             //Now, continue normally.
             //Check path
@@ -55,7 +55,11 @@ namespace ArkWebMapMasterServer.Services.Bridge
             {
                 return ServerNotificationRequest.OnHttpRequest(e, server);
             }
-            if(path.StartsWith("mass_request_steam_info"))
+            if (path.StartsWith("v2_send_tribe_notification"))
+            {
+                return V2ServerNotificationRequest.OnHttpRequest(e, server);
+            }
+            if (path.StartsWith("mass_request_steam_info"))
             {
                 return MassRequestSteamDataRequest.OnHttpRequest(e, server);
             }
@@ -67,7 +71,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
             {
                 return ArkOfflineDataReportRequest.OnHttpRequest(e, server);
             }
-            if(path.StartsWith("latest_tribe_log_tribes"))
+            if(path.StartsWith("report_hub"))
             {
                 return HubReportRequest.OnHttpRequest(e, server);
             }

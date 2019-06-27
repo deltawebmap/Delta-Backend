@@ -36,7 +36,12 @@ namespace ArkWebMapMasterServer
                     //Pass onto this part
                     return Services.Auth.AuthHttpHandler.OnHttpRequest(e, path.Substring("/auth/".Length));
                 }
-                if(path.StartsWith("/server_setup_proxy/"))
+                if (path.StartsWith("/providers/"))
+                {
+                    //Pass onto this part
+                    return Services.Providers.ProvidersHttpHandler.OnHttpRequest(e, path.Substring("/providers/".Length));
+                }
+                if (path.StartsWith("/server_setup_proxy/"))
                 {
                     //This is the setup proxy for communicating with up-and-coming servers.
                     return Services.Misc.ArkSetupProxy.OnSetupProxyHttpRequest(e, path.Substring("/server_setup_proxy/".Length));

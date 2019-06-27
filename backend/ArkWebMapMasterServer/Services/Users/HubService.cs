@@ -22,7 +22,7 @@ namespace ArkWebMapMasterServer.Services.Users
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u)
         {
             //Start download of ARK news in the background
-            Task<ArkHubWildcardNews> arkNewsDownloader = DownloadArkNews();
+            //Task<ArkHubWildcardNews> arkNewsDownloader = DownloadArkNews();
 
             //Load the UsersMe data.
             UsersMeReply usersMe = new UsersMeReply(u, true, false);
@@ -30,8 +30,11 @@ namespace ArkWebMapMasterServer.Services.Users
             //Grab tribe hub data
             List<Tuple<string, int>> serverTribeIds = new List<Tuple<string, int>>();
             foreach (var s in u.GetServers(true))
-                serverTribeIds.Add(new Tuple<string, int>(s.Item1._id, s.Item2.player_tribe_id));
-            BasicTribeLogEntry[] hubEntries = TribeHubTool.GetTribeLogEntries(serverTribeIds);
+            {
+                if(s.Item2 != null)
+                    serverTribeIds.Add(new Tuple<string, int>(s.Item1._id, s.Item2.player_tribe_id));
+            }
+            BasicTribeLogEntry[] hubEntries = TribeHubTool.GetTribeLogEntries(serverTribeIds, 200);
 
             //Grab Steam profiles from hub data
             Dictionary<string, SteamProfile> steamProfiles = new Dictionary<string, SteamProfile>();
@@ -45,12 +48,12 @@ namespace ArkWebMapMasterServer.Services.Users
             }
 
             //Await the Ark news to finish downloading.
-            ArkHubWildcardNews news = arkNewsDownloader.GetAwaiter().GetResult();
+            //ArkHubWildcardNews news = arkNewsDownloader.GetAwaiter().GetResult();
 
             //Produce the final output
             ArkHubReply reply = new ArkHubReply
             {
-                ark_news = news,
+                //ark_news = news,
                 servers = usersMe.servers,
                 log = hubEntries,
                 steam_profiles = steamProfiles
