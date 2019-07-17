@@ -74,6 +74,15 @@ namespace ArkWebMapMasterServer.Managers
             return server;
         }
 
+        public static void DeleteArkServer(ArkManagerServer mserver)
+        {
+            //Delete the linked Ark server
+            ArkSlaveServerSetup.GetCollection().Delete(mserver.linked_id);
+
+            //Delete the server
+            GetServersCollection().Delete(mserver._id);
+        }
+
         public static ArkManagerServer[] GetServers(ArkManager m)
         {
             return GetServersCollection().Find(x => x.manager_id == m._id).ToArray();

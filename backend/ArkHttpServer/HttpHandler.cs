@@ -124,7 +124,7 @@ namespace ArkHttpServer
                         }
                         //Search with this dinosaur ID
                         var dinos = world.dinos.Where(x => x.dinosaurId == dinoid && x.tribeId == tribeId).ToArray();
-                        if (dinos.Length == 1)
+                        if (dinos.Length > 0)
                         {
                             //Get the method
                             var method = ArkWebServer.FindRequestMethod(e);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Timers;
 
-namespace ArkWebMapLauncher
+namespace ArkWebMapLauncherProviders
 {
     public static class BackgroundWorker
     {
@@ -31,7 +31,7 @@ namespace ArkWebMapLauncher
             LauncherConfig config;
             try
             {
-                config = Program.DownloadClass<LauncherConfig>($"https://ark.romanport.com/config/games/0/launcher_config.json?is_windows={Program.GetIsWindows().ToString()}&launcher_version={Program.LAUNCHER_VERSION}&launcher_type=BLUE&is_bg=true");
+                config = Program.DownloadClass<LauncherConfig>($"https://ark.romanport.com/config/games/0/launcher_config.json?is_windows={Program.GetIsWindows().ToString()}&launcher_version={Program.LAUNCHER_VERSION}&launcher_type=PROVIDERS&is_bg=true");
                 OnBackgroundWorkerTickCheckConfig(config);
             }
             catch (Exception ex)
@@ -76,7 +76,7 @@ namespace ArkWebMapLauncher
                 Console.WriteLine("Updated. Restarting service now...");
 
                 //Start service back up
-                Program.StartMainService(latestPackageInfo);
+                //Program.StartMainService(latestPackageInfo);                    //TODO!!!!!!!!!!!!!!
                 UpdaterTool.isQuittingForUpdate = false;
 
                 //Continue updates

@@ -67,7 +67,6 @@ namespace ArkWebMapSlaveServer
         static ArkSlaveReport_OfflineTribe GenerateOverviewForSingleTribe(ArkWorld w, int tribeId, DateTime lastSavedAtTime)
         {
             ArkSlaveReport_OfflineTribe result = new ArkSlaveReport_OfflineTribe();
-            result.hub = TribeHubService.GenerateReply(w, tribeId);
             result.overview = TribeOverviewService.GenerateReply(w, tribeId);
             result.tribe = new BasicTribe(w, tribeId);
             result.session = new BasicArkWorld(w, lastSavedAtTime);

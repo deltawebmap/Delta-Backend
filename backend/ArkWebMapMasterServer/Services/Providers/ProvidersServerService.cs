@@ -42,7 +42,8 @@ namespace ArkWebMapMasterServer.Services.Providers
 
         public static Task SelectDelete(Microsoft.AspNetCore.Http.HttpContext e, ArkManagerServer server, ArkManager user)
         {
-            throw new StandardError("Not Implemented", StandardErrorCode.NotImplemented);
+            ManageServers.DeleteArkServer(server);
+            return Program.QuickWriteStatusToDoc(e, true);
         }
     }
 }

@@ -108,11 +108,39 @@ namespace ArkHttpServer
         //Private
         private static void LoadArkWorldIntoSlot()
         {
-            //Set the current world time
-            DateTime world_time = GetLastWorldEditTime();
+            DateTime world_time;
+            ArkWorld world;
 
-            //Get world
-            ArkWorld world = new ArkWorld(ArkWebServer.config.save_location, ArkWebServer.config.save_map);
+            //Try to access data
+            int retry = 0;
+            while(true)
+            {
+                try
+                {
+                    //Set the current world time
+                    world_time = GetLastWorldEditTime();
+
+                    //Get world
+                    world = new ArkWorld(ArkWebServer.config.save_location, ArkWebServer.config.save_map);
+
+                    //Done
+                    break;
+                }
+                catch
+                {
+                    if(retry == 5)
+                    {
+                        //Failed
+                        throw new Exception("Failed to load ARK map after 5 retries.");
+                    } else
+                    {
+                        //Do retry
+                        Console.WriteLine($"Failed to load ARK save file. Retry {retry + 1}/5. Retrying in 2 seconds...");
+                        System.Threading.Thread.Sleep(2000);
+                        retry++;
+                    }
+                }
+            }
 
             //Compute item dict
             Dictionary<string, ArkItemSearchResultsItem> itemDict = ComputeItemDictCache(world, world.dinos);

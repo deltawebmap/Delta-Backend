@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using ArkBridgeSharedEntities.Entities;
+using ArkWebMapMasterServer.Tools;
+using ArkBridgeSharedEntities.Entities.BasicTribeLog;
 
 namespace ArkWebMapMasterServer.Services.Servers
 {
@@ -74,6 +76,29 @@ namespace ArkWebMapMasterServer.Services.Servers
                         throw new StandardError("Offline data did not exist.", StandardErrorCode.MissingData);
                     else
                         return e.Response.Body.WriteAsync(new byte[0], 0, 0);
+                }
+                if(nextUrl == "hub")
+                {
+                    //Get hub data for this tribe
+                    BasicTribeLogEntry[] hubEntries = TribeHubTool.GetTribeLogEntries(new List<Tuple<string, int>> { new Tuple<string, int>(server._id, tribeId) }, 200);
+
+                    //Grab Steam profiles from hub data
+                    Dictionary<string, SteamProfile> steamProfiles = new Dictionary<string, SteamProfile>();
+                    foreach (var entr in hubEntries)
+                    {
+                        foreach (var sid in entr.steamIds)
+                        {
+                            if (!steamProfiles.ContainsKey(sid))
+                                steamProfiles.Add(sid, SteamUserRequest.GetSteamProfile(sid));
+                        }
+                    }
+
+                    //Write
+                    return Program.QuickWriteJsonToDoc(e, new SingleServerHub
+                    {
+                        log = hubEntries,
+                        profiles = steamProfiles
+                    });
                 }
 
                 throw new StandardError("Not Found in Server", StandardErrorCode.NotFound);

@@ -32,7 +32,6 @@ namespace ArkBridgeSharedEntities.Entities
     public class ArkSlaveReport_OfflineTribe
     {
         public TribeOverviewReply overview { get; set; }
-        public TribeHubReply hub { get; set; }
         public BasicTribe tribe { get; set; }
         public BasicArkWorld session { get; set; }
     }

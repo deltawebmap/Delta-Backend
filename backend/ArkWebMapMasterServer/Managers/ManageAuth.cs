@@ -30,11 +30,11 @@ namespace ArkWebMapMasterServer.Managers
 
             //Verify username and password
             if (password.Length < 8)
-                throw new ManagerSignupError("Password must be longer than 8 characters.", "password");
+                throw new ManagerSignupError("Must be longer than 8 characters.", "password");
             if (password.Length > 128)
-                throw new ManagerSignupError("Password must be shorter than 128 characters.", "password");
+                throw new ManagerSignupError("Must be shorter than 128 characters.", "password");
             if(collec.Find( x => x.email == email).Count() != 0)
-                throw new ManagerSignupError("A manager already exists with this E-Mail. Try signing in?", "email");
+                throw new ManagerSignupError("Already exists. Try signing in.", "username");
 
             //Generate the password salt
             byte[] salt = Program.GenerateRandomBytes(64);
@@ -46,7 +46,7 @@ namespace ArkWebMapMasterServer.Managers
             if (profileName == null || profileImgToken == null)
                 throw new ManagerSignupError("Profile is missing.", null);
             if(profileName.Length < 2 || profileName.Length > 24)
-                throw new ManagerSignupError("Name must be between 2-24 characters.", "profile_name");
+                throw new ManagerSignupError("Must be between 2-24 characters.", "profile_name");
             if (profileImgToken == null)
                 throw new ManagerSignupError("Missing profile image.", "profile_image");
             UserContentTokenPayload image = UserContentUploader.FinishContentUpload(profileImgToken);
@@ -89,6 +89,8 @@ namespace ArkWebMapMasterServer.Managers
         {
             //Find the user with this E-Mail, if any
             ArkManager user = GetManagersCollection().FindOne(x => x.email == email);
+            if (user == null)
+                return null;
 
             //Use this user's salt to hash this password. Then, compare it
             byte[] hash = HashPassword(password, user.password_salt);

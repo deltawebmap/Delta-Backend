@@ -58,8 +58,8 @@ namespace ArkWebMapMasterServer.Services.Auth
                     return Program.QuickWriteJsonToDoc(e, new ArkManagerAuthResponse
                     {
                         ok = false,
-                        msg = "Username or Password Invalid",
-                        element = null
+                        msg = "Username or Password Incorrect",
+                        element = "password"
                     });
                 }
 

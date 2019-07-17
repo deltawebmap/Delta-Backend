@@ -69,6 +69,7 @@ namespace ArkWebMapMasterServer.NetEntities
         public DateTime lastReportTime;
 
         public string endpoint_createsession;
+        public string endpoint_offline_data;
         public string endpoint_hub;
 
         public List<string> enabled_notifications;
@@ -107,8 +108,9 @@ namespace ArkWebMapMasterServer.NetEntities
             }
 
             string base_endpoint = $"https://ark.romanport.com/api/servers/{id}/";
-            endpoint_hub = base_endpoint + "world/tribes/hub";
+            endpoint_hub = base_endpoint + "hub";
             endpoint_createsession = $"https://lightspeed-ark.romanport.com/{id}/" + "create_session";
+            endpoint_offline_data = base_endpoint + "offline_data";
 
             map_id = s.latest_server_map;
             map_name = map_id;
