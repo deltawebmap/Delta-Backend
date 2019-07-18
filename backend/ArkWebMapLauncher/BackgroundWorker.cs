@@ -31,7 +31,7 @@ namespace ArkWebMapLauncher
             LauncherConfig config;
             try
             {
-                config = Program.DownloadClass<LauncherConfig>($"https://ark.romanport.com/config/games/0/launcher_config.json?is_windows={Program.GetIsWindows().ToString()}&launcher_version={Program.LAUNCHER_VERSION}&launcher_type=BLUE&is_bg=true");
+                config = Program.DownloadClass<LauncherConfig>($"https://config.deltamap.net/prod/games/0/launcher_config.json?is_windows={Program.GetIsWindows().ToString()}&launcher_version={Program.LAUNCHER_VERSION}&launcher_type=BLUE&is_bg=true");
                 OnBackgroundWorkerTickCheckConfig(config);
             }
             catch (Exception ex)

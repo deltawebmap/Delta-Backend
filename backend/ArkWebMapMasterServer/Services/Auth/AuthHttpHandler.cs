@@ -180,7 +180,7 @@ namespace ArkWebMapMasterServer.Services.Auth
             } else
             {
                 //Redirect to the login page and pass in the token
-                e.Response.Headers.Add("Location", "https://ark.romanport.com/login/return/#"+id);
+                e.Response.Headers.Add("Location", "https://deltamap.net/login/return/#"+id);
                 return Program.QuickWriteToDoc(e, "You should be redirected now.", "text/plain", 302);
             }
         }

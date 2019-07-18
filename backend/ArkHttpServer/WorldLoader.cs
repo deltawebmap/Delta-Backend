@@ -121,7 +121,7 @@ namespace ArkHttpServer
                     world_time = GetLastWorldEditTime();
 
                     //Get world
-                    world = new ArkWorld(ArkWebServer.config.save_location, ArkWebServer.config.save_map);
+                    world = new ArkWorld(ArkWebServer.config.save_location, ArkWebServer.config.save_map, @"C:\Program Files (x86)\Steam\steamapps\common\ARK\ShooterGame\Saved\Config\WindowsServer\");
 
                     //Done
                     break;
@@ -209,7 +209,8 @@ namespace ArkHttpServer
                         itemDict[classname].owner_ids.Add(dinoId, i.stackSize);
 
                         //Also add this dino's data
-                        itemDict[classname].owner_dinos.Add(dinoId, new BasicArkDino(d, world));
+                        if(d.dino_entry != null)
+                            itemDict[classname].owner_dinos.Add(dinoId, new BasicArkDino(d, world, d.dino_entry));
                     }
                     else
                         //Does contain our dino. Add this stack

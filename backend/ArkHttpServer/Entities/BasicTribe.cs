@@ -39,8 +39,10 @@ namespace ArkHttpServer.Entities
             dinos = new List<MinifiedBasicArkDino>();
             for (int i = 0; i < searchDinos.Length; i++)
             {
-                dinos.Add(new MinifiedBasicArkDino(searchDinos[i], world));
-
+                //Get the entry
+                var entry = searchDinos[i].dino_entry;
+                if(entry != null)
+                    dinos.Add(new MinifiedBasicArkDino(searchDinos[i], world, entry));
             }
 
             //Get baby dinos
@@ -50,8 +52,12 @@ namespace ArkHttpServer.Entities
             {
                 if(d.isBaby == true && d.babyAge < 1f)
                 {
-                    baby_dino_urls.Add(new BasicArkDino(d, world).apiUrl);
-                    baby_dinos.Add(new ArkDinoReply(d, world)); //Full dino
+                    ArkDinoEntry entry = d.dino_entry;
+                    if(entry != null)
+                    {
+                        baby_dino_urls.Add(new BasicArkDino(d, world, entry).apiUrl);
+                        baby_dinos.Add(new ArkDinoReply(d, world)); //Full dino
+                    }
                 }
             }
 
@@ -105,15 +111,16 @@ namespace ArkHttpServer.Entities
 
         public ArkDinoEntry entry;
 
-        public BasicArkDino(ArkDinosaur dino, ArkWorld w)
+        public BasicArkDino(ArkDinosaur dino, ArkWorld w, ArkDinoEntry entry)
         {
             //Convert this dino to this.
             pos = dino.location;
             coord_pos = w.ConvertFromWorldToGameCoords(dino.location);
             normalized_pos = w.ConvertFromWorldToNormalizedPos(dino.location);
+            this.entry = entry;
 
             classname = dino.classnameString;
-            imgUrl = $"{ArkWebServer.config.resources_url}/dinos/icons/lq/{classname}.png";
+            imgUrl = entry.icon.image_thumb_url;
             id = dino.dinosaurId;
             apiUrl = $"{ArkWebServer.api_prefix}/world/dinos/{id}";
             isFemale = dino.isFemale;
@@ -130,7 +137,7 @@ namespace ArkHttpServer.Entities
             adjusted_map_pos = normalized_pos.Clone();
 
             adjusted_map_pos = w.mapinfo.ConvertFromGamePositionToNormalized(new Vector2(dino.location.x, dino.location.y));
-            entry = ArkSaveEditor.ArkImports.GetDinoDataByClassname(classname);
+            
         }
     }
 
@@ -150,13 +157,12 @@ namespace ArkHttpServer.Entities
         public string displayClassname;
         public int level;
 
-        public MinifiedBasicArkDino(ArkDinosaur dino, ArkWorld w)
+        public MinifiedBasicArkDino(ArkDinosaur dino, ArkWorld w, ArkDinoEntry entry)
         {
             //Convert this dino to this.
             coord_pos = w.ConvertFromWorldToGameCoords(dino.location);
-
             classname = dino.classnameString;
-            imgUrl = $"{ArkWebServer.config.resources_url}/dinos/icons/lq/{classname}.png";
+            imgUrl = entry.icon.image_thumb_url;
             id = dino.dinosaurId.ToString();
             apiUrl = $"{ArkWebServer.api_prefix}/world/dinos/{id}";
             tamedName = dino.tamedName;
@@ -208,7 +214,7 @@ namespace ArkHttpServer.Entities
 
         public BasicArkStructure(ArkStructure s, ArkWorld w, int index)
         {
-            imgUrl = $"https://ark.romanport.com/resources/structures/{s.displayMetadata.img}.png";
+            imgUrl = $"https://icon-assets.deltamap.net/legacy/structures/{s.displayMetadata.img}.png";
             map_pos = w.mapinfo.ConvertFromGamePositionToNormalized(new Vector2(s.location.x, s.location.y));
             map_pos.Multiply(100);
             rot = s.location.yaw;

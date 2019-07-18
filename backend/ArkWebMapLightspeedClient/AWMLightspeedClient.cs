@@ -15,7 +15,7 @@ namespace ArkWebMapLightspeedClient
     public delegate Task LightspeedHandler(LightspeedRequest request);
     public class AWMLightspeedClient
     {
-        public const string REMOTE_CONFIG_ENDPOINT = "https://ark.romanport.com/config/lightspeed_config.json";
+        public const string REMOTE_CONFIG_ENDPOINT = "https://config.deltamap.net/prod/lightspeed_config.json";
 
         public bool logging_enabled;
         public string clientId;

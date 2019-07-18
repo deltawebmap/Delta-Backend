@@ -22,7 +22,7 @@ namespace ArkWebMapGateway.Clients
             {
                 using (WebClient wc = new WebClient())
                 {
-                    string s = wc.DownloadString("https://ark.romanport.com/api/system_server_validation?type=master&value="+System.Web.HttpUtility.UrlEncode(e.Request.Query["auth_token"]));
+                    string s = wc.DownloadString("https://deltamap.net/api/system_server_validation?type=master&value="+System.Web.HttpUtility.UrlEncode(e.Request.Query["auth_token"]));
                     authenticated = JsonConvert.DeserializeObject<ArkBridgeSharedEntities.Entities.TrueFalseReply>(s).ok;
                 }
             }

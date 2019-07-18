@@ -26,7 +26,7 @@ namespace ArkWebMapGateway.Clients
                 using (WebClient wc = new WebClient())
                 {
                     wc.Headers.Add("Authorization", "Bearer " + e.Request.Query["auth_token"]);
-                    string s = wc.DownloadString("https://ark.romanport.com/api/users/@me/");
+                    string s = wc.DownloadString("https://deltamap.net/api/users/@me/");
                     user = JsonConvert.DeserializeObject<UsersMeReply>(s);
                 }
             }

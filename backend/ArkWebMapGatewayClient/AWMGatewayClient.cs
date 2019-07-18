@@ -14,7 +14,7 @@ namespace ArkWebMapGatewayClient
 {
     public class AWMGatewayClient
     {
-        public const string REMOTE_CONFIG_ENDPOINT = "https://ark.romanport.com/config/gateway_config.json";
+        public const string REMOTE_CONFIG_ENDPOINT = "https://config.deltamap.net/prod/gateway_config.json";
         public const int CLIENT_LIB_VERSION_MAJOR = 1;
         public const int CLIENT_LIB_VERSION_MINOR = 0;
 

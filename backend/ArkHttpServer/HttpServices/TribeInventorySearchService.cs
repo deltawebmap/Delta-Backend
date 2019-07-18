@@ -52,7 +52,7 @@ namespace ArkHttpServer.HttpServices
                     basicDinos.Add(d.Key, new WebArkInventoryDino
                     {
                         id = di.dinosaurId.ToString(),
-                        img = "https://ark.romanport.com/assets/img_failed.png",
+                        img = "https://deltamap.net/assets/img_failed.png",
                         displayClassName = di.classnameString,
                         displayName = di.tamedName,
                         level = di.level
@@ -62,7 +62,7 @@ namespace ArkHttpServer.HttpServices
                     basicDinos.Add(d.Key, new WebArkInventoryDino
                     {
                         id = di.dinosaurId.ToString(),
-                        img = entry.icon_url,
+                        img = entry.icon.image_url,
                         displayClassName = entry.screen_name,
                         displayName = di.tamedName,
                         level = di.level
@@ -132,7 +132,7 @@ namespace ArkHttpServer.HttpServices
                     //Match. Add the item to the results.
                     if (!results.ContainsKey(entry.classname))
                     {
-                        string icon = "https://ark.romanport.com/assets/img_failed.png";
+                        string icon = "https://deltamap.net/assets/img_failed.png";
                         if (entry.icon != null)
                             icon = entry.icon.icon_url;
                         results.Add(entry.classname, new WebArkInventoryItemResult

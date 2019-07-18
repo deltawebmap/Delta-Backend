@@ -23,7 +23,7 @@ namespace ArkWebMapLauncher
             LauncherConfig config;
             try
             {
-                config = DownloadClass<LauncherConfig>($"https://ark.romanport.com/config/games/0/launcher_config.json?is_windows={GetIsWindows().ToString()}&launcher_version={LAUNCHER_VERSION}&launcher_type=BLUE&is_bg=false");
+                config = DownloadClass<LauncherConfig>($"https://config.deltamap.net/prod/games/0/launcher_config.json?is_windows={GetIsWindows().ToString()}&launcher_version={LAUNCHER_VERSION}&launcher_type=BLUE&is_bg=false");
             } catch (Exception ex)
             {
                 ExitWithFatalError("Failed to download launcher config file. Are you online?");

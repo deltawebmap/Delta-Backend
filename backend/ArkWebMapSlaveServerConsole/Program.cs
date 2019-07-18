@@ -52,7 +52,7 @@ namespace ArkWebMapSlaveServerConsole
             {
                 using (WebClient wc = new WebClient())
                 {
-                    remote_config = JsonConvert.DeserializeObject<RemoteConfigFile>(wc.DownloadString($"https://ark.romanport.com/config/games/0/client_config.json?client=subserver&version={CURRENT_RELEASE_ID.ToString()}"));
+                    remote_config = JsonConvert.DeserializeObject<RemoteConfigFile>(wc.DownloadString($"https://config.deltamap.net/prod/games/0/client_config.json?client=subserver&version={CURRENT_RELEASE_ID.ToString()}"));
                 }
             } catch
             {

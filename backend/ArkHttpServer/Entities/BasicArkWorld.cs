@@ -46,7 +46,7 @@ namespace ArkHttpServer.Entities
             string baseUrl = $"{ArkWebServer.api_prefix}/world/";
             href = baseUrl;
             endpoint_population_map = baseUrl + "map/tiles/population/?zoom={z}&x={x}&y={y}&filter={filter}&v="+ArkWebServer.CURRENT_CLIENT_VERSION;
-            endpoint_game_map = $"https://ark.romanport.com/resources/maps/"+mapName+"/tiles/{z}_{x}_{y}.png";
+            endpoint_game_map = $"https://tile-assets.deltamap.net/"+mapName+"/tiles/{z}_{x}_{y}.png";
             //endpoint_game_map = "http://localhost:84/{z}_{x}_{y}.png";
             endpoint_tribes = baseUrl + "tribes/";
             heartrate = ArkWebServer.EVENTS_HEARTRATE;

@@ -21,7 +21,7 @@ namespace ArkWebMapSlaveServerConsole
                 DrawWithColor(" Welcome to the ArkWebMap companion software.\n\nFetching code...");
                 try
                 {
-                    var request = (HttpWebRequest)WebRequest.Create("https://ark.romanport.com/api/obtain_server_setup_proxy_code");
+                    var request = (HttpWebRequest)WebRequest.Create("https://deltamap.net/api/obtain_server_setup_proxy_code");
                     request.Method = "GET";
                     var response = (HttpWebResponse)request.GetResponse();
                     string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();

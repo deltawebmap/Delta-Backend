@@ -152,7 +152,7 @@ namespace ArkWebMapMasterServer.PresistEntities
             }
 
             //Now, return URL
-            return "https://ark.romanport.com/resources/placeholder_server_images/" + output + ".png";
+            return "https://icon-assets.deltamap.net/legacy/placeholder_server_images/" + output + ".png";
         }
 
         public bool TryGetTribeId(string steamId, out int tribeId)

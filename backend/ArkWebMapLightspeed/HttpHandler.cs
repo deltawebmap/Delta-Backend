@@ -16,7 +16,7 @@ namespace ArkWebMapLightspeed
             //Add server header
             e.Response.Headers.Add("Server", "ArkWebMap LIGHTSPEED Proxy");
             e.Response.Headers.Add("Access-Control-Allow-Headers", "Authorization");
-            e.Response.Headers.Add("Access-Control-Allow-Origin", "https://ark.romanport.com");
+            e.Response.Headers.Add("Access-Control-Allow-Origin", "https://deltamap.net");
             e.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE, PUT, PATCH");
 
             //If this is an OPTIONS request, do CORS stuff
@@ -81,7 +81,7 @@ namespace ArkWebMapLightspeed
                             using (WebClient wc = new WebClient())
                             {
                                 wc.Headers.Add("Authorization", "Bearer " + token);
-                                string content = wc.DownloadString("https://ark.romanport.com/api/users/@me/");
+                                string content = wc.DownloadString("https://deltamap.net/api/users/@me/");
                                 user = JsonConvert.DeserializeObject<UsersMeReply>(content);
                                 if (user != null)
                                     ConnectionHolder.cachedTokens.TryAdd(token, user);

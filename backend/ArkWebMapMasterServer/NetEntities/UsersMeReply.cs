@@ -107,9 +107,9 @@ namespace ArkWebMapMasterServer.NetEntities
                 arkName = ps.player_name;
             }
 
-            string base_endpoint = $"https://ark.romanport.com/api/servers/{id}/";
+            string base_endpoint = $"https://deltamap.net/api/servers/{id}/";
             endpoint_hub = base_endpoint + "hub";
-            endpoint_createsession = $"https://lightspeed-ark.romanport.com/{id}/" + "create_session";
+            endpoint_createsession = $"https://lightspeed.deltamap.net/{id}/" + "create_session";
             endpoint_offline_data = base_endpoint + "offline_data";
 
             map_id = s.latest_server_map;

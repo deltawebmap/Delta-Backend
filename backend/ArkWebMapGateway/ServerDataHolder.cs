@@ -20,7 +20,7 @@ namespace ArkWebMapGateway
             //We'll have to manually fetch it from the server.
             using (WebClient wc = new WebClient())
             {
-                string s = wc.DownloadString("https://ark.romanport.com/api/servers/"+id+"/users");
+                string s = wc.DownloadString("https://deltamap.net/api/servers/"+id+"/users");
                 List<ArkSlaveReport_PlayerAccount> data = JsonConvert.DeserializeObject<List<ArkSlaveReport_PlayerAccount>>(s);
                 lock(serverTribes)
                 {

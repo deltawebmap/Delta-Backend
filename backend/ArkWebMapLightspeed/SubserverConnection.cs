@@ -71,7 +71,7 @@ namespace ArkWebMapLightspeed
                 HttpContent content = new StringContent(JsonConvert.SerializeObject(payload));
                 HttpResponseMessage response;
                 using (HttpClient wc = new HttpClient())
-                    response = await wc.PostAsync("https://ark.romanport.com/api/server_validation", content);
+                    response = await wc.PostAsync("https://deltamap.net/api/server_validation", content);
 
                 //Check
                 if (!response.IsSuccessStatusCode)

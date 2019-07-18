@@ -113,7 +113,7 @@ namespace ArkBridgeSharedEntities.Entities.BasicTribeLog
             found = t.found;
             isTamed = t.isTamed;
             if (t.dinoEntry != null)
-                dinoImg = t.dinoEntry.icon_url;
+                dinoImg = t.dinoEntry.icon.image_url;
             name = t.name;
             level = t.level;
             displayClassname = t.displayClassname;

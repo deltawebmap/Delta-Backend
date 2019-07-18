@@ -67,7 +67,7 @@ namespace ArkWebMapMasterServer.Services.Misc
             return Program.QuickWriteJsonToDoc(e, new ServerSetupWizard_BeginReply
             {
                 display_id = sessionId,
-                request_url = $"https://ark.romanport.com/api/server_setup_proxy/{sessionId}?from=WebClient",
+                request_url = $"https://deltamap.net/api/server_setup_proxy/{sessionId}?from=WebClient",
                 server = server,
                 ok = true
             });

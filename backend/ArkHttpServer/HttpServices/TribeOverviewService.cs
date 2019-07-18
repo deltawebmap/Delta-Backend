@@ -60,7 +60,7 @@ namespace ArkHttpServer.HttpServices
                     classDisplayName = ent.screen_name,
                     displayName = t.tamedName,
                     id = t.dinosaurId.ToString(),
-                    img = ent.icon_url,
+                    img = ent.icon.image_url,
                     level = t.level
                 };
                 reply.dinos.Add(d);

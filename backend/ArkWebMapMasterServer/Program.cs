@@ -22,7 +22,7 @@ namespace ArkWebMapMasterServer
         public static Random rand = new Random();
         public static List<string> onlineServers;
         public static Gateway.GatewayHandler gatewayHandler;
-        public const string PREFIX_URL = "https://ark.romanport.com/api";
+        public const string PREFIX_URL = "https://deltamap.net/api";
 
         static void Main(string[] args)
         {
@@ -50,7 +50,7 @@ namespace ArkWebMapMasterServer
             try
             {
                 using (WebClient wc = new WebClient())
-                    text = wc.DownloadString("https://lightspeed-ark.romanport.com/online");
+                    text = wc.DownloadString("https://lightspeed.deltamap.net/online");
                 onlineServers = JsonConvert.DeserializeObject<List<string>>(text);
             }
             catch (Exception ex)
