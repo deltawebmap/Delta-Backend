@@ -134,7 +134,7 @@ namespace ArkHttpServer.HttpServices
                     {
                         string icon = "https://deltamap.net/assets/img_failed.png";
                         if (entry.icon != null)
-                            icon = entry.icon.icon_url;
+                            icon = entry.icon.image_url;
                         results.Add(entry.classname, new WebArkInventoryItemResult
                         {
                             item_classname = entry.classname,
