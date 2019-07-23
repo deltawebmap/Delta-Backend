@@ -52,8 +52,8 @@
     "classname": "Achatina_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/cf3aa20be4adf9a3639c3efa.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/163caf167d4ab098c79b3403.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/aa19f6780b3111e307b20c79.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/8a16dad69e6dc1f548d6bbb4.png"
     },
     "baseLevel": {
       "Health": 75.0,
@@ -125,7 +125,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400260
+    "captureTime": 1563579205
   },
   {
     "screen_name": "Allosaurus",
@@ -404,8 +404,8 @@
     "classname": "Allo_Character_BP_Backup",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/f9a6fd1e4583617ca21c658c.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/b136dd7a66a3e38e608dc8d0.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/4926610edd93b27077e2e1cc.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/ec655665f804faf4df9d409e.png"
     },
     "baseLevel": {
       "Health": 630.0,
@@ -477,7 +477,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400260
+    "captureTime": 1563579206
   },
   {
     "screen_name": "Anglerfish",
@@ -756,8 +756,8 @@
     "classname": "Angler_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/e69ebb9a2d0fab27ecc174d8.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/028cda15408858eacf22095a.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/4c207ce3b579a6a9953483ac.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/8a4f9f9658284bd3989a5799.png"
     },
     "baseLevel": {
       "Health": 450.0,
@@ -829,7 +829,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400260
+    "captureTime": 1563579206
   },
   {
     "screen_name": "Ankylosaurus",
@@ -1108,8 +1108,8 @@
     "classname": "Ankylo_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/92ffac4a916a5cd8c5c25027.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/e2473bd1cc5ca1a76cf43471.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/5f6f7571363b0facc154435c.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/71a10f812ba900ef115d9200.png"
     },
     "baseLevel": {
       "Health": 700.0,
@@ -1181,7 +1181,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400260
+    "captureTime": 1563579206
   },
   {
     "screen_name": "Archaeopteryx",
@@ -1476,8 +1476,8 @@
     "classname": "Archa_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/2a56c47ef0290c9c45e882cc.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/06b80d4ab358895976c2e2c9.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/cce43653a0970773d30d5233.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/3533d845814d25dc79d1296a.png"
     },
     "baseLevel": {
       "Health": 125.0,
@@ -1549,7 +1549,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400260
+    "captureTime": 1563579206
   },
   {
     "screen_name": "Argentavis",
@@ -1828,8 +1828,8 @@
     "classname": "Argent_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/441e6f01e9b79e5268d8915a.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/16125bd90347d56b050ecd19.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a3f78b6b0b2e435464e03010.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/5d8c5310e89b8ccbb9474f95.png"
     },
     "baseLevel": {
       "Health": 365.0,
@@ -1901,7 +1901,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400260
+    "captureTime": 1563579207
   },
   {
     "screen_name": "Arthropluera",
@@ -2116,8 +2116,8 @@
     "classname": "Arthro_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/2bb84513e6eff8b4a4d6ae51.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/32e587e35810f765219876c2.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/5aad0c82273a5088b9fb09b9.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/74d06a66538084f318a2a383.png"
     },
     "baseLevel": {
       "Health": 500.0,
@@ -2189,7 +2189,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400260
+    "captureTime": 1563579207
   },
   {
     "screen_name": "Baryonyx",
@@ -2532,8 +2532,8 @@
     "classname": "Baryonyx_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/9750fad47a527cb98bb87344.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/d9506cad5cb125300d3524e5.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/2cbbfdabe387fdb71c622df8.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/9db3dad4ca90fa689cb6b033.png"
     },
     "baseLevel": {
       "Health": 440.0,
@@ -2605,7 +2605,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400260
+    "captureTime": 1563579207
   },
   {
     "screen_name": "Basilisk",
@@ -2884,8 +2884,8 @@
     "classname": "Basilisk_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6ffaa6a731b875da18c02a73.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/92d0fe3aaf57cf4f26e20b36.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/b51ec625c43329d454056377.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/8e052acfa080af7705cc8461.png"
     },
     "baseLevel": {
       "Health": 2750.0,
@@ -2957,7 +2957,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400261
+    "captureTime": 1563579207
   },
   {
     "screen_name": "Basilosaurus",
@@ -3220,8 +3220,8 @@
     "classname": "Basilosaurus_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/f95a754a0d399274e1c818d1.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/5d8bc60ce8a8a857b0dfda71.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/e819fdc9e08ecc3274891596.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/c4b260e49070a4fdceb199ac.png"
     },
     "baseLevel": {
       "Health": 2400.0,
@@ -3293,7 +3293,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400261
+    "captureTime": 1563579208
   },
   {
     "screen_name": "Castoroides",
@@ -3572,8 +3572,8 @@
     "classname": "Beaver_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/fa49fb69b469c9e546a18f07.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/c6c7ad4077c322d332b82b04.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/2b65cdfaeacc3b35a4747974.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/4ac209d59e1a4a8b0ca184a1.png"
     },
     "baseLevel": {
       "Health": 450.0,
@@ -3645,7 +3645,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400261
+    "captureTime": 1563579208
   },
   {
     "screen_name": "Titanoboa",
@@ -3700,8 +3700,8 @@
     "classname": "BoaFrill_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b9c817012cb0feeefc36cb32.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/98e64352b9b21c01dc267445.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/c765287953131d17d844b911.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/cb00d7bffb6339328862a6ac.png"
     },
     "baseLevel": {
       "Health": 300.0,
@@ -3773,7 +3773,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400261
+    "captureTime": 1563579208
   },
   {
     "screen_name": "Morellatops",
@@ -4052,8 +4052,8 @@
     "classname": "camelsaurus_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/4d86058f7bf085de8ae73dd4.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/329facb64036ae982ca6c199.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/b54f17647696dcae71368e55.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/52c44f772de04cf973cc1d5a.png"
     },
     "baseLevel": {
       "Health": 400.0,
@@ -4125,7 +4125,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400261
+    "captureTime": 1563579209
   },
   {
     "screen_name": "Carnotaurus",
@@ -4404,8 +4404,8 @@
     "classname": "Carno_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/f3dc6d261448b8501a6d2859.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/375739729f19fe179c57b1ca.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/c8a0365dffaea2f8f251e1aa.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/20f52948d28c5c4c92a521e5.png"
     },
     "baseLevel": {
       "Health": 420.0,
@@ -4477,7 +4477,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400262
+    "captureTime": 1563579209
   },
   {
     "screen_name": "Chalicotherium",
@@ -4756,8 +4756,8 @@
     "classname": "Chalico_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/8153ba78d50e9b48d2eb7ca2.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/ae664dd2a0e3447d00ab52ec.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/36de94cbc18961b8b320a433.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e99d7692ba3cb6ea6bf46a79.png"
     },
     "baseLevel": {
       "Health": 600.0,
@@ -4829,7 +4829,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400262
+    "captureTime": 1563579210
   },
   {
     "screen_name": "Cnidaria",
@@ -5092,8 +5092,8 @@
     "classname": "Cnidaria_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/0c0a215b749c6251895ec240.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a23c2ec910b7431064b1ba98.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/740ff6ae3a11bf6897dbdeb7.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/474e5fd42183c92714a15ef7.png"
     },
     "baseLevel": {
       "Health": 180.0,
@@ -5165,7 +5165,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400262
+    "captureTime": 1563579210
   },
   {
     "screen_name": "Coelacanth",
@@ -5428,8 +5428,8 @@
     "classname": "Coel_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6a5ccff901f1e8087fbb6dc5.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/9b9064e19a88afc204d44fae.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/78aedba883b92ca4ddea83af.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/57aa5b268d8c5e677fb0d065.png"
     },
     "baseLevel": {
       "Health": 30.0,
@@ -5501,7 +5501,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400262
+    "captureTime": 1563579210
   },
   {
     "screen_name": "Compy",
@@ -5748,8 +5748,8 @@
     "classname": "Compy_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/04abec38df5176363f8513c7.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/4a3310291a13932c9faabba5.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/0848f5e5db081f4c26145dee.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/8959722b172c9a64f4f05e67.png"
     },
     "baseLevel": {
       "Health": 50.0,
@@ -5821,7 +5821,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400262
+    "captureTime": 1563579210
   },
   {
     "screen_name": "Karkinos",
@@ -6068,8 +6068,8 @@
     "classname": "Crab_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/182497d77485a174ebfc61df.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/dbb293a8fe209dfac0b6bd28.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/bf99921b9518f6db0e7ae748.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/fc51d5a03dc8903f76440e40.png"
     },
     "baseLevel": {
       "Health": 1200.0,
@@ -6141,7 +6141,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400263
+    "captureTime": 1563579211
   },
   {
     "screen_name": "Daeodon",
@@ -6420,8 +6420,8 @@
     "classname": "Daeodon_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/97cfbee1a27dace59f5cfdb2.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/c6fb685104927bc2f1f783ff.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/75178b96b29bdfe4a762064f.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/b85931d20aa0542768b82727.png"
     },
     "baseLevel": {
       "Health": 900.0,
@@ -6493,7 +6493,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400263
+    "captureTime": 1563579212
   },
   {
     "screen_name": "Deathworm",
@@ -6836,8 +6836,8 @@
     "classname": "Deathworm_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/a7cb069bba47f4b3d6475ded.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/44ded5a06f1ea075bd6b872c.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/8104921122a1813b573365f7.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/5fc2abd56e137098aa9492f5.png"
     },
     "baseLevel": {
       "Health": 20000.0,
@@ -6909,7 +6909,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400263
+    "captureTime": 1563579212
   },
   {
     "screen_name": "Deathworm",
@@ -7252,8 +7252,8 @@
     "classname": "Deathworm_Character_Minion_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6d02e0bd9f879ad81a1f3d85.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/efb7836d2101b9ac546b21b1.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/514a5f1314e06e7647a0f16a.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/db8bcbd3f8d09317de24bf3c.png"
     },
     "baseLevel": {
       "Health": 8000.0,
@@ -7325,7 +7325,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400263
+    "captureTime": 1563579212
   },
   {
     "screen_name": "Alpha Deathworm",
@@ -7668,8 +7668,8 @@
     "classname": "MegaDeathworm_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/febd63a8653fd56600682dc8.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/f5be8c3e4a80888e72a77bef.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/43138765b0d986666cad2cd1.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/74b2e2fe9b80bba039ef68f8.png"
     },
     "baseLevel": {
       "Health": 27000.0,
@@ -7741,7 +7741,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400263
+    "captureTime": 1563579212
   },
   {
     "screen_name": "Desert Titan",
@@ -7780,8 +7780,8 @@
     "classname": "DesertKaiju_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/e128b5f334e27b1935b3dcd3.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/372137246b18ba3fb584078a.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/9cdf65b86fc5a5700efbdc0a.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/21b9edbe45924105114be6fd.png"
     },
     "baseLevel": {
       "Health": 200000.0,
@@ -7853,7 +7853,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400264
+    "captureTime": 1563579213
   },
   {
     "screen_name": "Desert Titan Flock",
@@ -8116,8 +8116,8 @@
     "classname": "DesertKaiju_FirstFlockChar_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1242fb233f664efc3abbb9d8.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/2c895a9be7f23f4aae6c5dcc.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/3567850c34d503995d27b560.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/6bbd9ebb2d70958eacf135ae.png"
     },
     "baseLevel": {
       "Health": 7500.0,
@@ -8189,7 +8189,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400264
+    "captureTime": 1563579213
   },
   {
     "screen_name": "Dilophosaur",
@@ -8468,8 +8468,8 @@
     "classname": "Dilo_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6b2face94c1450d87a7cfe04.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/722d32351a40002398d6f161.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/8b81592deb2b0c45833cbff1.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/73bf66812c7c7b89b0bc3c6e.png"
     },
     "baseLevel": {
       "Health": 130.0,
@@ -8541,7 +8541,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400264
+    "captureTime": 1563579213
   },
   {
     "screen_name": "Dimetrodon",
@@ -8820,8 +8820,8 @@
     "classname": "Dimetro_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1d6a8fd82d99b1630c4064ed.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/05591547b1d6c8c1db8b1978.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/9a012e39c7a2c380520c67dc.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/ba1344e0dd7bb7e4ae1116b0.png"
     },
     "baseLevel": {
       "Health": 350.0,
@@ -8893,7 +8893,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400264
+    "captureTime": 1563579213
   },
   {
     "screen_name": "Dimorphodon",
@@ -9156,8 +9156,8 @@
     "classname": "Dimorph_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/2ab4ccace824a57d03db4f62.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/f3cac4c1dd76910f61757079.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/23823093cd58d159915fccdd.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/37386dc6e812cc8465ee386a.png"
     },
     "baseLevel": {
       "Health": 125.0,
@@ -9229,7 +9229,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400264
+    "captureTime": 1563579213
   },
   {
     "screen_name": "Dimorphodon",
@@ -9492,8 +9492,8 @@
     "classname": "Dimorph_Character_BP_Aggressive",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/5a2ebb426a4af11bb16de150.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/0d7402b7c5623e63051ecf15.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/098f2cd550eb72cf1e07f4cb.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/01a9eebb19dd7c52abc3ecc4.png"
     },
     "baseLevel": {
       "Health": 264.0,
@@ -9565,7 +9565,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400264
+    "captureTime": 1563579214
   },
   {
     "screen_name": "Dimorphodon",
@@ -9828,8 +9828,8 @@
     "classname": "Dimorph_Character_BP_Aggressive_DragonBoss_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/fb064905686d5194eddbbf0c.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a45a17c0d24e9634a2ba09d9.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/8ed4efa7bb713577d4ae4e05.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/a8b47adc471f19d2d83a74f6.png"
     },
     "baseLevel": {
       "Health": 264.0,
@@ -9901,7 +9901,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400265
+    "captureTime": 1563579214
   },
   {
     "screen_name": "Dimorphodon",
@@ -10164,8 +10164,8 @@
     "classname": "Dimorph_Character_BP_Aggressive_DragonBoss_Med",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/bdfe25013caf5f5ebb14d0b0.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/b01a4e437be48d9993cca3fb.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/675a2e1060974812d0cb5876.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/702bbed787d163b66707f7e6.png"
     },
     "baseLevel": {
       "Health": 264.0,
@@ -10237,7 +10237,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400265
+    "captureTime": 1563579214
   },
   {
     "screen_name": "Griffin",
@@ -10516,8 +10516,8 @@
     "classname": "Griffin_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/dcfe8ab327485fc49900128d.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/39aadfe9a6c8f6bcfc220140.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/82cd851dff59c6d8c3fd0fcb.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d87def6fab5a21f46116d491.png"
     },
     "baseLevel": {
       "Health": 950.0,
@@ -10589,7 +10589,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400265
+    "captureTime": 1563579215
   },
   {
     "screen_name": "Snow Owl",
@@ -10868,8 +10868,8 @@
     "classname": "Owl_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/794307ac63bef2539bde3654.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/cd05f7435255bbe4b12c0cce.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/02ad71c852ffd3f106d2137b.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/4c80e7dae65c699afc6f1f63.png"
     },
     "baseLevel": {
       "Health": 325.0,
@@ -10941,7 +10941,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400265
+    "captureTime": 1563579215
   },
   {
     "screen_name": "Ovis",
@@ -11204,8 +11204,8 @@
     "classname": "Sheep_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/8f0e3681516cc6cfe0adc17c.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/d04248011ad1c6ff051b6386.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/11c968f7beaa039e5529e3a1.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/c425c7b4759ea5677e17ee1c.png"
     },
     "baseLevel": {
       "Health": 100.0,
@@ -11277,7 +11277,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400266
+    "captureTime": 1563579215
   },
   {
     "screen_name": "Broodmother Lysrix",
@@ -11540,8 +11540,8 @@
     "classname": "SpiderL_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/53d13f380c1926cc86b29c30.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/0a49fa7a3ed209e2968157d5.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/58bbed5d6bc36b054745aa5f.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/fa21342e3616bf60fa9e942a.png"
     },
     "baseLevel": {
       "Health": 324000.0,
@@ -11613,7 +11613,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400266
+    "captureTime": 1563579215
   },
   {
     "screen_name": "Broodmother Guardian",
@@ -11876,8 +11876,8 @@
     "classname": "EndBossSpiderL_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/845176c81478b08e66749b3e.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/8a946364df2c775d2617277f.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/5c49ac204bc4b5b20ef1b505.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/205f268c08b61047472142eb.png"
     },
     "baseLevel": {
       "Health": 324000.0,
@@ -11949,7 +11949,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400266
+    "captureTime": 1563579216
   },
   {
     "screen_name": "Broodmother Lysrix (Gamma)",
@@ -12212,8 +12212,8 @@
     "classname": "EndBossSpiderL_Character_BP_Easy",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/d9ae10bb260bc03de40b9b9f.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/2933acc1506c973456a1d918.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/e76a41ff4f81838d5fa5972f.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/a9c6392fb02b1d999c3234f2.png"
     },
     "baseLevel": {
       "Health": 75600.0,
@@ -12285,7 +12285,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400266
+    "captureTime": 1563579216
   },
   {
     "screen_name": "Broodmother Lysrix (Alpha)",
@@ -12548,8 +12548,8 @@
     "classname": "EndBossSpiderL_Character_BP_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/448edb831ad9892590835668.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/267418398af85e3034bd0acb.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/e5c4803966fa50cae85d1cc7.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/73cc4fd70b7ecd92897bdd5e.png"
     },
     "baseLevel": {
       "Health": 103600.0,
@@ -12621,7 +12621,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400266
+    "captureTime": 1563579216
   },
   {
     "screen_name": "Broodmother Lysrix (Beta)",
@@ -12884,8 +12884,8 @@
     "classname": "EndBossSpiderL_Character_BP_Medium",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/47942e4ddfd85520951c9af0.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/7e1109d80afaee8073a62b5e.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/194be31386c5d76690204dd1.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e3696209eebac297a4781452.png"
     },
     "baseLevel": {
       "Health": 84000.0,
@@ -12957,7 +12957,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400267
+    "captureTime": 1563579217
   },
   {
     "screen_name": "Broodmother Lysrix (Alpha)",
@@ -13220,8 +13220,8 @@
     "classname": "SpiderL_Character_BP_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/23560f407ed4d44537e058aa.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/d776fa9a02e859d0864125b4.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/4245caa3b3cbc9d6b57faa97.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/1aef761be555e6c440fa6ca2.png"
     },
     "baseLevel": {
       "Health": 470000.0,
@@ -13293,7 +13293,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400267
+    "captureTime": 1563579217
   },
   {
     "screen_name": "Broodmother Lysrix (Beta)",
@@ -13556,8 +13556,8 @@
     "classname": "SpiderL_Character_BP_Medium",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/f63bdb0a8a840d0c730c5b10.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/952f4a90b3708cdd851010fa.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/72ccc5790c42cbb632d85986.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/84c2be251d9604e0ebb23a88.png"
     },
     "baseLevel": {
       "Health": 280000.0,
@@ -13629,7 +13629,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400267
+    "captureTime": 1563579218
   },
   {
     "screen_name": "Broodmother Lysrix",
@@ -13892,8 +13892,8 @@
     "classname": "SpiderL_Character_BP_Tameable",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b80eaff560390a7c2e978f50.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/6c51b79e684c2aeb435e065d.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/e084f4dda75096dbbe2f36ce.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/4409d64cc5437d6dfab4f610.png"
     },
     "baseLevel": {
       "Health": 324000.0,
@@ -13965,7 +13965,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400267
+    "captureTime": 1563579218
   },
   {
     "screen_name": "Broodmother Lysrix (Gamma)",
@@ -14228,8 +14228,8 @@
     "classname": "SpiderL_Character_BP_TheCenter",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/d482294b310ebe9e14428ab8.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/fc45b7f18838f7dc58012115.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/ef740869d01b051538c52b5d.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/05f809fd3fadef45fa6cd04a.png"
     },
     "baseLevel": {
       "Health": 324000.0,
@@ -14301,7 +14301,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400268
+    "captureTime": 1563579218
   },
   {
     "screen_name": "Broodmother Lysrix",
@@ -14564,8 +14564,8 @@
     "classname": "SpiderL_Character_BP_TheCenterHard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/06d7236381266e1c1075c1f0.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/78d12a6fceb790e52ffe5876.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a7189c83b0a69de5a39aa374.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/5858781f25d3986798366dc3.png"
     },
     "baseLevel": {
       "Health": 324000.0,
@@ -14637,7 +14637,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400269
+    "captureTime": 1563579218
   },
   {
     "screen_name": "Broodmother Lysrix",
@@ -14900,8 +14900,8 @@
     "classname": "SpiderL_Character_BP_TheCenterMedium",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/7c18ac9964fa652da3074a48.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a23c126f1805ae517316a5fc.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/c13b19191d4281c40a541bc3.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d324f1d7b3b665f9552a55e9.png"
     },
     "baseLevel": {
       "Health": 324000.0,
@@ -14973,7 +14973,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400269
+    "captureTime": 1563579219
   },
   {
     "screen_name": "Rock Drake",
@@ -15132,8 +15132,8 @@
     "classname": "RockDrake_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/e343ef3c90c90c95e10dbc3c.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/d911aec736ded3115db22c7a.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/afcb09215fde8d01fc6568e5.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/bcfb02e0409153d41a168128.png"
     },
     "baseLevel": {
       "Health": 1950.0,
@@ -15205,7 +15205,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400271
+    "captureTime": 1563579221
   },
   {
     "screen_name": "Enforcer",
@@ -15516,8 +15516,8 @@
     "classname": "Enforcer_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/ab80a2221856f33ac764ea8b.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/f00d22b2377e83c15cd7ea23.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/b2a8ea43191d077425ad59cd.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/f34a70cab81977a076fb2f0a.png"
     },
     "baseLevel": {
       "Health": 375.0,
@@ -15589,7 +15589,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400274
+    "captureTime": 1563579225
   },
   {
     "screen_name": "Thylacoleo",
@@ -15868,8 +15868,8 @@
     "classname": "Thylacoleo_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/a16b73b15ba1941fc349c540.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/06f3c1c59741cfafa60b9b91.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/5d4364336c9c70b8b6326ecb.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/018f01cf996060586d3ade4d.png"
     },
     "baseLevel": {
       "Health": 700.0,
@@ -15941,7 +15941,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400274
+    "captureTime": 1563579227
   },
   {
     "screen_name": "Megalosaurus",
@@ -16220,8 +16220,8 @@
     "classname": "Megalosaurus_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/be0b8977db223054f6921f3c.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/94d7a91ecf7d71df1c41e0d2.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/081bd9572905c496104d4332.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/2ac9b2dada63f1215f9d11b2.png"
     },
     "baseLevel": {
       "Health": 1025.0,
@@ -16293,7 +16293,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400275
+    "captureTime": 1563579227
   },
   {
     "screen_name": "Allosaurus",
@@ -16572,8 +16572,8 @@
     "classname": "Allo_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/26b4471bbd45a1c5a45448ce.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/9924c3de6c55cda7fa20c951.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/6d05b7085fa4bcafae82d761.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/8305a621ea3d99e81ed16e68.png"
     },
     "baseLevel": {
       "Health": 630.0,
@@ -16645,7 +16645,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400275
+    "captureTime": 1563579228
   },
   {
     "screen_name": "Ravager",
@@ -16940,8 +16940,8 @@
     "classname": "CaveWolf_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1e6b5aea0daa6cf0f6eeb88c.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/9e49643f413dc30beabf4113.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/5932904e90d0c6cfd0510c83.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/ff2f95a9d2f24f95856fa6ab.png"
     },
     "baseLevel": {
       "Health": 400.0,
@@ -17013,7 +17013,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400275
+    "captureTime": 1563579228
   },
   {
     "screen_name": "Nameless",
@@ -17292,8 +17292,8 @@
     "classname": "ChupaCabra_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b808a76080377656bb7502cc.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/b3f1b909d1cd0a6cb0741469.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/2e3ba5d82f209564e6bb6bce.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/2f06898a56da2fd049f4deb3.png"
     },
     "baseLevel": {
       "Health": 220.0,
@@ -17365,7 +17365,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400275
+    "captureTime": 1563579228
   },
   {
     "screen_name": "Direwolf",
@@ -17644,8 +17644,8 @@
     "classname": "Direwolf_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/66590c0abdc875defa0698c1.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/6091a0c8d8b642e2833cee78.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/e3160f67250ba91088547a2e.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/938db01347758316180d62fa.png"
     },
     "baseLevel": {
       "Health": 330.0,
@@ -17717,7 +17717,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400277
+    "captureTime": 1563579231
   },
   {
     "screen_name": "Hyaenodon ",
@@ -17996,8 +17996,8 @@
     "classname": "Hyaenodon_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b847affe053f40f2150f08be.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/b8e75f38425477de8cbfeede.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/87b7a9c423c888b947942b36.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/7e3f24974d65d09aa44660e0.png"
     },
     "baseLevel": {
       "Health": 175.0,
@@ -18069,7 +18069,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400277
+    "captureTime": 1563579231
   },
   {
     "screen_name": "Raptor",
@@ -18348,8 +18348,8 @@
     "classname": "Raptor_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/42b057e5c6a3200a2bc26cba.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/8b8cbbfca134593c4171bbde.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/b10e0b9c571c7d3d074a27ba.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/ed9e9dfc10420ac850180b4d.png"
     },
     "baseLevel": {
       "Health": 200.0,
@@ -18421,7 +18421,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400277
+    "captureTime": 1563579232
   },
   {
     "screen_name": "Corrupted Raptor",
@@ -18684,8 +18684,8 @@
     "classname": "BabyRaptor_Character_BP_Corrupt",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/42d43b086230f3916d927760.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/9fe56aece900dbae8bd370d2.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/27ce75856f1c3a4874cd024f.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/ac7874130bd3117b2eb00150.png"
     },
     "baseLevel": {
       "Health": 200.0,
@@ -18757,7 +18757,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400278
+    "captureTime": 1563579233
   },
   {
     "screen_name": "Triceratops",
@@ -19036,8 +19036,8 @@
     "classname": "Trike_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/97bd4c9cb5b4d53b37b70e3a.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/400a933f2dcef1031cd01723.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/6016f7413d50dfe2fd38c277.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d1ba606a8c3c3b449df4bce2.png"
     },
     "baseLevel": {
       "Health": 375.0,
@@ -19109,7 +19109,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400278
+    "captureTime": 1563579234
   },
   {
     "screen_name": "Skeletal Trike",
@@ -19388,8 +19388,8 @@
     "classname": "Bone_Trike_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/0311e88041a03d502b2f84b2.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/d96d100d8816332a63be7f13.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/10acddd44a8fa9a98a32d3f4.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/afee33a130ace9caee09449f.png"
     },
     "baseLevel": {
       "Health": 5625.0,
@@ -19461,7 +19461,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400279
+    "captureTime": 1563579234
   },
   {
     "screen_name": "Enraged Triceratops",
@@ -19724,8 +19724,8 @@
     "classname": "MegaTrike_Character_BP_Corrupt",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/858562b77f362a008c2bce7e.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a7058dad946b3686baf4fb0a.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/47b2ac5da83eee2218d1ee0f.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d93e07177fbb79766c287db1.png"
     },
     "baseLevel": {
       "Health": 2500.0,
@@ -19797,7 +19797,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400279
+    "captureTime": 1563579235
   },
   {
     "screen_name": "Dung Beetle",
@@ -20076,8 +20076,8 @@
     "classname": "DungBeetle_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/0280e660e90e97e056de6e82.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/6bf3f4ffdeb671f4dcdab0d5.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/c89c7815dc4206547c8f37a8.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/18b2c201c332e4ffe7d055bf.png"
     },
     "baseLevel": {
       "Health": 200.0,
@@ -20149,7 +20149,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400279
+    "captureTime": 1563579236
   },
   {
     "screen_name": "Mantis",
@@ -20380,8 +20380,8 @@
     "classname": "Mantis_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b6faeb6aa653640a0a10b044.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/70102c7bda70551301a1ccd0.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/9d206cd6d1cfbf9b44684464.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d91c924bbc0f1fa15c5d8f4f.png"
     },
     "baseLevel": {
       "Health": 275.0,
@@ -20453,7 +20453,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400280
+    "captureTime": 1563579236
   },
   {
     "screen_name": "Araneo",
@@ -20684,8 +20684,8 @@
     "classname": "SpiderS_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/332195033b55ab0ee05bcf75.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/aefae370c77fb73025891b8d.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/e371f5c68eccb2dcd14f70a5.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/0537e9bd62d7a3c8f4833d64.png"
     },
     "baseLevel": {
       "Health": 150.0,
@@ -20757,7 +20757,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400280
+    "captureTime": 1563579236
   },
   {
     "screen_name": "Araneo",
@@ -20988,8 +20988,8 @@
     "classname": "SpiderS_Character_BP_Aggressive_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/8c2493d4bc7a5e5f5a955a39.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/7b098e4e7242141a044ef853.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/f918b496828a267f3f80572b.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/5c13382bff87852208e0a270.png"
     },
     "baseLevel": {
       "Health": 150.0,
@@ -21061,7 +21061,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400280
+    "captureTime": 1563579236
   },
   {
     "screen_name": "Araneo",
@@ -21292,8 +21292,8 @@
     "classname": "SpiderS_Character_BP_Aggressive_Med",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/f846449c00cd95bd9953a3f2.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/0da2759e7791aea407888435.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/d8146bf9763f46411bb2ef9e.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d71c9914776b8e75fef323d4.png"
     },
     "baseLevel": {
       "Health": 150.0,
@@ -21365,7 +21365,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400280
+    "captureTime": 1563579237
   },
   {
     "screen_name": "Ice Titan",
@@ -21404,8 +21404,8 @@
     "classname": "IceKaiju_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/9768429d93b798761d72ca3a.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/d105a907b79fe1a5eb8935a2.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/4e0f75ade26fa3fe5f9d1992.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/6721f6db9d9af1c3b8c707ad.png"
     },
     "baseLevel": {
       "Health": 230000.0,
@@ -21477,7 +21477,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400280
+    "captureTime": 1563579237
   },
   {
     "screen_name": "Gamma King Titan",
@@ -21532,8 +21532,8 @@
     "classname": "KingKaiju_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1370d19d5aa3953196a3f77f.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/323240907949219aeab479ca.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/e1d2013b680f3ae0507ca6f5.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/3720c28eb52e8b39bd588df1.png"
     },
     "baseLevel": {
       "Health": 1500000.0,
@@ -21605,7 +21605,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400280
+    "captureTime": 1563579237
   },
   {
     "screen_name": "Alpha King Titan",
@@ -21660,8 +21660,8 @@
     "classname": "KingKaiju_Character_BP_Alpha",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/081d0820b77be8aa31cf10e8.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/c156b39a699b0afe8acaadc8.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/03211e3020e3e0e5fa4d9f30.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/8e2d19c6811af8ed39ddc102.png"
     },
     "baseLevel": {
       "Health": 2500000.0,
@@ -21733,7 +21733,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400280
+    "captureTime": 1563579238
   },
   {
     "screen_name": "Beta King Titan",
@@ -21788,8 +21788,8 @@
     "classname": "KingKaiju_Character_BP_Beta",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/f117bcaf99104cd9db77ef28.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/1d96c5df4d6a23f9d941a7ba.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/e18c03901992d699c0bd0559.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/c7b135c85fef21c59708ec1c.png"
     },
     "baseLevel": {
       "Health": 2000000.0,
@@ -21861,7 +21861,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400281
+    "captureTime": 1563579238
   },
   {
     "screen_name": "Oviraptor",
@@ -22220,8 +22220,8 @@
     "classname": "Oviraptor_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/c4ce7691f06e5535b167747b.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/cd97b1da3d098e9e66a9d250.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/f6245b9acff3888cb2dd808c.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/c763ac0f6e2c4039854210d2.png"
     },
     "baseLevel": {
       "Health": 140.0,
@@ -22293,7 +22293,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400281
+    "captureTime": 1563579239
   },
   {
     "screen_name": "Gigantopithecus",
@@ -22572,8 +22572,8 @@
     "classname": "Bigfoot_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/7f601650c230d25fbab7b0cc.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/98119edb0efca4ac91b7cf14.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/fdbcf467d67e76ff61d97a93.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/f57366b3054c2cf30bfd3523.png"
     },
     "baseLevel": {
       "Health": 640.0,
@@ -22645,7 +22645,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400281
+    "captureTime": 1563579239
   },
   {
     "screen_name": "Gigantopithecus",
@@ -22924,8 +22924,8 @@
     "classname": "Bigfoot_Character_BP_Aggressive_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/2bc46dec3029551e47fe2869.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/ffdad7f97dfd2a7b14013295.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/64c1c6b550dad319056323e0.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/1beabafb35d20b749f89f568.png"
     },
     "baseLevel": {
       "Health": 640.0,
@@ -22997,7 +22997,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400282
+    "captureTime": 1563579240
   },
   {
     "screen_name": "Gigantopithecus",
@@ -23276,8 +23276,8 @@
     "classname": "Bigfoot_Character_BP_Aggressive_Med",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/fd361320754614ec092864d0.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/14eee57e89b14a95b68c81bc.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a75eee1363f2810002895eee.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d203b70b671571c44bc7b6c9.png"
     },
     "baseLevel": {
       "Health": 640.0,
@@ -23349,7 +23349,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400282
+    "captureTime": 1563579240
   },
   {
     "screen_name": "Yeti",
@@ -23628,8 +23628,8 @@
     "classname": "Yeti_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/5d80f1fcf05c44b2e6e89e0f.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/1dbfc13193a2cce70f1a6c29.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/6dedcc3b862d6e7f04b1f549.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/5560394862cd8be045c2ffe6.png"
     },
     "baseLevel": {
       "Health": 2000.0,
@@ -23701,7 +23701,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400282
+    "captureTime": 1563579241
   },
   {
     "screen_name": "Diplocaulus",
@@ -23980,8 +23980,8 @@
     "classname": "Diplocaulus_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/a6d22546499361fe85519a52.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/79d0de05b35831e5e5d54b10.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/5cd9ab02a699809f3085208d.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/53ca92066f57aad09b42473a.png"
     },
     "baseLevel": {
       "Health": 190.0,
@@ -24053,7 +24053,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400282
+    "captureTime": 1563579241
   },
   {
     "screen_name": "Diplodocus",
@@ -24332,8 +24332,8 @@
     "classname": "Diplodocus_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/f34181f11ba97a96e584b9b7.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/6135d1eb950bb9ca357766d4.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/ccf78a4b5149fe99c4486358.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/bec7660ef3eb33eac92a76a0.png"
     },
     "baseLevel": {
       "Health": 1700.0,
@@ -24405,7 +24405,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400282
+    "captureTime": 1563579242
   },
   {
     "screen_name": "Dire Bear",
@@ -24700,8 +24700,8 @@
     "classname": "Direbear_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b87f5de77ca8eb4fdf122d06.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/9c1725113e96ae7a735ee5c8.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/3a6f3a6098b0ed6e769cfd70.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/60bc2016435b1ac6d54b85be.png"
     },
     "baseLevel": {
       "Health": 400.0,
@@ -24773,7 +24773,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400283
+    "captureTime": 1563579242
   },
   {
     "screen_name": "Polar Bear",
@@ -25068,8 +25068,8 @@
     "classname": "Direbear_Character_Polar",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/27076b3ee189c852ca6f3d6e.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/06be9a84f05bbaa7b0708edf.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/3352dd065ba9f99e766c9aec.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/04fbaa31dc0e6f969f76f465.png"
     },
     "baseLevel": {
       "Health": 400.0,
@@ -25141,7 +25141,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400283
+    "captureTime": 1563579242
   },
   {
     "screen_name": "Dodo",
@@ -25420,8 +25420,8 @@
     "classname": "Dodo_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/e434fc542ad1157494043072.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/1f507c8b8cf5955361a2da67.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/b553ef79489adea00ab3e098.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d14040c7dbf66f2e72ae8d8a.png"
     },
     "baseLevel": {
       "Health": 40.0,
@@ -25493,7 +25493,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400283
+    "captureTime": 1563579242
   },
   {
     "screen_name": "Zomdodo",
@@ -25756,8 +25756,8 @@
     "classname": "ZombieDodo_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/44155ac5d2319bc6339552b5.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/f7e2f5470d64b37dfb87250a.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/5db68362bd5ebc6ab2c3e540.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/9dcdeaff9067d7ea6d09a33a.png"
     },
     "baseLevel": {
       "Health": 700.0,
@@ -25829,7 +25829,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400283
+    "captureTime": 1563579243
   },
   {
     "screen_name": "Doedicurus",
@@ -26108,8 +26108,8 @@
     "classname": "Doed_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/56eb21328c5eba69dc7b6001.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/bb50054ac5da6959b5bfe825.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/c13616bf02da7832e5637ec5.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/43c1bbe6b32e80f4d6cb055d.png"
     },
     "baseLevel": {
       "Health": 850.0,
@@ -26181,7 +26181,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400283
+    "captureTime": 1563579243
   },
   {
     "screen_name": "Ichthyosaurus",
@@ -26460,8 +26460,8 @@
     "classname": "Dolphin_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6f05dd6abef7c9840028da35.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/9e11da25a14aaedff3f89dc3.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/b9a6df4d4e3e9b5e48e57505.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/636231bfee63299bf5b081b2.png"
     },
     "baseLevel": {
       "Health": 275.0,
@@ -26533,7 +26533,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400283
+    "captureTime": 1563579243
   },
   {
     "screen_name": "Dragon",
@@ -26876,8 +26876,8 @@
     "classname": "Dragon_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/c965708bc5cfd5d1cbcb5c9a.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/c39abbca2e465de199e72d2a.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/2e926f87e61aa3b344f072ca.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/f45301c584f4900e8e5b9d2d.png"
     },
     "baseLevel": {
       "Health": 20000.0,
@@ -26949,7 +26949,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400283
+    "captureTime": 1563579243
   },
   {
     "screen_name": "Dragon",
@@ -27292,8 +27292,8 @@
     "classname": "Dragon_Character_BP_Boss",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6ebd21dffb842cf292ef18be.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/cb4ce39f1d6d1e9115607afb.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/997522b12e32a5dd0b4838a0.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/0238c2223801a8468e308843.png"
     },
     "baseLevel": {
       "Health": 240000.0,
@@ -27365,7 +27365,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400283
+    "captureTime": 1563579243
   },
   {
     "screen_name": "Dragon (Gamma)",
@@ -27708,8 +27708,8 @@
     "classname": "Dragon_Character_BP_Boss_Easy",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/0dd1f3ad3c17d22c3944832a.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/9dfc3393c83269fd48a4d34e.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/183da0a2ecb1f541c1f4bd42.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/8df46132df76e589d93dc474.png"
     },
     "baseLevel": {
       "Health": 180000.0,
@@ -27781,7 +27781,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400283
+    "captureTime": 1563579244
   },
   {
     "screen_name": "Dragon (Alpha)",
@@ -28124,8 +28124,8 @@
     "classname": "Dragon_Character_BP_Boss_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/408d8b48c3834db15e06ff80.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/96118dc70100aab24b632da6.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a2c79184416ca7cda03fde29.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/0873a7658b955b0d942eead7.png"
     },
     "baseLevel": {
       "Health": 240000.0,
@@ -28197,7 +28197,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400284
+    "captureTime": 1563579244
   },
   {
     "screen_name": "Dragon (Beta)",
@@ -28540,8 +28540,8 @@
     "classname": "Dragon_Character_BP_Boss_Medium",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/caff0de42e62a4fe72935360.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/4934a69bbb5dddcc368c6071.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/c633177cf4d2a59db26fe90f.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/1680c4ae0f7643425c51d934.png"
     },
     "baseLevel": {
       "Health": 195000.0,
@@ -28613,7 +28613,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400284
+    "captureTime": 1563579244
   },
   {
     "screen_name": "Dragon Guardian",
@@ -28956,8 +28956,8 @@
     "classname": "EndBossDragon_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b7cf581057b2ba9c6a7fe329.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/5c1fa05022959975aa982b18.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a53c6e94b33becfb0f8ad409.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e4a2403935f82d9a84a21839.png"
     },
     "baseLevel": {
       "Health": 240000.0,
@@ -29029,7 +29029,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400284
+    "captureTime": 1563579245
   },
   {
     "screen_name": "Dragon (Gamma)",
@@ -29372,8 +29372,8 @@
     "classname": "EndBossDragon_Character_BP_Easy",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/cb7a472955a972eb23f0354d.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/4254a070b03f307afff5ddd0.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/c97d1968b0e257131a9ad9ac.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/7c3a0997136a3580e9c8f772.png"
     },
     "baseLevel": {
       "Health": 89600.0,
@@ -29445,7 +29445,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400284
+    "captureTime": 1563579245
   },
   {
     "screen_name": "Dragon (Alpha)",
@@ -29788,8 +29788,8 @@
     "classname": "EndBossDragon_Character_BP_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/cd7fc86880823eebd2cdff98.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/c5036ff75b8c47d55a903592.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/3827e9b5ea746be4282226fb.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/3fb5b3d17282828982c9e453.png"
     },
     "baseLevel": {
       "Health": 134400.0,
@@ -29861,7 +29861,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400285
+    "captureTime": 1563579245
   },
   {
     "screen_name": "Dragon (Beta)",
@@ -30204,8 +30204,8 @@
     "classname": "EndBossDragon_Character_BP_Medium",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/257c11ad6e38d33901d77388.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/59057e69c91294652a764682.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a07865fd864fd79bd7d44ccf.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/10af08dfa9a3c6a22a02e8b1.png"
     },
     "baseLevel": {
       "Health": 103600.0,
@@ -30277,7 +30277,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400285
+    "captureTime": 1563579246
   },
   {
     "screen_name": "Dunkleosteus",
@@ -30556,8 +30556,8 @@
     "classname": "Dunkle_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/911273bfcf8976780aa531f7.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/b05bb24e29c7e42ad250bcdc.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/01b871fdc77ca1519565b6e8.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/bc293a29d079b69a0d67fe82.png"
     },
     "baseLevel": {
       "Health": 710.0,
@@ -30629,7 +30629,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400285
+    "captureTime": 1563579246
   },
   {
     "screen_name": "Electrophorus",
@@ -30908,8 +30908,8 @@
     "classname": "Eel_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/5fc9a3f8107ddf4bc08e9f06.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/0181b7beb98b6a4e9665d4dd.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/7090376435c0e7a25ee10b54.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/baadf98d5130396853780fb3.png"
     },
     "baseLevel": {
       "Health": 260.0,
@@ -30981,7 +30981,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400285
+    "captureTime": 1563579246
   },
   {
     "screen_name": "Equus",
@@ -31276,8 +31276,8 @@
     "classname": "Equus_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/d0c36e4577f0aebae8259862.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/6964a5974a33000d636fb04a.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/3421f78a56d8b850ce5e52fc.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/98c76d0cf9bb78de985caebc.png"
     },
     "baseLevel": {
       "Health": 240.0,
@@ -31349,7 +31349,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400287
+    "captureTime": 1563579249
   },
   {
     "screen_name": "GachaClaus",
@@ -31404,8 +31404,8 @@
     "classname": "Gacha_Claus_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/0a7729665bdc9fa3d971b026.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/e5e6367b6bafd35a5cdebc56.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/ecaaade25699a267c194c946.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/277dc42abf904e33a082e548.png"
     },
     "baseLevel": {
       "Health": 750.0,
@@ -31477,7 +31477,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400288
+    "captureTime": 1563579250
   },
   {
     "screen_name": "Gallimimus",
@@ -31756,8 +31756,8 @@
     "classname": "Galli_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/942344e1028da14e538c6a6b.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/4bbfb403f9cf5582da6ba815.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/3e1068f7060471625eca9b4d.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e704228c3fbd3854131d6eb0.png"
     },
     "baseLevel": {
       "Health": 150.0,
@@ -31829,7 +31829,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400288
+    "captureTime": 1563579250
   },
   {
     "screen_name": "Gasbags",
@@ -32108,8 +32108,8 @@
     "classname": "GasBags_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/0fa0591ee6e98f5796e2550f.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a7eb501ca86b0fd79d1e6fae.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/47df90e7a4beec58ec1868ec.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/09a7b68fb1fa5850254fb664.png"
     },
     "baseLevel": {
       "Health": 650.0,
@@ -32181,7 +32181,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400288
+    "captureTime": 1563579250
   },
   {
     "screen_name": "Giganotosaurus",
@@ -32460,8 +32460,8 @@
     "classname": "Gigant_Character_BP_Base",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6f350f156aee050553d109d9.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/98974b0bbf757c3b816e2ed4.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/d0f9e44c817ff8b5bc4ed037.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/98715f1547037e28c4352500.png"
     },
     "baseLevel": {
       "Health": 80000.0,
@@ -32533,7 +32533,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400288
+    "captureTime": 1563579250
   },
   {
     "screen_name": "Giganotosaurus",
@@ -32812,8 +32812,8 @@
     "classname": "Gigant_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/5c042a6c3ac37a1a1330e5e9.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/f2093e80053827a2a03cf16c.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/0e4f287479f7d389f3c9d9ed.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/ac3a7e65ec87c13c17bdeb00.png"
     },
     "baseLevel": {
       "Health": 80000.0,
@@ -32885,7 +32885,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400288
+    "captureTime": 1563579251
   },
   {
     "screen_name": "Giganotosaurus",
@@ -33164,8 +33164,8 @@
     "classname": "Gigant_Character_BP_TekCave",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/fbeec46fe25f2d053492900a.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/91f5320ecc9819d7f3013a1d.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/ba5e81c1f6665cc93b81b2ce.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/f198d2ef39eca7cd1777bd84.png"
     },
     "baseLevel": {
       "Health": 80000.0,
@@ -33237,7 +33237,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400288
+    "captureTime": 1563579251
   },
   {
     "screen_name": "Megapithecus",
@@ -33580,8 +33580,8 @@
     "classname": "Gorilla_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1e0b9557257b51cc8645524a.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/7326f08df2559d79827b222f.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a3a440e0e6f8864d863cdfeb.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/fa16b74305da7ab0a6e5856b.png"
     },
     "baseLevel": {
       "Health": 200000.0,
@@ -33653,7 +33653,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400288
+    "captureTime": 1563579251
   },
   {
     "screen_name": "Megapithecus Guardian",
@@ -33996,8 +33996,8 @@
     "classname": "EndBossGorilla_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/7d9c7b9eae663f88c0b4b950.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/ebd4b99523e21b7597009269.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/49e6aa7a5e5099e93ce3898c.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/a938204a56338d9ee3797322.png"
     },
     "baseLevel": {
       "Health": 200000.0,
@@ -34069,7 +34069,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400288
+    "captureTime": 1563579251
   },
   {
     "screen_name": "Megapithecus (Gamma)",
@@ -34412,8 +34412,8 @@
     "classname": "EndBossGorilla_Character_BP_Easy",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/0ef96e4e0edbe633715f1672.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/38a5ea2d660d01e4f193db63.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/873b744a22b29e0aa0637b15.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/5f552e68811a89513816277f.png"
     },
     "baseLevel": {
       "Health": 92400.0,
@@ -34485,7 +34485,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400289
+    "captureTime": 1563579252
   },
   {
     "screen_name": "Megapithecus (Alpha)",
@@ -34828,8 +34828,8 @@
     "classname": "EndBossGorilla_Character_BP_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/5848d6858e7e4efed160c606.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/221fd5482917801fd56a01f1.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/0cdddeab6d87ee93b5a8de43.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/65feab4d05b629a966502d35.png"
     },
     "baseLevel": {
       "Health": 128800.0,
@@ -34901,7 +34901,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400289
+    "captureTime": 1563579252
   },
   {
     "screen_name": "Megapithecus (Beta)",
@@ -35244,8 +35244,8 @@
     "classname": "EndBossGorilla_Character_BP_Medium",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1a5d6c6eed7b6883afcbd084.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/f7b9fec221f3f636339045a7.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/fe0dce3b9a89eb1aa0da3314.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/022900293bfc272a3fd72200.png"
     },
     "baseLevel": {
       "Health": 112000.0,
@@ -35317,7 +35317,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400289
+    "captureTime": 1563579252
   },
   {
     "screen_name": "Megapithecus (Gamma)",
@@ -35660,8 +35660,8 @@
     "classname": "Gorilla_Character_BP_Easy",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/d3fa453832ef1de125a59546.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/c79b1dfab6ade2dcd8fe8466.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/50f8f82cd74ad02e0f74c504.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/94946a398841a09a04fb47d9.png"
     },
     "baseLevel": {
       "Health": 180000.0,
@@ -35733,7 +35733,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400289
+    "captureTime": 1563579253
   },
   {
     "screen_name": "Megapithecus (Alpha)",
@@ -36076,8 +36076,8 @@
     "classname": "Gorilla_Character_BP_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/489ea7d0faddb876244b3221.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/8e7255e02480521682d54117.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/eed2a7d11becfe845a36725f.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/7c095e137158d1d203febbbb.png"
     },
     "baseLevel": {
       "Health": 280000.0,
@@ -36149,7 +36149,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400290
+    "captureTime": 1563579253
   },
   {
     "screen_name": "Megapithecus (Beta)",
@@ -36492,8 +36492,8 @@
     "classname": "Gorilla_Character_BP_Medium",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1ad4f033698cfc6bc4b9fd21.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/3e524dc7d12a8aa9254c056a.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/cb89482d0dbec6b3bc7eaf74.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d1b4275a1ec979eee8df6f65.png"
     },
     "baseLevel": {
       "Health": 200000.0,
@@ -36565,7 +36565,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400290
+    "captureTime": 1563579253
   },
   {
     "screen_name": "Megapithecus",
@@ -36908,8 +36908,8 @@
     "classname": "Gorilla_Character_BP_Tameable",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/c38f69730c1161e9b1efba43.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/047ba58e00527d250e1b0031.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/8d3f6c2c64b3beb401ee03b4.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d8f327eeb8c54564df44cb41.png"
     },
     "baseLevel": {
       "Health": 200000.0,
@@ -36981,7 +36981,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400290
+    "captureTime": 1563579254
   },
   {
     "screen_name": "Megapithecus (Gamma)",
@@ -37324,8 +37324,8 @@
     "classname": "Gorilla_Character_BP_TheCenter",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6b1966f2e6722b95638bbd3e.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/f07c099f176f5e94a4418f4d.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/ca7618b52f3dceaf6d8527f5.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/aa10f9725f78f0d5c944397e.png"
     },
     "baseLevel": {
       "Health": 180000.0,
@@ -37397,7 +37397,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400290
+    "captureTime": 1563579254
   },
   {
     "screen_name": "Megapithecus (Alpha)",
@@ -37740,8 +37740,8 @@
     "classname": "Gorilla_Character_BP_TheCenter_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/7c683759030bf387d72b7017.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a429a28f797d32c02c626c58.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/54ef5ff6b3a77250019d84fb.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/13804b23426b07c611cde7ea.png"
     },
     "baseLevel": {
       "Health": 280000.0,
@@ -37813,7 +37813,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400290
+    "captureTime": 1563579254
   },
   {
     "screen_name": "Megapithecus (Beta)",
@@ -38156,8 +38156,8 @@
     "classname": "Gorilla_Character_BP_TheCenter_Medium",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/bc41e88ccece5ce8a068ba4b.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a8004e2df0cde81f10155e56.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/40a2f08253f3872f1935c9f3.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/54d883d05d60214aa48880e0.png"
     },
     "baseLevel": {
       "Health": 200000.0,
@@ -38229,7 +38229,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400291
+    "captureTime": 1563579255
   },
   {
     "screen_name": "Hesperornis",
@@ -38572,8 +38572,8 @@
     "classname": "Hesperornis_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/de7c8cc20878dd0edfebf294.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/97730e8c35c58674da472023.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/fcd740eba9dcbf0367e029e1.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/59a918ba548a586af0f938ea.png"
     },
     "baseLevel": {
       "Health": 95.0,
@@ -38645,7 +38645,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400291
+    "captureTime": 1563579255
   },
   {
     "screen_name": "Managarmr",
@@ -38924,8 +38924,8 @@
     "classname": "IceJumper_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1376f06b64427a9a10502579.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/0bd5e23e543793c9e2e525c4.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a632b598ec2af6a3d3899ede.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/14a896ddafeb6affa1c96ab0.png"
     },
     "baseLevel": {
       "Health": 825.0,
@@ -38997,7 +38997,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400291
+    "captureTime": 1563579255
   },
   {
     "screen_name": "Ichthyornis",
@@ -39340,8 +39340,8 @@
     "classname": "Ichthyornis_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/3978582bbdb4c2d515c3823e.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/dcb17385f036bb0d37aa70bd.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/ecb1f63b9518a2e9f41f8fd4.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/48d83697829cace5c4410860.png"
     },
     "baseLevel": {
       "Health": 50.0,
@@ -39413,7 +39413,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400291
+    "captureTime": 1563579255
   },
   {
     "screen_name": "Iguanodon",
@@ -39692,8 +39692,8 @@
     "classname": "Iguanodon_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/4a4c9ab178a9b2507854e896.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/ae1278941ecbfac5d2e42221.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/3593ac3ff9c89b03ca1993d3.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/6b34cc0c355dc7bbf0d317c2.png"
     },
     "baseLevel": {
       "Health": 250.0,
@@ -39765,7 +39765,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400291
+    "captureTime": 1563579256
   },
   {
     "screen_name": "Ammonite",
@@ -40028,8 +40028,8 @@
     "classname": "Ammonite_Character",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/324e69eb3e300aaef78d50ac.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/bf6c9550cff540e9f10183a3.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a15f7c1176ce0e43e1657b77.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e50f6b3ff20b9a6645870c21.png"
     },
     "baseLevel": {
       "Health": 165.0,
@@ -40101,7 +40101,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400291
+    "captureTime": 1563579256
   },
   {
     "screen_name": "Titanomyrma Drone",
@@ -40364,8 +40364,8 @@
     "classname": "Ant_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/814a05b98846333da0cab6b7.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/8fe51059535920f947dc606d.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/6a4118af0e2241bb4df96805.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/a1135fc240aa83e87a3a9434.png"
     },
     "baseLevel": {
       "Health": 35.0,
@@ -40437,7 +40437,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400291
+    "captureTime": 1563579256
   },
   {
     "screen_name": "Titanomyrma Soldier",
@@ -40700,8 +40700,8 @@
     "classname": "FlyingAnt_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/db7e61835d3a789e3a11dac1.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a4769f2ea1753744b354753c.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/0c4bd9ae1f6178aa2fe07142.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/f93b6fb7ed09c25aeb09ce1e.png"
     },
     "baseLevel": {
       "Health": 50.0,
@@ -40773,7 +40773,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400291
+    "captureTime": 1563579256
   },
   {
     "screen_name": "Giant Bee",
@@ -41036,8 +41036,8 @@
     "classname": "Bee_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/de0a9514f652a3a6b41615cc.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/8c6a79a620806776145c2200.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/f89069c992c67f024e30e3df.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/b4ba8b5284cd732612fa6e5e.png"
     },
     "baseLevel": {
       "Health": 80.0,
@@ -41109,7 +41109,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400292
+    "captureTime": 1563579257
   },
   {
     "screen_name": "Giant Queen Bee",
@@ -41404,8 +41404,8 @@
     "classname": "Bee_Queen_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/8e835db03c3bf6d8bf11a2f6.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/db6dffb74c481815ed705b6a.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/395db81ca0d2c32ddbd34ba2.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/dc9d43acfc8e7761414d5f9e.png"
     },
     "baseLevel": {
       "Health": 80.0,
@@ -41477,7 +41477,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400292
+    "captureTime": 1563579257
   },
   {
     "screen_name": "Meganeura",
@@ -41740,8 +41740,8 @@
     "classname": "Dragonfly_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/7d2310e7e3608e042b942674.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/ec3ca7126a83e97add9d38cf.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/f2da22b8e31fe398e231b377.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/6df49cde4ad261bd11157721.png"
     },
     "baseLevel": {
       "Health": 45.0,
@@ -41813,7 +41813,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400292
+    "captureTime": 1563579257
   },
   {
     "screen_name": "Eurypterid",
@@ -42076,8 +42076,8 @@
     "classname": "Euryp_Character",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/548942917d5472b9344d7750.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/6e75c0271397e9e427c1534b.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/8bf4d93da75439e363b5682d.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/65fa331fbebcca2b817ec8b9.png"
     },
     "baseLevel": {
       "Health": 160.0,
@@ -42149,7 +42149,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400292
+    "captureTime": 1563579257
   },
   {
     "screen_name": "Glowbug",
@@ -42412,8 +42412,8 @@
     "classname": "Lightbug_Character_BaseBP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/21be4f9dfe46b54dcd450600.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/6fb1a553aa4cd3320a81608d.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/2ee5bca102d909a87594d26b.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/2fd6142d98045c5e4b3bc93f.png"
     },
     "baseLevel": {
       "Health": 75.0,
@@ -42485,7 +42485,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400292
+    "captureTime": 1563579257
   },
   {
     "screen_name": "Jug Bug",
@@ -42748,8 +42748,8 @@
     "classname": "Jugbug_Character_BaseBP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/3e47ff3b7204493a01a218fa.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a3aed05c9edc2e4b886c0ee1.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/6e98f9bf944bf6f7f112e84a.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/10f2eae9def2a0dfc0b100fe.png"
     },
     "baseLevel": {
       "Health": 75.0,
@@ -42821,7 +42821,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400292
+    "captureTime": 1563579258
   },
   {
     "screen_name": "Lamprey",
@@ -43084,8 +43084,8 @@
     "classname": "Lamprey_Character",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/9d76e7dbf0cd64ecdcb5b70b.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/cfa9341b40714fd222c82774.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/bcbb911eae87002e5ad26ec7.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/3166b4170163f31dd27c2873.png"
     },
     "baseLevel": {
       "Health": 40.0,
@@ -43157,7 +43157,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400292
+    "captureTime": 1563579258
   },
   {
     "screen_name": "Leech",
@@ -43420,8 +43420,8 @@
     "classname": "Leech_Character",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/09ec30524a9ec50b910bdd0d.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/fa4a020707e0559a56c98e6c.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/9cbebe9df508ab38d2d94ef2.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/0144815a03de92bb994a0933.png"
     },
     "baseLevel": {
       "Health": 40.0,
@@ -43493,7 +43493,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400292
+    "captureTime": 1563579258
   },
   {
     "screen_name": "Diseased Leech",
@@ -43756,8 +43756,8 @@
     "classname": "Leech_Character_Diseased",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/92f2ca7cf2d96a8312676f85.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/8e7911715729290ef3a4716a.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/ffe1aef0d06ba57f1ee9d4fb.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/621bb591d158241b442ec124.png"
     },
     "baseLevel": {
       "Health": 120.0,
@@ -43829,7 +43829,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400292
+    "captureTime": 1563579258
   },
   {
     "screen_name": "Trilobite",
@@ -44092,8 +44092,8 @@
     "classname": "Trilobite_Character",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/da960f89abae4ebeac5e9f19.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/877364d80ca79285f0e7dba1.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/24aaaa5b13b9e4e015d01edc.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d35a31f61c08ae73c07f98df.png"
     },
     "baseLevel": {
       "Health": 160.0,
@@ -44165,7 +44165,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400293
+    "captureTime": 1563579259
   },
   {
     "screen_name": "Jerboa",
@@ -44412,8 +44412,8 @@
     "classname": "Jerboa_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/8c9ab72d0fd39537e4684560.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/61fe2aacb7a0a3c3bdd955ba.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/58e838447dc87a014692a8f3.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/ebd88e47667a3849972c2ec3.png"
     },
     "baseLevel": {
       "Health": 55.0,
@@ -44485,7 +44485,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400293
+    "captureTime": 1563579259
   },
   {
     "screen_name": "Jerboa",
@@ -44732,8 +44732,8 @@
     "classname": "Bone_Jerboa_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/899a74c47f6a83cf617309bb.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/74b78c5155802f78084bd2a9.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/f7c4fb5d9b08acb9a7314eeb.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/3f946321eb82217a1937ebec.png"
     },
     "baseLevel": {
       "Health": 825.0,
@@ -44805,7 +44805,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400293
+    "captureTime": 1563579260
   },
   {
     "screen_name": "Kairuku",
@@ -45084,8 +45084,8 @@
     "classname": "Kairuku_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1d44e92ecd4386c0a574a4d6.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/ae0361d69470022c30c5b414.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/b02abbe2911f3286a00f6a70.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/f91bc8d72c9c2753c691f88f.png"
     },
     "baseLevel": {
       "Health": 95.0,
@@ -45157,7 +45157,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400294
+    "captureTime": 1563579261
   },
   {
     "screen_name": "Kaprosuchus",
@@ -45436,8 +45436,8 @@
     "classname": "Kaprosuchus_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b010b7ec1e0ffe9cfea5f310.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/30118007e68b15a3500b93c5.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/2cc63e7239b4b4614ad69a54.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/573f2609120fa94368a9b170.png"
     },
     "baseLevel": {
       "Health": 200.0,
@@ -45509,7 +45509,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400294
+    "captureTime": 1563579261
   },
   {
     "screen_name": "Kentrosaurus",
@@ -45788,8 +45788,8 @@
     "classname": "Kentro_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/215d0b5907726d6753208ccb.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/48f60511ccf75cc42f20d0c8.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/18d60287891cc8fde34a067b.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/7b111b94f0f085fea393887e.png"
     },
     "baseLevel": {
       "Health": 650.0,
@@ -45861,7 +45861,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400294
+    "captureTime": 1563579261
   },
   {
     "screen_name": "Featherlight",
@@ -46172,8 +46172,8 @@
     "classname": "LanternBird_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/538624c549a2bee66750de39.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/6d89a3e0b928dbf0fa3b2b84.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/8ca9dcfa22fe277bfcc48760.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/3517d44f52041f74058762c4.png"
     },
     "baseLevel": {
       "Health": 115.0,
@@ -46245,7 +46245,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400294
+    "captureTime": 1563579261
   },
   {
     "screen_name": "Shinehorn",
@@ -46556,8 +46556,8 @@
     "classname": "LanternGoat_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1c486406fff4b5a2a274c88a.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/7a04b87a658df748ec8ebbda.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/cc3bb4728160c0ddef01d4a1.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/70a3ff529ca12952a9c1ad71.png"
     },
     "baseLevel": {
       "Health": 115.0,
@@ -46629,7 +46629,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400295
+    "captureTime": 1563579262
   },
   {
     "screen_name": "Glowtail",
@@ -46940,8 +46940,8 @@
     "classname": "LanternLizard_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/12115570691aa70996d8dc25.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/de5110fbce307661de9770d9.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/80868c7023620429c521ecc7.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/b9667a6030b68f0b62ff4398.png"
     },
     "baseLevel": {
       "Health": 115.0,
@@ -47013,7 +47013,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400296
+    "captureTime": 1563579263
   },
   {
     "screen_name": "Bulbdog",
@@ -47324,8 +47324,8 @@
     "classname": "LanternPug_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/3e67d7d51c47179c06eb4f33.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/fc0e4ad51bd249d62e003e18.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/7546c72ad20f8237cbff9c1c.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/a6acdc401ef371dc81866055.png"
     },
     "baseLevel": {
       "Health": 145.0,
@@ -47397,7 +47397,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400297
+    "captureTime": 1563579264
   },
   {
     "screen_name": "Leedsichthys",
@@ -47676,8 +47676,8 @@
     "classname": "Leedsichthys_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6cd2a364c471de16ef759891.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/89057911c208dc0d7a613c94.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/f93839e047b7b6c1e1f03ffc.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e4885a7127d60b78f6e15713.png"
     },
     "baseLevel": {
       "Health": 4400.0,
@@ -47749,7 +47749,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400297
+    "captureTime": 1563579265
   },
   {
     "screen_name": "Liopleurodon",
@@ -47820,8 +47820,8 @@
     "classname": "Liopleurodon_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/e4a49bfe4c0391d4365b5093.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/79dd39eaf773ed913b424757.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/48860a2f979f2850fa669873.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/090c1f89354d42775dd44779.png"
     },
     "baseLevel": {
       "Health": 3200.0,
@@ -47893,7 +47893,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400297
+    "captureTime": 1563579266
   },
   {
     "screen_name": "Lystrosaurus",
@@ -48156,8 +48156,8 @@
     "classname": "Lystro_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/d2dc9de6b9c1e2cadf43aa66.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/d59068ff4811b23291761822.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/161a2bac15c216e9ffcc486e.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/4e1aa4f332bafc88a8ce566f.png"
     },
     "baseLevel": {
       "Health": 90.0,
@@ -48229,7 +48229,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400297
+    "captureTime": 1563579266
   },
   {
     "screen_name": "Mammoth",
@@ -48508,8 +48508,8 @@
     "classname": "Mammoth_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/e04443b3c8f455150cc72beb.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/c2004f5638bb4bc1bd443ed5.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/e544a0501273af3d60ff0593.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/963cb7ad92c6fb99d3ae65da.png"
     },
     "baseLevel": {
       "Health": 850.0,
@@ -48581,7 +48581,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400298
+    "captureTime": 1563579266
   },
   {
     "screen_name": "Manta",
@@ -48844,8 +48844,8 @@
     "classname": "Manta_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/13c4ab14a88303fd302d051e.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/1cb48b9e569242a8882c5a80.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/5e0a776ac2a688e080094cea.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/27280ac5888cdf83c20d1426.png"
     },
     "baseLevel": {
       "Health": 320.0,
@@ -48917,7 +48917,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400298
+    "captureTime": 1563579266
   },
   {
     "screen_name": "Manticore",
@@ -49260,8 +49260,8 @@
     "classname": "Manticore_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/e720cfac2d4efcbfe9d40ea2.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/ea7245a65362af25acf6dc8b.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/518ca579ff0f5e1267df12c8.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/28c3410e6c394f032fcd78de.png"
     },
     "baseLevel": {
       "Health": 100000.0,
@@ -49333,7 +49333,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400298
+    "captureTime": 1563579266
   },
   {
     "screen_name": "Manticore (Gamma)",
@@ -49676,8 +49676,8 @@
     "classname": "Manticore_Character_BP_Easy",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/c2dbc4f1cfb3000d4d0d706f.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/800de6433b528f02365a4fa1.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/189a62645fb4955f6aa9b9e6.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/cae15e2aae2c8f958f5457ad.png"
     },
     "baseLevel": {
       "Health": 85000.0,
@@ -49749,7 +49749,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400298
+    "captureTime": 1563579267
   },
   {
     "screen_name": "Manticore (Alpha)",
@@ -50092,8 +50092,8 @@
     "classname": "Manticore_Character_BP_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/42213053cd53a328b9fe5875.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/59b16bc8e9ad44107360a771.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/bd9bd53994db36f6e1003986.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/372b5b27f25776d6b0453d23.png"
     },
     "baseLevel": {
       "Health": 120000.0,
@@ -50165,7 +50165,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400298
+    "captureTime": 1563579267
   },
   {
     "screen_name": "Manticore (Beta)",
@@ -50508,8 +50508,8 @@
     "classname": "Manticore_Character_BP_Medium",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/5deb1ccbbcb0e4d22c438449.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/97833c0e3ac8c183be2797a3.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/1e54c1b47307484d37b219f0.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/45e953455fa67d0f72f4b725.png"
     },
     "baseLevel": {
       "Health": 100000.0,
@@ -50581,7 +50581,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400299
+    "captureTime": 1563579268
   },
   {
     "screen_name": "Megalodon",
@@ -50860,8 +50860,8 @@
     "classname": "Megalodon_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/559e3591a73a500e4d848751.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/52703c12b6de4bcd3bd7ede3.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/673b2f29ebf933e4f525cd75.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/ccbe9bdd303d1836d38be2c4.png"
     },
     "baseLevel": {
       "Health": 600.0,
@@ -50933,7 +50933,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400299
+    "captureTime": 1563579268
   },
   {
     "screen_name": "Megatherium",
@@ -51228,8 +51228,8 @@
     "classname": "Megatherium_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/634bf7aef902eeed61efbba9.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/202c9e28355f9636afeb2af4.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/3c575c99fdf654f3d3691148.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/2c807b7bf9cc87972ae39d2a.png"
     },
     "baseLevel": {
       "Health": 740.0,
@@ -51301,7 +51301,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400299
+    "captureTime": 1563579268
   },
   {
     "screen_name": "Mek",
@@ -51612,8 +51612,8 @@
     "classname": "Mek_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/df1dff708ba66e6273e0af51.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/e05ccf77adf0d584da8cbcfb.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/45dbc4429c686e25857b83b7.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/0f8632f5bd73eaec5a5a2213.png"
     },
     "baseLevel": {
       "Health": 5500.0,
@@ -51685,7 +51685,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400299
+    "captureTime": 1563579268
   },
   {
     "screen_name": "Mega Mek",
@@ -51996,8 +51996,8 @@
     "classname": "MegaMek_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/ad6ec60daff7aad954b9fc42.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/aac18862002f090552ee6204.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/0aa48641973ccde7d1b99f6c.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/608ce269e5c97bd7a60892f8.png"
     },
     "baseLevel": {
       "Health": 9000.0,
@@ -52069,7 +52069,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400299
+    "captureTime": 1563579269
   },
   {
     "screen_name": "Stego",
@@ -52348,8 +52348,8 @@
     "classname": "Michael_Stego_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/de9828cea44209730dc19dfc.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/074dd5c02030fe13d45659bb.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/bec268005eede7272ad827f2.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/36e46e44af115438b359d194.png"
     },
     "baseLevel": {
       "Health": 650.0,
@@ -52421,7 +52421,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400299
+    "captureTime": 1563579269
   },
   {
     "screen_name": "Microraptor",
@@ -52716,8 +52716,8 @@
     "classname": "Microraptor_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/bb5869affbda4e168a1f6d4b.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/da450a82b9331549e40526ef.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/437e4966ebef0756aa3e623d.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/87ce3842dbf396f2ab3053d5.png"
     },
     "baseLevel": {
       "Health": 130.0,
@@ -52789,7 +52789,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400300
+    "captureTime": 1563579269
   },
   {
     "screen_name": "Roll Rat",
@@ -53052,8 +53052,8 @@
     "classname": "MoleRat_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/4eda8b6e90aa67764bebbe63.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/78234fa8b52acd013507a049.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/ded3dad3197dc7478d3e73d6.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/b240f9059814a153dc2fe354.png"
     },
     "baseLevel": {
       "Health": 850.0,
@@ -53125,7 +53125,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400300
+    "captureTime": 1563579270
   },
   {
     "screen_name": "Mesopithecus",
@@ -53404,8 +53404,8 @@
     "classname": "Monkey_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/d51683450b41a4b0f4e16b97.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/3e085e9d506ee5101c11007e.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/9b28ffdb198c7549f3567fc7.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/01201e79d1247250053309c9.png"
     },
     "baseLevel": {
       "Health": 115.0,
@@ -53477,7 +53477,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400300
+    "captureTime": 1563579270
   },
   {
     "screen_name": "Mesopithecus",
@@ -53756,8 +53756,8 @@
     "classname": "Monkey_Character_BP_Aggressive_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/0188a342b0490c1a37b1ecaa.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/46f0a9c99ad5724264352815.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/001cefd9fbefe4b32ee63f2d.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/dab2c0d24917e0ad495b45a6.png"
     },
     "baseLevel": {
       "Health": 115.0,
@@ -53829,7 +53829,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400300
+    "captureTime": 1563579270
   },
   {
     "screen_name": "Mesopithecus",
@@ -54108,8 +54108,8 @@
     "classname": "Monkey_Character_BP_Aggressive_Med",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b7d4d61c6d453074da1eeb52.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/30aa069b6bd5a9b3a1e0dfec.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/011a077093f44bc6ddc74559.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/523ab6a9178c039c37eba8a8.png"
     },
     "baseLevel": {
       "Health": 115.0,
@@ -54181,7 +54181,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400300
+    "captureTime": 1563579270
   },
   {
     "screen_name": "Mosasaurus",
@@ -54460,8 +54460,8 @@
     "classname": "Mosa_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/cf8872613c14a64169e8c205.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/fe5eda54aeead1656c3e8895.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/cee79535c9795bd3874c5fba.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/615c79dc7aed851c5411cf87.png"
     },
     "baseLevel": {
       "Health": 3600.0,
@@ -54533,7 +54533,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400300
+    "captureTime": 1563579270
   },
   {
     "screen_name": "Alpha Mosasaur",
@@ -54812,8 +54812,8 @@
     "classname": "Mosa_Character_BP_Mega",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/de5618fa7499c8488d9b8935.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/3a2ffbc86f1e7f44f45a9c8e.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/9b545d4c3419f6e4a02ac1b4.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/7791ebd69d5a5a9982a448ce.png"
     },
     "baseLevel": {
       "Health": 54000.0,
@@ -54885,7 +54885,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400300
+    "captureTime": 1563579271
   },
   {
     "screen_name": "Alpha Mosasaur",
@@ -55164,8 +55164,8 @@
     "classname": "Mosa_Character_BP_Mega_Cave",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/0b7aecd5bf366fbb713d7519.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a6b458c6447452093c37cde1.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/6c64ed0811cd63d86bf224f1.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/103b79fea0b36a7a4ca4db45.png"
     },
     "baseLevel": {
       "Health": 54000.0,
@@ -55237,7 +55237,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400300
+    "captureTime": 1563579271
   },
   {
     "screen_name": "Mosasaur",
@@ -55516,8 +55516,8 @@
     "classname": "Mosa_Character_BP_Cave",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/8058aa96ad1920154c320975.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/70b02abd7bcb45b9b1082189.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/43d88ad2d635ae291d3b7b3b.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/55e59c467d84a98fb05f9315.png"
     },
     "baseLevel": {
       "Health": 3600.0,
@@ -55589,7 +55589,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400300
+    "captureTime": 1563579271
   },
   {
     "screen_name": "Moschops",
@@ -55852,8 +55852,8 @@
     "classname": "Moschops_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/ce31ac7f3f11fe412436d51e.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/1a79ef4623d48b305c954a0c.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/b33f98d91344c0922ded8dd9.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/74fd8343500704cefe486443.png"
     },
     "baseLevel": {
       "Health": 375.0,
@@ -55925,7 +55925,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400300
+    "captureTime": 1563579271
   },
   {
     "screen_name": "Lymantria",
@@ -56204,8 +56204,8 @@
     "classname": "Moth_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/d96ee3b8d4f17e14bafc1197.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/1921ccb610b6a68f8764b347.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/14ea44dd5096812df1e4f38d.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/2fd906431dc459f2cb2fb78e.png"
     },
     "baseLevel": {
       "Health": 260.0,
@@ -56277,7 +56277,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400300
+    "captureTime": 1563579271
   },
   {
     "screen_name": "Otter",
@@ -56604,8 +56604,8 @@
     "classname": "Otter_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b599bdcc1ed62aa29afc4a07.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/4f5ab6bd6b5843a4de6b82ed.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/d7956f4dc104655e766a5d07.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/2c84283a9eb4ded1ae85fbc8.png"
     },
     "baseLevel": {
       "Health": 40.0,
@@ -56677,7 +56677,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400301
+    "captureTime": 1563579272
   },
   {
     "screen_name": "Pachy",
@@ -56956,8 +56956,8 @@
     "classname": "Pachy_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b4a23731b26b922a3f1664d7.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/fcf56df228f8aaaf95c2ceab.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/83061dafd2408fc5deb89128.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/96f775861fcfecaa5b7ca49b.png"
     },
     "baseLevel": {
       "Health": 165.0,
@@ -57029,7 +57029,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400301
+    "captureTime": 1563579272
   },
   {
     "screen_name": "Pachyrhinosaurus",
@@ -57308,8 +57308,8 @@
     "classname": "Pachyrhino_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/cb08299964277ebe34a23af9.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/61d27ca2358a4919f8280500.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/2472f5e722cbd409ad993d62.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/523da5d5c554e77b17edfec1.png"
     },
     "baseLevel": {
       "Health": 375.0,
@@ -57381,7 +57381,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400301
+    "captureTime": 1563579272
   },
   {
     "screen_name": "Parasaur",
@@ -57660,8 +57660,8 @@
     "classname": "Para_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/9ef04003b232a820015372aa.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/433a99e18599c1d9a5e36fe8.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/3e3da195d6de32cc49f0f605.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/8d8ce82653bc3fabbf60980f.png"
     },
     "baseLevel": {
       "Health": 200.0,
@@ -57733,7 +57733,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400301
+    "captureTime": 1563579272
   },
   {
     "screen_name": "Paraceratherium",
@@ -58012,8 +58012,8 @@
     "classname": "Paracer_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/78d9173746728e033207e9d9.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/3b8238545a52a6f12358ab2c.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/0308f41c5e6d0c7758af6f05.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e4d111bf583cd0722f85ac2f.png"
     },
     "baseLevel": {
       "Health": 1026.0,
@@ -58085,7 +58085,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400301
+    "captureTime": 1563579273
   },
   {
     "screen_name": "Pegomastax",
@@ -58348,8 +58348,8 @@
     "classname": "Pegomastax_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/bc14680da575e15c13dd098c.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/306c46e7ab7781ec1787fb21.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/0f52d000960b61c44602000a.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/20d795a22e71b03ae958fab2.png"
     },
     "baseLevel": {
       "Health": 200.0,
@@ -58421,7 +58421,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400301
+    "captureTime": 1563579273
   },
   {
     "screen_name": "Pelagornis",
@@ -58764,8 +58764,8 @@
     "classname": "Pela_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/e978e433542b3da57fa40d6f.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/42c312c885ebe7979534f4a4.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/4425416f60f5c424b9070b90.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/4e4262b7dc4547d207b2aedb.png"
     },
     "baseLevel": {
       "Health": 240.0,
@@ -58837,7 +58837,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400301
+    "captureTime": 1563579273
   },
   {
     "screen_name": "Phiomia",
@@ -59116,8 +59116,8 @@
     "classname": "Phiomia_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/c4f11d71484c71338a4dff6f.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/74a6b311807d3b7aed983c19.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/81b72688b915d5a4e981fc16.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/a8d4f7e5280665685b0b6955.png"
     },
     "baseLevel": {
       "Health": 300.0,
@@ -59189,7 +59189,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400301
+    "captureTime": 1563579273
   },
   {
     "screen_name": "Phoenix",
@@ -59228,8 +59228,8 @@
     "classname": "Phoenix_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/3fb5fc5de1ad4162746ca51b.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/50f28dca334b7b2a69f2298d.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/c8428dbaf7c085850c46a6da.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/4fb5461349894dd4bf6f9bf1.png"
     },
     "baseLevel": {
       "Health": 640.0,
@@ -59301,7 +59301,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400302
+    "captureTime": 1563579274
   },
   {
     "screen_name": "Piranha",
@@ -59564,8 +59564,8 @@
     "classname": "Piranha_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/981f74edf116c36141a1c0aa.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/2a726e0b3391cd4f57c6bbd4.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/45296e0700d9287a706fdf2b.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/ef0a1e29fb1f48d6e1ea1635.png"
     },
     "baseLevel": {
       "Health": 150.0,
@@ -59637,7 +59637,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400302
+    "captureTime": 1563579274
   },
   {
     "screen_name": "Plesiosaur",
@@ -59916,8 +59916,8 @@
     "classname": "Plesiosaur_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/3ee2e71fc7dbcd91764a0647.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/cbc7c6f7c4e719dc2057f937.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/0a0e614547a65f6b8697887e.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/c11c18b0d626643e8ccdd81f.png"
     },
     "baseLevel": {
       "Health": 2400.0,
@@ -59989,7 +59989,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400302
+    "captureTime": 1563579274
   },
   {
     "screen_name": "Procoptodon",
@@ -60140,8 +60140,8 @@
     "classname": "Procoptodon_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/ece7940db8640a3778e9e2fe.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/98012d74968170d0a2b94037.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a43bccc24a25184ca19fdf75.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/30eab026112d5fc19f3a2ee1.png"
     },
     "baseLevel": {
       "Health": 400.0,
@@ -60213,7 +60213,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400302
+    "captureTime": 1563579274
   },
   {
     "screen_name": "Pteranodon",
@@ -60492,8 +60492,8 @@
     "classname": "Ptero_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/7df9aa8ccfe209be12a533fd.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/05ed77be5304de0edb48acf2.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/0f3cf23bde94e37a0c51668a.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/587ddb35bd2b756fe7167037.png"
     },
     "baseLevel": {
       "Health": 210.0,
@@ -60565,7 +60565,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400302
+    "captureTime": 1563579274
   },
   {
     "screen_name": "Pteranodon",
@@ -60844,8 +60844,8 @@
     "classname": "Ptero_Minion_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6d83ed55d3e6ba7651c8f813.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/8c78f94c5c90f0f8e66bf534.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/08250ea49899a5d2b5811b55.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/862f635a5157aeac3d4ecd50.png"
     },
     "baseLevel": {
       "Health": 650.0,
@@ -60917,7 +60917,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400302
+    "captureTime": 1563579275
   },
   {
     "screen_name": "Pteranodon",
@@ -61196,8 +61196,8 @@
     "classname": "Ptero_Minion_Character_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/5d3a193ec6a38c66f21f2d7b.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/16902633a33269ccaac0edf3.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/0ea3226e3cd5cbe64d40f78d.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/aad3878018789203a74d2718.png"
     },
     "baseLevel": {
       "Health": 650.0,
@@ -61269,7 +61269,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400302
+    "captureTime": 1563579275
   },
   {
     "screen_name": "Pteranodon",
@@ -61548,8 +61548,8 @@
     "classname": "Ptero_Minion_Character_Med",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/11cd4438880a10c7498604f7.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/65681dd4679205f81b0ee2b2.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/fdafaaa37c87537c644557d2.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/41f940b4a74ab9f6d51b03e8.png"
     },
     "baseLevel": {
       "Health": 650.0,
@@ -61621,7 +61621,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400302
+    "captureTime": 1563579275
   },
   {
     "screen_name": "Seeker",
@@ -61884,8 +61884,8 @@
     "classname": "Pteroteuthis_Char_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/d6776a9c169fea8aa6601bde.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/015ea18494aa78ebec15bf97.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/179d3b30f9b0b2fd14cdfb2d.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/5d817382289c2e2e4ab3c6ac.png"
     },
     "baseLevel": {
       "Health": 250.0,
@@ -61957,7 +61957,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400302
+    "captureTime": 1563579275
   },
   {
     "screen_name": "Purlovia",
@@ -62236,8 +62236,8 @@
     "classname": "Purlovia_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/5f50c22398c56031d67afc43.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/80b4b0308eaace77393fa065.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/53a672966b05533d1a9593c3.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/3d061f1e4bb492a1f4865da2.png"
     },
     "baseLevel": {
       "Health": 275.0,
@@ -62309,7 +62309,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400302
+    "captureTime": 1563579276
   },
   {
     "screen_name": "Purlovia",
@@ -62588,8 +62588,8 @@
     "classname": "Purlovia_Character_BP_Polar",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/0f770e78c2247d7e64c7e95f.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/ef88059d480b4bf093dad416.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/8d23c64378408357ab107f5f.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/f966b7d639e3de2e80c1e29c.png"
     },
     "baseLevel": {
       "Health": 275.0,
@@ -62661,7 +62661,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400303
+    "captureTime": 1563579276
   },
   {
     "screen_name": "Quetzal",
@@ -62940,8 +62940,8 @@
     "classname": "Quetz_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/2407ce62b88a8ee904fe4bb0.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/44eca02be276a22529fb563a.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/e1a0c2b903351d7f0d7f539c.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/032c351df98ac502c60bbcda.png"
     },
     "baseLevel": {
       "Health": 1200.0,
@@ -63013,7 +63013,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400303
+    "captureTime": 1563579276
   },
   {
     "screen_name": "Skeletal Quetzal",
@@ -63292,8 +63292,8 @@
     "classname": "Bone_Quetz_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/56105337913910826cb699e8.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/3acbbf6e2595997cffd0f959.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/4d71a09b9d101e7525686b46.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/563e0d2c5705d146fc3e4f1e.png"
     },
     "baseLevel": {
       "Health": 18000.0,
@@ -63365,7 +63365,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400303
+    "captureTime": 1563579276
   },
   {
     "screen_name": "Rock Elemental",
@@ -63468,8 +63468,8 @@
     "classname": "RockGolem_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1d780c2b808a67a9b58c239d.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/7f69b59065ad0d553cdf1c79.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/f507865901b68a2ac4605282.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/2f80963654f65a6e22bc5ee6.png"
     },
     "baseLevel": {
       "Health": 25000.0,
@@ -63541,7 +63541,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400304
+    "captureTime": 1563579278
   },
   {
     "screen_name": "Rock Elemental",
@@ -63644,8 +63644,8 @@
     "classname": "RockGolem_Character_Minion_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/55da198e502a80f32d52cdfd.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/f40560c09c487d0dcc9fcad9.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a821a8adc859dbf5e714bc72.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e7847ac413e142bd029c6d27.png"
     },
     "baseLevel": {
       "Health": 50000.0,
@@ -63717,7 +63717,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400304
+    "captureTime": 1563579278
   },
   {
     "screen_name": "Rubble Golem",
@@ -63820,8 +63820,8 @@
     "classname": "RubbleGolem_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/dad496c85fade39bd82a78b5.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/575f5126718bb923fb483bf0.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/27eedbae1125f773b28bde2c.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/a3a05ab25221ce6681f318d3.png"
     },
     "baseLevel": {
       "Health": 4000.0,
@@ -63893,7 +63893,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400304
+    "captureTime": 1563579278
   },
   {
     "screen_name": "Rockwell",
@@ -64236,8 +64236,8 @@
     "classname": "Rockwell_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/5d359336e0f22d35e68dbd15.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/7faa55207ab8dcd4d2c20f13.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/a6256694624a110751fe677c.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/b24ceec468fe08bf9daaaa58.png"
     },
     "baseLevel": {
       "Health": 42000.0,
@@ -64309,7 +64309,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400304
+    "captureTime": 1563579278
   },
   {
     "screen_name": "Rockwell (Alpha)",
@@ -64652,8 +64652,8 @@
     "classname": "Rockwell_Character_BP_Hard",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/0f9d43e7dee9892087a82b72.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/85f01ea7e826b565b5aed5b6.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/70ef8fd4f5942b576f602bcd.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/5f68cb22dc761cc7abf6e8dc.png"
     },
     "baseLevel": {
       "Health": 115000.0,
@@ -64725,7 +64725,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400305
+    "captureTime": 1563579279
   },
   {
     "screen_name": "Rockwell (Beta)",
@@ -65068,8 +65068,8 @@
     "classname": "Rockwell_Character_BP_Medium",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/1304601d976f457e49af8ce4.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/17bd1853900d582684c5e618.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/056b6b6bc1a9068437766f79.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/4fe7c8ed39e877c27a9f35c6.png"
     },
     "baseLevel": {
       "Health": 68500.0,
@@ -65141,7 +65141,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400305
+    "captureTime": 1563579280
   },
   {
     "screen_name": "Sabertooth",
@@ -65420,8 +65420,8 @@
     "classname": "Saber_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/ebb6acd5573ed4d13480a9ab.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/8695f05a65f5ce8cc69e6384.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/4b382880ed86cfe63d628fdb.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/a5fa877f303267ca2509f768.png"
     },
     "baseLevel": {
       "Health": 250.0,
@@ -65493,7 +65493,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400305
+    "captureTime": 1563579280
   },
   {
     "screen_name": "Aberrant Salmon",
@@ -65756,8 +65756,8 @@
     "classname": "Salmon_Character_Aberrant",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6c3be8c62fd6405b28005044.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/bbd61c76d5e480cd8a3d2393.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/c3d5ebe4d7dc9c387844dd1b.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/2bf376c5f8e59227be4e0f26.png"
     },
     "baseLevel": {
       "Health": 65.0,
@@ -65829,7 +65829,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400305
+    "captureTime": 1563579280
   },
   {
     "screen_name": "Sabertooth Salmon",
@@ -66092,8 +66092,8 @@
     "classname": "Salmon_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/2ccd0dfc9ef4a856998ea259.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/bb3077303a54f9b163a0094f.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/222833ae3243cbd900d1def6.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/7c8ea232aa25462dd127eea1.png"
     },
     "baseLevel": {
       "Health": 65.0,
@@ -66165,7 +66165,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400305
+    "captureTime": 1563579280
   },
   {
     "screen_name": "Sarco",
@@ -66508,8 +66508,8 @@
     "classname": "Sarco_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6d59aa9f943ea672b621426f.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/c8997be484593af925bc7d6f.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/2b5f31843c16ab51f392a065.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/8f4dc97838ded3e03d275b33.png"
     },
     "baseLevel": {
       "Health": 400.0,
@@ -66581,7 +66581,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400306
+    "captureTime": 1563579280
   },
   {
     "screen_name": "Brontosaurus",
@@ -66860,8 +66860,8 @@
     "classname": "Sauropod_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b0d483b585b3210c5f782df1.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/79ef600e30cddac58f1dec82.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/c18c70797193da7a6044e64c.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/4efc8e1cd11c1a20259dabc8.png"
     },
     "baseLevel": {
       "Health": 2070.0,
@@ -66933,7 +66933,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400306
+    "captureTime": 1563579281
   },
   {
     "screen_name": "Skeletal Bronto",
@@ -67212,8 +67212,8 @@
     "classname": "Bone_Sauropod_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/ae888dee0dde4ceebc184cf0.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/4212c3202d582385ad41dd1b.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/881b8f47cb980028fc6c0a0b.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/8a30c729386fd55edaf53af8.png"
     },
     "baseLevel": {
       "Health": 34500.0,
@@ -67285,7 +67285,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400306
+    "captureTime": 1563579281
   },
   {
     "screen_name": "Pulmonoscorpius",
@@ -67516,8 +67516,8 @@
     "classname": "Scorpion_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/2332cfddfd57dc38b5c787d0.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/6cd60ec6161a11d3f795d17e.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/41de7fecd65cd006015352aa.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/88efb69cba7b043399281815.png"
     },
     "baseLevel": {
       "Health": 300.0,
@@ -67589,7 +67589,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400306
+    "captureTime": 1563579281
   },
   {
     "screen_name": "Scout",
@@ -67868,8 +67868,8 @@
     "classname": "Scout_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/bb602a4a59bf39511e79b88b.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/7081e0b66e0d044727685d18.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/10a26c33737e1e29d8134dc7.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e20cf3af7ae2a87f9568c420.png"
     },
     "baseLevel": {
       "Health": 3.0,
@@ -67941,7 +67941,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400306
+    "captureTime": 1563579281
   },
   {
     "screen_name": "Velonasaur",
@@ -68220,8 +68220,8 @@
     "classname": "Spindles_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/384eae355a3944bbd7a4e88d.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/b1763f7001e76ca7b69f2b4d.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/70a07e13d5453635989711d6.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/12af960bf16791980b5743c3.png"
     },
     "baseLevel": {
       "Health": 440.0,
@@ -68293,7 +68293,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400306
+    "captureTime": 1563579281
   },
   {
     "screen_name": "Thorny Dragon",
@@ -68572,8 +68572,8 @@
     "classname": "SpineyLizard_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/a0ad4c0a164a8d3649e36571.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/c499e9cfd9a9606c747101fd.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/22e6ab07b59652a8a953fcb8.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e1c5b82e58d875157fa48449.png"
     },
     "baseLevel": {
       "Health": 260.0,
@@ -68645,7 +68645,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400306
+    "captureTime": 1563579282
   },
   {
     "screen_name": "Spino",
@@ -68988,8 +68988,8 @@
     "classname": "Spino_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/44b9c1964a2151b904de4010.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/43b2e68b4a6bc44d156a9687.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/2cbbda366880f5a53a1c5427.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/81b129fad54fb710592ec752.png"
     },
     "baseLevel": {
       "Health": 700.0,
@@ -69061,7 +69061,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400306
+    "captureTime": 1563579282
   },
   {
     "screen_name": "Megaloceros",
@@ -69340,8 +69340,8 @@
     "classname": "Stag_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/8d7631a0426a577d46cab1b6.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/11ee562ea6a2f204fb9ae990.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/571d375da65de34c8ccb2b9c.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/a79c2301babb8398165723b3.png"
     },
     "baseLevel": {
       "Health": 300.0,
@@ -69413,7 +69413,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400307
+    "captureTime": 1563579282
   },
   {
     "screen_name": "Skeletal Stego",
@@ -69692,8 +69692,8 @@
     "classname": "Bone_Stego_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/d8849db821632c6e181ec6e2.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/c9b18288861cde6ca3feb733.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/558fa010d43be9c8b4257966.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/56ab73b8b68cb07302d4fc99.png"
     },
     "baseLevel": {
       "Health": 8550.0,
@@ -69765,7 +69765,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400307
+    "captureTime": 1563579282
   },
   {
     "screen_name": "Tapejara",
@@ -70044,8 +70044,8 @@
     "classname": "Tapejara_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6aa89ac807713af10eabb912.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/245a717679ad71ed094886af.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/0cad27bbf2b6e64b9a191fc2.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/dfa6b269c3208d750cdae245.png"
     },
     "baseLevel": {
       "Health": 325.0,
@@ -70117,7 +70117,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400307
+    "captureTime": 1563579283
   },
   {
     "screen_name": "Terror Bird",
@@ -70396,8 +70396,8 @@
     "classname": "TerrorBird_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/3e5db88c00667220120a13a0.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/fd24600c9588b90f2d5da088.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/d2b5bf8a1012c71eb49b4a5b.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/5bf4334cc78071cca79dc593.png"
     },
     "baseLevel": {
       "Health": 270.0,
@@ -70469,7 +70469,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400307
+    "captureTime": 1563579283
   },
   {
     "screen_name": "Therizinosaur",
@@ -70748,8 +70748,8 @@
     "classname": "Therizino_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/8a77b1f15bdd658ff9c2aae8.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/8a03ece77abb3429683fab0d.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/cfeb9814df11159e7567f78b.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/7b2c37e14c84484665c71cc7.png"
     },
     "baseLevel": {
       "Health": 870.0,
@@ -70821,7 +70821,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400307
+    "captureTime": 1563579283
   },
   {
     "screen_name": "Titanosaur",
@@ -71100,8 +71100,8 @@
     "classname": "Titanosaur_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/75d3c6ddcfe18c38c88b9ccb.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/75c38ecc2bc0fc02cef46229.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/e089e347835d752711d4d6ae.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/212b02aafae9e72101b247e2.png"
     },
     "baseLevel": {
       "Health": 230000.0,
@@ -71173,7 +71173,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400307
+    "captureTime": 1563579283
   },
   {
     "screen_name": "Beelzebufo",
@@ -71452,8 +71452,8 @@
     "classname": "Toad_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/6b345e5a93b90a6d43fb1991.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/d6e0c07634dbc083832c2293.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/4771f009e07e29c690db6980.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/ec0c00bb2184bab72606f3f2.png"
     },
     "baseLevel": {
       "Health": 220.0,
@@ -71525,7 +71525,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400307
+    "captureTime": 1563579283
   },
   {
     "screen_name": "Troodon",
@@ -71788,8 +71788,8 @@
     "classname": "Troodon_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/9214379c336e1bdfc666ca20.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/ad5e8bfbdc1a934cb20a492b.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/569094baec23fcf6ebd219ae.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e801f3acc984133e5d6e9986.png"
     },
     "baseLevel": {
       "Health": 200.0,
@@ -71861,7 +71861,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400307
+    "captureTime": 1563579283
   },
   {
     "screen_name": "Carbonemys",
@@ -72140,8 +72140,8 @@
     "classname": "Turtle_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/521bc36e179620573a14b370.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/390a1773b907b4fb7203aea2.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/75856e1caab20bbb36775b5b.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/0ec44c66f50ab67e9b967250.png"
     },
     "baseLevel": {
       "Health": 700.0,
@@ -72213,7 +72213,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400308
+    "captureTime": 1563579284
   },
   {
     "screen_name": "Tusoteuthis",
@@ -72492,8 +72492,8 @@
     "classname": "Tusoteuthis_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/d3808df2b8040ae0f7091ebf.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a6d095e4d9ddfdad08a4ac2c.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/20c4321afbb72d0e6625211c.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/e8d93e68a420f23e5fa1a1cb.png"
     },
     "baseLevel": {
       "Health": 2700.0,
@@ -72565,7 +72565,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400308
+    "captureTime": 1563579284
   },
   {
     "screen_name": "Tusoteuthis",
@@ -72844,8 +72844,8 @@
     "classname": "Tusoteuthis_Character_BP_CaveBase",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/4135522e88f216979662c1a3.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/bcf9486d41792afb7e78e9c4.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/3012ff91016b488274cebff5.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/4313612ea370e49aa1feb8bc.png"
     },
     "baseLevel": {
       "Health": 2700.0,
@@ -72917,7 +72917,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400308
+    "captureTime": 1563579284
   },
   {
     "screen_name": "Vulture",
@@ -73132,8 +73132,8 @@
     "classname": "Vulture_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/f4a581f46f9830bf32d1ff6e.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/70ad03541c0fd1741442280d.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/80084ef3acddf7b0f8112e43.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/b24a129c84ac70ac34e27bb5.png"
     },
     "baseLevel": {
       "Health": 125.0,
@@ -73205,7 +73205,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400308
+    "captureTime": 1563579285
   },
   {
     "screen_name": "Wyvern",
@@ -73364,8 +73364,8 @@
     "classname": "Wyvern_Character_BP_Base",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/486dab4feced7204b686fb33.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/aafbc4cefca3d795902130ce.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/67f58ab078c2a530527cbe36.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/c4def2c17e50346c926ec92d.png"
     },
     "baseLevel": {
       "Health": 1725.0,
@@ -73437,7 +73437,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400308
+    "captureTime": 1563579285
   },
   {
     "screen_name": "Dodo Wyvern",
@@ -73458,8 +73458,8 @@
     "classname": "DodoWyvern_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/af6c15d9633fc93bffd08875.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/c3c6a2f2e12dd1ebf2da5081.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/16d55e074084dd06bcbc1971.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/c04a95953fd048b86e79b2ea.png"
     },
     "baseLevel": {
       "Health": 666666.0,
@@ -73531,7 +73531,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400309
+    "captureTime": 1563579285
   },
   {
     "screen_name": "Alpha Fire Wyvern",
@@ -73690,8 +73690,8 @@
     "classname": "MegaWyvern_Character_BP_Fire",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/8624b48302fd88e4422c75ee.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/13a7ac14ace51c7a0e5c1248.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/8141d6d8ed9bbfef141dff25.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/24733e5aa039197c26a7efc7.png"
     },
     "baseLevel": {
       "Health": 8000.0,
@@ -73763,7 +73763,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400309
+    "captureTime": 1563579285
   },
   {
     "screen_name": "Reaper Queen",
@@ -74026,8 +74026,8 @@
     "classname": "Xenomorph_Character_BP_Female",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/40848b038339929d1c3b0047.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/b73913eef4315dce3bdd0d39.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/f89822b8ffeaeb619e12c6e8.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/c5b06b62713a6d00da920ce6.png"
     },
     "baseLevel": {
       "Health": 45000.0,
@@ -74099,7 +74099,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400310
+    "captureTime": 1563579286
   },
   {
     "screen_name": "Subterranean Reaper King",
@@ -74362,8 +74362,8 @@
     "classname": "Xenomorph_Character_BP_Male_Chupa",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/78b5e8d0719102265406e894.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/140dc6cd5a20701869a46b62.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/10d1fa0a01bd62350d4e0bbb.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/5753dce1670bd52b78253c5b.png"
     },
     "baseLevel": {
       "Health": 2000.0,
@@ -74435,7 +74435,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400310
+    "captureTime": 1563579287
   },
   {
     "screen_name": "Elemental Reaper King",
@@ -74698,8 +74698,8 @@
     "classname": "Xenomorph_Character_BP_Male_Minion",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/09075c0ef95ae1d15abef9ea.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/4216d5e5e845c79914ae6606.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/858c9fb5e3b078cc3a8f9876.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/b982070939a95287a5ca995f.png"
     },
     "baseLevel": {
       "Health": 1250.0,
@@ -74771,7 +74771,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400310
+    "captureTime": 1563579287
   },
   {
     "screen_name": "Surface Reaper King",
@@ -75034,8 +75034,8 @@
     "classname": "Xenomorph_Character_BP_Male_Surface",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/b0faf8320e34c52a0fc7c95e.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/24ece16e8a04655863ad56bc.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/b6286541d32180b8048ed582.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/4264acc34975634d5aa317e1.png"
     },
     "baseLevel": {
       "Health": 2500.0,
@@ -75107,7 +75107,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400310
+    "captureTime": 1563579287
   },
   {
     "screen_name": "Reaper King",
@@ -75370,8 +75370,8 @@
     "classname": "Xenomorph_Character_BP_Male_Tamed",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/2f569394629b063004b2ad66.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/a62ad7ac82aecf7637e4b0ef.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/06262737d144f1627edf3738.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/f003062c3606a82c7186efd4.png"
     },
     "baseLevel": {
       "Health": 45000.0,
@@ -75443,7 +75443,7 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400311
+    "captureTime": 1563579288
   },
   {
     "screen_name": "Yutyrannus",
@@ -75722,8 +75722,8 @@
     "classname": "Yutyrannus_Character_BP",
     "blueprintPath": "N/A",
     "icon": {
-      "image_url": "https://icon-assets.deltamap.net/a633fc8e/f2510a24aea32e6f8c48b5d0.png",
-      "image_thumb_url": "https://icon-assets.deltamap.net/a633fc8e/d7f5f2a282bb303d175d5444.png"
+      "image_url": "https://icon-assets.deltamap.net/f06915ed/59c20ed44068cfc9e72a818e.png",
+      "image_thumb_url": "https://icon-assets.deltamap.net/f06915ed/d193fd01c7e29144873220f8.png"
     },
     "baseLevel": {
       "Health": 1100.0,
@@ -75795,6 +75795,6 @@
       "TemperatureFortitude": 0.0,
       "CraftingSpeed": 0.0
     },
-    "captureTime": 1563400311
+    "captureTime": 1563579288
   }
 ]
