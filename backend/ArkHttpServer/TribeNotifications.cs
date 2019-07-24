@@ -1,4 +1,5 @@
-﻿using ArkBridgeSharedEntities.Requests;
+﻿using ArkBridgeSharedEntities.Entities;
+using ArkBridgeSharedEntities.Requests;
 using ArkSaveEditor.World.WorldTypes;
 using System;
 using System.Collections.Generic;
@@ -68,7 +69,15 @@ namespace ArkHttpServer
 
         private static void PrivateSendTribeNotification(TribeNotification n, int tribeId)
         {
-            ArkWebServer.tribeNotificationCode(tribeId, n);
+            //Create payload and send it.
+            UserNotificationRequest r = new UserNotificationRequest
+            {
+                notification = n,
+                tribeId = tribeId
+            };
+
+            //Transmit
+            MasterServerSender.SendRequestToMaster<TrueFalseReply>("send_tribe_notification", r);
         }
     }
 }

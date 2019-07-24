@@ -14,6 +14,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
             //Since offline reports can be large, they follow a special format. For integer size, read the integer tribe ID, integer length, and then GZipped compressed data
             try
             {
+                int version = ReadIntFromStream(e.Request.Body);
                 int arraySize = ReadIntFromStream(e.Request.Body);
                 for (int i = 0; i < arraySize; i++)
                 {
@@ -25,7 +26,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
                         e.Request.Body.Read(content, j, 1);
 
                     //Update in database
-                    Tools.OfflineTribeDataTool.UpdateArkData(s._id, tribeId, content);
+                    Tools.OfflineTribeDataTool.UpdateArkData(s._id, tribeId, content, version);
                 }
             } catch (Exception ex)
             {

@@ -2,7 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>

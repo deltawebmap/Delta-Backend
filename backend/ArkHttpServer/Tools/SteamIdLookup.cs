@@ -41,7 +41,7 @@ namespace ArkHttpServer.Tools
                 request.ids = idsToDownload;
 
                 //Request
-                List<SteamProfile> downloadedProfiles = (List<SteamProfile>)ArkWebServer.sendRequestToMasterCode("mass_request_steam_info", request, typeof(List<SteamProfile>));
+                List<SteamProfile> downloadedProfiles = (List<SteamProfile>)MasterServerSender.SendRequestToMaster("mass_request_steam_info", request, typeof(List<SteamProfile>));
                 profiles.AddRange(downloadedProfiles);
 
                 //Add new profiles to the cache

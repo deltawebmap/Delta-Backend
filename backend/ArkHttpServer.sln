@@ -9,10 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkSaveEditor", "Ark-Save-M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapMasterServer", "ArkWebMapMasterServer\ArkWebMapMasterServer.csproj", "{E7668329-B4DE-403F-8F75-8E293EB43747}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapSlaveServer", "ArkWebMapSlaveServer\ArkWebMapSlaveServer.csproj", "{5944226B-507E-429D-8823-A865281A9C5F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapSlaveServerConsole", "ArkWebMapSlaveServerConsole\ArkWebMapSlaveServerConsole.csproj", "{CAE78088-6427-4D0F-8DD0-358631C82368}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkBridgeSharedEntities", "ArkBridgeSharedEntities\ArkBridgeSharedEntities.csproj", "{F30AA03E-1117-415C-AA04-407F0DA804B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapLauncher", "ArkWebMapLauncher\ArkWebMapLauncher.csproj", "{94E20903-8660-4ECE-8B34-4E4688970F56}"
@@ -47,14 +43,6 @@ Global
 		{E7668329-B4DE-403F-8F75-8E293EB43747}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7668329-B4DE-403F-8F75-8E293EB43747}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7668329-B4DE-403F-8F75-8E293EB43747}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5944226B-507E-429D-8823-A865281A9C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5944226B-507E-429D-8823-A865281A9C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5944226B-507E-429D-8823-A865281A9C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5944226B-507E-429D-8823-A865281A9C5F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAE78088-6427-4D0F-8DD0-358631C82368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAE78088-6427-4D0F-8DD0-358631C82368}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAE78088-6427-4D0F-8DD0-358631C82368}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAE78088-6427-4D0F-8DD0-358631C82368}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F30AA03E-1117-415C-AA04-407F0DA804B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F30AA03E-1117-415C-AA04-407F0DA804B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F30AA03E-1117-415C-AA04-407F0DA804B8}.Release|Any CPU.ActiveCfg = Release|Any CPU

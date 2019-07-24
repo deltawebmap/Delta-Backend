@@ -21,10 +21,13 @@ namespace ArkHttpServer
 
         public const int CURRENT_CLIENT_VERSION = 1;
 
-        public static async Task OnHttpRequest(LightspeedRequest e, MasterServerArkUser user)
+        public static async Task OnHttpRequest(LightspeedRequest e)
         {
             try
             {
+                //Authenticate the user
+                MasterServerArkUser user = e.auth;
+
                 //Get world
                 ArkWorld world = WorldLoader.GetWorld();
 

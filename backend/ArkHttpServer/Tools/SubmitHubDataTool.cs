@@ -27,7 +27,7 @@ namespace ArkHttpServer.Tools
                 entries = convertedEntries,
                 includeSteamIds = steamIdsToInclude
             };
-            ArkWebServer.sendRequestToMasterCode("report_hub", submission, typeof(TrueFalseReply));
+            MasterServerSender.SendRequestToMaster("report_hub", submission, typeof(TrueFalseReply));
 
             //Sent. Now, apply the latest tribe log entries
             var collec = ArkWebServer.db.GetCollection<HistoricalTribeLogEntry>("latest_tribe_log_tribes");

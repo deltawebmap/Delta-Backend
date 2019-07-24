@@ -34,5 +34,6 @@ namespace ArkBridgeSharedEntities.Entities
         public TribeOverviewReply overview { get; set; }
         public BasicTribe tribe { get; set; }
         public BasicArkWorld session { get; set; }
+        public int version { get; set; }
     }
 }

@@ -15,14 +15,15 @@ namespace ArkWebMapMasterServer.Tools
             return Program.db.GetCollection<ArkServerOfflineData>("server_offline_data");
         }
 
-        public static void UpdateArkData(string serverId, int tribeId, byte[] data)
+        public static void UpdateArkData(string serverId, int tribeId, byte[] data, int version)
         {
             //Create entry
             ArkServerOfflineData entry = new ArkServerOfflineData
             {
                 content = data,
                 time = DateTime.UtcNow.Ticks,
-                _id = serverId + "/" + tribeId.ToString()
+                _id = serverId + "/" + tribeId.ToString(),
+                version = version
             };
 
             //Check if this is already in the database

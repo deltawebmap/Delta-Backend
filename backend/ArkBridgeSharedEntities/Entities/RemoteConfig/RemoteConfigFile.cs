@@ -6,31 +6,14 @@ namespace ArkBridgeSharedEntities.Entities.RemoteConfig
 {
     public class RemoteConfigFile
     {
-        public RemoteConfigFile_Release latest_release;
         public RemoteConfigFile_SubServerConfig sub_server_config;
-    }
-
-    public class RemoteConfigFile_Release
-    {
-        public float version_id;
-        public string release_notes;
-        public string download_page;
-        public Dictionary<string, RemoteConfigFile_Release_Binary> binaries;
-    }
-
-    public class RemoteConfigFile_Release_Binary
-    {
-        public string url;
-        public string updater_url;
-        public string updater_cmd;
-        public string exe_name;
-        public string virustotal;
     }
 
     public class RemoteConfigFile_SubServerConfig
     {
         public float minimum_release_id;
         public string startup_message;
+        public int offline_sync_policy_seconds; //Time between each report for offline data
         public RemoteConfigFile_SubServerConfig_Endpoints endpoints;
     }
 

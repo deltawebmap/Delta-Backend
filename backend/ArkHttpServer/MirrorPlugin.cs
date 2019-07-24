@@ -28,7 +28,7 @@ namespace ArkHttpServer
                 }
 
                 //Send to the master server
-                ArkWebServer.sendRequestToMasterCode("mirror_report", data, typeof(MirrorReportResponse));
+                MasterServerSender.SendRequestToMaster("mirror_report", data, typeof(MirrorReportResponse));
             } catch (Exception ex)
             {
                 LogError("Unknown fatal error; "+ex.Message+ex.StackTrace);

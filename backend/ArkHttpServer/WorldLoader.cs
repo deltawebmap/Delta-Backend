@@ -126,7 +126,7 @@ namespace ArkHttpServer
                     //Done
                     break;
                 }
-                catch
+                catch (Exception ex)
                 {
                     if(retry == 5)
                     {

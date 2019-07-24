@@ -1,0 +1,5 @@
+﻿-1: Could not download remote config
+-2: Could not obtain a setup code
+-3: Could not send a message to the server during setup
+-4: Could not get messages from the server during setup
+-5: Failed to send system message to master server

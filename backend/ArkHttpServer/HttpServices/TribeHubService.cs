@@ -45,7 +45,7 @@ namespace ArkHttpServer.HttpServices
             //Lookup Steam IDs
             MassFetchSteamDataPayload request = new MassFetchSteamDataPayload();
             request.ids = searchSteamIds;
-            List<SteamProfile> profiles = (List<SteamProfile>)ArkWebServer.sendRequestToMasterCode("mass_request_steam_info", request, typeof(List<SteamProfile>));
+            List<SteamProfile> profiles = (List<SteamProfile>)MasterServerSender.SendRequestToMaster("mass_request_steam_info", request, typeof(List<SteamProfile>));
 
             //Convert this list into a dict
             Dictionary<string, SteamProfile> profilesDict = new Dictionary<string, SteamProfile>();

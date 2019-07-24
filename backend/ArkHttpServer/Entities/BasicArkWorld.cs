@@ -21,7 +21,6 @@ namespace ArkHttpServer.Entities
         public string endpoint_game_map; //Endpoint for viewing the actual game map
         public string endpoint_tribes; //Endpoint for viewing tribes
         public string endpoint_dino_class_search;
-        public int heartrate; //Time, in ms, that the client must use to poll for events.
         public string endpoint_events; //Events endpoint
         public string endpoint_tribes_itemsearch; //Item search endpoint
         public string endpoint_tribes_dino; //Dino endpoint
@@ -49,7 +48,6 @@ namespace ArkHttpServer.Entities
             endpoint_game_map = $"https://tile-assets.deltamap.net/"+mapName+"/tiles/{z}_{x}_{y}.png";
             //endpoint_game_map = "http://localhost:84/{z}_{x}_{y}.png";
             endpoint_tribes = baseUrl + "tribes/";
-            heartrate = ArkWebServer.EVENTS_HEARTRATE;
             endpoint_events = baseUrl + "events?t="+DateTime.UtcNow.Ticks;
             endpoint_tribes_itemsearch = baseUrl + "tribes/item_search/?q={query}";
             endpoint_tribes_dino = baseUrl + "dinos/{dino}";
