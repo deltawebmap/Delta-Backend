@@ -18,10 +18,12 @@ namespace ArkWebMapAnalytics
 
         static void Main(string[] args)
         {
+            string dbpath = "log.db";
+            if (args.Length >= 1)
+                dbpath = args[0];
+
             rand = new Random();
-            if (File.Exists("log.db"))
-                File.Copy("log.db", "log.db.bak_" + DateTime.UtcNow.Ticks.ToString());
-            db = new LiteDatabase("log.db");
+            db = new LiteDatabase(dbpath);
 
             MainAsync().GetAwaiter().GetResult();
         }

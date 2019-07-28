@@ -111,6 +111,8 @@ namespace ArkHttpServer
             DateTime world_time;
             ArkWorld world;
 
+            //world = new ArkWorld(ArkWebServer.config.save_location, ArkWebServer.config.save_map, @"C:\Program Files (x86)\Steam\steamapps\common\ARK\ShooterGame\Saved\Config\WindowsServer\");
+
             //Try to access data
             int retry = 0;
             while(true)

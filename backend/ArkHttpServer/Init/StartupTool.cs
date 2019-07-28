@@ -71,7 +71,7 @@ namespace ArkHttpServer.Init
 
             //Connect to the LIGHTSPEED network.
             Console.WriteLine("Connecting...");
-            ArkWebServer.lightspeed = AWMLightspeedClient.CreateClient(config.connection.id, config.connection.creds, 0, ArkWebServer.OnHttpRequest, true);
+            ArkWebServer.lightspeed = AWMLightspeedClient.CreateClient(config.connection.id, config.connection.creds, 0, ArkWebServer.OnHttpRequest, false);
 
             //Send offline data
             OfflineDataBuilder.SendOfflineData();

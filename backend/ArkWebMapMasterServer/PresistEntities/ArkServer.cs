@@ -110,6 +110,11 @@ namespace ArkWebMapMasterServer.PresistEntities
         /// </summary>
         public int latest_offline_data_version { get; set; } = -1;
 
+        /// <summary>
+        /// The version of the latest report data. -1 signals that this has never been downloaded.
+        /// </summary>
+        public int latest_report_data_version { get; set; } = -1;
+
         public void Update()
         {
             //If needed, get a new icon

@@ -15,8 +15,6 @@ namespace ArkHttpServer.Init.OfflineData
 {
     public static class OfflineDataBuilder
     {
-        public const int OFFLINE_DATA_VERSION = 1;
-
         public static bool SendOfflineData()
         {
             //Log
@@ -31,7 +29,7 @@ namespace ArkHttpServer.Init.OfflineData
             //Create the stream we will send, then encode using our special format
             using (MemoryStream s = new MemoryStream())
             {
-                WriteInt32ToStream(s, OFFLINE_DATA_VERSION); //Version
+                WriteInt32ToStream(s, ClientVersion.DATA_VERSION); //Version
                 WriteInt32ToStream(s, w.tribes.Count); //Number of tribes
                 for (int i = 0; i < w.tribes.Count; i++)
                 {
@@ -81,7 +79,7 @@ namespace ArkHttpServer.Init.OfflineData
             result.overview = TribeOverviewService.GenerateReply(w, tribeId);
             result.tribe = new BasicTribe(w, tribeId);
             result.session = new BasicArkWorld(w, lastSavedAtTime);
-            result.version = OFFLINE_DATA_VERSION;
+            result.version = ClientVersion.DATA_VERSION;
             return result;
         }
     }

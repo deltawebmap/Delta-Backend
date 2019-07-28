@@ -78,6 +78,9 @@ namespace ArkWebMapMasterServer.NetEntities
             reply.map_name = reply.map_id;
             reply.is_online = Program.onlineServers.Contains(s._id);
 
+            reply.report_data_version = s.latest_report_data_version;
+            reply.offline_data_version = s.latest_offline_data_version;
+
             //Get the published server listing, if we have it
             if(s.is_published)
             {

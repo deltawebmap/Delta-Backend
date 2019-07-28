@@ -19,6 +19,7 @@ namespace ArkHttpServer.Init.WorldReport
 
             //Generate main data
             ArkSlaveReport report = new ArkSlaveReport();
+            report.data_version = ClientVersion.DATA_VERSION;
             report.lastSaveTime = time;
             report.accounts = new System.Collections.Generic.List<ArkSlaveReport_PlayerAccount>();
             foreach (var player in w.players)
