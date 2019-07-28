@@ -1,4 +1,5 @@
-﻿using ArkWebMapGateway.ClientHandlers;
+﻿using ArkBridgeSharedEntities.Entities.Master;
+using ArkWebMapGateway.ClientHandlers;
 using ArkWebMapGateway.Entities;
 using ArkWebMapGatewayClient;
 using ArkWebMapMasterServer.NetEntities;

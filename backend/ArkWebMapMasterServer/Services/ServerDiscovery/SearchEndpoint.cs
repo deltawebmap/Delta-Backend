@@ -1,4 +1,5 @@
-﻿using ArkWebMapMasterServer.PresistEntities;
+﻿using ArkBridgeSharedEntities.Entities.Master;
+using ArkWebMapMasterServer.PresistEntities;
 using LiteDB;
 using System;
 using System.Collections.Generic;

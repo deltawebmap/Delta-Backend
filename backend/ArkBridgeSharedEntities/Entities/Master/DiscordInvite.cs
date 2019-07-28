@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArkWebMapMasterServer.PresistEntities
+namespace ArkBridgeSharedEntities.Entities.Master
 {
     public class Guild
     {

@@ -1,5 +1,6 @@
 ﻿using ArkBridgeSharedEntities;
 using ArkBridgeSharedEntities.Entities;
+using ArkWebMapGatewayClient.Messages;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -43,11 +44,6 @@ namespace ArkWebMapMasterServer.PresistEntities
         /// </summary>
         [JsonProperty("id")]
         public string _id { get; set; }
-
-        /// <summary>
-        /// The location to connect to.
-        /// </summary>
-        public string latest_proxy_url { get; set; }
 
         /// <summary>
         /// The latest local accounts the server has. These are Ark accounts, not our accounts.
@@ -108,6 +104,11 @@ namespace ArkWebMapMasterServer.PresistEntities
         /// The linked provider server ID
         /// </summary>
         public string provider_server_id { get; set; }
+
+        /// <summary>
+        /// The version of the latest offline data. -1 signals that this has never been downloaded.
+        /// </summary>
+        public int latest_offline_data_version { get; set; } = -1;
 
         public void Update()
         {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArkWebMapMasterServer.PresistEntities
+namespace ArkBridgeSharedEntities.Entities.Master
 {
     public class ArkPublishedServerListing
     {

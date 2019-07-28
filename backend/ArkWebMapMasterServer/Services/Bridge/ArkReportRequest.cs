@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ArkBridgeSharedEntities.Entities;
 using Newtonsoft.Json;
 using System.Linq;
+using ArkBridgeSharedEntities.Entities.Master;
 
 namespace ArkWebMapMasterServer.Services.Bridge
 {

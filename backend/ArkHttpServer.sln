@@ -19,11 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapGatewayClient", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapLightspeed", "ArkWebMapLightspeed\ArkWebMapLightspeed.csproj", "{8D7E795B-7DF1-475F-9297-B0A6ED2B3530}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArkWebMapLightspeedClient", "ArkWebMapLightspeedClient\ArkWebMapLightspeedClient.csproj", "{698203AA-7FED-44A4-B596-3C88A4440D5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapLightspeedClient", "ArkWebMapLightspeedClient\ArkWebMapLightspeedClient.csproj", "{698203AA-7FED-44A4-B596-3C88A4440D5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWMLightspeedTests", "AWMLightspeedTests\AWMLightspeedTests.csproj", "{4B6B26C0-B8DD-407C-AA13-0AB2052532A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AWMLightspeedTests", "AWMLightspeedTests\AWMLightspeedTests.csproj", "{4B6B26C0-B8DD-407C-AA13-0AB2052532A0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapLauncherProviders", "ArkWebMapLauncherProviders\ArkWebMapLauncherProviders.csproj", "{F221F0E8-F428-408E-9FAC-CA098F94BF66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArkWebMapAnalytics", "ArkWebMapAnalytics\ArkWebMapAnalytics.csproj", "{1775C977-A262-4817-AE25-8DDA59297C02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{F221F0E8-F428-408E-9FAC-CA098F94BF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F221F0E8-F428-408E-9FAC-CA098F94BF66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F221F0E8-F428-408E-9FAC-CA098F94BF66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1775C977-A262-4817-AE25-8DDA59297C02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1775C977-A262-4817-AE25-8DDA59297C02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1775C977-A262-4817-AE25-8DDA59297C02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1775C977-A262-4817-AE25-8DDA59297C02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

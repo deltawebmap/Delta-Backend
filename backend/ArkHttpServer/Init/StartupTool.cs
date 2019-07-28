@@ -107,7 +107,7 @@ namespace ArkHttpServer.Init
                     launcher_version = -1,
                     path_config = "debug_net_config.json",
                     path_db = "debug_userdb.db",
-                    path_root = "../"
+                    path_root = "./"
                 };
                 Console.ForegroundColor = ConsoleColor.White;
             }

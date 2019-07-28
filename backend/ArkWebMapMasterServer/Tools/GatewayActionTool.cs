@@ -26,5 +26,21 @@ namespace ArkWebMapMasterServer
                 opcode = GatewayMessageOpcode.EchoToTribe
             });
         }
+
+        public static void SendActionToServer(GatewayMessageBase msg, string serverId)
+        {
+            //Set headers
+            if (!msg.headers.ContainsKey("server_id"))
+                msg.headers.Add("server_id", serverId);
+
+            //Send
+            Program.gateway.SendMessage(new MessageEchoToTribe
+            {
+                msg = JsonConvert.SerializeObject(msg),
+                serverId = serverId,
+                tribeId = -2,
+                opcode = GatewayMessageOpcode.EchoToTribe
+            });
+        }
     }
 }

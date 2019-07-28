@@ -3,6 +3,7 @@ using ArkWebMapMasterServer.PresistEntities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ArkBridgeSharedEntities.Entities.Master;
 
 namespace ArkWebMapMasterServer.NetEntities
 {
@@ -21,7 +22,7 @@ namespace ArkWebMapMasterServer.NetEntities
 
         }
 
-        public UsersMeReply(ArkUser u, bool filterHiddenServers, bool doPingServers)
+        public UsersMeReply(ArkUser u, bool filterHiddenServers)
         {
             //Set basic values
             screen_name = u.screen_name;
@@ -40,95 +41,52 @@ namespace ArkWebMapMasterServer.NetEntities
             foreach(var id in found_servers)
             {
                 //Get server by ID
-                var converted = new UsersMeReply_Server(u, id.Item1, id.Item2, doPingServers);
+                var converted = MakeServer(u, id.Item1, id.Item2);
                 if ((!converted.is_hidden || !filterHiddenServers) && converted.has_ever_gone_online)
                     servers.Add(converted);
             }
 
         }
-    }
 
-    public class UsersMeReply_Server
-    {
-        public string display_name;
-        public string image_url;
-        public string owner_uid;
-        public string id;
-
-        public int tribeId;
-        public string tribeName;
-        public string arkName;
-
-        public string map_id;
-        public string map_name;
-
-        public bool has_ever_gone_online;
-        public bool is_hidden;
-        public bool is_public;
-        public ArkPublishedServerListing public_listing;
-        public DateTime lastReportTime;
-
-        public string endpoint_createsession;
-        public string endpoint_offline_data;
-        public string endpoint_hub;
-
-        public List<string> enabled_notifications;
-
-        public bool is_online;
-
-        public UsersMeReply_Server()
-        {
-
-        }
-
-        public UsersMeReply_Server(ArkUser u, ArkServer s, ArkSlaveReport_PlayerAccount ps, bool doPing)
+        public static UsersMeReply_Server MakeServer(ArkUser u, ArkServer s, ArkSlaveReport_PlayerAccount ps)
         {
             //If this server has never sent a status, skip
-            if (!s.has_server_report)
-            {
-                has_ever_gone_online = false;
-                return;
-            }
-
-            display_name = s.display_name;
-            image_url = s.image_url;
-            if (image_url == null)
-                image_url = s.GetPlaceholderIcon();
-            owner_uid = s.owner_uid;
-            id = s._id;
-            has_ever_gone_online = s.has_server_report;
-            is_hidden = u.hidden_servers.Contains(s._id);
-            lastReportTime = new DateTime(s.latest_server_report_downloaded);
+            UsersMeReply_Server reply = new UsersMeReply_Server();
+            reply.display_name = s.display_name;
+            reply.image_url = s.image_url;
+            if (reply.image_url == null)
+                reply.image_url = s.GetPlaceholderIcon();
+            reply.owner_uid = s.owner_uid;
+            reply.id = s._id;
+            reply.has_ever_gone_online = s.has_server_report;
+            reply.is_hidden = u.hidden_servers.Contains(s._id);
+            reply.lastReportTime = new DateTime(s.latest_server_report_downloaded);
 
             if(ps != null)
             {
-                tribeId = ps.player_tribe_id;
-                tribeName = ps.player_tribe_name;
-                arkName = ps.player_name;
+                reply.tribeId = ps.player_tribe_id;
+                reply.tribeName = ps.player_tribe_name;
+                reply.arkName = ps.player_name;
             }
 
-            string base_endpoint = $"https://deltamap.net/api/servers/{id}/";
-            endpoint_hub = base_endpoint + "hub";
-            endpoint_createsession = $"https://lightspeed.deltamap.net/{id}/" + "create_session";
-            endpoint_offline_data = base_endpoint + "offline_data";
+            string base_endpoint = $"https://deltamap.net/api/servers/{s._id}/";
+            reply.endpoint_hub = base_endpoint + "hub";
+            reply.endpoint_createsession = $"https://lightspeed.deltamap.net/{s._id}/" + "create_session";
+            reply.endpoint_offline_data = base_endpoint + "offline_data";
 
-            map_id = s.latest_server_map;
-            map_name = map_id;
-            is_online = Program.onlineServers.Contains(s._id);
-
-            //Convert permissions
-            List<ArkNotificationChannel> notifications = u.GetServerNotificationSettings(s._id);
-            enabled_notifications = new List<string>();
-            foreach (ArkNotificationChannel ss in notifications)
-                enabled_notifications.Add(ss.ToString());
+            reply.map_id = s.latest_server_map;
+            reply.map_name = reply.map_id;
+            reply.is_online = Program.onlineServers.Contains(s._id);
 
             //Get the published server listing, if we have it
             if(s.is_published)
             {
                 ArkPublishedServerListing listing = ServerPublishingManager.GetPublishedServer(s._id);
-                public_listing = listing;
-                is_public = listing != null;
+                reply.public_listing = listing;
+                reply.is_public = listing != null;
             }
+
+            return reply;
         }
     }
 }

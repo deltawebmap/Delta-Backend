@@ -37,9 +37,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
                 status_info = new Dictionary<string, string>()
             };
 
-            //Set as active proxy location
-            string slave_url = Program.GetRequestIP(e) + ":" + payload.my_port;
-            s.latest_proxy_url = slave_url;
+            //Update
             s.Update();
 
             //Write reply

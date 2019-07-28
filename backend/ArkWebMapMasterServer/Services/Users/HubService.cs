@@ -25,7 +25,7 @@ namespace ArkWebMapMasterServer.Services.Users
             //Task<ArkHubWildcardNews> arkNewsDownloader = DownloadArkNews();
 
             //Load the UsersMe data.
-            UsersMeReply usersMe = new UsersMeReply(u, true, false);
+            UsersMeReply usersMe = new UsersMeReply(u, true);
 
             //Grab tribe hub data
             List<Tuple<string, int>> serverTribeIds = new List<Tuple<string, int>>();

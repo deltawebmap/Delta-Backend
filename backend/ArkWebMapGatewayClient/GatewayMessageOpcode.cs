@@ -19,6 +19,8 @@ namespace ArkWebMapGatewayClient
         UserAddServer = 10,
         UserLogOut = 11,
         RealtimeOnlinePlayerUpdate = 12,
-        SendPushNotificationToTribe = 13
+        SendPushNotificationToTribe = 13,
+        MessageUpdateServer = 14,
+        MessageUpdateTribeDinoSettings = 15
     }
 }

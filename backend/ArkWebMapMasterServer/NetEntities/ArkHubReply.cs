@@ -1,5 +1,6 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkBridgeSharedEntities.Entities.BasicTribeLog;
+using ArkBridgeSharedEntities.Entities.Master;
 using ArkSaveEditor.World.WorldTypes.ArkTribeLogEntries;
 using Newtonsoft.Json.Linq;
 using System;

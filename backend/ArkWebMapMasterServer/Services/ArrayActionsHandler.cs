@@ -14,6 +14,8 @@ namespace ArkWebMapMasterServer.Services
         public delegate Task ArrayActionsSelectPost<T, O>(Microsoft.AspNetCore.Http.HttpContext e, T item, O context);
         public delegate Task ArrayActionsSelectDelete<T, O>(Microsoft.AspNetCore.Http.HttpContext e, T item, O context);
 
+        public delegate T ArrayActionsFindElement<T, O>(O context, string name);
+
         public static Task OnHttpRequest<T, O>(Microsoft.AspNetCore.Http.HttpContext e, string path, O context, LiteCollection<T> collec, ArrayActionsCreate<T, O> create, ArrayActionsSelectGet<T, O> selectGet, ArrayActionsSelectPost<T, O> selectPost, ArrayActionsSelectDelete<T, O> selectDelete)
         {
             var method = Program.FindRequestMethod(e);
@@ -25,6 +27,25 @@ namespace ArkWebMapMasterServer.Services
             //Find it in the collection by ID
             T entry = collec.FindById(path);
             if(entry != null)
+            {
+                if (method == RequestHttpMethod.get)
+                    return selectGet(e, entry, context);
+                if (method == RequestHttpMethod.post)
+                    return selectPost(e, entry, context);
+                if (method == RequestHttpMethod.delete)
+                    return selectDelete(e, entry, context);
+            }
+
+            //Throw not found
+            throw new StandardError("Array Element Not Found", StandardErrorCode.NotFound);
+        }
+
+        public static Task OnHttpRequestCustomFind<T, O>(Microsoft.AspNetCore.Http.HttpContext e, O context, T entry, ArrayActionsSelectGet<T, O> selectGet, ArrayActionsSelectPost<T, O> selectPost, ArrayActionsSelectDelete<T, O> selectDelete)
+        {
+            var method = Program.FindRequestMethod(e);
+
+            //Run
+            if (entry != null)
             {
                 if (method == RequestHttpMethod.get)
                     return selectGet(e, entry, context);

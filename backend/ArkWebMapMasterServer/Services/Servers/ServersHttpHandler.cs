@@ -100,6 +100,8 @@ namespace ArkWebMapMasterServer.Services.Servers
                         profiles = steamProfiles
                     });
                 }
+                if (nextUrl.StartsWith("dinos/") && hasTribe)
+                    return DinoSettingsHandler.OnHttpRequest(e, nextUrl.Substring(5), user, server, hasTribe, tribeId);
 
                 throw new StandardError("Not Found in Server", StandardErrorCode.NotFound);
             } else

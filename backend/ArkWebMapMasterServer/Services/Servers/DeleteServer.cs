@@ -19,7 +19,6 @@ namespace ArkWebMapMasterServer.Services.Servers
 
             //Set deleted flag on this server and delete data
             s.is_deleted = true;
-            s.latest_proxy_url = null;
             s.latest_server_local_accounts = null;
             s.latest_server_map = null;
             s.latest_server_report_downloaded = -1;
