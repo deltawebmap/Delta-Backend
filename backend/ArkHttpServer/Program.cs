@@ -11,10 +11,8 @@ namespace ArkHttpServer
         public static void Main(string[] args)
         {
             //Log
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine($"DeltaWebMap for Ark - Version {ArkWebServer.CURRENT_CLIENT_VERSION}");
-            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"DeltaWebMap for Ark - Version {ClientVersion.VERSION_MAJOR}.{ClientVersion.VERSION_MINOR} (data version {ClientVersion.DATA_VERSION})");
             Console.ForegroundColor = ConsoleColor.White;
 
             //Try and launch

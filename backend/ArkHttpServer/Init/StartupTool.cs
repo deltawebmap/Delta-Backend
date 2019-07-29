@@ -2,6 +2,8 @@
 using ArkHttpServer.Init.OfflineData;
 using ArkHttpServer.Init.WorldReport;
 using ArkSaveEditor;
+using ArkSaveEditor.Entities;
+using ArkWebMapGatewayClient;
 using ArkWebMapLightspeedClient;
 using LiteDB;
 using Newtonsoft.Json;
@@ -63,15 +65,20 @@ namespace ArkHttpServer.Init
             ArkWebServer.api_prefix = apiPrefix;
 
             //Import PrimalData
-            ArkImports.ImportContent(@"PrimalData/");
+            ImportPrimalData(masterConfig, options.path_root + "primal_data.pdp");
 
             //Send world report
             if (!WorldReportBuilder.SendWorldReport())
                 return false;
 
             //Connect to the LIGHTSPEED network.
-            Console.WriteLine("Connecting...");
+            Console.WriteLine("Connecting to lightspeed...");
             ArkWebServer.lightspeed = AWMLightspeedClient.CreateClient(config.connection.id, config.connection.creds, 0, ArkWebServer.OnHttpRequest, false);
+
+            //Connect to the GATEWAY
+            Console.WriteLine("Connecting to gateway...");
+            ArkWebServer.gateway_handler = new Gateway.GatewayHandler();
+            ArkWebServer.gateway = AWMGatewayClient.CreateClient(GatewayClientType.SubServer, "sub-server", "data_version/" + ClientVersion.DATA_VERSION, ClientVersion.VERSION_MAJOR, ClientVersion.VERSION_MINOR, false, ArkWebServer.gateway_handler, $"{config.connection.id}#{config.connection.creds}");
 
             //Send offline data
             OfflineDataBuilder.SendOfflineData();
@@ -82,6 +89,52 @@ namespace ArkHttpServer.Init
             ArkWebServer.event_checker_timer.Start();
 
             return true;
+        }
+
+        /// <summary>
+        /// Imports primal data, or downloads new data if it is out of date
+        /// </summary>
+        /// <param name="pathname"></param>
+        /// <returns></returns>
+        private static void ImportPrimalData(RemoteConfigFile config, string pathname)
+        {
+            //Check if this pathname exists
+            if(File.Exists(pathname))
+            {
+                try
+                {
+                    //Open stream and begin reading
+                    using (FileStream fs = new FileStream(pathname, System.IO.FileMode.Open, FileAccess.Read))
+                    {
+                        //Load package
+                        bool ok = ArkImports.ImportContentFromPackage(fs, (PrimalDataPackageMetadata metadata) =>
+                        {
+                            //Verify this is up to date.
+                            return (config.primal_data.version_minor == metadata.version_minor) && (config.primal_data.version_major == metadata.version_major);
+                        });
+
+                        //Stop if this was okay, else continue
+                        if (ok)
+                            return;
+                    }
+                } catch (Exception ex)
+                {
+                    //We'll fail and redownload.
+                    Console.WriteLine("Failed to read Primal Data: " + ex.Message);
+                }
+
+                //If we landed here, this version is out of date. Remove
+                File.Delete(pathname);
+            }
+
+            //We'll need to download an updated release.
+            Console.WriteLine("Primal Data is out of date. Updating...");
+            using (WebClient wc = new WebClient())
+                wc.DownloadFile(config.primal_data.download_url, pathname);
+            Console.WriteLine("Primal Data was updated. Opening...");
+
+            //It's gross, but we call ourselves.
+            ImportPrimalData(config, pathname);
         }
 
         /// <summary>

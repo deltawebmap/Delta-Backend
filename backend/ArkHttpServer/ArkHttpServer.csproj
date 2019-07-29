@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Ark-Save-Manager\ArkSaveEditor\ArkSaveEditor.csproj" />
     <ProjectReference Include="..\ArkBridgeSharedEntities\ArkBridgeSharedEntities.csproj" />
+    <ProjectReference Include="..\ArkWebMapGatewayClient\ArkWebMapGatewayClient.csproj" />
     <ProjectReference Include="..\ArkWebMapLightspeedClient\ArkWebMapLightspeedClient.csproj" />
   </ItemGroup>
 

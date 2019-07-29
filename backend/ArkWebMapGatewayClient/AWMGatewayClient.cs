@@ -112,7 +112,7 @@ namespace ArkWebMapGatewayClient
         /// <returns></returns>
         public string CreateUrlParams()
         {
-            return $"?clientName={HttpUtility.UrlEncode(client_name)}&clientNameExtra={HttpUtility.UrlEncode(client_name_extra)}&clientVersionMajor={client_version_major}&clientVersionMinor={client_version_minor}&clientLibVersionMajor={CLIENT_LIB_VERSION_MAJOR}&clientLibVersionMinor={CLIENT_LIB_VERSION_MINOR}&auth_token={token}";
+            return $"?clientName={HttpUtility.UrlEncode(client_name)}&clientNameExtra={HttpUtility.UrlEncode(client_name_extra)}&clientVersionMajor={client_version_major}&clientVersionMinor={client_version_minor}&clientLibVersionMajor={CLIENT_LIB_VERSION_MAJOR}&clientLibVersionMinor={CLIENT_LIB_VERSION_MINOR}&auth_token={HttpUtility.UrlEncode(token)}";
         }
 
         /// <summary>

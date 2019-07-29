@@ -7,6 +7,7 @@ namespace ArkBridgeSharedEntities.Entities.RemoteConfig
     public class RemoteConfigFile
     {
         public RemoteConfigFile_SubServerConfig sub_server_config;
+        public RemoteConfigFile_PrimalData primal_data;
     }
 
     public class RemoteConfigFile_SubServerConfig
@@ -22,5 +23,12 @@ namespace ArkBridgeSharedEntities.Entities.RemoteConfig
         public string server_setup_proxy;
         public string base_bridge_url;
         public string server_api_prefix;
+    }
+
+    public class RemoteConfigFile_PrimalData
+    {
+        public int version_major;
+        public int version_minor;
+        public string download_url;
     }
 }

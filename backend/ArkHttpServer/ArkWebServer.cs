@@ -18,6 +18,8 @@ using ArkWebMapLightspeedClient;
 using ArkBridgeSharedEntities.Entities.RemoteConfig;
 using ArkHttpServer.Init.WorldReport;
 using ArkHttpServer.Init.OfflineData;
+using ArkHttpServer.Gateway;
+using ArkWebMapGatewayClient;
 
 namespace ArkHttpServer
 {
@@ -31,6 +33,9 @@ namespace ArkHttpServer
         public static AWMLightspeedClient lightspeed;
         public static ServerConfigFile config;
         public static RemoteConfigFile remote_config;
+
+        public static GatewayHandler gateway_handler;
+        public static AWMGatewayClient gateway;
 
         public static DateTime lastOfflineReport;
 
