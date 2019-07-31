@@ -34,7 +34,7 @@ namespace ArkHttpServer.Entities
             //Get the various components
             try
             {
-                inventory_items = d.GetInventoryItems(false);
+                inventory_items = d.GetInventory().items;
 
                 //If we got the inventory items, get the item data too.
                 foreach (var i in inventory_items)

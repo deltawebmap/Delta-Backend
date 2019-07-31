@@ -9,12 +9,8 @@ namespace ArkHttpServer.Entities
     public class ArkItemSearchResultsItem
     {
         public string classname;
-        
-        public ArkItemEntry entry;
         public int total_count;
-        public Dictionary<string, int> owner_ids = new Dictionary<string, int>();
-
-        public Dictionary<string, BasicArkDino> owner_dinos = new Dictionary<string, BasicArkDino>();
+        public List<ArkItemSearchResultsInventory> owners;
     }
 
     public class ArkItemSearchResults

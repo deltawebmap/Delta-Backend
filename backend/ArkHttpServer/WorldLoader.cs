@@ -1,4 +1,5 @@
 ﻿using ArkHttpServer.Entities;
+using ArkSaveEditor;
 using ArkSaveEditor.Deserializer.DotArk;
 using ArkSaveEditor.World;
 using ArkSaveEditor.World.WorldTypes;
@@ -20,7 +21,7 @@ namespace ArkHttpServer
         private static DateTime last_check_world_time; //Used by CheckForMapUpdates. Set to the time of the last check.
         private static bool has_last_checked_world_time = false;
 
-        private static Dictionary<string, ArkItemSearchResultsItem> item_dict_cache;
+        private static Dictionary<int, Dictionary<string, ArkItemSearchResultsItem>> item_dict_cache;
         private static bool item_dict_cache_created = false;
 
         private static string world_path
@@ -64,7 +65,7 @@ namespace ArkHttpServer
 
         public static Dictionary<string, ArkItemSearchResultsItem> GetItemDictForTribe(int tribeId)
         {
-            return item_dict_cache;
+            return item_dict_cache[tribeId];
         }
 
         /// <summary>
@@ -145,7 +146,7 @@ namespace ArkHttpServer
             }
 
             //Compute item dict
-            Dictionary<string, ArkItemSearchResultsItem> itemDict = ComputeItemDictCache(world, world.dinos);
+            Dictionary<int, Dictionary<string, ArkItemSearchResultsItem>> itemDict = ComputeItemDictCache(world);
 
             //Gather info for the Ark Web Map Mirror plugin
             MirrorPlugin.OnMapSave(world);
@@ -166,60 +167,97 @@ namespace ArkHttpServer
             is_current_load_loaded = true;
         }
 
-        public static Dictionary<string, ArkItemSearchResultsItem> ComputeItemDictCache(ArkWorld world, List<ArkDinosaur> dinos)
+        /// <summary>
+        /// Returns classname strings mapped to inventories
+        /// </summary>
+        /// <param name="world"></param>
+        /// <param name="tribeId"></param>
+        /// <returns></returns>
+        public static Dictionary<int, Dictionary<string, ArkItemSearchResultsItem>> ComputeItemDictCache(ArkWorld world)
         {
-            Dictionary<string, ArkItemSearchResultsItem> itemDict = new Dictionary<string, ArkItemSearchResultsItem>(); //Key: Item classname
-            foreach (var d in dinos)
+            Dictionary<int, Dictionary<string, ArkItemSearchResultsItem>> masterItemDict = new Dictionary<int, Dictionary<string, ArkItemSearchResultsItem>>();
+
+            //Find all characters of tribe
+            List<ArkCharacter> characters = new List<ArkCharacter>();
+            characters.AddRange(world.playerCharacters.Where(x => x.isInTribe));
+            characters.AddRange(world.dinos.Where(x => x.isInTribe));
+
+            foreach (var d in characters)
             {
-                //Add tuple with inventory item and dino ID
-                string dinoId = d.dinosaurId.ToString();
-                List<ArkPrimalItem> dino_inventory;
-                try
+                //Find (or create) item dict
+                Dictionary<string, ArkItemSearchResultsItem> itemDict;
+                if (masterItemDict.ContainsKey(d.tribeId))
+                    itemDict = masterItemDict[d.tribeId];
+                else
                 {
-                    dino_inventory = d.GetInventoryItems();
+                    itemDict = new Dictionary<string, ArkItemSearchResultsItem>();
+                    masterItemDict.Add(d.tribeId, itemDict);
                 }
-                catch
+
+                //Get inventory
+                List<ArkPrimalItem> inventory;
+                inventory = d.GetInventory().items;
+
+                //Find type and ID
+                ArkItemSearchResultsInventoryType type;
+                string id;
+                if (d.GetType() == typeof(ArkDinosaur))
                 {
-                    //Skip dino.
+                    ArkDinosaur dino = (ArkDinosaur)d;
+                    id = dino.dinosaurId.ToString();
+                    type = ArkItemSearchResultsInventoryType.Dino;
+                } else if (d.GetType() == typeof(ArkPlayer))
+                {
+                    ArkPlayer player = (ArkPlayer)d;
+                    id = player.steamId;
+                    type = ArkItemSearchResultsInventoryType.Player;
+                    if (!player.isAlive)
+                        continue;
+                } else
+                {
+                    //Skip
                     continue;
                 }
 
                 //There will be duplicate values in this, but that is OK.
-                foreach (var i in dino_inventory)
+                foreach (var i in inventory)
                 {
-                    string classname = i.classnameString;
-                    if (i.isEngram)
-                        continue;
+                    //Get item classname
+                    string itemClassname = i.classnameString;
 
-                    //If the item dict does not contain this item, also add an entry
-                    if (!itemDict.ContainsKey(classname))
-                    {
-                        itemDict.Add(classname, new ArkItemSearchResultsItem
+                    //Find or create item type
+                    ArkItemSearchResultsItem item;
+                    if (itemDict.ContainsKey(itemClassname))
+                        item = itemDict[itemClassname];
+                    else {
+                        item = new ArkItemSearchResultsItem
                         {
-                            classname = classname,
-                            entry = ArkSaveEditor.ArkImports.GetItemDataByClassname(classname),
-                            owner_ids = new Dictionary<string, int>(),
+                            classname = itemClassname,
+                            owners = new List<ArkItemSearchResultsInventory>(),
                             total_count = 0
-                        });
+                        };
+                        itemDict.Add(itemClassname, item);
                     }
 
-                    //Set values in the dict
-                    itemDict[classname].total_count += i.stackSize;
-                    if (!itemDict[classname].owner_ids.ContainsKey(dinoId))
+                    //Add this to the inventory
+                    item.total_count += i.stackSize;
+                    var matchingParents = item.owners.Where(x => x.type == type && x.id == id);
+                    if (matchingParents.Count() == 0)
                     {
-                        //Does not contain this dino. Add it
-                        itemDict[classname].owner_ids.Add(dinoId, i.stackSize);
-
-                        //Also add this dino's data
-                        if(d.dino_entry != null)
-                            itemDict[classname].owner_dinos.Add(dinoId, new BasicArkDino(d, world, d.dino_entry));
+                        item.owners.Add(new ArkItemSearchResultsInventory
+                        {
+                            id = id,
+                            type = type,
+                            count = i.stackSize,
+                            character = d
+                        });
+                    } else
+                    {
+                        matchingParents.First().count += i.stackSize;
                     }
-                    else
-                        //Does contain our dino. Add this stack
-                        itemDict[classname].owner_ids[dinoId] += i.stackSize;
                 }
             }
-            return itemDict;
+            return masterItemDict;
         }
 
         private static DateTime GetLastWorldEditTime()
