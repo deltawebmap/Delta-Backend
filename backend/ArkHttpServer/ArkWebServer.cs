@@ -20,6 +20,7 @@ using ArkHttpServer.Init.WorldReport;
 using ArkHttpServer.Init.OfflineData;
 using ArkHttpServer.Gateway;
 using ArkWebMapGatewayClient;
+using ArkWebMapGatewayClient.Messages;
 
 namespace ArkHttpServer
 {
@@ -54,15 +55,22 @@ namespace ArkHttpServer
         public static void Event_checker_timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             //Check all of our sessions for updated files.
-            //HttpServices.EventService.AddEvent(new Entities.HttpSessionEvent(null, Entities.HttpSessionEventType.TestEvent));
             
             //Check for map updates
             if(WorldLoader.CheckForMapUpdates())
             {
-                //TODO: Notify map update
-
                 //We're going to send the Ark world report
                 WorldReportBuilder.SendWorldReport();
+
+                //Notify connected clients of the map update
+                ArkWorld world = WorldLoader.GetWorld(out DateTime time);
+                gateway.SendMessage(new MessageSubserverMapUpdated
+                {
+                    opcode = GatewayMessageOpcode.SubserverMapUpdated,
+                    headers = new Dictionary<string, string>(),
+                    game_time = world.gameTime,
+                    save_time = time
+                });
 
                 //If it's been over some number of minutes since the last offline report, send it
                 TimeSpan timeSinceLastReport = DateTime.UtcNow - lastOfflineReport;

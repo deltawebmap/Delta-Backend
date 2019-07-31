@@ -21,6 +21,7 @@ namespace ArkWebMapGatewayClient
         RealtimeOnlinePlayerUpdate = 12,
         SendPushNotificationToTribe = 13,
         MessageUpdateServer = 14,
-        MessageUpdateTribeDinoSettings = 15
+        MessageUpdateTribeDinoSettings = 15,
+        SubserverMapUpdated = 16
     }
 }
