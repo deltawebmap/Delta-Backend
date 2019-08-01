@@ -59,7 +59,15 @@ namespace ArkHttpServer.Init.OfflineData
                 //Rewind and send over network
                 s.Position = 0;
                 Console.WriteLine($"Sending offline data ({MathF.Round(s.Length / 1024)} KB)...");
-                MasterServerSender.SendRequestToMasterGetBytes("offline_data_report", new StreamContent(s));
+                try
+                {
+                    MasterServerSender.SendRequestToMasterGetBytes("offline_data_report", new StreamContent(s));
+                } catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Failed to send offline data.");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
             }
 
             return true;

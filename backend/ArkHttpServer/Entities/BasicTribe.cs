@@ -26,6 +26,7 @@ namespace ArkHttpServer.Entities
 
         public List<MinifiedBasicArkPlayerCharacter> player_characters;
         public List<BasicArkStructure> structures;
+        public List<string> structure_images;
 
         public string[] dino_ids;
 
@@ -81,12 +82,13 @@ namespace ArkHttpServer.Entities
 
             //Add structures of this tribe
             structures = new List<BasicArkStructure>();
+            structure_images = new List<string>();
             for(var i = 0; i<world.structures.Count; i++)
             {
                 var s = world.structures[i];
                 if (s.tribeId != tribeId)
                     continue;
-                structures.Add(new BasicArkStructure(s, world, i));
+                structures.Add(new BasicArkStructure(s, world, i, ref structure_images));
             }
         }
     }
@@ -204,23 +206,35 @@ namespace ArkHttpServer.Entities
 
     public class BasicArkStructure
     {
-        public string imgUrl;
+        public int img;
         public Vector2 map_pos;
         public float rot;
         public float ppm;
-        public int priority;
+        public int type;
         public bool hasInventory;
+        public float z;
         public string apiUrl; //Only if has inventory
 
-        public BasicArkStructure(ArkStructure s, ArkWorld w, int index)
+        public BasicArkStructure(ArkStructure s, ArkWorld w, int index, ref List<string> images)
         {
-            imgUrl = $"https://icon-assets.deltamap.net/legacy/structures/{s.displayMetadata.img}.png";
-            map_pos = w.mapinfo.ConvertFromGamePositionToNormalized(new Vector2(s.location.x, s.location.y));
-            map_pos.Multiply(100);
-            rot = s.location.yaw;
-            ppm = s.displayMetadata.pixelsPerMeter;
-            priority = (int)s.displayMetadata.priority;
+            //Get image index
+            string imgUrl = $"https://icon-assets.deltamap.net/legacy/structures/{s.displayMetadata.img}.png";
+            if (images.Contains(imgUrl))
+                img = images.IndexOf(imgUrl);
+            else
+            {
+                img = images.Count;
+                images.Add(imgUrl);
+            }
+            
+            //Set vars
+            map_pos = new Vector2(s.location.x, s.location.y);
+            map_pos.Add(w.mapinfo.captureSize / 2);
+            rot = s.location.yaw;// - s.displayMetadata.rotationOffset;
+            ppm = s.displayMetadata.capturePixels / s.displayMetadata.captureSize;
+            type = (int)s.displayMetadata.displayType;
             hasInventory = s.hasInventory;
+            z = s.location.z;
             if (hasInventory)
                 apiUrl = $"{ArkWebServer.api_prefix}/world/structures/{index}";
         }
