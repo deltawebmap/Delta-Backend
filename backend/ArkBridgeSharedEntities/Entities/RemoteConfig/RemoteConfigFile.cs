@@ -8,6 +8,7 @@ namespace ArkBridgeSharedEntities.Entities.RemoteConfig
     {
         public RemoteConfigFile_SubServerConfig sub_server_config;
         public RemoteConfigFile_PrimalData primal_data;
+        public RemoteConfigFile_PrimalData primal_data_images;
     }
 
     public class RemoteConfigFile_SubServerConfig

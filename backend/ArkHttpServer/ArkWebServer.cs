@@ -21,6 +21,7 @@ using ArkHttpServer.Init.OfflineData;
 using ArkHttpServer.Gateway;
 using ArkWebMapGatewayClient;
 using ArkWebMapGatewayClient.Messages;
+using ArkHttpServer.Entities;
 
 namespace ArkHttpServer
 {
@@ -37,6 +38,8 @@ namespace ArkHttpServer
 
         public static GatewayHandler gateway_handler;
         public static AWMGatewayClient gateway;
+
+        public static PrimalDataImagePackage image_package;
 
         public static DateTime lastOfflineReport;
 

@@ -12,6 +12,16 @@ using ArkBridgeSharedEntities.Entities;
 
 namespace ArkHttpServer.Entities
 {
+    public static class BasicTribeConsts
+    {
+        public static readonly StructureDisplayMetadata_StructureType[] STRUCTURE_TYPE_WHITELIST = new StructureDisplayMetadata_StructureType[]
+        {
+            StructureDisplayMetadata_StructureType.Foundation,
+            StructureDisplayMetadata_StructureType.Inventory,
+            StructureDisplayMetadata_StructureType.Tool
+        };
+    }
+    
     /// <summary>
     /// A basic world that won't take up too much bandwidth to send over http.
     /// </summary>
@@ -25,8 +35,11 @@ namespace ArkHttpServer.Entities
         public List<ArkDinoReply> baby_dinos;
 
         public List<MinifiedBasicArkPlayerCharacter> player_characters;
+
         public List<BasicArkStructure> structures;
         public List<string> structure_images;
+        public float max_structure_z;
+        public float min_structure_z;
 
         public string[] dino_ids;
 
@@ -83,12 +96,16 @@ namespace ArkHttpServer.Entities
             //Add structures of this tribe
             structures = new List<BasicArkStructure>();
             structure_images = new List<string>();
+            max_structure_z = float.MinValue;
+            min_structure_z = float.MaxValue;
             for(var i = 0; i<world.structures.Count; i++)
             {
                 var s = world.structures[i];
                 if (s.tribeId != tribeId)
                     continue;
-                structures.Add(new BasicArkStructure(s, world, i, ref structure_images));
+                if (!BasicTribeConsts.STRUCTURE_TYPE_WHITELIST.Contains(s.displayMetadata.type))
+                    continue;
+                structures.Add(new BasicArkStructure(s, world, i, ref structure_images, ref max_structure_z, ref min_structure_z));
             }
         }
     }
@@ -210,12 +227,13 @@ namespace ArkHttpServer.Entities
         public Vector2 map_pos;
         public float rot;
         public float ppm;
-        public int type;
+        public int dtype;
+        public int stype;
         public bool hasInventory;
         public float z;
         public string apiUrl; //Only if has inventory
 
-        public BasicArkStructure(ArkStructure s, ArkWorld w, int index, ref List<string> images)
+        public BasicArkStructure(ArkStructure s, ArkWorld w, int index, ref List<string> images, ref float max_z, ref float min_z)
         {
             //Get image index
             string imgUrl = $"https://icon-assets.deltamap.net/legacy/structures/{s.displayMetadata.img}.png";
@@ -232,11 +250,16 @@ namespace ArkHttpServer.Entities
             map_pos.Add(w.mapinfo.captureSize / 2);
             rot = s.location.yaw;// - s.displayMetadata.rotationOffset;
             ppm = s.displayMetadata.capturePixels / s.displayMetadata.captureSize;
-            type = (int)s.displayMetadata.displayType;
+            dtype = (int)s.displayMetadata.displayType;
+            stype = (int)s.displayMetadata.type;
             hasInventory = s.hasInventory;
             z = s.location.z;
             if (hasInventory)
                 apiUrl = $"{ArkWebServer.api_prefix}/world/structures/{index}";
+
+            //Update max/min
+            max_z = MathF.Max(max_z, s.location.z);
+            min_z = MathF.Min(min_z, s.location.z);
         }
     }
 }

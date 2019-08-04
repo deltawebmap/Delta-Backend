@@ -27,7 +27,7 @@ namespace ArkWebMapMasterServer
         static void Main(string[] args)
         {
             Console.WriteLine("Loading config...");
-            config = JsonConvert.DeserializeObject<MasterServerConfig>(File.ReadAllText("E:\\ark_master_server_config.json"));
+            config = JsonConvert.DeserializeObject<MasterServerConfig>(File.ReadAllText(args[0]));
 
             Console.WriteLine("Starting Database...");
             db = new LiteDatabase(config.database_pathname);

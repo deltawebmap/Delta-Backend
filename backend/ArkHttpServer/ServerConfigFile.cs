@@ -10,6 +10,7 @@ namespace ArkHttpServer
     {
         public string save_location = @"C:\Program Files (x86)\Steam\steamapps\common\ARK\ShooterGame\Saved\SavedArks\";
         public string save_map = @"Extinction.ark";
+        public string ark_config;
 
         public ServerPermissionsRole base_permissions;
         public int permissions_version;

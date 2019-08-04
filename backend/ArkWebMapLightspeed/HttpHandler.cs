@@ -63,32 +63,43 @@ namespace ArkWebMapLightspeed
         {
             //Authenticate the user. First, obtain the access token
             UsersMeReply user = null;
+            string token = null;
             if(e.Request.Headers.ContainsKey("authorization"))
             {
                 string authHeader = e.Request.Headers["authorization"];
                 if(authHeader.StartsWith("Bearer "))
                 {
-                    string token = authHeader.Substring("Bearer ".Length);
+                    token = authHeader.Substring("Bearer ".Length);
+                }
+            }
 
-                    //Now that we have obtained a token, check if we have it cached.
-                    if (ConnectionHolder.cachedTokens.ContainsKey(token))
-                        user = ConnectionHolder.cachedTokens[token];
-                    else
+            //We also accept tokens from the URL. Check if it was passed
+            if(e.Request.Query.ContainsKey("access_token"))
+            {
+                token = e.Request.Query["access_token"];
+            }
+
+            //Authenticate
+            if(token != null)
+            {
+                //Now that we have obtained a token, check if we have it cached.
+                if (ConnectionHolder.cachedTokens.ContainsKey(token))
+                    user = ConnectionHolder.cachedTokens[token];
+                else
+                {
+                    //We'll need to authenticate the user
+                    try
                     {
-                        //We'll need to authenticate the user
-                        try
+                        using (WebClient wc = new WebClient())
                         {
-                            using (WebClient wc = new WebClient())
-                            {
-                                wc.Headers.Add("Authorization", "Bearer " + token);
-                                string content = wc.DownloadString("https://deltamap.net/api/users/@me/");
-                                user = JsonConvert.DeserializeObject<UsersMeReply>(content);
-                                if (user != null)
-                                    ConnectionHolder.cachedTokens.TryAdd(token, user);
-                            }
+                            wc.Headers.Add("Authorization", "Bearer " + token);
+                            string content = wc.DownloadString("https://deltamap.net/api/users/@me/");
+                            user = JsonConvert.DeserializeObject<UsersMeReply>(content);
+                            if (user != null)
+                                ConnectionHolder.cachedTokens.TryAdd(token, user);
                         }
-                        catch { }
                     }
+                    catch { }
                 }
             }
 

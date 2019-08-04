@@ -124,7 +124,7 @@ namespace ArkHttpServer
                     world_time = GetLastWorldEditTime();
 
                     //Get world
-                    world = new ArkWorld(ArkWebServer.config.save_location, ArkWebServer.config.save_map, @"C:\Program Files (x86)\Steam\steamapps\common\ARK\ShooterGame\Saved\Config\WindowsServer\");
+                    world = new ArkWorld(ArkWebServer.config.save_location, ArkWebServer.config.save_map, ArkWebServer.config.ark_config);
 
                     //Done
                     break;
