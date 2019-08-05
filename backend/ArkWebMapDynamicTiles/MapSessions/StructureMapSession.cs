@@ -1,45 +1,39 @@
-﻿using ArkBridgeSharedEntities.Entities.Master;
-using ArkSaveEditor.Entities;
-using ArkSaveEditor.World.WorldTypes;
-using ArkWebMapDynamicTiles.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using ArkBridgeSharedEntities.Entities.Master;
+using ArkSaveEditor.Entities;
+using ArkSaveEditor.World.WorldTypes;
+using ArkWebMapDynamicTiles.Entities;
+using Microsoft.AspNetCore.Http;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System.IO;
 using ArkSaveEditor.ArkEntries;
 
-namespace ArkWebMapDynamicTiles.Maps
+namespace ArkWebMapDynamicTiles.MapSessions
 {
-    public static class StructureTiles
+    public class StructureMapSession : MapSession
     {
-        public const bool DEBUG_SYMBOLS = false;
-        public const int MIN_DATA_VERSION = 2;
+        public ArkMapData mapInfo;
+        public List<ArkStructure> structures;
 
-        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, UsersMeReply_Server server, ContentMetadata commit, float x, float y, float z)
+        public override async Task OnCreate(HttpContext e, UsersMeReply_Server server, ContentMetadata commit)
         {
-            //Ensure that the data version is supported
-            if(commit.version < MIN_DATA_VERSION)
-            {
-                await Program.QuickWriteToDoc(e, "The Server Data Is Too Old", "text/plain", 404);
-                return;
-            }
-
             //Get data
-            ArkMapData mapInfo = commit.GetContent<ArkMapData>("map");
-            List<ArkStructure> structures = commit.GetContent<List<ArkStructure>>("structures");
+            mapInfo = commit.GetContent<ArkMapData>("map");
+            structures = commit.GetContent<List<ArkStructure>>("structures");
+        }
 
+        public override async Task OnHttpRequest(HttpContext e, float x, float y, float z)
+        {
             //Get tile info
             TileData tile = TileDataTool.GetTileData(x, y, z, mapInfo);
 
-            //Get tribe ID
-            int tribeId = server.tribeId;
-
             //Compute and create the tile
-            Image<Rgba32> image = await Compute(tile, mapInfo, structures, tribeId);
+            Image<Rgba32> image = await Compute(tile, mapInfo, structures, tribe_id);
 
             //Write
             e.Response.ContentType = "image/png";
@@ -48,6 +42,13 @@ namespace ArkWebMapDynamicTiles.Maps
                 CompressionLevel = 9
             });
         }
+
+        public override int GetMinDataVersion()
+        {
+            return 2;
+        }
+
+        public const bool DEBUG_SYMBOLS = false;
 
         private static async Task<Image<Rgba32>> Compute(TileData tile, ArkMapData mapinfo, List<ArkStructure> structures, int tribeId)
         {

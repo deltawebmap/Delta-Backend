@@ -1,8 +1,9 @@
 ﻿using ArkBridgeSharedEntities.Requests;
 using ArkWebMapDynamicTiles.Entities;
-using ArkWebMapDynamicTiles.Maps;
+using ArkWebMapDynamicTiles.MapSessions;
 using ArkWebMapMasterServer.NetEntities;
 using LibDelta;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,73 +32,158 @@ namespace ArkWebMapDynamicTiles
 
             try
             {
-                //Split the path. It follows this format: /{token}/{server id}/{map name}/{x}_{y}_{z}
+                //Split the path
                 string[] split = e.Request.Path.ToString().Split('/');
 
-                //Check if this is one of our special pathanmes
-                if(e.Request.Path.ToString() == "/upload") { await OnContentPost(e); return; }
-                if(e.Request.Path.ToString() == "/commit") { await OnCommitPost(e); return; }
+                //Check if this is one of our pathnames
+                if (e.Request.Path.ToString() == "/upload") { await OnContentPost(e); return; }
+                if (e.Request.Path.ToString() == "/commit") { await OnCommitPost(e); return; }
+                if (e.Request.Path.ToString().StartsWith("/create/")) { await CreateSession(e, split); return; }
+                if (e.Request.Path.ToString().StartsWith("/heartbeat/")) { await HeartbeatSession(e, split); return; }
+                if (e.Request.Path.ToString().StartsWith("/act/")) { await ActSession(e, split); return; }
 
-                //Assume this is normal usage from now and check the path
-                if (split.Length != 5)
-                {
-                    await Program.QuickWriteToDoc(e, "Invalid URL Structure", "text/plain", 400);
-                    return;
-                }
-                string serverId = split[2];
-                string mapType = split[3];
-                string[] coords = split[4].Split('_');
-                if (coords.Length != 3)
-                {
-                    await Program.QuickWriteToDoc(e, "Invalid URL Structure", "text/plain", 400);
-                    return;
-                }
-                float x = float.Parse(coords[0]);
-                float y = float.Parse(coords[1]);
-                float z = float.Parse(coords[2]);
-
-                //Authenticate this user
-                UsersMeReply user = await AuthenticateUser(e, split);
-                if (user == null)
-                    return;
-
-                //Ensure this user has this server on their list
-                if(user.servers.Where(i => i.id == serverId).Count() != 1)
-                {
-                    await Program.QuickWriteToDoc(e, "You Are Not A Member Of This Server", "text/plain", 403);
-                    return;
-                }
-                var server = user.servers.Where(i => i.id == serverId).First();
-
-                //Load data for this server
-                ContentMetadata commit = ContentTool.GetCommit(serverId);
-                if(commit == null)
-                {
-                    await Program.QuickWriteToDoc(e, "This Server Has Not Uploaded Data Yet", "text/plain", 404);
-                    return;
-                }
-
-                //Ensure this is an okay version
-                if(commit.version < GLOBAL_MIN_DATA_VERSION)
-                {
-                    await Program.QuickWriteToDoc(e, "The Server Data Is Too Old", "text/plain", 404);
-                    return;
-                }
-
-                //Switch off to the map to handle this
-                if(mapType == "structures")
-                {
-                    await StructureTiles.OnHttpRequest(e, server, commit, x, y, z);
-                    return;
-                } else
-                {
-                    await Program.QuickWriteToDoc(e, "Unknown Map Type", "text/plain", 404);
-                }
+                //Unknown
+                await Program.QuickWriteToDoc(e, "Endpoint Not Found", "text/plain", 404);
+                return;
             } catch (Exception ex)
             {
                 Console.WriteLine($"ERROR {ex.Message} {ex.StackTrace}");
                 await Program.QuickWriteToDoc(e, "Internal Server Error", "text/plain", 500);
             }
+        }
+
+        private static async Task CreateSession(Microsoft.AspNetCore.Http.HttpContext e, string[] split)
+        {
+            if (split.Length != 4)
+            {
+                await Program.QuickWriteToDoc(e, "Invalid URL Structure", "text/plain", 400);
+                return;
+            }
+            string serverId = split[2];
+            string mapType = split[3];
+
+            //Authenticate this user
+            UsersMeReply user = await AuthenticateUser(e, split);
+            if (user == null)
+                return;
+
+            //Ensure this user has this server on their list
+            if (user.servers.Where(i => i.id == serverId).Count() != 1)
+            {
+                await Program.QuickWriteToDoc(e, "You Are Not A Member Of This Server", "text/plain", 403);
+                return;
+            }
+            var server = user.servers.Where(i => i.id == serverId).First();
+
+            //Load data for this server
+            ContentMetadata commit = ContentTool.GetCommit(serverId);
+            if (commit == null)
+            {
+                await Program.QuickWriteToDoc(e, "This Server Has Not Uploaded Data Yet", "text/plain", 404);
+                return;
+            }
+
+            //Switch off to the map to handle this
+            MapSession session;
+            if (mapType == "structures")
+                session = new StructureMapSession();
+            else
+            {
+                await Program.QuickWriteToDoc(e, "Unknown Map Type", "text/plain", 404);
+                return;
+            }
+
+            //Set some data
+            session.user_id = user.id;
+            session.tribe_id = server.tribeId;
+            session.server_id = server.id;
+            session.last_heartbeat = DateTime.UtcNow;
+
+            //Ensure this is an okay version
+            if (commit.version < GLOBAL_MIN_DATA_VERSION || commit.version < session.GetMinDataVersion())
+            {
+                await Program.QuickWriteToDoc(e, "The Server Data Is Too Old", "text/plain", 404);
+                return;
+            }
+
+            //Load session
+            await session.OnCreate(e, server, commit);
+
+            //Add to sessions list
+            string token = SessionTool.AddSession(session);
+
+            //Create data and write it
+            SessionCreateData response = new SessionCreateData
+            {
+                data_revision = commit.revision,
+                data_time = new DateTime(commit.time),
+                data_version = commit.version,
+                heartbeat_policy_ms = Program.HEARTBEAT_POLICY_MS,
+                token = token,
+                url_map = Program.SESSION_ROOT + "act/" + token + "/{x}_{y}_{z}",
+                url_heartbeat = Program.SESSION_ROOT + "heartbeat/" + token
+            };
+            await Program.QuickWriteToDoc(e, JsonConvert.SerializeObject(response, Formatting.Indented), "application/json");
+        }
+
+        private static async Task ActSession(Microsoft.AspNetCore.Http.HttpContext e, string[] split)
+        {
+            //Check URL format
+            if (split.Length != 4)
+            {
+                await Program.QuickWriteToDoc(e, "Invalid URL Structure", "text/plain", 400);
+                return;
+            }
+
+            //Get location
+            string[] coords = split[3].Split('_');
+            if (coords.Length != 3)
+            {
+                await Program.QuickWriteToDoc(e, "Invalid URL Structure", "text/plain", 400);
+                return;
+            }
+            float x = float.Parse(coords[0]);
+            float y = float.Parse(coords[1]);
+            float z = float.Parse(coords[2]);
+
+            //Try and find the session
+            MapSession s = SessionTool.GetSession(split[2]);
+
+            //Check
+            if (s == null)
+            {
+                await Program.QuickWriteToDoc(e, "Session Expired", "text/plain", 410);
+                return;
+            }
+
+            //Let the service handle it
+            await s.OnHttpRequest(e, x, y, z);
+        }
+
+        private static async Task HeartbeatSession(Microsoft.AspNetCore.Http.HttpContext e, string[] split)
+        {
+            //Check URL format
+            if (split.Length != 3)
+            {
+                await Program.QuickWriteToDoc(e, "Invalid URL Structure", "text/plain", 400);
+                return;
+            }
+
+            //Try and find the session
+            MapSession s = SessionTool.GetSession(split[2]);
+
+            //Check
+            if(s == null)
+            {
+                await Program.QuickWriteToDoc(e, "Session Expired", "text/plain", 410);
+                return;
+            }
+
+            //Update
+            s.last_heartbeat = DateTime.UtcNow;
+
+            //Respond OK
+            await Program.QuickWriteToDoc(e, "OK", "text/plain", 200);
         }
 
         private static async Task<UsersMeReply> AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, string[] pathSplit)
@@ -108,10 +194,6 @@ namespace ArkWebMapDynamicTiles
             //Check the headers first
             if (e.Request.Headers.ContainsKey("authorization"))
                 token = e.Request.Headers["authorization"].ToString().Substring("Bearer ".Length);
-
-            //Try the path where our token should be
-            if (token == null)
-                token = pathSplit[1];
 
             //Stop now if no token was found.
             if(token == null)

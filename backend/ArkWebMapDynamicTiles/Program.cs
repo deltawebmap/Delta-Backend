@@ -1,5 +1,6 @@
 ﻿using ArkHttpServer.Entities;
 using ArkWebMapDynamicTiles.Entities;
+using ArkWebMapDynamicTiles.MapSessions;
 using LibDelta;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace ArkWebMapDynamicTiles
 {
@@ -20,20 +22,41 @@ namespace ArkWebMapDynamicTiles
     {
         public static Random rand = new Random();
         public static PrimalDataImagePackage image_package;
+        public static Timer kill_timer;
+        public static ConfigFile config;
+
+        public const int HEARTBEAT_POLICY_MS = 60000;
+        public const int HEARTBEAT_EXPIRE_TIME_ADD = 30000; //Time + HEARTBEAT_POLICY_MS that the session will be expired.
+
+        public const string SESSION_ROOT = "https://dynamic-tiles.deltamap.net/";
 
         static void Main(string[] args)
         {
+            //Open config file
+            config = JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText(args[0]));
+
             //Init the lib
-            DeltaMapTools.Init(SystemKeys.ObtainKey(), "DYNAMIC_IMAGES_EDGE");
+            DeltaMapTools.Init(config.system_api_key, "DYNAMIC_IMAGES_EDGE");
 
             //Get the db
-            ContentTool.db = new LiteDB.LiteDatabase("content.db");
+            ContentTool.db = new LiteDB.LiteDatabase(config.database_path);
 
             //Import content
-            image_package = ImportImages("images.pdip");
+            image_package = ImportImages(config.image_content_path);
+
+            //Start kill timer
+            kill_timer = new Timer(1000);
+            kill_timer.AutoReset = true;
+            kill_timer.Elapsed += Kill_timer_Elapsed;
+            kill_timer.Start();
 
             //Start web server
             MainAsync().GetAwaiter().GetResult();
+        }
+
+        private static void Kill_timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            SessionTool.PurgeSessions();
         }
 
         static PrimalDataImagePackage ImportImages(string pathname)
@@ -74,7 +97,7 @@ namespace ArkWebMapDynamicTiles
                 .UseKestrel(options =>
                 {
                     IPAddress addr = IPAddress.Any;
-                    options.Listen(addr, 43295);
+                    options.Listen(addr, config.web_port);
                 })
                 .UseStartup<Program>()
                 .Build();
