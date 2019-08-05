@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArkHttpServer.Entities
+namespace ArkWebMapDynamicTiles.Entities
 {
     public class PrimalDataImagePackage
     {

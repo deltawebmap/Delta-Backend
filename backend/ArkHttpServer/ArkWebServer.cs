@@ -39,8 +39,6 @@ namespace ArkHttpServer
         public static GatewayHandler gateway_handler;
         public static AWMGatewayClient gateway;
 
-        public static PrimalDataImagePackage image_package;
-
         public static DateTime lastOfflineReport;
 
         public static bool CheckPermission(string name)
@@ -74,6 +72,9 @@ namespace ArkHttpServer
                     game_time = world.gameTime,
                     save_time = time
                 });
+
+                //Upload new tile content
+                Init.DynamicTileUploader.UploadAll(world).GetAwaiter().GetResult();
 
                 //If it's been over some number of minutes since the last offline report, send it
                 TimeSpan timeSinceLastReport = DateTime.UtcNow - lastOfflineReport;

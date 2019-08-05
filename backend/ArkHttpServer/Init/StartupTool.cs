@@ -72,10 +72,6 @@ namespace ArkHttpServer.Init
             //Import PrimalData
             ImportPrimalData(masterConfig, options.path_root + "primal_data.pdp");
 
-            //Import PrimalDataImages
-            Console.WriteLine("Loading images...");
-            ImportPrimalDataImages(masterConfig, options.path_root + "primal_data_img.pdip");
-
             //Send world report
             if (!WorldReportBuilder.SendWorldReport())
                 return false;
@@ -88,6 +84,9 @@ namespace ArkHttpServer.Init
             Console.WriteLine("Connecting to gateway...");
             ArkWebServer.gateway_handler = new Gateway.GatewayHandler();
             ArkWebServer.gateway = AWMGatewayClient.CreateClient(GatewayClientType.SubServer, "sub-server", "data_version/" + ClientVersion.DATA_VERSION, ClientVersion.VERSION_MAJOR, ClientVersion.VERSION_MINOR, false, ArkWebServer.gateway_handler, $"{config.connection.id}#{config.connection.creds}");
+
+            //Send tiles
+            DynamicTileUploader.UploadAll(WorldLoader.GetWorld()).GetAwaiter().GetResult();
 
             //Send offline data
             OfflineDataBuilder.SendOfflineData();
@@ -144,69 +143,6 @@ namespace ArkHttpServer.Init
 
             //It's gross, but we call ourselves.
             ImportPrimalData(config, pathname);
-        }
-
-        /// <summary>
-        /// Imports primal data, or downloads new data if it is out of date
-        /// </summary>
-        /// <param name="pathname"></param>
-        /// <returns></returns>
-        private static void ImportPrimalDataImages(RemoteConfigFile config, string pathname)
-        {
-            //Check if this pathname exists
-            if (File.Exists(pathname))
-            {
-                try
-                {
-                    //Open stream and begin reading
-                    using (FileStream fs = new FileStream(pathname, System.IO.FileMode.Open, FileAccess.Read))
-                    {
-                        using(ZipArchive za = new ZipArchive(fs, ZipArchiveMode.Read))
-                        {
-                            //Read metadata
-                            PrimalDataImagesMetadata meta = ZipTools.ReadEntryAsJson<PrimalDataImagesMetadata>("package_metadata.json", za);
-
-                            //Open images
-                            PrimalDataImagePackage package = new PrimalDataImagePackage();
-                            package.images = new Dictionary<string, Dictionary<string, Image<Rgba32>>>();
-                            foreach(var type in meta.data)
-                            {
-                                Dictionary<string, Image<Rgba32>> imgs = new Dictionary<string, Image<Rgba32>>();
-                                foreach(var i in type.Value)
-                                {
-                                    //Read image
-                                    Image<Rgba32> img;
-                                    using (Stream s = za.GetEntry(i.Value).Open())
-                                        img = Image.Load(s);
-                                    imgs.Add(i.Key, img);
-                                }
-                                package.images.Add(type.Key, imgs);
-                            }
-
-                            //Done loading.
-                            ArkWebServer.image_package = package;
-                            return;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    //We'll fail and redownload.
-                    Console.WriteLine("Failed to read Primal Data Images: " + ex.Message);
-                }
-
-                //If we landed here, this version is out of date. Remove
-                File.Delete(pathname);
-            }
-
-            //We'll need to download an updated release.
-            Console.WriteLine("Primal Data Images is out of date. Updating...");
-            using (WebClient wc = new WebClient())
-                wc.DownloadFile(config.primal_data_images.download_url, pathname);
-            Console.WriteLine("Primal Data Images was updated. Opening...");
-
-            //It's gross, but we call ourselves.
-            ImportPrimalDataImages(config, pathname);
         }
 
         /// <summary>

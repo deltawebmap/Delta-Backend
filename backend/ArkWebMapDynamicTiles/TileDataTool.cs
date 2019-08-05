@@ -1,19 +1,14 @@
 ﻿using ArkSaveEditor.Entities;
-using ArkWebMapLightspeedClient;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArkHttpServer.Tools
+namespace ArkWebMapDynamicTiles
 {
     public static class TileDataTool
     {
-        public static TileData GetTileData(LightspeedRequest e, ArkMapData map)
+        public static TileData GetTileData(float x, float y, float z, ArkMapData map)
         {
-            //Get the x, y, and z from the URL
-            float x = float.Parse(e.query["x"]);
-            float y = float.Parse(e.query["y"]);
-            float z = float.Parse(e.query["z"]);
             TileData d = new TileData
             {
                 tile_x = x,
@@ -27,7 +22,7 @@ namespace ArkHttpServer.Tools
 
             //Calculate game pos
             CalculateZCoordsToGameUnits(map, d.units_per_tile, x, y, out d.game_min_x, out d.game_min_y);
-            CalculateZCoordsToGameUnits(map, d.units_per_tile, x+1, y+1, out d.game_max_x, out d.game_max_y);
+            CalculateZCoordsToGameUnits(map, d.units_per_tile, x + 1, y + 1, out d.game_max_x, out d.game_max_y);
 
             return d;
         }

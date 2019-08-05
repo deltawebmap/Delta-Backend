@@ -25,7 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AWMLightspeedTests", "AWMLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapLauncherProviders", "ArkWebMapLauncherProviders\ArkWebMapLauncherProviders.csproj", "{F221F0E8-F428-408E-9FAC-CA098F94BF66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArkWebMapAnalytics", "ArkWebMapAnalytics\ArkWebMapAnalytics.csproj", "{1775C977-A262-4817-AE25-8DDA59297C02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapAnalytics", "ArkWebMapAnalytics\ArkWebMapAnalytics.csproj", "{1775C977-A262-4817-AE25-8DDA59297C02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArkWebMapDynamicTiles", "ArkWebMapDynamicTiles\ArkWebMapDynamicTiles.csproj", "{C4C74077-1614-46E5-A186-42F420A32FC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibDelta", "LibDelta\LibDelta.csproj", "{E380A964-DCBF-44C5-B9CB-1772BD808969}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +85,14 @@ Global
 		{1775C977-A262-4817-AE25-8DDA59297C02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1775C977-A262-4817-AE25-8DDA59297C02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1775C977-A262-4817-AE25-8DDA59297C02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4C74077-1614-46E5-A186-42F420A32FC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4C74077-1614-46E5-A186-42F420A32FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4C74077-1614-46E5-A186-42F420A32FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4C74077-1614-46E5-A186-42F420A32FC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E380A964-DCBF-44C5-B9CB-1772BD808969}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E380A964-DCBF-44C5-B9CB-1772BD808969}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E380A964-DCBF-44C5-B9CB-1772BD808969}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E380A964-DCBF-44C5-B9CB-1772BD808969}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

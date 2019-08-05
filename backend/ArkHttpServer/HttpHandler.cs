@@ -84,16 +84,6 @@ namespace ArkHttpServer
                         tribeId = ArkWebServer.config.demo_tribe_id;
                     }
 
-                    if (pathname.StartsWith("/map/tiles/population/") && ArkWebServer.CheckPermission("allowHeatmap"))
-                    {
-                        await PopulationService.OnHttpRequest(e, world);
-                        return;
-                    }
-                    if (pathname.StartsWith("/map/tiles/structures/"))
-                    {
-                        await StructureTilesService.OnHttpRequest(e, world, tribeId);
-                        return;
-                    }
                     if (pathname.StartsWith("/tribes/item_search/") && ArkWebServer.CheckPermission("allowSearchTamedTribeDinoInventories"))
                     {
                         await TribeInventorySearchService.OnHttpRequest(e, world, tribeId);

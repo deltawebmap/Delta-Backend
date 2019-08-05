@@ -1,27 +1,57 @@
-﻿using ArkHttpServer.Tools;
-using ArkSaveEditor.ArkEntries;
-using ArkSaveEditor.Entities.LowLevel.DotArk;
-using ArkSaveEditor.World;
-using ArkWebMapLightspeedClient;
+﻿using ArkBridgeSharedEntities.Entities.Master;
+using ArkSaveEditor.Entities;
+using ArkSaveEditor.World.WorldTypes;
+using ArkWebMapDynamicTiles.Entities;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
+using ArkSaveEditor.ArkEntries;
 
-namespace ArkHttpServer.HttpServices
+namespace ArkWebMapDynamicTiles.Maps
 {
-    public static class StructureTilesService
+    public static class StructureTiles
     {
         public const bool DEBUG_SYMBOLS = false;
+        public const int MIN_DATA_VERSION = 2;
 
-        public static async Task OnHttpRequest(LightspeedRequest e, ArkWorld world, int tribeId)
+        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, UsersMeReply_Server server, ContentMetadata commit, float x, float y, float z)
+        {
+            //Ensure that the data version is supported
+            if(commit.version < MIN_DATA_VERSION)
+            {
+                await Program.QuickWriteToDoc(e, "The Server Data Is Too Old", "text/plain", 404);
+                return;
+            }
+
+            //Get data
+            ArkMapData mapInfo = commit.GetContent<ArkMapData>("map");
+            List<ArkStructure> structures = commit.GetContent<List<ArkStructure>>("structures");
+
+            //Get tile info
+            TileData tile = TileDataTool.GetTileData(x, y, z, mapInfo);
+
+            //Get tribe ID
+            int tribeId = server.tribeId;
+
+            //Compute and create the tile
+            Image<Rgba32> image = await Compute(tile, mapInfo, structures, tribeId);
+
+            //Write
+            e.Response.ContentType = "image/png";
+            image.SaveAsPng(e.Response.Body, new SixLabors.ImageSharp.Formats.Png.PngEncoder
+            {
+                CompressionLevel = 9
+            });
+        }
+
+        private static async Task<Image<Rgba32>> Compute(TileData tile, ArkMapData mapinfo, List<ArkStructure> structures, int tribeId)
         {
             //Get range
-            TileData tile = TileDataTool.GetTileData(e, world.mapinfo);
             float tilePpm = 256 / tile.units_per_tile;
 
             //Create image
@@ -29,18 +59,18 @@ namespace ArkHttpServer.HttpServices
 
             //Find all tiles in range
             List<QueuedTile> tilesInRange = new List<QueuedTile>();
-            foreach(var t in world.structures)
+            foreach (var t in structures)
             {
                 //Check if the tribe matches
                 if (!t.isInTribe || t.tribeId != tribeId)
                     continue;
 
                 //Check if the image exists
-                if (!ArkWebServer.image_package.images["structure"].ContainsKey(t.displayMetadata.img + ".png"))
+                if (!Program.image_package.images["structure"].ContainsKey(t.displayMetadata.img + ".png"))
                     continue;
 
                 //Get image and it's width and height in game units
-                Image<Rgba32> img = ArkWebServer.image_package.images["structure"][t.displayMetadata.img+".png"];
+                Image<Rgba32> img = Program.image_package.images["structure"][t.displayMetadata.img + ".png"];
                 float ppm = t.displayMetadata.capturePixels / t.displayMetadata.captureSize;
                 float img_game_width = img.Width * ppm;
                 float img_game_height = img.Height * ppm;
@@ -86,7 +116,7 @@ namespace ArkHttpServer.HttpServices
             }
 
             //Sort by Y level
-            tilesInRange.Sort(new Comparison<QueuedTile>((x, y) => 
+            tilesInRange.Sort(new Comparison<QueuedTile>((x, y) =>
                 x.z.CompareTo(y.z)
             ));
             tilesInRange.Sort(new Comparison<QueuedTile>((x, y) =>
@@ -130,19 +160,7 @@ namespace ArkHttpServer.HttpServices
                 }
             }
 
-            //Save image
-            byte[] buf;
-            using(MemoryStream ms = new MemoryStream())
-            {
-                output.SaveAsPng(ms, new SixLabors.ImageSharp.Formats.Png.PngEncoder
-                {
-                    CompressionLevel = 9
-                });
-                buf = new byte[ms.Length];
-                ms.Position = 0;
-                ms.Read(buf, 0, buf.Length);
-            }
-            await e.DoRespond(200, "image/png", buf);
+            return output;
         }
 
         class QueuedTile

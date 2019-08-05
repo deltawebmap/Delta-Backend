@@ -51,13 +51,13 @@ namespace ArkWebMapMasterServer.Services.Misc
             return true;
         }
 
-        class ServerValidationRequestPayload
+        public class ServerValidationRequestPayload
         {
             public string server_id;
             public string server_creds; //Base 64 encoded creds for the server
         }
 
-        class ServerValidationResponsePayload
+        public class ServerValidationResponsePayload
         {
             public string server_id;
             public string server_name;
