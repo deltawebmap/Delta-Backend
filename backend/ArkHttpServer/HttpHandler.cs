@@ -100,6 +100,11 @@ namespace ArkHttpServer
                         await TribeHubService.OnHttpRequest(e, world, tribeId);
                         return;
                     }
+                    if (pathname == "/tribes/library")
+                    {
+                        await LibraryService.OnHttpRequest(e, world, tribeId);
+                        return;
+                    }
                     if (pathname.StartsWith("/tribes/"))
                     {
                         //Convert to a basic Ark world
@@ -124,17 +129,16 @@ namespace ArkHttpServer
                         var dinos = world.dinos.Where(x => x.dinosaurId == dinoid && x.tribeId == tribeId).ToArray();
                         if (dinos.Length > 0)
                         {
-                            //Get the method
-                            var method = ArkWebServer.FindRequestMethod(e);
-                            if(method == RequestHttpMethod.post)
+                            //Decide if we're exporting (downloading) or not
+                            string type = "application/json";
+                            if(e.query.ContainsKey("export"))
                             {
-                                //Edit dino
-                                DinoServerData newSettings = ArkWebServer.DecodePostBody<DinoServerData>(e);
-                                newSettings.dinoId = dinos[0].dinosaurId.ToString();
-                                newSettings.tribeId = dinos[0].tribeId;
+                                if (e.query["export"] == "true")
+                                    type = "application/octet-stream";
                             }
+                            
                             //Write this dinosaur.
-                            await e.DoRespondJson(new ArkDinoReply(dinos[0], world));
+                            await e.DoRespondJson(new ArkDinoReply(dinos[0], world), 200, type);
                             return;
                         }
                         else
