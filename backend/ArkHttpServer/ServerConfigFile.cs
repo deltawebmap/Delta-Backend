@@ -14,8 +14,8 @@ namespace ArkHttpServer
 
         public ServerPermissionsRole base_permissions;
         public int permissions_version;
-        public bool is_demo_server; //This will disable tribes and make everyone use the same tribe id
-        public int demo_tribe_id; //The ID of the demo tribe to use.
+        public int? demo_tribe_id; //The ID of the demo tribe to use.
+        public Dictionary<string, string> demo_renames; //Renames dinosaurs with the key name to the value name.
 
         public ArkSlaveConnection connection;
     }

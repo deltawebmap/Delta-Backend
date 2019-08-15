@@ -76,6 +76,11 @@ namespace ArkWebMapMasterServer
                     //ARK interface from an Ark server. Take care.
                     return Services.Mirror.MirrorErrorService.OnHttpRequest(e);
                 }
+                if (path == "/status")
+                {
+                    //System status report
+                    return Services.Misc.ServiceStatus.OnHttpRequest(e);
+                }
 
                 //Unknown
                 throw new StandardError("Not Found", StandardErrorCode.NotFound);

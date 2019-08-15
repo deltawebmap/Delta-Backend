@@ -36,7 +36,7 @@ namespace ArkWebMapDynamicTiles
             config = JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText(args[0]));
 
             //Init the lib
-            DeltaMapTools.Init(config.system_api_key, "DYNAMIC_IMAGES_EDGE");
+            DeltaMapTools.Init(config.system_api_key, "DYNAMIC_IMAGES_EDGE", new ArkWebMapGatewayClient.GatewayMessageHandler());
 
             //Get the db
             ContentTool.db = new LiteDB.LiteDatabase(config.database_path);

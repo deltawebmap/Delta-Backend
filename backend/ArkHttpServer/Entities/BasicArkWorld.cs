@@ -36,7 +36,7 @@ namespace ArkHttpServer.Entities
             dayTime = w.gameTime;
             mapName = w.map;
             mapData = w.mapinfo;
-            isDemoServer = ArkWebServer.config.is_demo_server;
+            isDemoServer = ArkWebServer.config.demo_tribe_id.HasValue;
             mapBackgroundColor = w.mapinfo.backgroundColor;
 
             //Calculate map time offset
@@ -57,7 +57,7 @@ namespace ArkHttpServer.Entities
             permissions = ArkWebServer.config.base_permissions;
 
             //If this is a demo server, reset the time offsets
-            if(ArkWebServer.config.is_demo_server)
+            if(ArkWebServer.config.demo_tribe_id.HasValue)
             {
                 mapTimeOffset = 0;
             }

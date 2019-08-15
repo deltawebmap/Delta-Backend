@@ -61,7 +61,18 @@ namespace ArkHttpServer.Init.OfflineData
                 Console.WriteLine($"Sending offline data ({MathF.Round(s.Length / 1024)} KB)...");
                 try
                 {
-                    MasterServerSender.SendRequestToMasterGetBytes("offline_data_report", new StreamContent(s));
+                    using (HttpClient client = new HttpClient())
+                    {
+                        var content = new StreamContent(s);
+                        content.Headers.Add("X-Ark-Slave-Server-ID", ArkWebServer.config.connection.id);
+                        content.Headers.Add("X-Ark-Slave-Server-Creds", ArkWebServer.config.connection.creds);
+
+                        var response = client.PostAsync("https://offline-content.deltamap.net/upload", content).GetAwaiter().GetResult();
+                        var replyString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                        if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                            throw new Exception();
+                    }
                 } catch (Exception ex)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;

@@ -41,6 +41,13 @@ namespace ArkHttpServer
                     isInTribe = true;
                 }
 
+                //Check if we're a demo server
+                if (ArkWebServer.config.demo_tribe_id.HasValue)
+                {
+                    isInTribe = true;
+                    tribeId = ArkWebServer.config.demo_tribe_id.Value;
+                }
+
                 //Since we don't have to worry about permissions or anything, we'll just have a list of services created at compile time.
                 string pathname = e.endpoint.ToLower();
 
@@ -78,12 +85,6 @@ namespace ArkHttpServer
                     pathname = pathname.Substring("/world".Length);
                     
                     //If this is a demo server, set the tribe ID to the demo tribe.
-                    if(ArkWebServer.config.is_demo_server)
-                    {
-                        isInTribe = true;
-                        tribeId = ArkWebServer.config.demo_tribe_id;
-                    }
-
                     if (pathname.StartsWith("/tribes/item_search/") && ArkWebServer.CheckPermission("allowSearchTamedTribeDinoInventories"))
                     {
                         await TribeInventorySearchService.OnHttpRequest(e, world, tribeId);

@@ -174,33 +174,5 @@ namespace ArkWebMapMasterServer.PresistEntities
                 return false;
             }
         }
-
-        public bool TryGetOfflineDataForTribeStreamed(string steamId, out DateTime time, Stream outputStream)
-        {
-            if (has_server_report)
-            {
-                if (TryGetTribeId(steamId, out int tribeId))
-                {
-                    return Tools.OfflineTribeDataTool.GetArkDataDecompressedStreamed(this._id, tribeId, out time, outputStream);
-                }
-            }
-            time = DateTime.MinValue;
-            return false;
-        }
-
-        public bool TryGetOfflineDataForTribe(string steamId, out DateTime time, out string data)
-        {
-            time = DateTime.MinValue;
-            data = null;
-            if (has_server_report)
-            {
-                if (TryGetTribeId(steamId, out int tribeId))
-                {
-                    data = Tools.OfflineTribeDataTool.GetArkDataDecompressed(this._id, tribeId, out time);
-                }
-            }
-            
-            return data != null;
-        }
     }
 }

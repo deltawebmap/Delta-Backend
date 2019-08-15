@@ -19,7 +19,9 @@ namespace ArkWebMapMasterServer.Services.Users
             }
 
             //Just convert it.
-            return Program.QuickWriteJsonToDoc(e, new UsersMeReply(u, hideInvalid));
+            UsersMeReply user = new UsersMeReply();
+            user.MakeUsersMe(u, hideInvalid);
+            return Program.QuickWriteJsonToDoc(e, user);
         }
     }
 }

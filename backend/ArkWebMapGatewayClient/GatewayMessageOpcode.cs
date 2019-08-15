@@ -22,6 +22,7 @@ namespace ArkWebMapGatewayClient
         SendPushNotificationToTribe = 13,
         MessageUpdateServer = 14,
         MessageUpdateTribeDinoSettings = 15,
-        SubserverMapUpdated = 16
+        SubserverMapUpdated = 16,
+        SubserverOfflineDataUpdated = 17
     }
 }

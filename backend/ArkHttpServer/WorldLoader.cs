@@ -1,4 +1,5 @@
 ﻿using ArkHttpServer.Entities;
+using ArkHttpServer.Tools.FoodSim;
 using ArkSaveEditor;
 using ArkSaveEditor.Deserializer.DotArk;
 using ArkSaveEditor.World;
@@ -22,6 +23,7 @@ namespace ArkHttpServer
         private static bool has_last_checked_world_time = false;
 
         private static Dictionary<int, Dictionary<string, ArkItemSearchResultsItem>> item_dict_cache;
+        public static List<FoodSimResult> food_sim_cache;
         private static bool item_dict_cache_created = false;
 
         private static string world_path
@@ -145,8 +147,30 @@ namespace ArkHttpServer
                 }
             }
 
+            //Do renames
+            if(ArkWebServer.config.demo_renames != null)
+            {
+                foreach(var r in ArkWebServer.config.demo_renames)
+                {
+                    foreach(var d in world.dinos)
+                    {
+                        if (d.tamedName == r.Key)
+                            d.tamedName = r.Value;
+                    }
+                }
+            }
+
             //Compute item dict
             Dictionary<int, Dictionary<string, ArkItemSearchResultsItem>> itemDict = ComputeItemDictCache(world);
+
+            //SImulate dinos
+            DinoFoodSimulation sim = new DinoFoodSimulation();
+            foreach (var d in world.dinos)
+            {
+                if (d.isBaby)
+                    sim.AddDino(d);
+            }
+            var food_sim_cache_result = sim.RunSimulation(60);
 
             //Gather info for the Ark Web Map Mirror plugin
             MirrorPlugin.OnMapSave(world);
@@ -165,6 +189,7 @@ namespace ArkHttpServer
             item_dict_cache = itemDict;
             current_world_time = world_time;
             is_current_load_loaded = true;
+            food_sim_cache = food_sim_cache_result;
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using ArkHttpServer.Entities;
 using ArkHttpServer.Init.OfflineData;
 using ArkHttpServer.Init.WorldReport;
 using ArkHttpServer.Tools;
+using ArkHttpServer.Tools.FoodSim;
 using ArkSaveEditor;
 using ArkSaveEditor.Entities;
 using ArkWebMapGatewayClient;

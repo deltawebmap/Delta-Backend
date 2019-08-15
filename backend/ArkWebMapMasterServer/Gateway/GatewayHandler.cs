@@ -21,5 +21,13 @@ namespace ArkWebMapMasterServer.Gateway
             else if (!data.isUp && Program.onlineServers.Contains(data.serverId))
                 Program.onlineServers.Remove(data.serverId);
         }
+
+        public override void Msg_SubserverOfflineDataUpdated(MessageSubserverOfflineDataUpdated data, object context)
+        {
+            //Update server data version
+            PresistEntities.ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(data.server_id);
+            server.latest_offline_data_version = data.data_version;
+            server.Update();
+        }
     }
 }

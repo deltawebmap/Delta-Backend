@@ -65,18 +65,6 @@ namespace ArkWebMapMasterServer.Services.Servers
                         throw new StandardError("Could not find player tribe.", StandardErrorCode.NotPermitted);
                     return ServerMaps.OnHttpRequest(e, server, tribeId, nextUrl.Substring("maps".Length));
                 }
-                if(nextUrl == "offline_data")
-                {
-                    //Send back their offline tribe data, if they're in a tribe
-                    if (!hasTribe)
-                        throw new StandardError("Could not find player tribe.", StandardErrorCode.NotPermitted);
-                    e.Response.ContentType = "application/json";
-                    bool ok = Tools.OfflineTribeDataTool.GetArkDataDecompressedStreamed(server._id, tribeId, out DateTime time, e.Response.Body);
-                    if (!ok)
-                        throw new StandardError("Offline data did not exist.", StandardErrorCode.MissingData);
-                    else
-                        return e.Response.Body.WriteAsync(new byte[0], 0, 0);
-                }
                 if(nextUrl == "hub")
                 {
                     //Get hub data for this tribe

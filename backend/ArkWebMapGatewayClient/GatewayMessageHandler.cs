@@ -28,6 +28,10 @@ namespace ArkWebMapGatewayClient
                 case GatewayMessageOpcode.UserLogOut: HandleMsgType<MessageUserLogOut>(Msg_UserLogOut, msg, context); break;
                 case GatewayMessageOpcode.RealtimeOnlinePlayerUpdate: HandleMsgType<MessageRealtimeOnlinePlayers>(Msg_RealtimeOnlinePlayerUpdate, msg, context); break;
                 case GatewayMessageOpcode.SendPushNotificationToTribe: HandleMsgType<SendPushNotificationToTribe>(Msg_SendPushNotificationToTribe, msg, context); break;
+                
+                
+                
+                case GatewayMessageOpcode.SubserverOfflineDataUpdated: HandleMsgType<MessageSubserverOfflineDataUpdated>(Msg_SubserverOfflineDataUpdated, msg, context); break;
             }
         }
 
@@ -50,6 +54,10 @@ namespace ArkWebMapGatewayClient
         public virtual void Msg_UserLogOut(MessageUserLogOut data, object context) { }
         public virtual void Msg_RealtimeOnlinePlayerUpdate(MessageRealtimeOnlinePlayers data, object context) { }
         public virtual void Msg_SendPushNotificationToTribe(SendPushNotificationToTribe data, object context) { }
+
+
+
+        public virtual void Msg_SubserverOfflineDataUpdated(MessageSubserverOfflineDataUpdated data, object context) { }
     }
 
     public delegate void GatewayIncomingMessageCallback<T>(T data, object context);

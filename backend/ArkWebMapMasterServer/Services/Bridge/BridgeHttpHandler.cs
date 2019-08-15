@@ -60,10 +60,6 @@ namespace ArkWebMapMasterServer.Services.Bridge
             {
                 return MirrorReportService.OnHttpRequest(e, server);
             }
-            if (path.StartsWith("offline_data_report"))
-            {
-                return ArkOfflineDataReportRequest.OnHttpRequest(e, server);
-            }
             if(path.StartsWith("report_hub"))
             {
                 return HubReportRequest.OnHttpRequest(e, server);

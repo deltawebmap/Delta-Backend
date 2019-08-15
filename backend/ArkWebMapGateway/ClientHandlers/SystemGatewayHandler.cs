@@ -21,5 +21,12 @@ namespace ArkWebMapGateway.ClientHandlers
             MessageSender.SendMsgToMasterServer(data);
             MessageSender.SendMsgToServerMembers(data, data.serverId);
         }
+
+        public override void Msg_SubserverOfflineDataUpdated(MessageSubserverOfflineDataUpdated data, object context)
+        {
+            //Echo to master server and users that might be connected
+            MessageSender.SendMsgToMasterServer(data);
+            MessageSender.SendMsgToServerMembers(data, data.server_id);
+        }
     }
 }

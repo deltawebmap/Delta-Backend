@@ -16,23 +16,25 @@ namespace ArkWebMapMasterServer.Services.Users
             return AuthenticateUser(e, required, out string t);
         }
 
-        public static ArkUser AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, bool required, out string token)
+        public static string GetAuthToken(Microsoft.AspNetCore.Http.HttpContext e)
         {
-            ArkUser user = null;
-            token = null;
-            if (e.Request.Cookies.ContainsKey("user_token"))
-            {
-                token = e.Request.Cookies["user_token"];
-                user = ArkWebMapMasterServer.Users.UserTokens.ValidateUserToken(token);
-            }
-            if(user == null && e.Request.Headers.ContainsKey("Authorization"))
+            string token = null;
+            if (e.Request.Headers.ContainsKey("Authorization"))
             {
                 //Read Authorization header
                 token = e.Request.Headers["Authorization"];
                 if (token.StartsWith("Bearer "))
                     token = token.Substring("Bearer ".Length);
-                user = ArkWebMapMasterServer.Users.UserTokens.ValidateUserToken(token);
             }
+            return token;
+        }
+
+        public static ArkUser AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, bool required, out string token)
+        {
+            token = GetAuthToken(e);
+            if (token == null && required)
+                throw new StandardError("No Auth Token Provided.", StandardErrorCode.AuthRequired);
+            ArkUser user = ArkWebMapMasterServer.Users.UserTokens.ValidateUserToken(token);
             if (user == null && required)
                 throw new StandardError("You're not signed in.", StandardErrorCode.AuthRequired);
             return user;
@@ -40,6 +42,15 @@ namespace ArkWebMapMasterServer.Services.Users
 
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
         {
+            //Check if this is a demo user
+            if(GetAuthToken(e) == "demo-user")
+            {
+                //This is a demo user. ALWAYS provide it with the placeholder users/me
+                NetEntities.UsersMeReply usersme = new NetEntities.UsersMeReply();
+                usersme.MakeDummyUsersMe();
+                return Program.QuickWriteJsonToDoc(e, usersme);
+            }
+            
             //Every path here requies authentication. Do it.
             ArkUser user = AuthenticateUser(e, true, out string userToken);
 

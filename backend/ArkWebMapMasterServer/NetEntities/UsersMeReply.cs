@@ -22,7 +22,7 @@ namespace ArkWebMapMasterServer.NetEntities
 
         }
 
-        public UsersMeReply(ArkUser u, bool filterHiddenServers)
+        public void MakeUsersMe(ArkUser u, bool filterHiddenServers)
         {
             //Set basic values
             screen_name = u.screen_name;
@@ -41,14 +41,33 @@ namespace ArkWebMapMasterServer.NetEntities
             foreach(var id in found_servers)
             {
                 //Get server by ID
-                var converted = MakeServer(u, id.Item1, id.Item2);
+                var converted = MakeServer(id.Item1, id.Item2);
                 if ((!converted.is_hidden || !filterHiddenServers) && converted.has_ever_gone_online)
                     servers.Add(converted);
             }
 
         }
 
-        public static UsersMeReply_Server MakeServer(ArkUser u, ArkServer s, ArkSlaveReport_PlayerAccount ps)
+        public void MakeDummyUsersMe()
+        {
+            //Used for demo servers. Make a fake users me for the client
+            screen_name = "Delta Demo";
+            profile_image_url = "";
+            id = null;
+            steam_id = null;
+            user_settings = new ArkUserSettings();
+            servers = new List<UsersMeReply_Server>();
+            servers.Add(MakeServer(Servers.ArkSlaveServerSetup.GetCollection().FindById(DemoServerData.DEMO_SERVER_ID), new ArkSlaveReport_PlayerAccount
+            {
+                allow_player = true,
+                player_name = "Demo User",
+                player_steam_id = null,
+                player_tribe_id = DemoServerData.DEMO_SERVER_TRIBE_ID,
+                player_tribe_name = "Demo Tribe"
+            }));
+        }
+
+        public static UsersMeReply_Server MakeServer(ArkServer s, ArkSlaveReport_PlayerAccount ps)
         {
             //If this server has never sent a status, skip
             UsersMeReply_Server reply = new UsersMeReply_Server();
@@ -59,7 +78,6 @@ namespace ArkWebMapMasterServer.NetEntities
             reply.owner_uid = s.owner_uid;
             reply.id = s._id;
             reply.has_ever_gone_online = s.has_server_report;
-            reply.is_hidden = u.hidden_servers.Contains(s._id);
             reply.lastReportTime = new DateTime(s.latest_server_report_downloaded);
 
             if(ps != null)
@@ -72,7 +90,7 @@ namespace ArkWebMapMasterServer.NetEntities
             string base_endpoint = $"https://deltamap.net/api/servers/{s._id}/";
             reply.endpoint_hub = base_endpoint + "hub";
             reply.endpoint_createsession = $"https://lightspeed.deltamap.net/{s._id}/" + "create_session";
-            reply.endpoint_offline_data = base_endpoint + "offline_data";
+            reply.endpoint_offline_data = "https://offline-content.deltamap.net/content/"+s._id;
 
             reply.map_id = s.latest_server_map;
             reply.map_name = reply.map_id;
