@@ -120,7 +120,12 @@ namespace ArkWebMapMasterServer.Services.Users
             {
                 return HubService.OnHttpRequest(e, user);
             }
-            if(path == "@me/tokens/@this/devalidate")
+            if (path == "@me/report_issue")
+            {
+                IssueCreator.OnHttpRequest(e, user).GetAwaiter().GetResult();
+                return null;
+            }
+            if (path == "@me/tokens/@this/devalidate")
             {
                 return TokenDevalidateService.OnSingleDevalidate(e, user, userToken);
             }

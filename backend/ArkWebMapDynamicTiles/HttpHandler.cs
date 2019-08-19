@@ -149,6 +149,13 @@ namespace ArkWebMapDynamicTiles
             //Try and find the session
             MapSession s = SessionTool.GetSession(split[2]);
 
+            //Check to make sure that this is within zoom bounds
+            if (z > s.GetMaxZoom())
+            {
+                await Program.QuickWriteToDoc(e, "Zoom Level Too High", "text/plain", 400);
+                return;
+            }
+
             //Check
             if (s == null)
             {

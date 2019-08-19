@@ -18,5 +18,6 @@ namespace ArkWebMapDynamicTiles.MapSessions
         public abstract Task OnCreate(Microsoft.AspNetCore.Http.HttpContext e, UsersMeReply_Server server, ContentMetadata commit);
         public abstract Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, float x, float y, float z);
         public abstract int GetMinDataVersion();
+        public abstract int GetMaxZoom();
     }
 }

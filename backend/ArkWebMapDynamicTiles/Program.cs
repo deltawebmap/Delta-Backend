@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -79,9 +80,24 @@ namespace ArkWebMapDynamicTiles
                         foreach (var i in type.Value)
                         {
                             //Read image
-                            Image<Rgba32> img;
+                            Image<Rgba32> source;
                             using (Stream s = za.GetEntry(i.Value).Open())
-                                img = Image.Load(s);
+                                source = Image.Load(s);
+
+                            //Resize to square
+                            int size = Math.Max(source.Width, source.Height);
+                            Image<Rgba32> img = new Image<Rgba32>(size, size);
+                            int offsetX = (size - source.Width) / 2;
+                            int offsetY = (size - source.Height) / 2;
+                            for(int x = 0; x<source.Width; x++)
+                            {
+                                for(int y = 0; y<source.Height; y++)
+                                {
+                                    img[x + offsetX, y + offsetY] = source[x, y];
+                                }
+                            }
+
+                            //add
                             imgs.Add(i.Key, img);
                         }
                         package.images.Add(type.Key, imgs);

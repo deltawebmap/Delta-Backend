@@ -12,6 +12,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System.IO;
 using ArkSaveEditor.ArkEntries;
+using System.Linq;
 
 namespace ArkWebMapDynamicTiles.MapSessions
 {
@@ -48,9 +49,16 @@ namespace ArkWebMapDynamicTiles.MapSessions
             return 2;
         }
 
+        public override int GetMaxZoom()
+        {
+            return 10;
+        }
+
         public const bool DEBUG_SYMBOLS = false;
 
-        private static async Task<Image<Rgba32>> Compute(TileData tile, ArkMapData mapinfo, List<ArkStructure> structures, int tribeId)
+        static List<CachedStructure> structure_resize_cache = new List<CachedStructure>();
+
+        private async Task<Image<Rgba32>> Compute(TileData tile, ArkMapData mapinfo, List<ArkStructure> structures, int tribeId)
         {
             //Get range
             float tilePpm = 256 / tile.units_per_tile;
@@ -91,13 +99,35 @@ namespace ArkWebMapDynamicTiles.MapSessions
                 if (img_scale_x < 5 || img_scale_y < 5)
                     continue;
 
-                //Apply transformations
-                Image<Rgba32> simg = img.Clone();
-                simg.Mutate(x => x.Resize(new ResizeOptions
+                //Apply transformations, or load from cache
+                var cacheHits = structure_resize_cache.Where(x => x.size_x == img_scale_x && x.size_y == img_scale_y && x.img == t.displayMetadata.img && x.rot == t.location.yaw).ToArray();
+                Image<Rgba32> simg;
+                if(cacheHits.Length == 0)
                 {
-                    Size = new SixLabors.Primitives.Size(img_scale_x, img_scale_y),
-                    Position = AnchorPositionMode.Center
-                }).Rotate(t.location.yaw));
+                    //Create object
+                    var c = new CachedStructure
+                    {
+                        time = DateTime.UtcNow,
+                        uses = 1,
+                        size_x = img_scale_x,
+                        size_y = img_scale_y,
+                        rot = t.location.yaw,
+                        img = t.displayMetadata.img
+                    };
+
+                    //Start the creation, then add it
+                    c.image = c.Create();
+                    structure_resize_cache.Add(c);
+
+                    //Now, wait for it to finish
+                    simg = c.image.GetAwaiter().GetResult();
+                } else
+                {
+                    //Load from cache
+                    cacheHits[0].uses++;
+                    cacheHits[0].time = DateTime.UtcNow;
+                    simg = cacheHits[0].image.GetAwaiter().GetResult();
+                }
 
                 //Determine location
                 float loc_tile_x = (t.location.x - (img_game_width / 2) - tile.game_min_x) / tile.units_per_tile; //Top left of the image inside the tile
@@ -118,11 +148,14 @@ namespace ArkWebMapDynamicTiles.MapSessions
 
             //Sort by Y level
             tilesInRange.Sort(new Comparison<QueuedTile>((x, y) =>
-                x.z.CompareTo(y.z)
-            ));
-            tilesInRange.Sort(new Comparison<QueuedTile>((x, y) =>
+            {
+                if (x.display_type == StructureDisplayMetadata_DisplayType.AlwaysTop || y.display_type == StructureDisplayMetadata_DisplayType.AlwaysTop)
+                    return x.display_type.CompareTo(y.display_type);
+                return x.z.CompareTo(y.z);
+            }));
+            /*tilesInRange.Sort(new Comparison<QueuedTile>((x, y) =>
                 x.display_type.CompareTo(y.display_type)
-            ));
+            ));*/
 
             //Now, copy the images
             foreach (var q in tilesInRange)
@@ -171,6 +204,33 @@ namespace ArkWebMapDynamicTiles.MapSessions
             public float z;
             public Image<Rgba32> img;
             public StructureDisplayMetadata_DisplayType display_type;
+        }
+
+        class CachedStructure
+        {
+            public int size_x;
+            public int size_y;
+            public float rot;
+            public string img;
+            public DateTime time;
+            public int uses;
+
+            public Task<Image<Rgba32>> image;
+
+            public async Task<Image<Rgba32>> Create()
+            {
+                //Create
+                Image<Rgba32> source = Program.image_package.images["structure"][img + ".png"];
+                var simg = source.Clone();
+                simg.Mutate(x => x.Resize(new ResizeOptions
+                {
+                    Size = new SixLabors.Primitives.Size(size_x, size_y),
+                    Position = AnchorPositionMode.Center
+                }).Rotate(rot));
+
+                //Return this
+                return simg;
+            }
         }
     }
 }

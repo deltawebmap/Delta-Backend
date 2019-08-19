@@ -13,7 +13,7 @@ namespace ArkHttpServer.Init
 {
     public static class DynamicTileUploader
     {
-        public const string ROOT_URL = "http://localhost:43295/";
+        public const string ROOT_URL = "https://dynamic-tiles.deltamap.net/";
 
         /// <summary>
         /// Uploads content, then returns an upload token that can be used.
@@ -93,7 +93,7 @@ namespace ArkHttpServer.Init
 
                 //End log
                 Console.WriteLine("Tile data uploaded.");
-            } catch
+            } catch (Exception ex)
             {
                 Console.WriteLine("Tile data upload failed.");
             }

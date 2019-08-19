@@ -10,6 +10,7 @@ namespace ArkWebMapMasterServer
         public string firebase_cloud_messages_api_key;
         public string database_pathname;
         public string map_database_pathname;
+        public string github_api_key;
         public Dictionary<string, string> system_server_keys; //Stores keys for each system service running on the network. Should be secure.
     }
 }
