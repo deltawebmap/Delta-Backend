@@ -25,9 +25,14 @@ namespace ArkWebMapMasterServer.Services.Auth
                 string mode = "Web";
                 if (e.Request.Query.ContainsKey("mode"))
                     mode = e.Request.Query["mode"];
-                
+
+                //Get the next url
+                string next = "https://deltamap.net/app/";
+                if (e.Request.Query.ContainsKey("next"))
+                    next = e.Request.Query["next"];
+
                 //Redirect to Steam auth
-                string url = SteamAuth.SteamOpenID.Begin(mode);
+                string url = SteamAuth.SteamOpenID.Begin(mode, next);
                 e.Response.Headers.Add("Location", url);
                 return Program.QuickWriteToDoc(e, "", "text/plain", 302);
             }
@@ -46,12 +51,6 @@ namespace ArkWebMapMasterServer.Services.Auth
                     //Not found
                     throw new StandardError("Preflight ID not found.", StandardErrorCode.NotFound);
                 }
-            }
-            if(path.StartsWith("set_token"))
-            {
-                //Offline login with token
-                SetAuthCookie(e, e.Request.Query["token"]);
-                return Program.QuickWriteToDoc(e, "Token set!", "text/plain");
             }
             if(path.StartsWith("providers/"))
             {
@@ -83,59 +82,7 @@ namespace ArkWebMapMasterServer.Services.Auth
             user.Update();
 
             //Pass into the next method
-            return OnFinishUserAuth(e, user, "Loaded from Steam profile.", true);
-        }
-
-        //User is using username/password and would like to create a user.
-        private static Task OnPasswordCreate(Microsoft.AspNetCore.Http.HttpContext e)
-        {
-            //Decode payload
-            CreateUserWithUsernamePasswordPayload payload = Program.DecodePostBody<CreateUserWithUsernamePasswordPayload>(e);
-
-            //If payload is null, stop
-            if (payload.password == null || payload.username == null)
-                throw new StandardError("Missing password or username.", StandardErrorCode.MissingRequiredArg);
-
-            //Create user
-            ArkUser u = UserAuth.CreateUserWithUsernameAndPassword(payload.username, payload.password);
-
-            //Pass on
-            if(u == null)
-                return OnFinishUserAuth(e, u, "That username is either already in use, or is greater than 24 characters or less than 4.");
-            else
-                return OnFinishUserAuth(e, u, "Created user.");
-        }
-
-        //Handles login requests
-        private static Task OnPasswordLogin(Microsoft.AspNetCore.Http.HttpContext e)
-        {
-            //Decode payload
-            CreateUserWithUsernamePasswordPayload payload = Program.DecodePostBody<CreateUserWithUsernamePasswordPayload>(e);
-
-            //If payload is null, stop
-            if (payload.password == null || payload.username == null)
-                throw new StandardError("Missing password or username.", StandardErrorCode.MissingRequiredArg);
-
-            //Authenticate
-            ArkUser u = UserAuth.SignInUserWithUsernamePassword(payload.username, payload.password);
-
-            //Pass on
-            if (u == null)
-                return OnFinishUserAuth(e, u, "Invalid username or password.");
-            else
-                return OnFinishUserAuth(e, u, "Signed in.");
-        }
-
-
-        public static void SetAuthCookie(Microsoft.AspNetCore.Http.HttpContext e, string token)
-        {
-            e.Response.Cookies.Append("user_token", token, new Microsoft.AspNetCore.Http.CookieOptions
-            {
-                IsEssential = true,
-                Expires = DateTime.UtcNow.AddYears(1),
-                Path = "/",
-                SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict
-            });
+            return OnFinishUserAuth(e, user, "Loaded from Steam profile.", info.next, true);
         }
 
         /// <summary>
@@ -144,7 +91,7 @@ namespace ArkWebMapMasterServer.Services.Auth
         public static Dictionary<string, AuthReply> url_tokens = new Dictionary<string, AuthReply>();
 
         //Called once the user is authenticated using whatever method.
-        public static Task OnFinishUserAuth(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u, string message, bool redirect = false)
+        public static Task OnFinishUserAuth(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u, string message, string next, bool redirect = false)
         {
             //If the user was authenticated, set a token.
             string token = null;
@@ -159,7 +106,8 @@ namespace ArkWebMapMasterServer.Services.Auth
                 ok = u != null,
                 message = message,
                 user = u,
-                token = token
+                token = token,
+                next = next
             };
 
             //Create a temporary token the client can use to lookup the user.

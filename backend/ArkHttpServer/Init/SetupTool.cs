@@ -54,6 +54,55 @@ namespace ArkHttpServer.Init
                                 data = new Dictionary<string, string>(),
                                 type = ArkSetupProxyMessage_Type.ServerGoodbye
                             });
+                        case ArkSetupProxyMessage_Type.FilePickerGetDrives:
+                            //Get all
+                            string[] drives = Directory.GetLogicalDrives();
+
+                            //Respond
+                            SendMessage(config, code, new ArkSetupProxyMessage
+                            {
+                                data = new Dictionary<string, string>
+                                {
+                                    {"drives", JsonConvert.SerializeObject(drives) },
+                                    {"rid", message.data["rid"] }
+                                },
+                                type = ArkSetupProxyMessage_Type.FilePickerGetDrivesResponse
+                            });
+                            break;
+
+                        case ArkSetupProxyMessage_Type.FilePickerGetDir:
+                            try
+                            {
+                                //Get all
+                                string[] files = Directory.GetFiles(message.data["path"]);
+                                string[] dirs = Directory.GetDirectories(message.data["path"]);
+
+                                //Respond
+                                SendMessage(config, code, new ArkSetupProxyMessage
+                                {
+                                    data = new Dictionary<string, string>
+                                    {
+                                        {"files", JsonConvert.SerializeObject(files) },
+                                        {"dirs", JsonConvert.SerializeObject(dirs) },
+                                        {"rid", message.data["rid"] }
+                                    },
+                                    type = ArkSetupProxyMessage_Type.FilePickerGetDirResponse
+                                });
+                                break;
+                            } catch (Exception ex)
+                            {
+                                SendMessage(config, code, new ArkSetupProxyMessage
+                                {
+                                    data = new Dictionary<string, string>
+                                    {
+                                        {"error", ex.Message },
+                                        {"stack", ex.StackTrace },
+                                        {"rid", message.data["rid"] }
+                                    },
+                                    type = ArkSetupProxyMessage_Type.FilePickerGetDirError
+                                });
+                                break;
+                            }
                     }
                 }
                 Thread.Sleep(1000);

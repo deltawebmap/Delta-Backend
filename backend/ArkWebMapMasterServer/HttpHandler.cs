@@ -81,6 +81,11 @@ namespace ArkWebMapMasterServer
                     //System status report
                     return Services.Misc.ServiceStatus.OnHttpRequest(e);
                 }
+                if (path == "/archive_token")
+                {
+                    //Archive download
+                    return Services.Users.UserDataDownloader.OnDownloadRequest(e);
+                }
 
                 //Unknown
                 throw new StandardError("Not Found", StandardErrorCode.NotFound);

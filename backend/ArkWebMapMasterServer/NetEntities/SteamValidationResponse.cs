@@ -8,7 +8,7 @@ namespace ArkWebMapMasterServer.NetEntities
     public class SteamValidationResponse
     {
         public bool ok;
-        public object returner;
+        public string next;
         public string steam_id;
         public SteamProfile profile;
     }

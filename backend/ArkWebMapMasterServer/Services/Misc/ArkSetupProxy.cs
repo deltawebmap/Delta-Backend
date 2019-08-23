@@ -48,6 +48,16 @@ namespace ArkWebMapMasterServer.Services.Misc
                 });
             }
 
+            //Stop if already claimed
+            if(setupProxySessions[sessionId].claimed)
+            {
+                return Program.QuickWriteJsonToDoc(e, new ServerSetupWizard_BeginReply
+                {
+                    display_id = sessionId,
+                    ok = false
+                });
+            }
+
             //Grab payload for server creation
             EditServerListingPayload payload = Program.DecodePostBody<EditServerListingPayload>(e);
 
@@ -62,6 +72,7 @@ namespace ArkWebMapMasterServer.Services.Misc
             setupProxySessions[sessionId].server = server;
             setupProxySessions[sessionId].user = user;
             setupProxySessions[sessionId].up = true;
+            setupProxySessions[sessionId].claimed = true;
 
             //Return 
             return Program.QuickWriteJsonToDoc(e, new ServerSetupWizard_BeginReply

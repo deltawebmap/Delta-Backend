@@ -21,6 +21,8 @@ namespace ArkWebMapDynamicTiles.MapSessions
         public ArkMapData mapInfo;
         public List<ArkStructure> structures;
 
+        public const int MIN_RESIZED_SIZE = 3;
+
         public override async Task OnCreate(HttpContext e, UsersMeReply_Server server, ContentMetadata commit)
         {
             //Get data
@@ -96,7 +98,7 @@ namespace ArkWebMapDynamicTiles.MapSessions
                 int img_scale_y = (int)(img.Height * scaleFactor);
 
                 //Check if this'll even be big enough to see
-                if (img_scale_x < 5 || img_scale_y < 5)
+                if (img_scale_x < MIN_RESIZED_SIZE || img_scale_y < MIN_RESIZED_SIZE)
                     continue;
 
                 //Apply transformations, or load from cache

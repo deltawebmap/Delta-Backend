@@ -174,5 +174,10 @@ namespace ArkWebMapMasterServer.PresistEntities
                 return false;
             }
         }
+
+        public void DeleteServer()
+        {
+            ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetCollection().Delete(this._id);
+        }
     }
 }

@@ -126,6 +126,11 @@ namespace ArkWebMapAnalytics
                     await Services.ArchiveService.OnHttpRequest(e);
                     return;
                 }
+                if (e.Request.Path.ToString() == "/v1/destroy" && method == "POST")
+                {
+                    await Services.DestroyService.OnHttpRequest(e);
+                    return;
+                }
 
                 throw new StandardError("Not Found", 404);
             } catch (StandardError sx)

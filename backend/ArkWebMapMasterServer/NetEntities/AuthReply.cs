@@ -11,5 +11,6 @@ namespace ArkWebMapMasterServer.NetEntities
         public string message;
         public ArkUser user;
         public string token;
+        public string next;
     }
 }

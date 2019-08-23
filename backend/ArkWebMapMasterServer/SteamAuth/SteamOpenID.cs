@@ -15,14 +15,14 @@ namespace ArkWebMapMasterServer.SteamAuth
         /// <summary>
         /// Holds "sessions" that have objects that are returned to the server when auth is complete. Maps those to an ID.
         /// </summary>
-        public static Dictionary<string, object> return_values = new Dictionary<string, object>();
+        public static Dictionary<string, string> return_values = new Dictionary<string, string>();
 
         /// <summary>
         /// Starts a session and returns a URL to redirect to.
         /// </summary>
         /// <param name="returner"></param>
         /// <returns></returns>
-        public static string Begin(string mode)
+        public static string Begin(string mode, string next)
         {
             //First, generate a state ID. This should be unique
             string stateId = Program.GenerateRandomString(24);
@@ -30,7 +30,7 @@ namespace ArkWebMapMasterServer.SteamAuth
                 stateId = Program.GenerateRandomString(24);
 
             //Add
-            return_values.Add(stateId, "");
+            return_values.Add(stateId, next);
 
             //Now, construct a URL to send the user to.
             string return_url = $"https://deltamap.net/api/auth/steam_auth_return/?state={stateId}&mode={mode}";
@@ -70,7 +70,7 @@ namespace ArkWebMapMasterServer.SteamAuth
             string state_id = e.Request.Query["state"];
             if (!return_values.ContainsKey(state_id))
                 throw new StandardError("Could not find state.", StandardErrorCode.AuthFailed);
-            object state = return_values[state_id];
+            string state = return_values[state_id];
 
             //Also request this users' Steam profile.
             SteamProfile profile = RequestSteamUserData(steam_id);
@@ -80,7 +80,8 @@ namespace ArkWebMapMasterServer.SteamAuth
             {
                 ok = true,
                 profile = profile,
-                steam_id = steam_id
+                steam_id = steam_id,
+                next = state
             };
         }
 

@@ -26,6 +26,8 @@ namespace ArkWebMapDynamicTiles
         public static Timer kill_timer;
         public static ConfigFile config;
 
+        public static Dictionary<string, PublicStructureSize> structure_size_map = new Dictionary<string, PublicStructureSize>();
+
         public const int HEARTBEAT_POLICY_MS = 60000;
         public const int HEARTBEAT_EXPIRE_TIME_ADD = 30000; //Time + HEARTBEAT_POLICY_MS that the session will be expired.
 
@@ -64,6 +66,7 @@ namespace ArkWebMapDynamicTiles
         {
             //Open stream and begin reading
             PrimalDataImagePackage package;
+            structure_size_map = new Dictionary<string, PublicStructureSize>();
             using (FileStream fs = new FileStream(pathname, System.IO.FileMode.Open, FileAccess.Read))
             {
                 using (ZipArchive za = new ZipArchive(fs, ZipArchiveMode.Read))
@@ -83,6 +86,13 @@ namespace ArkWebMapDynamicTiles
                             Image<Rgba32> source;
                             using (Stream s = za.GetEntry(i.Value).Open())
                                 source = Image.Load(s);
+
+                            //Add structure size map
+                            structure_size_map.Add(i.Key, new PublicStructureSize
+                            {
+                                height = source.Height,
+                                width = source.Width
+                            });
 
                             //Resize to square
                             int size = Math.Max(source.Width, source.Height);

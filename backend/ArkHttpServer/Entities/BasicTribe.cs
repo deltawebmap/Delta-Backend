@@ -103,7 +103,7 @@ namespace ArkHttpServer.Entities
                 var s = world.structures[i];
                 if (s.tribeId != tribeId)
                     continue;
-                if (!BasicTribeConsts.STRUCTURE_TYPE_WHITELIST.Contains(s.displayMetadata.type))
+                if (!s.hasInventory)
                     continue;
                 structures.Add(new BasicArkStructure(s, world, i, ref structure_images, ref max_structure_z, ref min_structure_z));
             }
@@ -223,39 +223,31 @@ namespace ArkHttpServer.Entities
 
     public class BasicArkStructure
     {
-        public int img;
-        public Vector2 map_pos;
-        public float rot;
-        public float ppm;
-        public int dtype;
-        public int stype;
-        public bool hasInventory;
+        public Vector2 mapPos;
+        public string apiUrl;
+        public int icon;
         public float z;
-        public string apiUrl; //Only if has inventory
+        public float rot;
+        public int index;
 
         public BasicArkStructure(ArkStructure s, ArkWorld w, int index, ref List<string> images, ref float max_z, ref float min_z)
         {
             //Get image index
-            string imgUrl = $"https://icon-assets.deltamap.net/legacy/structures/{s.displayMetadata.img}.png";
+            string imgUrl = $"https://icon-assets.deltamap.net/legacy/structure_icons/{s.displayMetadata.img}.png";
             if (images.Contains(imgUrl))
-                img = images.IndexOf(imgUrl);
+                icon = images.IndexOf(imgUrl);
             else
             {
-                img = images.Count;
+                icon = images.Count;
                 images.Add(imgUrl);
             }
-            
+
             //Set vars
-            map_pos = new Vector2(s.location.x, s.location.y);
-            map_pos.Add(w.mapinfo.captureSize / 2);
-            rot = s.location.yaw;// - s.displayMetadata.rotationOffset;
-            ppm = s.displayMetadata.capturePixels / s.displayMetadata.captureSize;
-            dtype = (int)s.displayMetadata.displayType;
-            stype = (int)s.displayMetadata.type;
-            hasInventory = s.hasInventory;
+            mapPos = w.mapinfo.ConvertFromGamePositionToNormalized(new Vector2(s.location.x, s.location.y));
+            rot = s.location.yaw;
             z = s.location.z;
-            if (hasInventory)
-                apiUrl = $"{ArkWebServer.api_prefix}/world/structures/{index}";
+            apiUrl = $"{ArkWebServer.api_prefix}/world/structures/{index}";
+            this.index = index;
 
             //Update max/min
             max_z = MathF.Max(max_z, s.location.z);

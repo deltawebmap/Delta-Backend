@@ -38,6 +38,7 @@ namespace ArkWebMapDynamicTiles
                 //Check if this is one of our pathnames
                 if (e.Request.Path.ToString() == "/upload") { await OnContentPost(e); return; }
                 if (e.Request.Path.ToString() == "/commit") { await OnCommitPost(e); return; }
+                if (e.Request.Path.ToString() == "/structure_sizes.json") { await Program.QuickWriteToDoc(e, JsonConvert.SerializeObject(Program.structure_size_map), "application/json"); return; }
                 if (e.Request.Path.ToString().StartsWith("/create/")) { await CreateSession(e, split); return; }
                 if (e.Request.Path.ToString().StartsWith("/heartbeat/")) { await HeartbeatSession(e, split); return; }
                 if (e.Request.Path.ToString().StartsWith("/act/")) { await ActSession(e, split); return; }

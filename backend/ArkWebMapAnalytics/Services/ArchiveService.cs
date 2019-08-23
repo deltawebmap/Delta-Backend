@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,10 +22,10 @@ namespace ArkWebMapAnalytics.Services
 
             //Check if failed
             if (uid == null)
-                throw new StandardError("Must be authenticated.", 402);
+                throw new StandardError("Must be authenticated.", 401);
 
             //Find all
-            var data = Program.db.GetCollection<ActionEntry>("actions").Find( x => x.user_id == uid);
+            var data = Program.db.GetCollection<ActionEntry>("actions").Find( x => x.user_id == uid).ToArray();
 
             //Add
             using(MemoryStream ms = new MemoryStream())
