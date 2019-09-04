@@ -35,6 +35,14 @@ namespace ArkWebMapMasterServer.Services.Servers
                     //Send back tribe users
                     return Program.QuickWriteJsonToDoc(e, server.latest_server_local_accounts);
                 }
+                if (nextUrl == "status")
+                {
+                    //Returns status for waiting for setup to finish
+                    return Program.QuickWriteJsonToDoc(e, new ServerSetupStatusResponse
+                    {
+                        ready = server.latest_offline_data_version != -1 && server.latest_report_data_version != -1
+                    });
+                }
 
                 //Authenticate the user
                 ArkUser user = Users.UsersHttpHandler.AuthenticateUser(e, true);

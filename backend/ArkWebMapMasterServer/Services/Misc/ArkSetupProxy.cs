@@ -2,8 +2,11 @@
 using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Services.Servers;
+using ArkWebMapMasterServer.Tools;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -58,21 +61,8 @@ namespace ArkWebMapMasterServer.Services.Misc
                 });
             }
 
-            //Grab payload for server creation
-            EditServerListingPayload payload = Program.DecodePostBody<EditServerListingPayload>(e);
-
             //Create server
-            ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.CreateServer("Setup Server", null, user);
-
-            //Edit
-            EditServerListing.EditServer(server, payload);
-            server.Update();
-
-            //Create session
-            setupProxySessions[sessionId].server = server;
-            setupProxySessions[sessionId].user = user;
-            setupProxySessions[sessionId].up = true;
-            setupProxySessions[sessionId].claimed = true;
+            ArkServer server = CreateServerFromPOST(e, user, sessionId);
 
             //Return 
             return Program.QuickWriteJsonToDoc(e, new ServerSetupWizard_BeginReply
@@ -82,6 +72,67 @@ namespace ArkWebMapMasterServer.Services.Misc
                 server = server,
                 ok = true
             });
+        }
+
+        public static Task OnCreateProxySessionHeadlessRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkUser user)
+        {
+            //Create the session
+            string sessionId = Program.GenerateRandomStringCustom(32, "QWERTYUIOPASDFGHJKLZXCVBNM1234567890".ToCharArray());
+            while (setupProxySessions.ContainsKey(sessionId))
+                sessionId = Program.GenerateRandomStringCustom(32, "QWERTYUIOPASDFGHJKLZXCVBNM1234567890".ToCharArray());
+
+            //Create session
+            setupProxySessions.Add(sessionId, new ArkSetupProxySession
+            {
+                toServer = new List<ArkBridgeSharedEntities.Entities.ArkSetupProxyMessage>(),
+                toWeb = new List<ArkBridgeSharedEntities.Entities.ArkSetupProxyMessage>(),
+                up = false
+            });
+
+            //Create server
+            ArkServer server = CreateServerFromPOST(e, user, sessionId);
+
+            //Create a JSON file to download, then put it up for download
+            MemoryStream ms = new MemoryStream();
+            byte[] json = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new ServerSetupHeadlessFile
+            {
+                time = DateTime.UtcNow,
+                token = sessionId,
+                version = 1
+            }));
+            ms.Write(json, 0, json.Length);
+            string url = TokenFileDownloadTool.PutFile(ms, "headless_setup.json");
+
+            //Return 
+            return Program.QuickWriteJsonToDoc(e, new ServerSetupWizard_BeginReplyHeadless
+            {
+                display_id = sessionId,
+                request_url = $"https://deltamap.net/api/server_setup_proxy/{sessionId}?from=WebClient",
+                server = server,
+                ok = true,
+                headless_config_url = url
+            });
+        }
+
+        private static ArkServer CreateServerFromPOST(Microsoft.AspNetCore.Http.HttpContext e, ArkUser user, string sessionId)
+        {
+            //Grab payload for server creation
+            EditServerListingPayload payload = Program.DecodePostBody<EditServerListingPayload>(e);
+
+            //Create server
+            ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.CreateServer("Setup Server", null, user);
+
+            //Edit
+            EditServerListing.EditServer(server, payload, user);
+            server.Update();
+
+            //Create session
+            setupProxySessions[sessionId].server = server;
+            setupProxySessions[sessionId].user = user;
+            setupProxySessions[sessionId].up = true;
+            setupProxySessions[sessionId].claimed = true;
+
+            return server;
         }
 
         public static Task OnSetupProxyHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)

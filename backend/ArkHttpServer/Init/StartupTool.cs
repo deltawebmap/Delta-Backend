@@ -42,7 +42,12 @@ namespace ArkHttpServer.Init
             {
                 //We need to configure
                 if (SetupTool.StartSetup(launchOptions, config))
+                {
+
+                } else
+                {
                     return false;
+                }
             }
 
             //Start

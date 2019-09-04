@@ -40,6 +40,9 @@ namespace ArkWebMapMasterServer
             Console.WriteLine("Fetching online servers from LIGHTSPEED...");
             FetchOnlineServers();
 
+            Console.WriteLine("Starting some other timers...");
+            Tools.TokenFileDownloadTool.Init();
+
             Console.WriteLine("Starting Kestrel...");
             MainAsync().GetAwaiter().GetResult();
         }

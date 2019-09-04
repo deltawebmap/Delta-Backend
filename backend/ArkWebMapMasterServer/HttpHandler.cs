@@ -26,6 +26,11 @@ namespace ArkWebMapMasterServer
                     //Pass onto this part
                     return Services.Servers.ServersHttpHandler.OnHttpRequest(e, path.Substring("/servers/".Length));
                 }
+                if (path.StartsWith("/clusters/"))
+                {
+                    //Pass onto this part
+                    return Services.Clusters.ClustersHttpHandler.OnHttpRequest(e, path.Substring("/clusters/".Length));
+                }
                 if (path.StartsWith("/bridge/"))
                 {
                     //Pass onto this part
@@ -81,10 +86,10 @@ namespace ArkWebMapMasterServer
                     //System status report
                     return Services.Misc.ServiceStatus.OnHttpRequest(e);
                 }
-                if (path == "/archive_token")
+                if (path == "/download_token")
                 {
-                    //Archive download
-                    return Services.Users.UserDataDownloader.OnDownloadRequest(e);
+                    //File download
+                    return Tools.TokenFileDownloadTool.OnDownloadRequest(e);
                 }
 
                 //Unknown

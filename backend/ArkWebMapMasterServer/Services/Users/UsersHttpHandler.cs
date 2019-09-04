@@ -55,12 +55,17 @@ namespace ArkWebMapMasterServer.Services.Users
             ArkUser user = AuthenticateUser(e, true, out string userToken);
 
             //Check path
+            if (path.StartsWith("@me/server_wizard/start_headless"))
+            {
+                //Pass onto (headless) server gen
+                return Misc.ArkSetupProxy.OnCreateProxySessionHeadlessRequest(e, user);
+            }
             if (path.StartsWith("@me/server_wizard/start"))
             {
                 //Pass onto server gen
                 return Misc.ArkSetupProxy.OnCreateProxySessionRequest(e, user);
             }
-            if(path.StartsWith("@me/servers/add_ignore/"))
+            if (path.StartsWith("@me/servers/add_ignore/"))
             {
                 //Add this server to the ignore list.
                 string serverId = e.Request.Query["id"];

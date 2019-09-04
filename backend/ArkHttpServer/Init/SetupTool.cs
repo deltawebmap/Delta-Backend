@@ -1,4 +1,5 @@
-﻿using ArkBridgeSharedEntities.Entities.RemoteConfig;
+﻿using ArkBridgeSharedEntities.Entities;
+using ArkBridgeSharedEntities.Entities.RemoteConfig;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,20 @@ namespace ArkHttpServer.Init
     {
         public static bool StartSetup(LaunchOptions options, RemoteConfigFile config)
         {
-            //Obtain a code
-            string code = WriteCode();
+            //Check if we're using a headless setup. Check each path above us.
+            ServerSetupHeadlessFile headless = TryGetHeadlessSetupCode(options.path_root);
+            string code;
+            if(headless == null)
+            {
+                //Get web code. This is the standard way of doing this.
+                code = WriteCode();
+            } else
+            {
+                //Use the headless code
+                code = headless.token;
+            }
+            
+            //If the code was null, stop
             if (code == null)
                 return false;
 
@@ -38,7 +51,6 @@ namespace ArkHttpServer.Init
                     return false;
                 foreach (ArkSetupProxyMessage message in messages)
                 {
-                    Console.WriteLine(JsonConvert.SerializeObject(message));
                     switch (message.type)
                     {
                         case ArkSetupProxyMessage_Type.CheckArkFile:
@@ -49,45 +61,53 @@ namespace ArkHttpServer.Init
                             File.WriteAllText(options.path_config, message.data["config"]);
 
                             //Respond
-                            return SendMessage(config, code, new ArkSetupProxyMessage
+                            SendMessage(config, code, new ArkSetupProxyMessage
                             {
                                 data = new Dictionary<string, string>(),
                                 type = ArkSetupProxyMessage_Type.ServerGoodbye
                             });
-                        case ArkSetupProxyMessage_Type.FilePickerGetDrives:
-                            //Get all
-                            string[] drives = Directory.GetLogicalDrives();
-
-                            //Respond
-                            SendMessage(config, code, new ArkSetupProxyMessage
-                            {
-                                data = new Dictionary<string, string>
-                                {
-                                    {"drives", JsonConvert.SerializeObject(drives) },
-                                    {"rid", message.data["rid"] }
-                                },
-                                type = ArkSetupProxyMessage_Type.FilePickerGetDrivesResponse
-                            });
-                            break;
+                            return true;
 
                         case ArkSetupProxyMessage_Type.FilePickerGetDir:
                             try
                             {
-                                //Get all
-                                string[] files = Directory.GetFiles(message.data["path"]);
-                                string[] dirs = Directory.GetDirectories(message.data["path"]);
-
-                                //Respond
-                                SendMessage(config, code, new ArkSetupProxyMessage
+                                //Check kind
+                                if(message.data["path"] == "")
                                 {
-                                    data = new Dictionary<string, string>
+                                    //Return drives
+                                    string[] drives = Directory.GetLogicalDrives();
+
+                                    //Respond
+                                    SendMessage(config, code, new ArkSetupProxyMessage
+                                    {
+                                        data = new Dictionary<string, string>
+                                        {
+                                            {"drives", JsonConvert.SerializeObject(drives) },
+                                            {"rid", message.data["rid"] }
+                                        },
+                                        type = ArkSetupProxyMessage_Type.FilePickerGetDirResponse
+                                    });
+                                } else
+                                {
+                                    //Get all
+                                    string[] files = Directory.GetFiles(message.data["path"]);
+                                    string[] dirs = Directory.GetDirectories(message.data["path"]);
+
+                                    //Create message, then add sub dirs
+                                    Dictionary<string, string> msgPayload = new Dictionary<string, string>
                                     {
                                         {"files", JsonConvert.SerializeObject(files) },
                                         {"dirs", JsonConvert.SerializeObject(dirs) },
                                         {"rid", message.data["rid"] }
-                                    },
-                                    type = ArkSetupProxyMessage_Type.FilePickerGetDirResponse
-                                });
+                                    };
+
+                                    //Respond
+                                    SendMessage(config, code, new ArkSetupProxyMessage
+                                    {
+                                        data = msgPayload,
+                                        type = ArkSetupProxyMessage_Type.FilePickerGetDirResponse
+                                    });
+                                }
                                 break;
                             } catch (Exception ex)
                             {
@@ -107,6 +127,33 @@ namespace ArkHttpServer.Init
                 }
                 Thread.Sleep(1000);
             }
+        }
+
+        /// <summary>
+        /// Tries to find the headless setup file
+        /// </summary>
+        /// <returns></returns>
+        private static ServerSetupHeadlessFile TryGetHeadlessSetupCode(string path)
+        {
+            //Search
+            while (!File.Exists(path.TrimEnd('\\').TrimEnd('/')+"/headless_setup.json"))
+            {
+                try
+                {
+                    //Go up
+                    var parent = Directory.GetParent(path);
+                    path = parent.FullName;
+                } catch
+                {
+                    return null;
+                }
+            }
+
+            //We've found the path!
+            string file = path.TrimEnd('\\').TrimEnd('/') + "/headless_setup.json";
+            ServerSetupHeadlessFile headless = JsonConvert.DeserializeObject<ServerSetupHeadlessFile>(File.ReadAllText(file));
+            File.Delete(file);
+            return headless;
         }
 
         /// <summary>

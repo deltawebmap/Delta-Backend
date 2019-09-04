@@ -1,6 +1,7 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.NetEntities.UserDataDownloader;
 using ArkWebMapMasterServer.PresistEntities;
+using ArkWebMapMasterServer.Tools;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -39,39 +40,15 @@ namespace ArkWebMapMasterServer.Services.Users
                 Task.WaitAll(remote);
             }
 
-            //Create an entry in the stream tokens
-            string stoken = Program.GenerateRandomString(24);
-            while (stream_tokens.ContainsKey(stoken))
-                stoken = Program.GenerateRandomString(24);
-            stream_tokens.Add(stoken, ms);
+            //Put file
+            string url = TokenFileDownloadTool.PutFile(ms, "delta_user_archive.zip");
 
             //Generate a response
             await Program.QuickWriteJsonToDoc(e, new ArchiveCreateToken
             {
                 ok = true,
-                url = "https://deltamap.net/api/archive_token?token=" + stoken
+                url = url
             });
-        }
-
-        public static Dictionary<string, Stream> stream_tokens = new Dictionary<string, Stream>();
-
-        public static async Task OnDownloadRequest(Microsoft.AspNetCore.Http.HttpContext e)
-        {
-            //We'll actually download the archive. Get the stream
-            string token = e.Request.Query["token"];
-            if (!stream_tokens.ContainsKey(token))
-                throw new StandardError("Token invalid", StandardErrorCode.AuthFailed);
-
-            //Copy stream
-            Stream ms = stream_tokens[token];
-            ms.Position = 0;
-            e.Response.ContentType = "application/zip";
-            e.Response.ContentLength = ms.Length;
-            await ms.CopyToAsync(e.Response.Body);
-            ms.Close();
-
-            //Now, delete stream
-            stream_tokens.Remove(token);
         }
 
         static async Task WriteAnalyticsZip(ZipArchive zip, string token)

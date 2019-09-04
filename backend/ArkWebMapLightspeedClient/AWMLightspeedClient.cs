@@ -250,7 +250,6 @@ namespace ArkWebMapLightspeedClient
             LogMsg("OnMsgRx", "Got incoming message.");
 
             //Read the data
-            Console.WriteLine(msg.Length);
             int headerLength = BinaryIntEncoder.BytesToInt32(msg, 0);
             int bodyLength = BinaryIntEncoder.BytesToInt32(msg, 4 + headerLength);
             byte[] headerBytes = new byte[headerLength];

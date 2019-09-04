@@ -115,6 +115,11 @@ namespace ArkWebMapMasterServer.PresistEntities
         /// </summary>
         public int latest_report_data_version { get; set; } = -1;
 
+        /// <summary>
+        /// The linked cluster ID. Can be null if this is not in a cluster.
+        /// </summary>
+        public string cluster_id { get; set; }
+
         public void Update()
         {
             //If needed, get a new icon

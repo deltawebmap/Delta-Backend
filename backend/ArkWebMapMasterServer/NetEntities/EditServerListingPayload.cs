@@ -9,5 +9,6 @@ namespace ArkWebMapMasterServer.NetEntities
         //Either of these values could be null. They'll just be ignored
         public string name;
         public string iconToken;
+        public string clusterId;
     }
 }
