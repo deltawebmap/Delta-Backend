@@ -103,11 +103,18 @@ namespace ArkWebMapMasterServer
             return response.Body.WriteAsync(data, 0, data.Length);
         }
 
-        public static T DecodePostBody<T>(Microsoft.AspNetCore.Http.HttpContext context)
+        public static string GetPostBodyString(Microsoft.AspNetCore.Http.HttpContext context)
         {
             string buffer;
             using (StreamReader sr = new StreamReader(context.Request.Body))
                 buffer = sr.ReadToEnd();
+
+            return buffer;
+        }
+
+        public static T DecodePostBody<T>(Microsoft.AspNetCore.Http.HttpContext context)
+        {
+            string buffer = GetPostBodyString(context);
 
             //Deserialize
             return JsonConvert.DeserializeObject<T>(buffer);

@@ -66,6 +66,11 @@ namespace ArkWebMapMasterServer
                     //This is the setup proxy for communicating with up-and-coming servers.
                     return Services.Misc.ArkSetupProxy.OnObtainCode(e);
                 }
+                if (path.StartsWith("/mobile_login_code/"))
+                {
+                    //This is the setup proxy for communicating with up-and-coming servers.
+                    return Services.Misc.MobileLoginTokenProxy.OnHttpRequest(e);
+                }
                 if (path.StartsWith("/discover/"))
                 {
                     //ARK interface from an Ark server. Take care.
