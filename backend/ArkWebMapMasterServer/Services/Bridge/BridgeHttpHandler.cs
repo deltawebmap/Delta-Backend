@@ -1,5 +1,6 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,7 +21,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
             string serverId = e.Request.Headers["X-Ark-Slave-Server-ID"];
 
             //Get the server by ID
-            ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(serverId);
+            DbServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(serverId);
 
             //If the server ID was invalid, fail
             if (server == null)
@@ -43,10 +44,6 @@ namespace ArkWebMapMasterServer.Services.Bridge
             {
                 //Pass hello request
                 return ArkReportRequest.OnHttpRequest(e, server);
-            }
-            if(path.StartsWith("send_tribe_notification"))
-            {
-                return ServerNotificationRequest.OnHttpRequest(e, server);
             }
             if (path.StartsWith("v2_send_tribe_notification"))
             {

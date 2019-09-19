@@ -20,7 +20,7 @@ namespace ArkWebMapMasterServer.Services.Misc
             string id = payload.server_id;
 
             //Find servers matching these
-            var server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetCollection().FindOne(x => x._id == id);
+            var server = Program.connection.GetServerByIdAsync(id).GetAwaiter().GetResult();
             if(server != null)
             {
                 if(CompareCreds(server.server_creds, creds))
@@ -30,7 +30,7 @@ namespace ArkWebMapMasterServer.Services.Misc
                     {
                         has_icon = server.has_custom_image,
                         icon_url = server.image_url,
-                        server_id = server._id,
+                        server_id = server.id,
                         server_name = server.display_name,
                         server_owner_id = server.owner_uid
                     });

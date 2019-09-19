@@ -1,5 +1,6 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace ArkWebMapMasterServer.Services.Users
 {
     public static class UserDataRemover
     {
-        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u, string token)
+        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u, string token)
         {
             //Validate challenges
             if (Program.FindRequestMethod(e) != RequestHttpMethod.delete)
@@ -26,21 +27,17 @@ namespace ArkWebMapMasterServer.Services.Users
                 await hc.PostAsync("https://web-analytics.deltamap.net/v1/destroy?access_token=" + token, new StringContent(""));
 
             //Now, delete all servers we own
-            var owned_servers = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetCollection().Find(x => x.owner_uid == u._id).ToArray();
+            var owned_servers = u.GetOwnedServersAsync().GetAwaiter().GetResult();
             foreach (var s in owned_servers)
             {
-                s.DeleteServer();
+                s.DeleteAsync().GetAwaiter().GetResult();
             }
 
             //Destroy all of our tokens
-            var tokens = ArkWebMapMasterServer.Users.UserTokens.GetCollection().Find(x => x.uid == u._id).ToArray();
-            foreach(var t in tokens)
-            {
-                ArkWebMapMasterServer.Users.UserTokens.GetCollection().Delete(t._id);
-            }
+            u.DevalidateAllTokens().GetAwaiter().GetResult();
 
             //Finally, destroy our user
-            ArkWebMapMasterServer.Users.UserAuth.GetCollection().Delete(u._id);
+            u.DeleteAsync().GetAwaiter().GetResult();
 
             //Goodbye!
             await Program.QuickWriteStatusToDoc(e, true);

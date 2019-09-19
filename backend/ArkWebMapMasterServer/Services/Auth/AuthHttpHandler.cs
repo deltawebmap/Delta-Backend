@@ -2,6 +2,7 @@
 using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Users;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -68,7 +69,7 @@ namespace ArkWebMapMasterServer.Services.Auth
             var info = SteamAuth.SteamOpenID.Finish(e);
 
             //Get user. If a user account isn't created yet, make one.
-            ArkUser user = UserAuth.GetUserByAuthName(info.steam_id);
+            DbUser user = UserAuth.GetUserByAuthName(info.steam_id);
             if(user == null)
             {
                 user = UserAuth.CreateUserWithSteam(info.steam_id, info.profile);
@@ -77,9 +78,8 @@ namespace ArkWebMapMasterServer.Services.Auth
             //Update profile
             user.screen_name = info.profile.personaname;
             user.profile_image_url = info.profile.avatarfull;
-            user.is_steam_verified = true;
             user.steam_id = info.steam_id;
-            user.Update();
+            user.UpdateAsync().GetAwaiter().GetResult();
 
             //Pass into the next method
             return OnFinishUserAuth(e, user, "Loaded from Steam profile.", info.next, true);
@@ -91,7 +91,7 @@ namespace ArkWebMapMasterServer.Services.Auth
         public static Dictionary<string, AuthReply> url_tokens = new Dictionary<string, AuthReply>();
 
         //Called once the user is authenticated using whatever method.
-        public static Task OnFinishUserAuth(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u, string message, string next, bool redirect = false)
+        public static Task OnFinishUserAuth(Microsoft.AspNetCore.Http.HttpContext e, DbUser u, string message, string next, bool redirect = false)
         {
             //If the user was authenticated, set a token.
             string token = null;

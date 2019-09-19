@@ -2,6 +2,7 @@
 using ArkBridgeSharedEntities.Requests;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.SteamAuth;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
 {
     public static class MassRequestSteamDataRequest
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkServer s)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s)
         {
             //Decode body
             MassFetchSteamDataPayload payload = Program.DecodePostBody<MassFetchSteamDataPayload>(e);

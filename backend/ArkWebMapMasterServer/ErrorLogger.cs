@@ -1,5 +1,6 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace ArkWebMapMasterServer
         private static void FinishLogError(LoggedErrorEntry entry, Microsoft.AspNetCore.Http.HttpContext e)
         {
             //Try and authenticate the user
-            ArkUser user = null;
+            DbUser user = null;
             try
             {
                 user = Services.Users.UsersHttpHandler.AuthenticateUser(e, false, out string userToken);
@@ -48,7 +49,7 @@ namespace ArkWebMapMasterServer
             catch { }
             entry.isAuth = user != null;
             if (user != null)
-                entry.authUserId = user._id;
+                entry.authUserId = user.id;
             entry.endpoint = e.Request.Path;
             entry.method = e.Request.Method;
             entry.time = DateTime.UtcNow.Ticks;

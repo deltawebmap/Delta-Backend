@@ -1,5 +1,6 @@
 ﻿using ArkBridgeSharedEntities.Entities.BasicTribeLog;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
 {
     public static class HubReportRequest
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkServer s)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s)
         {
             //Decode the POST body
             BasicTribeLogSubmission submission = Program.DecodePostBody<BasicTribeLogSubmission>(e);
@@ -18,7 +19,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
             var collec = Tools.TribeHubTool.GetCollection();
             foreach (var sub in submission.entries)
             {
-                sub.serverId = s._id;
+                sub.serverId = s.id;
                 collec.Insert(sub);
             }
 

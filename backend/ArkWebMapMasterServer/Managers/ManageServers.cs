@@ -1,6 +1,7 @@
 ﻿using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.PresistEntities.Managers;
 using ArkWebMapMasterServer.Servers;
+using LibDeltaSystem.Db.System;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -44,31 +45,23 @@ namespace ArkWebMapMasterServer.Managers
             ArkManagerServer server = BaseConstructServer(provider, machine, name, clientId);
             server.game_settings = settings;
 
-            //Generate a unique index
-            var arkCollec = ArkSlaveServerSetup.GetCollection();
-            string id = Program.GenerateRandomString(24);
-            while (arkCollec.Count(x => x._id == id) != 0)
-                id = Program.GenerateRandomString(24);
-
             //We'll now create an Ark server
-            ArkServer arkServer = new ArkServer
+            DbServer arkServer = new DbServer
             {
                 display_name = displayName,
-                _id = id,
-                image_url = ArkServer.StaticGetPlaceholderIcon(name),
+                _id = MongoDB.Bson.ObjectId.GenerateNewId(),
+                image_url = DbServer.StaticGetPlaceholderIcon(name),
                 owner_uid = clientId,
                 server_creds = Program.GenerateRandomBytes(64),
-                require_auth_to_view = true,
-                is_demo_server = false,
-                is_deleted = false,
                 is_managed = true,
                 provider_id = provider._id,
-                provider_server_id = server._id
+                provider_server_id = server._id,
+                conn = Program.connection
             };
-            server.linked_id = arkServer._id;
+            server.linked_id = arkServer.id;
 
             //Insert
-            arkCollec.Insert(arkServer);
+            Program.connection.system_servers.InsertOne(arkServer);
             GetServersCollection().Insert(server);
 
             return server;
@@ -77,7 +70,7 @@ namespace ArkWebMapMasterServer.Managers
         public static void DeleteArkServer(ArkManagerServer mserver)
         {
             //Delete the linked Ark server
-            ArkSlaveServerSetup.GetCollection().Delete(mserver.linked_id);
+            Program.connection.GetServerByIdAsync(mserver.linked_id).GetAwaiter().GetResult().DeleteAsync().GetAwaiter().GetResult();
 
             //Delete the server
             GetServersCollection().Delete(mserver._id);

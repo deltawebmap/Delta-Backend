@@ -4,6 +4,7 @@ using ArkWebMapGatewayClient.Messages.Entities;
 using ArkWebMapMasterServer.MirrorEntities;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Tools;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +22,7 @@ namespace ArkWebMapMasterServer.Services.Mirror
 
             //Do auth
             ArkMirrorToken auth = MirrorTokenTool.TryMatchToken(token);
-            ArkServer server = null;
+            DbServer server = null;
             if(auth != null)
                 server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(auth._id);
 
@@ -64,7 +65,7 @@ namespace ArkWebMapMasterServer.Services.Mirror
             return Program.QuickWriteStatusToDoc(e, true);
         }
 
-        private static void HandleMsgs(ArkServer server, ArkMirrorToken auth, List<MirroredMessage> msgs)
+        private static void HandleMsgs(DbServer server, ArkMirrorToken auth, List<MirroredMessage> msgs)
         {
             //Sort position updates by tribe and send them to the GATEWAY
             Dictionary<int, List<UpdateEntityRealtimePosition>> gatewayMessages = new Dictionary<int, List<UpdateEntityRealtimePosition>>();
@@ -92,7 +93,7 @@ namespace ArkWebMapMasterServer.Services.Mirror
                 {
                     opcode = GatewayMessageOpcode.RealtimeMapMovement,
                     updates = gatewayMessages[tribeIds[i]]
-                }, tribeIds[i], server._id);
+                }, tribeIds[i], server.id);
             }
         }
     }

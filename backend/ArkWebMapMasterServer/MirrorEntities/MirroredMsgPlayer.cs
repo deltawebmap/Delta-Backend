@@ -4,6 +4,7 @@ using ArkWebMapGatewayClient.Messages;
 using ArkWebMapGatewayClient.Messages.Entities;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Tools;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,7 +27,7 @@ namespace ArkWebMapMasterServer.MirrorEntities
             rotation = reader.ReadNextVector3();
         }
 
-        public override Tuple<UpdateEntityRealtimePosition, int> ProcessMsg(ArkServer s, ArkMirrorToken auth)
+        public override Tuple<UpdateEntityRealtimePosition, int> ProcessMsg(DbServer s, ArkMirrorToken auth)
         {
             //Convert this position data to one for the map. First, obtain the map data
             string map = s.latest_server_map;

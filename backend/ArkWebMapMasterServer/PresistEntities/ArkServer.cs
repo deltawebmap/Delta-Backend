@@ -12,7 +12,7 @@ using System.Text;
 
 namespace ArkWebMapMasterServer.PresistEntities
 {
-    public class ArkServer
+    /*public class DbServer
     {
         /// <summary>
         /// Name shown in the UI
@@ -43,7 +43,7 @@ namespace ArkWebMapMasterServer.PresistEntities
         /// ID of the server
         /// </summary>
         [JsonProperty("id")]
-        public string _id { get; set; }
+        public string id { get; set; }
 
         /// <summary>
         /// The latest local accounts the server has. These are Ark accounts, not our accounts.
@@ -182,7 +182,7 @@ namespace ArkWebMapMasterServer.PresistEntities
 
         public void DeleteServer()
         {
-            ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetCollection().Delete(this._id);
+            ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetCollection().Delete(this.id);
         }
-    }
+    }*/
 }

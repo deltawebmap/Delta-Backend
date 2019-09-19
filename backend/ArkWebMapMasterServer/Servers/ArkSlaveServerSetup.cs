@@ -1,4 +1,5 @@
 ﻿using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -8,23 +9,14 @@ namespace ArkWebMapMasterServer.Servers
 {
     public static class ArkSlaveServerSetup
     {
-        public static LiteCollection<ArkServer> GetCollection()
-        {
-            return Program.db.GetCollection<ArkServer>("servers");
-        }
-
         /// <summary>
         /// Grabs the slave server by id, without validating the connection.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static ArkServer GetSlaveServerById(string id)
+        public static DbServer GetSlaveServerById(string id)
         {
-            var collec = GetCollection();
-            var s = collec.FindOne(x => x._id == id);
-            if (s.image_url == null)
-                s.image_url = s.GetPlaceholderIcon();
-            return s;
+            return Program.connection.GetServerByIdAsync(id).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -33,33 +25,29 @@ namespace ArkWebMapMasterServer.Servers
         /// <param name="name"></param>
         /// <param name="icon"></param>
         /// <returns></returns>
-        public static ArkServer CreateServer(string name, string icon, ArkUser owner, bool isDemoServer = false)
+        public static DbServer CreateServer(string name, string icon, DbUser owner, bool isDemoServer = false)
         {
-            //Generate a unique index
-            var collec = GetCollection();
-            string id = Program.GenerateRandomString(24);
-            while (collec.Count(x => x._id == id) != 0)
-                id = Program.GenerateRandomString(24);
-
             //Get placeholder if needed
             if (icon == null)
-                icon = ArkServer.StaticGetPlaceholderIcon(name);
+                icon = DbServer.StaticGetPlaceholderIcon(name);
 
             //Create object
-            ArkServer server = new ArkServer
+            DbServer server = new DbServer
             {
                 display_name = name,
-                _id = id,
+                _id = MongoDB.Bson.ObjectId.GenerateNewId(),
                 image_url = icon,
-                owner_uid = owner._id,
+                owner_uid = owner.id,
                 server_creds = Program.GenerateRandomBytes(64),
-                require_auth_to_view = !isDemoServer,
-                is_demo_server = isDemoServer,
-                is_deleted = false
+                is_managed = false,
+                is_published = false,
+                has_custom_image = false,
+                revision_id = 0,
+                conn = Program.connection
             };
 
             //Insert
-            collec.Insert(server);
+            Program.connection.system_servers.InsertOne(server);
 
             //Respond
             return server;

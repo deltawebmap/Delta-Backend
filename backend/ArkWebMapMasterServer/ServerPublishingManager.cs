@@ -1,6 +1,7 @@
 ﻿using ArkBridgeSharedEntities.Entities.Master;
 using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace ArkWebMapMasterServer
             return Program.db.GetCollection<ArkPublishedServerListing>(COLLECTION_NAME).FindOne( x => x._id == id);
         }
 
-        public static void SavePublishedServer(ArkPublishedServerListing s, ArkServer server)
+        public static void SavePublishedServer(ArkPublishedServerListing s, DbServer server)
         {
             Program.db.GetCollection<ArkPublishedServerListing>(COLLECTION_NAME).Update(s);
             if(server.is_published != s.is_published)
@@ -31,11 +32,11 @@ namespace ArkWebMapMasterServer
             }
         }
 
-        public static ArkPublishedServerListing CreatePublishedServer(ArkServer server, PublishedServerEdit request, bool doPublishIfOk, out string publishingFailureReason)
+        public static ArkPublishedServerListing CreatePublishedServer(DbServer server, PublishedServerEdit request, bool doPublishIfOk, out string publishingFailureReason)
         {
             //Create bare minimum
             ArkPublishedServerListing l = new ArkPublishedServerListing();
-            l._id = server._id;
+            l._id = server.id;
             l.settings = new ArkPublishedServerSettings();
             l.saved_total_players = 0;
             l.saved_active_players = 0;
@@ -70,7 +71,7 @@ namespace ArkWebMapMasterServer
         }
 
         //Usually called from an HTTP POST request
-        public static void StandardEditPublishedServer(ArkServer s, ref ArkPublishedServerListing l, PublishedServerEdit request)
+        public static void StandardEditPublishedServer(DbServer s, ref ArkPublishedServerListing l, PublishedServerEdit request)
         {
             bool isServerDirty = false;
             if (request.display_name != null && request.display_name != s.display_name)
@@ -159,8 +160,8 @@ namespace ArkWebMapMasterServer
             }
 
             //Also set user counts
-            l.saved_total_players = s.latest_server_local_accounts.Count;
-            l.saved_active_players = s.latest_server_local_accounts.Count; //TODO: Actually count active players
+            l.saved_total_players = 0; //TODO
+            l.saved_active_players = 0;
 
             //If server is dirty, save
             if (isServerDirty)

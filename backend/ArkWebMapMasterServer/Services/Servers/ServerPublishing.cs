@@ -2,6 +2,7 @@
 using ArkBridgeSharedEntities.Entities.Master;
 using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,21 +12,21 @@ namespace ArkWebMapMasterServer.Services.Servers
 {
     public static class ServerPublishing
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkServer s)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s)
         {
             //Open payload
             PublishedServerEdit payload = Program.DecodePostBody<PublishedServerEdit>(e);
 
             //Authenticate user
-            ArkUser user = ArkWebMapMasterServer.Services.Users.UsersHttpHandler.AuthenticateUser(e, true);
+            DbUser user = ArkWebMapMasterServer.Services.Users.UsersHttpHandler.AuthenticateUser(e, true);
 
             //Ensure user owns server
-            if (user._id != s.owner_uid)
+            if (user.id != s.owner_uid)
                 throw new StandardError("You do not own this server.", StandardErrorCode.NotPermitted);
 
             //Determine method
             RequestHttpMethod method = Program.FindRequestMethod(e);
-            ArkPublishedServerListing listing = ServerPublishingManager.GetPublishedServer(s._id);
+            ArkPublishedServerListing listing = ServerPublishingManager.GetPublishedServer(s.id);
 
             if (method == RequestHttpMethod.post)
             {

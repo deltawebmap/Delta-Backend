@@ -1,4 +1,5 @@
 ﻿using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +11,7 @@ namespace ArkWebMapMasterServer.NetEntities
         public SlaveHelloReply_MessageType status;
         public Dictionary<string, string> status_info;
 
-        public ArkServer serverInfo;
+        public DbServer serverInfo;
     }
 
     public enum SlaveHelloReply_MessageType

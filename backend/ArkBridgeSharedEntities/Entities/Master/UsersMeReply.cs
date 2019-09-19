@@ -25,12 +25,5 @@ namespace ArkBridgeSharedEntities.Entities.Master
         public DateTime lastReportTime;
 
         public string endpoint_createsession;
-        public string endpoint_offline_data;
-        public string endpoint_hub;
-
-        public int offline_data_version;
-        public int report_data_version;
-
-        public bool is_online;
     }
 }

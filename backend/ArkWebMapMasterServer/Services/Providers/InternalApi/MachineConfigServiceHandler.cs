@@ -3,6 +3,7 @@ using ArkWebMapMasterServer.Managers;
 using ArkWebMapMasterServer.NetEntities.Managers;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.PresistEntities.Managers;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,11 @@ namespace ArkWebMapMasterServer.Services.Providers.InternalApi
             Dictionary<string, InternalMachineConfigResponseServerInfo> linked_servers = new Dictionary<string, InternalMachineConfigResponseServerInfo>();
             foreach(var s in servers)
             {
-                ArkServer ark = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(s.linked_id);
+                DbServer ark = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(s.linked_id);
                 linked_servers.Add(s.linked_id, new InternalMachineConfigResponseServerInfo
                 {
                     creds = ark.server_creds,
-                    id = ark._id
+                    id = ark.id
                 });
             }
 

@@ -1,5 +1,6 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,7 @@ namespace ArkWebMapMasterServer.Services.ServerDiscovery
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
         {
             //While optional, try to authenticate user
-            ArkUser user = Users.UsersHttpHandler.AuthenticateUser(e, false);
+            DbUser user = Users.UsersHttpHandler.AuthenticateUser(e, false);
 
             if (path == "search")
                 return SearchEndpoint.OnHttpRequest(e, user);

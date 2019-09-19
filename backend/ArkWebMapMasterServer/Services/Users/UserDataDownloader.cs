@@ -2,6 +2,7 @@
 using ArkWebMapMasterServer.NetEntities.UserDataDownloader;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Tools;
+using LibDeltaSystem.Db.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace ArkWebMapMasterServer.Services.Users
 {
     public static class UserDataDownloader
     {
-        public static async Task OnCreateRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u, string token)
+        public static async Task OnCreateRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u, string token)
         {
             //Create a zip entry
             MemoryStream ms = new MemoryStream();
@@ -26,10 +27,7 @@ namespace ArkWebMapMasterServer.Services.Users
                 WriteJsonToZip(zip, "me.json", u);
 
                 //Get servers this user owns
-                WriteJsonToZip(zip, "owned_servers.json", ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetCollection().Find(x => x.owner_uid == u._id).ToArray());
-
-                //Get tokens and write them
-                WriteJsonToZip(zip, "tokens.json", ArkWebMapMasterServer.Users.UserTokens.GetCollection().Find(x => x.uid == u._id).ToArray());
+                WriteJsonToZip(zip, "owned_servers.json", u.GetOwnedServersAsync().GetAwaiter().GetResult());
 
                 //Download remote data
                 Task[] remote = new Task[] {

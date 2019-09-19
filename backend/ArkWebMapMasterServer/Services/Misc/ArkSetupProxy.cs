@@ -3,6 +3,7 @@ using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Services.Servers;
 using ArkWebMapMasterServer.Tools;
+using LibDeltaSystem.Db.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace ArkWebMapMasterServer.Services.Misc
             });
         }
 
-        public static Task OnCreateProxySessionRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkUser user)
+        public static Task OnCreateProxySessionRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser user)
         {
             //Get the session.
             string sessionId = e.Request.Query["session_id"];
@@ -62,7 +63,7 @@ namespace ArkWebMapMasterServer.Services.Misc
             }
 
             //Create server
-            ArkServer server = CreateServerFromPOST(e, user, sessionId);
+            DbServer server = CreateServerFromPOST(e, user, sessionId);
 
             //Return 
             return Program.QuickWriteJsonToDoc(e, new ServerSetupWizard_BeginReply
@@ -74,7 +75,7 @@ namespace ArkWebMapMasterServer.Services.Misc
             });
         }
 
-        public static Task OnCreateProxySessionHeadlessRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkUser user)
+        public static Task OnCreateProxySessionHeadlessRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser user)
         {
             //Create the session
             string sessionId = Program.GenerateRandomStringCustom(32, "QWERTYUIOPASDFGHJKLZXCVBNM1234567890".ToCharArray());
@@ -90,7 +91,7 @@ namespace ArkWebMapMasterServer.Services.Misc
             });
 
             //Create server
-            ArkServer server = CreateServerFromPOST(e, user, sessionId);
+            DbServer server = CreateServerFromPOST(e, user, sessionId);
 
             //Create a JSON file to download, then put it up for download
             MemoryStream ms = new MemoryStream();
@@ -114,13 +115,13 @@ namespace ArkWebMapMasterServer.Services.Misc
             });
         }
 
-        private static ArkServer CreateServerFromPOST(Microsoft.AspNetCore.Http.HttpContext e, ArkUser user, string sessionId)
+        private static DbServer CreateServerFromPOST(Microsoft.AspNetCore.Http.HttpContext e, DbUser user, string sessionId)
         {
             //Grab payload for server creation
             EditServerListingPayload payload = Program.DecodePostBody<EditServerListingPayload>(e);
 
             //Create server
-            ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.CreateServer("Setup Server", null, user);
+            DbServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.CreateServer("Setup Server", null, user);
 
             //Edit
             EditServerListing.EditServer(server, payload, user);

@@ -1,6 +1,7 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,16 +11,16 @@ namespace ArkWebMapMasterServer.Services.Servers
 {
     public class RenameServer
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkServer s)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s)
         {
             //Decode
             RenameServerRequest request = Program.DecodePostBody<RenameServerRequest>(e);
 
             //Authenticate user
-            ArkUser user = ArkWebMapMasterServer.Services.Users.UsersHttpHandler.AuthenticateUser(e, true);
+            DbUser user = ArkWebMapMasterServer.Services.Users.UsersHttpHandler.AuthenticateUser(e, true);
 
             //Ensure user owns server
-            if (user._id != s.owner_uid)
+            if (user.id != s.owner_uid)
                 throw new StandardError("You do not own this server.", StandardErrorCode.NotPermitted);
 
             //Validate name
@@ -28,7 +29,6 @@ namespace ArkWebMapMasterServer.Services.Servers
 
             //Set name and save
             s.display_name = request.name;
-            s.image_url = s.GetPlaceholderIcon();
             s.Update();
 
             //Return OK

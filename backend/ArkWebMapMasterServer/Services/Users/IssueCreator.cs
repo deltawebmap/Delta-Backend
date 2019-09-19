@@ -1,6 +1,7 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace ArkWebMapMasterServer.Services.Users
             {"android", "Android Platform" }
         };
 
-        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u)
+        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
         {
             //Decode issue
             CreateIssueRequest request = Program.DecodePostBody<CreateIssueRequest>(e);
@@ -31,10 +32,11 @@ namespace ArkWebMapMasterServer.Services.Users
                 throw new StandardError("Unknown Client", StandardErrorCode.InvalidInput);
 
             //Get server
-            ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(request.server_id);
+            DbServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(request.server_id);
             if (server == null)
                 throw new StandardError("Server Not Found", StandardErrorCode.InvalidInput);
-            string tribeId = server.TryGetTribeId(u.steam_id, out int tribeIdInt) ? tribeIdInt.ToString() : "*No Tribe ID*";
+            int? tribeIdInt = server.TryGetTribeIdAsync(u.steam_id).GetAwaiter().GetResult();
+            string tribeId = tribeIdInt.HasValue ? tribeIdInt.Value.ToString() : "*No Tribe ID*";
 
             //Get the screenshot
             var screenshot = UserContentUploader.FinishContentUpload(request.screenshot_token);
@@ -50,7 +52,7 @@ namespace ArkWebMapMasterServer.Services.Users
                 attachment_body = "*No attachments*";
 
             //Create the body
-            string body = $"*This issue was reported automatically inside of the app.*\n\n**[Description]**\n{request.body_description}\n\n**[Expected Result]**\n{request.body_expected}\n\n**[Screenshot]**\n![image]({screenshot.url})\n\n**[Client Info]**\n**Client-Name**: {request.client_name},\n**Client-Name**:  {request.client_info}\n\n**[Attachments]**\n{attachment_body}\n\n**[User/Server Data]**\n**User Internal ID**: {u._id},\n**Server Internal ID**: {server._id},\n**Server Map**: {server.latest_server_map},\n**Tribe ID**: {tribeId}\n**Server Name**: {server.display_name}\n\n**[Report Info]**\nThis report was created by the Delta Web Map backend server.";
+            string body = $"*This issue was reported automatically inside of the app.*\n\n**[Description]**\n{request.body_description}\n\n**[Expected Result]**\n{request.body_expected}\n\n**[Screenshot]**\n![image]({screenshot.url})\n\n**[Client Info]**\n**Client-Name**: {request.client_name},\n**Client-Name**:  {request.client_info}\n\n**[Attachments]**\n{attachment_body}\n\n**[User/Server Data]**\n**User Internal ID**: {u._id},\n**Server Internal ID**: {server.id},\n**Server Map**: {server.latest_server_map},\n**Tribe ID**: {tribeId}\n**Server Name**: {server.display_name}\n\n**[Report Info]**\nThis report was created by the Delta Web Map backend server.";
 
             //Submit
             string response_string;

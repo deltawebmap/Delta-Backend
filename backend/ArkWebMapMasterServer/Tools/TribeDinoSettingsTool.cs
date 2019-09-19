@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ArkBridgeSharedEntities.Entities.Master;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using LiteDB;
 
 namespace ArkWebMapMasterServer.Tools
@@ -14,9 +15,9 @@ namespace ArkWebMapMasterServer.Tools
             return Program.db.GetCollection<DinoTribeSettings>("dino_tribe_settings");
         }
 
-        public static string CreateKey(ArkServer server, int tribeId, ulong dino)
+        public static string CreateKey(DbServer server, int tribeId, ulong dino)
         {
-            return $"{server._id}/{tribeId.ToString()}/{dino.ToString()}";
+            return $"{server.id}/{tribeId.ToString()}/{dino.ToString()}";
         }
     }
 }

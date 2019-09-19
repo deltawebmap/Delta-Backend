@@ -7,7 +7,7 @@ using ArkBridgeSharedEntities.Entities;
 
 namespace ArkWebMapMasterServer.PresistEntities
 {
-    public class ArkUser
+    /*public class DbUser
     {
         //AUTH
         public ArkUserSigninMethod auth_method { get; set; }
@@ -17,19 +17,14 @@ namespace ArkWebMapMasterServer.PresistEntities
         //User info
         public string profile_image_url { get; set; } //URL to profile image
         public string screen_name { get; set; } //Username displayed
-        public List<string> my_servers { get; set; } //Servers the user owns, by ID
-        public List<string> joined_servers { get; set; } //Servers the user is in. Run GetServers to obtain a new list.
+
         [JsonProperty("id")]
         public string _id { get; set; } //ID of the user
-        public List<string> hidden_servers { get; set; }
 
         public bool is_steam_verified { get; set; }
         public string steam_id { get; set; }
 
         public ArkUserSettings user_settings { get; set; } = new ArkUserSettings();
-
-        public List<string> notification_tokens { get; set; }
-        public Dictionary<string, List<ArkNotificationChannel>> enabled_notifications { get; set; } //Key: Server ID
 
         public void Update()
         {
@@ -107,5 +102,5 @@ namespace ArkWebMapMasterServer.PresistEntities
         None, //Used when auth has not yet been configured.
         UsernamePassword,
         SteamProfile
-    }
+    }*/
 }

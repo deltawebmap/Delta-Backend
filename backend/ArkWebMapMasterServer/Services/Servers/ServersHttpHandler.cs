@@ -10,6 +10,7 @@ using System.Linq;
 using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.Tools;
 using ArkBridgeSharedEntities.Entities.BasicTribeLog;
+using LibDeltaSystem.Db.System;
 
 namespace ArkWebMapMasterServer.Services.Servers
 {
@@ -22,7 +23,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             string serverId = split[0];
 
             //Get the server by this ID
-            ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(serverId);
+            DbServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(serverId);
 
             //If there is content after this, proxy to this server. Else, return server info.
             if(split.Length > 1)
@@ -30,27 +31,24 @@ namespace ArkWebMapMasterServer.Services.Servers
                 string nextUrl = path.Substring(serverId.Length + 1).TrimStart('/');
 
                 //Check if this is a path that requires no auth
-                if (nextUrl == "users")
-                {
-                    //Send back tribe users
-                    return Program.QuickWriteJsonToDoc(e, server.latest_server_local_accounts);
-                }
                 if (nextUrl == "status")
                 {
                     //Returns status for waiting for setup to finish
                     return Program.QuickWriteJsonToDoc(e, new ServerSetupStatusResponse
                     {
-                        ready = server.latest_offline_data_version != -1 && server.latest_report_data_version != -1
+                        ready = server.has_server_report
                     });
                 }
 
                 //Authenticate the user
-                ArkUser user = Users.UsersHttpHandler.AuthenticateUser(e, true);
-                if (user.GetServers().Where(x => x.Item1._id == server._id).Count() != 1 && server.require_auth_to_view)
-                    throw new StandardError("You must be a part of this server to send API calls.", StandardErrorCode.NotPermitted);
+                DbUser user = Users.UsersHttpHandler.AuthenticateUser(e, true);
 
                 //Look up the user's tribe by their steam ID
-                bool hasTribe = server.TryGetTribeId(user.steam_id, out int tribeId);
+                int? tribeIdNullable = server.TryGetTribeIdAsync(user.steam_id).GetAwaiter().GetResult();
+                bool hasTribe = tribeIdNullable.HasValue;
+                if(!hasTribe)
+                    throw new StandardError("You must be a part of this server to send API calls.", StandardErrorCode.NotPermitted);
+                int tribeId = tribeIdNullable.Value;
 
                 //Check if this is one of our URLs.
                 if (nextUrl == "delete")
@@ -76,7 +74,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 if(nextUrl == "hub")
                 {
                     //Get hub data for this tribe
-                    BasicTribeLogEntry[] hubEntries = TribeHubTool.GetTribeLogEntries(new List<Tuple<string, int>> { new Tuple<string, int>(server._id, tribeId) }, 200);
+                    BasicTribeLogEntry[] hubEntries = TribeHubTool.GetTribeLogEntries(new List<Tuple<string, int>> { new Tuple<string, int>(server.id, tribeId) }, 200);
 
                     //Grab Steam profiles from hub data
                     Dictionary<string, SteamProfile> steamProfiles = new Dictionary<string, SteamProfile>();

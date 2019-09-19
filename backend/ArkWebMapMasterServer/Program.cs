@@ -1,5 +1,6 @@
 ﻿using ArkWebMapGatewayClient;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem;
 using LiteDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +25,8 @@ namespace ArkWebMapMasterServer
         public static Gateway.GatewayHandler gatewayHandler;
         public const string PREFIX_URL = "https://deltamap.net/api";
 
+        public static DeltaConnection connection;
+
         static void Main(string[] args)
         {
             Console.WriteLine("Loading config...");
@@ -32,6 +35,10 @@ namespace ArkWebMapMasterServer
             Console.WriteLine("Starting Database...");
             db = new LiteDatabase(config.database_pathname);
             map_db = new LiteDatabase(config.map_database_pathname);
+
+            Console.WriteLine("Connecting to MongoDB...");
+            connection = new DeltaConnection(config.database);
+            connection.Connect().GetAwaiter().GetResult();
 
             Console.WriteLine("Connecting to GATEWAY...");
             gatewayHandler = new Gateway.GatewayHandler();

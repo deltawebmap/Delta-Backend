@@ -2,6 +2,7 @@
 using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Servers;
+using LibDeltaSystem.Db.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,16 +14,16 @@ namespace ArkWebMapMasterServer.Services.Servers
 {
     public static class EditServerListing
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkServer s)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s)
         {
             //Open payload
             EditServerListingPayload payload = Program.DecodePostBody<EditServerListingPayload>(e);
 
             //Authenticate user
-            ArkUser user = ArkWebMapMasterServer.Services.Users.UsersHttpHandler.AuthenticateUser(e, true);
+            DbUser user = ArkWebMapMasterServer.Services.Users.UsersHttpHandler.AuthenticateUser(e, true);
 
             //Ensure user owns server
-            if (user._id != s.owner_uid)
+            if (user.id != s.owner_uid)
                 throw new StandardError("You do not own this server.", StandardErrorCode.NotPermitted);
 
             //Update
@@ -35,7 +36,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             return Program.QuickWriteStatusToDoc(e, true);
         }
 
-        public static void EditServer(ArkServer s, EditServerListingPayload payload, ArkUser user)
+        public static void EditServer(DbServer s, EditServerListingPayload payload, DbUser user)
         {
             //Update name if sent
             if (payload.name != null)
@@ -78,7 +79,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                     ArkCluster cluster = ArkClusterTool.GetClusterById(payload.clusterId);
                     if (cluster == null)
                         throw new StandardError("Cluster ID not found.", StandardErrorCode.InvalidInput);
-                    if(cluster.owner_id != user._id)
+                    if(cluster.owner_id != user.id)
                         throw new StandardError("You do not own this cluster ID.", StandardErrorCode.InvalidInput);
                     s.cluster_id = payload.clusterId;
                 }

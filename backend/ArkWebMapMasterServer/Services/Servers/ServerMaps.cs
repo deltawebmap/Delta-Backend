@@ -4,6 +4,7 @@ using ArkWebMapGatewayClient.Messages.Entities;
 using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Tools;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,10 +14,10 @@ namespace ArkWebMapMasterServer.Services.Servers
 {
     public static class ServerMaps
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkServer s, int tribeId, string next)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s, int tribeId, string next)
         {
             //Grab the maps for this server
-            SavedMapEntry[] maps = DrawableMapTool.GetServerMaps(s._id, tribeId);
+            SavedMapEntry[] maps = DrawableMapTool.GetServerMaps(s.id, tribeId);
 
             //Find what to do
             RequestHttpMethod method = Program.FindRequestMethod(e);
@@ -54,7 +55,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             return null;
         }
 
-        private static Task OnGetRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkServer s, int tribeId, SavedMapEntry[] maps, int mapId)
+        private static Task OnGetRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s, int tribeId, SavedMapEntry[] maps, int mapId)
         {
             //If we're requesting a map ID, return it. Else, return the list of maps.
             if(mapId == -1)
@@ -71,7 +72,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                     {
                         id = map.map_id,
                         name = map.map_name,
-                        url = $"{Program.PREFIX_URL}/servers/{s._id}/maps/{map.map_id}"
+                        url = $"{Program.PREFIX_URL}/servers/{s.id}/maps/{map.map_id}"
                     };
                 }
 
@@ -98,7 +99,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             }
         }
 
-        private static Task OnPostRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkServer s, int tribeId, SavedMapEntry[] maps, int mapId)
+        private static Task OnPostRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s, int tribeId, SavedMapEntry[] maps, int mapId)
         {
             //Decode body
             DrawableMapEditRequest body = Program.DecodePostBody<DrawableMapEditRequest>(e);
@@ -116,7 +117,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 {
                     map_id = id,
                     map_name = body.name,
-                    server_id = s._id,
+                    server_id = s.id,
                     tribe_id = tribeId
                 };
 
@@ -185,7 +186,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             }
         }
 
-        private static Task OnDeleteRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkServer s, int tribeId, SavedMapEntry[] maps, int mapId)
+        private static Task OnDeleteRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s, int tribeId, SavedMapEntry[] maps, int mapId)
         {
             //Fetch map data
             SavedMapEntry map = GetMapById(maps, mapId);

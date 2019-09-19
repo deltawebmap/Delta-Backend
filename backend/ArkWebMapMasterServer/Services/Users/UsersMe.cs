@@ -1,5 +1,6 @@
 ﻿using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace ArkWebMapMasterServer.Services.Users
 {
     public class UsersMe
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkUser u)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
         {
             //Check if we should hide invalid. By default, no
             bool hideInvalid = false;

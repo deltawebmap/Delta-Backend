@@ -2,6 +2,7 @@
 using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Servers;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,13 +15,13 @@ namespace ArkWebMapMasterServer.Services.Clusters
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
         {
             //Authenticate user
-            ArkUser user = Users.UsersHttpHandler.AuthenticateUser(e, true, out string userToken);
+            DbUser user = Users.UsersHttpHandler.AuthenticateUser(e, true, out string userToken);
 
             //Handle
             return ArrayActionsHandler.OnHttpRequest(e, path, user, ArkClusterTool.GetCollection(), CreateMachine, SelectGet, SelectPost, SelectDelete);
         }
 
-        public static Task CreateMachine(Microsoft.AspNetCore.Http.HttpContext e, ArkUser user)
+        public static Task CreateMachine(Microsoft.AspNetCore.Http.HttpContext e, DbUser user)
         {
             //Create a new cluster. Get the args
             ClusterEditArgs edit = Program.DecodePostBody<ClusterEditArgs>(e);
@@ -38,7 +39,7 @@ namespace ArkWebMapMasterServer.Services.Clusters
             ArkCluster cluster = new ArkCluster
             {
                 name = edit.name,
-                owner_id = user._id,
+                owner_id = user.id,
                 _id = id
             };
             ArkClusterTool.GetCollection().Insert(cluster);
@@ -47,12 +48,12 @@ namespace ArkWebMapMasterServer.Services.Clusters
             return Program.QuickWriteJsonToDoc(e, cluster);
         }
 
-        public static Task SelectGet(Microsoft.AspNetCore.Http.HttpContext e, ArkCluster machine, ArkUser user)
+        public static Task SelectGet(Microsoft.AspNetCore.Http.HttpContext e, ArkCluster machine, DbUser user)
         {
             return Program.QuickWriteJsonToDoc(e, machine);
         }
 
-        public static Task SelectPost(Microsoft.AspNetCore.Http.HttpContext e, ArkCluster machine, ArkUser user)
+        public static Task SelectPost(Microsoft.AspNetCore.Http.HttpContext e, ArkCluster machine, DbUser user)
         {
             //Check if we own this cluster. If we do, rename it and save
             ClusterEditArgs edit = Program.DecodePostBody<ClusterEditArgs>(e);
@@ -63,7 +64,7 @@ namespace ArkWebMapMasterServer.Services.Clusters
             return Program.QuickWriteJsonToDoc(e, machine);
         }
 
-        public static Task SelectDelete(Microsoft.AspNetCore.Http.HttpContext e, ArkCluster machine, ArkUser user)
+        public static Task SelectDelete(Microsoft.AspNetCore.Http.HttpContext e, ArkCluster machine, DbUser user)
         {
             throw new StandardError("Not Implemented", StandardErrorCode.NotImplemented);
         }

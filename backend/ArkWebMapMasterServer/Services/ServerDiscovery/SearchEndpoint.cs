@@ -1,5 +1,6 @@
 ﻿using ArkBridgeSharedEntities.Entities.Master;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace ArkWebMapMasterServer.Services.ServerDiscovery
     {
         public const int PAGE_SIZE = 20;
 
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkUser user)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser user)
         {
             //Read payload
             SearchRequest payload = Program.DecodePostBody<SearchRequest>(e);

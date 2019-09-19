@@ -1,5 +1,6 @@
 ﻿using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
 {
     public static class HelloRequest
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkServer s)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s)
         {
             //This is a hello request. Set this server to be the most recent server and send back the server info.
 
@@ -24,10 +25,6 @@ namespace ArkWebMapMasterServer.Services.Bridge
                     {"download_url", BridgeHttpHandler.LATEST_RELEASE_URL },
                     {"latest_version", BridgeHttpHandler.LATEST_RELEASE_VERSION.ToString() }
                 });
-
-            //Check to see if the server was deleted
-            if (s.is_deleted)
-                return ReplyWithErrorMessage(e, SlaveHelloReply_MessageType.ServerDeleted, new Dictionary<string, string>());
 
             //Create reply
             SlaveHelloReply reply = new SlaveHelloReply

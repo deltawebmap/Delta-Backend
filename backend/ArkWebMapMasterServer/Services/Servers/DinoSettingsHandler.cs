@@ -3,6 +3,7 @@ using ArkBridgeSharedEntities.Entities.Master;
 using ArkWebMapGatewayClient.Messages;
 using ArkWebMapMasterServer.PresistEntities;
 using ArkWebMapMasterServer.Tools;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,7 @@ namespace ArkWebMapMasterServer.Services.Servers
 {
     public static class DinoSettingsHandler
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string next, ArkUser user, ArkServer s, bool hasTribe, int tribeId)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string next, DbUser user, DbServer s, bool hasTribe, int tribeId)
         {
             //Stop if we're not in a tribe
             if (!hasTribe)
@@ -33,7 +34,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 d = new DinoTribeSettings
                 {
                     dino_id = dinoId,
-                    server_id = s._id,
+                    server_id = s.id,
                     tribe_id = tribeId,
                     _id = query,
                     notes = "",
@@ -44,12 +45,12 @@ namespace ArkWebMapMasterServer.Services.Servers
             return ArrayActionsHandler.OnHttpRequestCustomFind(e, user, d, SelectGet, SelectPost, null);
         }
 
-        public static Task SelectGet(Microsoft.AspNetCore.Http.HttpContext e, DinoTribeSettings dino, ArkUser user)
+        public static Task SelectGet(Microsoft.AspNetCore.Http.HttpContext e, DinoTribeSettings dino, DbUser user)
         {
             return Program.QuickWriteJsonToDoc(e, dino);
         }
 
-        public static Task SelectPost(Microsoft.AspNetCore.Http.HttpContext e, DinoTribeSettings dino, ArkUser user)
+        public static Task SelectPost(Microsoft.AspNetCore.Http.HttpContext e, DinoTribeSettings dino, DbUser user)
         {
             //Read payload and update
             DinoTribeSettings payload = Program.DecodePostBody<DinoTribeSettings>(e);

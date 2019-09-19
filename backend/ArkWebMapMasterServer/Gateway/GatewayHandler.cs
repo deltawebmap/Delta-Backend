@@ -24,10 +24,7 @@ namespace ArkWebMapMasterServer.Gateway
 
         public override void Msg_SubserverOfflineDataUpdated(MessageSubserverOfflineDataUpdated data, object context)
         {
-            //Update server data version
-            PresistEntities.ArkServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(data.server_id);
-            server.latest_offline_data_version = data.data_version;
-            server.Update();
+            
         }
     }
 }

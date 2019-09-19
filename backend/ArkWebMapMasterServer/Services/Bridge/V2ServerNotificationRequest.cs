@@ -1,6 +1,7 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapGatewayClient.Messages;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +11,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
 {
     public static class V2ServerNotificationRequest
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, ArkServer s)
+        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s)
         {
             //Decode the notification from the body
             ArkV2NotificationRequest request = Program.DecodePostBody<ArkV2NotificationRequest>(e);
@@ -25,7 +26,7 @@ namespace ArkWebMapMasterServer.Services.Bridge
             Program.gateway.SendMessage(new SendPushNotificationToTribe
             {
                 opcode = ArkWebMapGatewayClient.GatewayMessageOpcode.SendPushNotificationToTribe,
-                serverId = s._id,
+                serverId = s.id,
                 tribeId = request.targetTribeId,
                 payload = payload
             });

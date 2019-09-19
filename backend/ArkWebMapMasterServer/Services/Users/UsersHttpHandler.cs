@@ -1,5 +1,6 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.PresistEntities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -11,7 +12,7 @@ namespace ArkWebMapMasterServer.Services.Users
 {
     public class UsersHttpHandler
     {
-        public static ArkUser AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, bool required)
+        public static DbUser AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, bool required)
         {
             return AuthenticateUser(e, required, out string t);
         }
@@ -29,12 +30,12 @@ namespace ArkWebMapMasterServer.Services.Users
             return token;
         }
 
-        public static ArkUser AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, bool required, out string token)
+        public static DbUser AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, bool required, out string token)
         {
             token = GetAuthToken(e);
             if (token == null && required)
                 throw new StandardError("No Auth Token Provided.", StandardErrorCode.AuthRequired);
-            ArkUser user = ArkWebMapMasterServer.Users.UserTokens.ValidateUserToken(token);
+            DbUser user = ArkWebMapMasterServer.Users.UserTokens.ValidateUserToken(token);
             if (user == null && required)
                 throw new StandardError("You're not signed in.", StandardErrorCode.AuthRequired);
             return user;
@@ -52,7 +53,7 @@ namespace ArkWebMapMasterServer.Services.Users
             }
             
             //Every path here requies authentication. Do it.
-            ArkUser user = AuthenticateUser(e, true, out string userToken);
+            DbUser user = AuthenticateUser(e, true, out string userToken);
 
             //Check path
             if (path.StartsWith("@me/server_wizard/start_headless"))
@@ -64,55 +65,6 @@ namespace ArkWebMapMasterServer.Services.Users
             {
                 //Pass onto server gen
                 return Misc.ArkSetupProxy.OnCreateProxySessionRequest(e, user);
-            }
-            if (path.StartsWith("@me/servers/add_ignore/"))
-            {
-                //Add this server to the ignore list.
-                string serverId = e.Request.Query["id"];
-                if (user.hidden_servers == null)
-                    user.hidden_servers = new List<string>();
-                if (!user.hidden_servers.Contains(serverId))
-                    user.hidden_servers.Add(serverId);
-                user.Update();
-                return Program.QuickWriteStatusToDoc(e, true);
-            }
-            if (path.StartsWith("@me/servers/remove_ignore/"))
-            {
-                //Add this server to the ignore list.
-                string serverId = e.Request.Query["id"];
-                if (user.hidden_servers == null)
-                    user.hidden_servers = new List<string>();
-                if (user.hidden_servers.Contains(serverId))
-                    user.hidden_servers.Remove(serverId);
-                user.Update();
-                return Program.QuickWriteStatusToDoc(e, true);
-            }
-            if (path.StartsWith("@me/servers/remove_ignore_mass/"))
-            {
-                //Loop through servers
-                string[] serverIds = e.Request.Query["ids"].ToString().Split(',');
-                if (user.hidden_servers == null)
-                    user.hidden_servers = new List<string>();
-                foreach (string s in serverIds)
-                {
-                    if(user.hidden_servers.Contains(s))
-                        user.hidden_servers.Remove(s);
-                }
-                user.Update();
-                return Program.QuickWriteStatusToDoc(e, true);
-            }
-            if(path.StartsWith("@me/servers/change_notifications"))
-            {
-                return EditServerNotifications.OnHttpRequest(e, user);
-            }
-            if(path == "@me/notification_token")
-            {
-                //Put notification token.
-                return PostedNotificationToken.OnHttpRequest(e, user);
-            }
-            if (path == "@me/hub")
-            {
-                return HubService.OnHttpRequest(e, user);
             }
             if (path == "@me/report_issue")
             {
@@ -134,8 +86,8 @@ namespace ArkWebMapMasterServer.Services.Users
                     throw new StandardError("Only POST or post requests are valid here.", StandardErrorCode.BadMethod);
                 
                 //Update
-                user.user_settings = Program.DecodePostBody<ArkUserSettings>(e);
-                user.Update();
+                user.user_settings = Program.DecodePostBody<DbUserSettings>(e);
+                user.UpdateAsync().GetAwaiter().GetResult();
                 return Program.QuickWriteStatusToDoc(e, true);
             }
             if(path == "@me/archive")

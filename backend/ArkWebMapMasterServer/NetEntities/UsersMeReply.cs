@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ArkBridgeSharedEntities.Entities.Master;
+using LibDeltaSystem.Db.System;
+using LibDeltaSystem.Db.Content;
 
 namespace ArkWebMapMasterServer.NetEntities
 {
@@ -13,8 +15,7 @@ namespace ArkWebMapMasterServer.NetEntities
         public string profile_image_url;
         public string id;
         public string steam_id;
-        public ArkUserSettings user_settings;
-
+        public DbUserSettings user_settings;
         public List<UsersMeReply_Server> servers;
 
         public UsersMeReply()
@@ -22,28 +23,23 @@ namespace ArkWebMapMasterServer.NetEntities
 
         }
 
-        public void MakeUsersMe(ArkUser u, bool filterHiddenServers)
+        public void MakeUsersMe(DbUser u, bool filterHiddenServers)
         {
             //Set basic values
             screen_name = u.screen_name;
             profile_image_url = u.profile_image_url;
-            id = u._id;
+            id = u.id;
             steam_id = u.steam_id;
             user_settings = u.user_settings;
 
-            //Check
-            if (u.hidden_servers == null)
-                u.hidden_servers = new List<string>();
-
             //Convert servers
             servers = new List<UsersMeReply_Server>();
-            var found_servers = u.GetServers(false);
+            var found_servers = u.GetGameServers();
             foreach(var id in found_servers)
             {
                 //Get server by ID
                 var converted = MakeServer(id.Item1, id.Item2);
-                if ((!converted.is_hidden || !filterHiddenServers) && converted.has_ever_gone_online)
-                    servers.Add(converted);
+                servers.Add(converted);
             }
 
         }
@@ -55,54 +51,47 @@ namespace ArkWebMapMasterServer.NetEntities
             profile_image_url = "";
             id = null;
             steam_id = null;
-            user_settings = new ArkUserSettings();
+            user_settings = new DbUserSettings();
             servers = new List<UsersMeReply_Server>();
-            servers.Add(MakeServer(Servers.ArkSlaveServerSetup.GetCollection().FindById(DemoServerData.DEMO_SERVER_ID), new ArkSlaveReport_PlayerAccount
+            /*servers.Add(MakeServer(Servers.ArkSlaveServerSetup.GetCollection().FindById(DemoServerData.DEMO_SERVER_ID), new ArkSlaveReport_PlayerAccount
             {
                 allow_player = true,
                 player_name = "Demo User",
                 player_steam_id = null,
                 player_tribe_id = DemoServerData.DEMO_SERVER_TRIBE_ID,
                 player_tribe_name = "Demo Tribe"
-            }));
+            }));*/
+
+            //TODO!!
         }
 
-        public static UsersMeReply_Server MakeServer(ArkServer s, ArkSlaveReport_PlayerAccount ps)
+        public static UsersMeReply_Server MakeServer(DbServer s, DbPlayerProfile ps)
         {
             //If this server has never sent a status, skip
             UsersMeReply_Server reply = new UsersMeReply_Server();
             reply.display_name = s.display_name;
             reply.image_url = s.image_url;
-            if (reply.image_url == null)
-                reply.image_url = s.GetPlaceholderIcon();
             reply.owner_uid = s.owner_uid;
-            reply.id = s._id;
+            reply.id = s.id;
             reply.has_ever_gone_online = s.has_server_report;
-            reply.lastReportTime = new DateTime(s.latest_server_report_downloaded);
 
             if(ps != null)
             {
-                reply.tribeId = ps.player_tribe_id;
-                reply.tribeName = ps.player_tribe_name;
-                reply.arkName = ps.player_name;
+                reply.tribeId = ps.tribe_id;
+                reply.tribeName = s.GetTribeAsync(ps.tribe_id).GetAwaiter().GetResult().tribe_name;
+                reply.arkName = ps.name;
             }
 
-            string base_endpoint = $"https://deltamap.net/api/servers/{s._id}/";
-            reply.endpoint_hub = base_endpoint + "hub";
-            reply.endpoint_createsession = $"https://lightspeed.deltamap.net/{s._id}/" + "create_session";
-            reply.endpoint_offline_data = "https://offline-content.deltamap.net/content/"+s._id;
+            string base_endpoint = $"https://deltamap.net/api/servers/{s.id}/";
+            reply.endpoint_createsession = $"https://echo-content.deltamap.net/{s.id}/" + "create_session";
 
             reply.map_id = s.latest_server_map;
             reply.map_name = reply.map_id;
-            reply.is_online = Program.onlineServers.Contains(s._id);
-
-            reply.report_data_version = s.latest_report_data_version;
-            reply.offline_data_version = s.latest_offline_data_version;
 
             //Get the published server listing, if we have it
             if(s.is_published)
             {
-                ArkPublishedServerListing listing = ServerPublishingManager.GetPublishedServer(s._id);
+                ArkPublishedServerListing listing = ServerPublishingManager.GetPublishedServer(s.id);
                 reply.public_listing = listing;
                 reply.is_public = listing != null;
             }

@@ -14,10 +14,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Core" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Https" Version="2.2.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.9.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\LibDeltaSystem\LibDeltaSystem\LibDeltaSystem.csproj" />
     <ProjectReference Include="..\Ark-Save-Manager\ArkSaveEditor\ArkSaveEditor.csproj" />
     <ProjectReference Include="..\ArkBridgeSharedEntities\ArkBridgeSharedEntities.csproj" />
     <ProjectReference Include="..\ArkHttpServer\ArkHttpServer.csproj" />
