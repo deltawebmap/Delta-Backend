@@ -1,5 +1,4 @@
-﻿using ArkHttpServer.Entities;
-using LibDelta;
+﻿using LibDelta;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

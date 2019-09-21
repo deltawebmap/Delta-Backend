@@ -57,9 +57,11 @@ namespace ArkWebMapGateway
 
         public static void SendMsgToServerMembers(GatewayMessageBase msg, string serverId)
         {
-            List<ArkSlaveReport_PlayerAccount> serverMembers = ServerDataHolder.GetServerMembers(serverId);
+            /*List<ArkSlaveReport_PlayerAccount> serverMembers = ServerDataHolder.GetServerMembers(serverId);
             foreach (var t in serverMembers)
-                SendMsgToUserSteamID(msg, t.player_steam_id);
+                SendMsgToUserSteamID(msg, t.player_steam_id);*/
+
+            //TODO
         }
 
         public static void SendMsgToTribe(string msg, string serverId, int tribeId)
@@ -67,10 +69,12 @@ namespace ArkWebMapGateway
             //WARNING: Ensure the tribe_id and server_id headers are added before sending this message.
 
             //Get the server data
-            List<ArkSlaveReport_PlayerAccount> serverMembers = ServerDataHolder.GetServerMembers(serverId);
+            /*List<ArkSlaveReport_PlayerAccount> serverMembers = ServerDataHolder.GetServerMembers(serverId);
             var tribeMembers = serverMembers.Where(x => x.player_tribe_id == tribeId);
             foreach (var t in tribeMembers)
-                SendMsgToUserSteamID(msg, t.player_steam_id);
+                SendMsgToUserSteamID(msg, t.player_steam_id);*/
+                
+            //TODO
         }
 
         public static Queue<GatewayMessageBase> masterQueue = new Queue<GatewayMessageBase>(); //Stores messages to send to the master server while it is offline.

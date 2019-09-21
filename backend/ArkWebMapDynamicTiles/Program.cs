@@ -1,5 +1,4 @@
-﻿using ArkHttpServer.Entities;
-using ArkWebMapDynamicTiles.Entities;
+﻿using ArkWebMapDynamicTiles.Entities;
 using ArkWebMapDynamicTiles.MapSessions;
 using LibDelta;
 using Microsoft.AspNetCore.Builder;
@@ -85,7 +84,7 @@ namespace ArkWebMapDynamicTiles
                             //Read image
                             Image<Rgba32> source;
                             using (Stream s = za.GetEntry(i.Value).Open())
-                                source = Image.Load(s);
+                                source = Image.Load<Rgba32>(s);
 
                             //Add structure size map
                             structure_size_map.Add(i.Key, new PublicStructureSize

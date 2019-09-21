@@ -22,7 +22,6 @@
     <ProjectReference Include="..\..\..\LibDeltaSystem\LibDeltaSystem\LibDeltaSystem.csproj" />
     <ProjectReference Include="..\Ark-Save-Manager\ArkSaveEditor\ArkSaveEditor.csproj" />
     <ProjectReference Include="..\ArkBridgeSharedEntities\ArkBridgeSharedEntities.csproj" />
-    <ProjectReference Include="..\ArkHttpServer\ArkHttpServer.csproj" />
     <ProjectReference Include="..\ArkWebMapGatewayClient\ArkWebMapGatewayClient.csproj" />
   </ItemGroup>
 

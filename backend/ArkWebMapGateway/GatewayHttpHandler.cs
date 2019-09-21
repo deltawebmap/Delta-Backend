@@ -37,8 +37,6 @@ namespace ArkWebMapGateway
                     //Use the endpoint to determine the client type.
                     if (endpoint == "master")
                         await MasterServerGatewayConnection.HandleIncomingConnection(e, version);
-                    else if (endpoint == "subserver")
-                        await SubServerGatewayConnection.HandleIncomingConnection(e, version);
                     else if (endpoint == "user")
                         await FrontendGatewayConnection.HandleIncomingConnection(e, version);
                     else if (endpoint == "notifications")

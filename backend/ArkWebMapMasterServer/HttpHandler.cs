@@ -31,11 +31,6 @@ namespace ArkWebMapMasterServer
                     //Pass onto this part
                     return Services.Clusters.ClustersHttpHandler.OnHttpRequest(e, path.Substring("/clusters/".Length));
                 }
-                if (path.StartsWith("/bridge/"))
-                {
-                    //Pass onto this part
-                    return Services.Bridge.BridgeHttpHandler.OnHttpRequest(e, path.Substring("/bridge/".Length));
-                }
                 if (path.StartsWith("/auth/"))
                 {
                     //Pass onto this part

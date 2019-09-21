@@ -1,5 +1,5 @@
 ﻿using ArkBridgeSharedEntities.Entities;
-using ArkHttpServer.NetEntities;
+using ArkWebMapMasterServer.NetEntities;
 using ArkWebMapMasterServer.PresistEntities;
 using LibDeltaSystem.Db.System;
 using System;

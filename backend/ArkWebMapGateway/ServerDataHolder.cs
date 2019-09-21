@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ArkWebMapGateway
 {
-    public static class ServerDataHolder
+    /*public static class ServerDataHolder
     {
         private static Dictionary<string, List<ArkSlaveReport_PlayerAccount>> serverTribes = new Dictionary<string, List<ArkSlaveReport_PlayerAccount>>();
 
@@ -32,5 +32,5 @@ namespace ArkWebMapGateway
                 return data;
             }
         }
-    }
+    }*/
 }
