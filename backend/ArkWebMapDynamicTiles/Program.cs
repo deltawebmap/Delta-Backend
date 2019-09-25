@@ -1,6 +1,7 @@
-﻿using ArkWebMapDynamicTiles.Entities;
+﻿using ArkSaveEditor.ArkEntries;
+using ArkWebMapDynamicTiles.Entities;
 using ArkWebMapDynamicTiles.MapSessions;
-using LibDelta;
+using LibDeltaSystem;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
@@ -22,8 +23,11 @@ namespace ArkWebMapDynamicTiles
     {
         public static Random rand = new Random();
         public static PrimalDataImagePackage image_package;
+        public static List<StructureDisplayMetadata> structure_metadata;
         public static Timer kill_timer;
         public static ConfigFile config;
+
+        public static DeltaConnection connection;
 
         public static Dictionary<string, PublicStructureSize> structure_size_map = new Dictionary<string, PublicStructureSize>();
 
@@ -38,13 +42,11 @@ namespace ArkWebMapDynamicTiles
             config = JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText(args[0]));
 
             //Init the lib
-            DeltaMapTools.Init(config.system_api_key, "DYNAMIC_IMAGES_EDGE", new ArkWebMapGatewayClient.GatewayMessageHandler());
-
-            //Get the db
-            ContentTool.db = new LiteDB.LiteDatabase(config.database_path);
+            connection = new DeltaConnection(config.database_config_path);
 
             //Import content
             image_package = ImportImages(config.image_content_path);
+            structure_metadata = JsonConvert.DeserializeObject<List<StructureDisplayMetadata>>(File.ReadAllText(config.metadata_content_path));
 
             //Start kill timer
             kill_timer = new Timer(1000);

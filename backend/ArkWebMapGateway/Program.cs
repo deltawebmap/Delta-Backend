@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using LibDeltaSystem;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
@@ -12,11 +14,25 @@ namespace ArkWebMapGateway
     class Program
     {
         static Random rand;
+        public static DeltaConnection conn;
+        public static SystemConfigFile config;
 
         static void Main(string[] args)
         {
             Console.WriteLine("Starting ArkWebMap WebSocket Gateway...");
+
+            //Init
             rand = new Random();
+            ClientHolder.connections = new List<GatewayConnection>();
+
+            //Load config
+            config = JsonConvert.DeserializeObject<SystemConfigFile>(File.ReadAllText(args[0]));
+
+            //Connect to database
+            conn = new DeltaConnection(config.db);
+            conn.Connect().GetAwaiter().GetResult();
+
+            //Start
             MainAsync().GetAwaiter().GetResult();
         }
 
@@ -26,9 +42,9 @@ namespace ArkWebMapGateway
                 .UseKestrel(options =>
                 {
                     IPAddress addr = IPAddress.Any;
-                    options.Listen(addr, 43297, listenOptions =>
+                    options.Listen(addr, config.port, listenOptions =>
                     {
-                        listenOptions.UseHttps("certificate.pfx", "password");
+                        listenOptions.UseHttps(config.cert_pathname, config.cert_password);
                     });
                 })
                 .UseStartup<Program>()

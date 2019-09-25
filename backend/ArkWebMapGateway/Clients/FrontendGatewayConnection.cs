@@ -1,8 +1,8 @@
 ﻿using ArkBridgeSharedEntities.Entities.Master;
-using ArkWebMapGateway.ClientHandlers;
 using ArkWebMapGateway.Entities;
 using ArkWebMapGatewayClient;
 using ArkWebMapMasterServer.NetEntities;
+using LibDeltaSystem.Db.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,25 +16,14 @@ namespace ArkWebMapGateway.Clients
 {
     public class FrontendGatewayConnection : GatewayConnection
     {
-        public string userId;
-        public UsersMeReply user;
-        public FrontendGatewayHandler handler;
+        public DbUser user;
 
         public static async Task<FrontendGatewayConnection> HandleIncomingConnection(Microsoft.AspNetCore.Http.HttpContext e, string version)
         {
             //Do authentication
-            UsersMeReply user;
-            try
+            DbUser user = await Program.conn.AuthenticateUserToken(e.Request.Query["auth_token"]);
+            if(user == null)
             {
-                using (WebClient wc = new WebClient())
-                {
-                    wc.Headers.Add("Authorization", "Bearer " + e.Request.Query["auth_token"]);
-                    string s = wc.DownloadString("https://deltamap.net/api/users/@me/");
-                    user = JsonConvert.DeserializeObject<UsersMeReply>(s);
-                }
-            } catch (Exception ex)
-            {
-                //Send auth failed.
                 await Program.QuickWriteToDoc(e, "Not Authenticated.", "text/plain", 401);
                 return null;
             }
@@ -42,73 +31,64 @@ namespace ArkWebMapGateway.Clients
             //Start
             FrontendGatewayConnection conn = new FrontendGatewayConnection
             {
+                type = "USER",
+                id = user.id,
                 user = user,
-                userId = user.id
-                
+                indexes = new Dictionary<string, List<string>>()
             };
-            conn.handler = new FrontendGatewayHandler(conn);
-            conn.OnSetHandler(conn.handler);
+
+            //Refresh indexes
+            await conn.RefreshIndexes();
 
             //Run
             await conn.Run(e, () =>
             {
                 //Ready
                 //Add
-                lock (ConnectionHolder.users)
-                {
-                    ConnectionHolder.users.Add(conn);
-                }
-
-                //Test
-                /*MessageSender.SendMsgToTribe(new ArkWebMapGatewayClient.Messages.GatewayMessageBase
-                {
-                    opcode = ArkWebMapGatewayClient.GatewayMessageOpcode.None,
-                    headers = new Dictionary<string, string>()
-                }, "x5wyzx9myzU3AKkdzlWHBzAt", 1702654661);*/
+                lock (ClientHolder.connections)
+                    ClientHolder.connections.Add(conn);
             });
 
             return conn;
         }
 
+        /// <summary>
+        /// Refreshes the indexes so we can send messages.
+        /// </summary>
+        /// <returns></returns>
+        public override async Task RefreshIndexes()
+        {
+            //Fetch owned servers
+            var ownedServers = await user.GetGameServersAsync();
+
+            //Now, add them
+            lock(indexes)
+            {
+                indexes.Clear();
+                indexes.Add("SERVERS", new List<string>());
+                indexes.Add("TRIBES", new List<string>());
+
+                foreach(var s in ownedServers)
+                {
+                    indexes["SERVERS"].Add(s.Item1.id);
+                    indexes["TRIBES"].Add(s.Item1.id+"/"+s.Item2.tribe_id.ToString());
+                }
+            }
+        }
+
         public override Task<bool> OnClose(WebSocketCloseStatus? status)
         {
             //Remove this from the list of clients
-            lock (ConnectionHolder.users)
-                ConnectionHolder.users.Remove(this);
+            lock (ClientHolder.connections)
+                ClientHolder.connections.Remove(this);
 
             return base.OnClose(status);
         }
 
-        public override Task<bool> OnMsg(string msg)
+        public override async Task<bool> OnMsg(string msg)
         {
-            //Deserialize as base type to get the opcode
-            GatewayMessageBase b = JsonConvert.DeserializeObject<GatewayMessageBase>(msg);
-
-            //Get the required header
-            if (!b.headers.ContainsKey("server_id"))
-                return Task.FromResult(false);
-            string serverId = b.headers["server_id"];
-
-            //Find servers
-            var matches = user.servers.Where(x => x.id == serverId);
-            if (matches.Count() != 1)
-                return Task.FromResult(false);
-            UsersMeReply_Server server = matches.First();
-
-            //Create context
-            GatewayFrontendMsgMeta context = new GatewayFrontendMsgMeta
-            {
-                server = server,
-                server_id = server.id,
-                tribe_id = server.tribeId,
-                user_id = userId
-            };
-
-            //Now, let it be handled like normal.
-            handler.HandleMsg(b.opcode, msg, context);
-
-            //Return OK
-            return Task.FromResult<bool>(true);
+            //Ignore
+            return true;
         }
     }
 }

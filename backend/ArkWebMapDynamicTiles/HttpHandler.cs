@@ -1,8 +1,8 @@
 ﻿using ArkBridgeSharedEntities.Requests;
 using ArkWebMapDynamicTiles.Entities;
 using ArkWebMapDynamicTiles.MapSessions;
-using ArkWebMapMasterServer.NetEntities;
-using LibDelta;
+using LibDeltaSystem;
+using LibDeltaSystem.Db.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -36,8 +36,6 @@ namespace ArkWebMapDynamicTiles
                 string[] split = e.Request.Path.ToString().Split('/');
 
                 //Check if this is one of our pathnames
-                if (e.Request.Path.ToString() == "/upload") { await OnContentPost(e); return; }
-                if (e.Request.Path.ToString() == "/commit") { await OnCommitPost(e); return; }
                 if (e.Request.Path.ToString() == "/structure_sizes.json") { await Program.QuickWriteToDoc(e, JsonConvert.SerializeObject(Program.structure_size_map), "application/json"); return; }
                 if (e.Request.Path.ToString().StartsWith("/create/")) { await CreateSession(e, split); return; }
                 if (e.Request.Path.ToString().StartsWith("/heartbeat/")) { await HeartbeatSession(e, split); return; }
@@ -64,25 +62,22 @@ namespace ArkWebMapDynamicTiles
             string mapType = split[3];
 
             //Authenticate this user
-            UsersMeReply user = await AuthenticateUser(e, split);
+            DbUser user = await AuthenticateUser(e, split);
             if (user == null)
                 return;
 
+            //Get game servers
+            var servers = await user.GetGameServersAsync();
+
             //Ensure this user has this server on their list
-            if (user.servers.Where(i => i.id == serverId).Count() != 1)
+            if (servers.Where(i => i.Item1.id == serverId).Count() != 1)
             {
                 await Program.QuickWriteToDoc(e, "You Are Not A Member Of This Server", "text/plain", 403);
                 return;
             }
-            var server = user.servers.Where(i => i.id == serverId).First();
-
-            //Load data for this server
-            ContentMetadata commit = ContentTool.GetCommit(serverId);
-            if (commit == null)
-            {
-                await Program.QuickWriteToDoc(e, "This Server Has Not Uploaded Data Yet", "text/plain", 404);
-                return;
-            }
+            var serverBundle = servers.Where(i => i.Item1.id == serverId).First();
+            var server = serverBundle.Item1;
+            var tribe = serverBundle.Item2;
 
             //Switch off to the map to handle this
             MapSession session;
@@ -96,19 +91,12 @@ namespace ArkWebMapDynamicTiles
 
             //Set some data
             session.user_id = user.id;
-            session.tribe_id = server.tribeId;
+            session.tribe_id = tribe.tribe_id;
             session.server_id = server.id;
             session.last_heartbeat = DateTime.UtcNow;
 
-            //Ensure this is an okay version
-            if (commit.version < GLOBAL_MIN_DATA_VERSION || commit.version < session.GetMinDataVersion())
-            {
-                await Program.QuickWriteToDoc(e, "The Server Data Is Too Old", "text/plain", 404);
-                return;
-            }
-
             //Load session
-            await session.OnCreate(e, server, commit);
+            await session.OnCreate(e, server, tribe.tribe_id);
 
             //Add to sessions list
             string token = SessionTool.AddSession(session);
@@ -116,9 +104,6 @@ namespace ArkWebMapDynamicTiles
             //Create data and write it
             SessionCreateData response = new SessionCreateData
             {
-                data_revision = commit.revision,
-                data_time = new DateTime(commit.time),
-                data_version = commit.version,
                 heartbeat_policy_ms = Program.HEARTBEAT_POLICY_MS,
                 token = token,
                 url_map = Program.SESSION_ROOT + "act/" + token + "/{x}_{y}_{z}",
@@ -194,7 +179,7 @@ namespace ArkWebMapDynamicTiles
             await Program.QuickWriteToDoc(e, "OK", "text/plain", 200);
         }
 
-        private static async Task<UsersMeReply> AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, string[] pathSplit)
+        private static async Task<DbUser> AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, string[] pathSplit)
         {
             //Find the token
             string token = null;
@@ -211,7 +196,7 @@ namespace ArkWebMapDynamicTiles
             }
 
             //Try and authenticate
-            UsersMeReply user = await DeltaAuth.AuthenticateUser(token);
+            DbUser user = await Program.connection.AuthenticateUserToken(token);
             if(user == null)
             {
                 //Not authenticated
@@ -219,31 +204,6 @@ namespace ArkWebMapDynamicTiles
                 return null;
             }
             return user;
-        }
-
-        private static async Task OnContentPost(Microsoft.AspNetCore.Http.HttpContext e)
-        {
-            //Create a content object and return the upload token
-            string token = ContentTool.PutContentGetToken(e.Request.Body);
-            await Program.QuickWriteToDoc(e, token, "text/plain");
-        }
-
-        private static async Task OnCommitPost(Microsoft.AspNetCore.Http.HttpContext e)
-        {
-            //Decode the post body
-            DynamicTileContentPost request = Program.DecodePostBody<DynamicTileContentPost>(e);
-
-            //Verify server
-            var server = DeltaAuth.AuthenticateServer(request.server_id, request.server_creds);
-            if (server == null)
-                throw new Exception("Not authenticated.");
-
-            //Create commit
-            ContentTool.CommitContent(request);
-
-            //Return OK
-            Console.WriteLine("Created commit.");
-            await Program.QuickWriteToDoc(e, "OK", "text/plain");
         }
     }
 }

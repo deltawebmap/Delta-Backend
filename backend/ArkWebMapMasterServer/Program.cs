@@ -1,4 +1,5 @@
 ﻿using ArkWebMapGatewayClient;
+using ArkWebMapGatewayClient.Sender;
 using ArkWebMapMasterServer.PresistEntities;
 using LibDeltaSystem;
 using LiteDB;
@@ -18,11 +19,10 @@ namespace ArkWebMapMasterServer
     {
         public static LiteDatabase db;
         public static LiteDatabase map_db;
-        public static AWMGatewayClient gateway;
+        public static SenderConnection gateway;
         public static MasterServerConfig config;
         public static Random rand = new Random();
         public static List<string> onlineServers;
-        public static Gateway.GatewayHandler gatewayHandler;
         public const string PREFIX_URL = "https://deltamap.net/api";
 
         public static DeltaConnection connection;
@@ -41,8 +41,7 @@ namespace ArkWebMapMasterServer
             connection.Connect().GetAwaiter().GetResult();
 
             Console.WriteLine("Connecting to GATEWAY...");
-            gatewayHandler = new Gateway.GatewayHandler();
-            gateway = AWMGatewayClient.CreateClient(GatewayClientType.MasterServer, "master", "", 1, 0, false, gatewayHandler, config.system_server_keys["master"]);
+            gateway = SenderConnection.CreateClient("sender", "", 1, 0, false, config.database.key);
 
             Console.WriteLine("Fetching online servers from LIGHTSPEED...");
             FetchOnlineServers();

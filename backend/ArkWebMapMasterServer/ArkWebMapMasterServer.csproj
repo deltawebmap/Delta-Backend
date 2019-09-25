@@ -25,8 +25,4 @@
     <ProjectReference Include="..\ArkWebMapGatewayClient\ArkWebMapGatewayClient.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Managers\" />
-  </ItemGroup>
-
 </Project>

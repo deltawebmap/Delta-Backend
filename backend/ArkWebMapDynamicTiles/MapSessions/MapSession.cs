@@ -1,5 +1,5 @@
-﻿using ArkBridgeSharedEntities.Entities.Master;
-using ArkWebMapDynamicTiles.Entities;
+﻿using ArkWebMapDynamicTiles.Entities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +15,7 @@ namespace ArkWebMapDynamicTiles.MapSessions
 
         public DateTime last_heartbeat;
 
-        public abstract Task OnCreate(Microsoft.AspNetCore.Http.HttpContext e, UsersMeReply_Server server, ContentMetadata commit);
+        public abstract Task OnCreate(Microsoft.AspNetCore.Http.HttpContext e, DbServer server, int tribeId);
         public abstract Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, float x, float y, float z);
         public abstract int GetMinDataVersion();
         public abstract int GetMaxZoom();

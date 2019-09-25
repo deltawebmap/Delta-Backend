@@ -11,9 +11,5 @@ namespace ArkWebMapDynamicTiles.Entities
 
         public string url_map;
         public string url_heartbeat;
-
-        public int data_version;
-        public string data_revision;
-        public DateTime data_time;
     }
 }

@@ -1,5 +1,4 @@
-﻿using ArkWebMapGateway.ClientHandlers;
-using ArkWebMapGatewayClient;
+﻿using ArkWebMapGatewayClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ArkWebMapGateway.Clients
 {
-    public class SystemGatewayConnection : GatewayConnection
+    /*public class SystemGatewayConnection : GatewayConnection
     {
         public SystemGatewayHandler handler;
 
@@ -71,5 +70,5 @@ namespace ArkWebMapGateway.Clients
             //Return OK
             return Task.FromResult<bool>(true);
         }
-    }
+    }*/
 }

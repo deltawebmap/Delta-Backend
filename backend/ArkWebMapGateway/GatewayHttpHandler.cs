@@ -35,14 +35,12 @@ namespace ArkWebMapGateway
                 if (e.WebSockets.IsWebSocketRequest)
                 {
                     //Use the endpoint to determine the client type.
-                    if (endpoint == "master")
-                        await MasterServerGatewayConnection.HandleIncomingConnection(e, version);
+                    if (endpoint == "sender")
+                        await SenderConnection.HandleIncomingConnection(e, version);
                     else if (endpoint == "user")
                         await FrontendGatewayConnection.HandleIncomingConnection(e, version);
-                    else if (endpoint == "notifications")
-                        await NotificationConnection.HandleIncomingConnection(e, version);
-                    else if (endpoint == "system")
-                        await SystemGatewayConnection.HandleIncomingConnection(e, version);
+                    /*else if (endpoint == "system")
+                        await SystemGatewayConnection.HandleIncomingConnection(e, version);*/
                     else
                         await Program.QuickWriteToDoc(e, "Unknown endpoint.", "text/plain", 404);
                 } else

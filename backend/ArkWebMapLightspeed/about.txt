@@ -1,4 +1,0 @@
-﻿About ArkWebMap LIGHTSPEED:
-
-ArkWebMap LIGHTSPEED is a proxy to connect to Ark sub-servers. Sub-servers will connect to it using WebSockets, while end users will connect to it using HTTP(s).
-ArkWebMap LIGHTSPEED (awm ls) handles authentication for end users 

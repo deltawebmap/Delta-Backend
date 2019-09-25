@@ -128,13 +128,13 @@ namespace ArkWebMapMasterServer.Services.Servers
                 DrawableMapTool.ClearMapPoints(map.server_id, map.tribe_id, map.map_id);
 
                 //Send action
-                GatewayActionTool.SendActionToTribe(new MessageOnDrawableMapChange
+                Program.gateway.SendMessageToUserInTribeId(new MessageOnDrawableMapChange
                 {
                     opcode = ArkWebMapGatewayClient.GatewayMessageOpcode.OnDrawableMapChange,
                     id = map.map_id,
                     name = map.map_name,
                     mapOpcode = MessageOnDrawableMapChange.MessageOnDrawableMapChangeOpcode.Create
-                }, map.tribe_id, map.server_id);
+                }, map.server_id, map.tribe_id);
 
                 //Return the new ID
                 DrawableMapEditResponse response = new DrawableMapEditResponse
@@ -156,25 +156,25 @@ namespace ArkWebMapMasterServer.Services.Servers
                 DrawableMapTool.GetMapsCollection().Update(map);
 
                 //Send rename action
-                GatewayActionTool.SendActionToTribe(new MessageOnDrawableMapChange
+                Program.gateway.SendMessageToUserInTribeId(new MessageOnDrawableMapChange
                 {
                     opcode = ArkWebMapGatewayClient.GatewayMessageOpcode.OnDrawableMapChange,
                     id = map.map_id,
                     name = map.map_name,
                     mapOpcode = MessageOnDrawableMapChange.MessageOnDrawableMapChangeOpcode.Rename
-                }, map.tribe_id, map.server_id);
+                }, map.server_id, map.tribe_id);
 
                 //Send clear message
                 if(body.doClear)
                 {
                     //Send action
-                    GatewayActionTool.SendActionToTribe(new MessageOnDrawableMapChange
+                    Program.gateway.SendMessageToUserInTribeId(new MessageOnDrawableMapChange
                     {
                         opcode = ArkWebMapGatewayClient.GatewayMessageOpcode.OnDrawableMapChange,
                         id = map.map_id,
                         name = map.map_name,
                         mapOpcode = MessageOnDrawableMapChange.MessageOnDrawableMapChangeOpcode.Clear
-                    }, map.tribe_id, map.server_id);
+                    }, map.server_id, map.tribe_id);
                 }
 
                 //Return the ID and update
@@ -200,13 +200,13 @@ namespace ArkWebMapMasterServer.Services.Servers
             DrawableMapTool.GetMapsCollection().Delete(map._id);
 
             //Send action
-            GatewayActionTool.SendActionToTribe(new MessageOnDrawableMapChange
+            Program.gateway.SendMessageToUserInTribeId(new MessageOnDrawableMapChange
             {
                 opcode = ArkWebMapGatewayClient.GatewayMessageOpcode.OnDrawableMapChange,
                 id = map.map_id,
                 name = map.map_name,
                 mapOpcode = MessageOnDrawableMapChange.MessageOnDrawableMapChangeOpcode.Delete
-            }, map.tribe_id, map.server_id);
+            }, map.server_id, map.tribe_id);
 
             //Return OK
             return Program.QuickWriteStatusToDoc(e, true);

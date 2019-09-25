@@ -51,21 +51,14 @@ namespace ArkWebMapMasterServer.Services.Users
                 usersme.MakeDummyUsersMe();
                 return Program.QuickWriteJsonToDoc(e, usersme);
             }
-            
+
+            //Get method
+            var method = Program.FindRequestMethod(e);
+
             //Every path here requies authentication. Do it.
             DbUser user = AuthenticateUser(e, true, out string userToken);
 
             //Check path
-            if (path.StartsWith("@me/server_wizard/start_headless"))
-            {
-                //Pass onto (headless) server gen
-                return Misc.ArkSetupProxy.OnCreateProxySessionHeadlessRequest(e, user);
-            }
-            if (path.StartsWith("@me/server_wizard/start"))
-            {
-                //Pass onto server gen
-                return Misc.ArkSetupProxy.OnCreateProxySessionRequest(e, user);
-            }
             if (path == "@me/report_issue")
             {
                 IssueCreator.OnHttpRequest(e, user).GetAwaiter().GetResult();
@@ -97,6 +90,10 @@ namespace ArkWebMapMasterServer.Services.Users
             if (path == "@me/delete")
             {
                 return UserDataRemover.OnHttpRequest(e, user, userToken);
+            }
+            if(path == "@me/create_machine" && method == RequestHttpMethod.post)
+            {
+                return Machines.CreateMachineRequest.OnUserCreateMachine(e, user);
             }
             if (path.StartsWith("@me/"))
             {

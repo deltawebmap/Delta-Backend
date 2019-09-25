@@ -53,11 +53,6 @@ namespace ArkWebMapMasterServer.Services.Auth
                     throw new StandardError("Preflight ID not found.", StandardErrorCode.NotFound);
                 }
             }
-            if(path.StartsWith("providers/"))
-            {
-                //Provider/managers
-                return ManagerAuthHttpHandler.OnHttpRequest(e, path.Substring("providers/".Length));
-            }
 
             //Not found
             throw new StandardError("Not Found", StandardErrorCode.NotFound);

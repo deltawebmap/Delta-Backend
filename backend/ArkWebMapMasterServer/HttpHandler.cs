@@ -26,6 +26,11 @@ namespace ArkWebMapMasterServer
                     //Pass onto this part
                     return Services.Servers.ServersHttpHandler.OnHttpRequest(e, path.Substring("/servers/".Length));
                 }
+                if (path.StartsWith("/machines/"))
+                {
+                    //Pass onto this part
+                    return Services.Machines.MachinesHttpHandler.OnHttpRequest(e, path.Substring("/machines/".Length));
+                }
                 if (path.StartsWith("/clusters/"))
                 {
                     //Pass onto this part
@@ -36,16 +41,6 @@ namespace ArkWebMapMasterServer
                     //Pass onto this part
                     return Services.Auth.AuthHttpHandler.OnHttpRequest(e, path.Substring("/auth/".Length));
                 }
-                if (path.StartsWith("/providers/"))
-                {
-                    //Pass onto this part
-                    return Services.Providers.ProvidersHttpHandler.OnHttpRequest(e, path.Substring("/providers/".Length));
-                }
-                if (path.StartsWith("/server_setup_proxy/"))
-                {
-                    //This is the setup proxy for communicating with up-and-coming servers.
-                    return Services.Misc.ArkSetupProxy.OnSetupProxyHttpRequest(e, path.Substring("/server_setup_proxy/".Length));
-                }
                 if (path.StartsWith("/server_validation"))
                 {
                     //This is the setup proxy for communicating with up-and-coming servers.
@@ -55,11 +50,6 @@ namespace ArkWebMapMasterServer
                 {
                     //This is the setup proxy for communicating with up-and-coming servers.
                     return Services.Misc.SystemServerValidation.OnHttpRequest(e);
-                }
-                if (path.StartsWith("/obtain_server_setup_proxy_code"))
-                {
-                    //This is the setup proxy for communicating with up-and-coming servers.
-                    return Services.Misc.ArkSetupProxy.OnObtainCode(e);
                 }
                 if (path.StartsWith("/mobile_login_code/"))
                 {

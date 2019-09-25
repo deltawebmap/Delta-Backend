@@ -20,9 +20,7 @@ namespace ArkWebMapGatewayClient
 
     class GatewayConfigFileEndpoints
     {
-        public string master;
-        public string subserver;
+        public string sender;
         public string frontend;
-        public string system;
     }
 }

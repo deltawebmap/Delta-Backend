@@ -89,11 +89,11 @@ namespace ArkWebMapMasterServer.Services.Mirror
             //Send the position updates to the tribes
             for (int i = 0; i < tribeIds.Count; i++)
             {
-                GatewayActionTool.SendActionToTribe(new MessageUpdateRealtimePos
+                /*GatewayActionTool.SendActionToTribe(new MessageUpdateRealtimePos
                 {
                     opcode = GatewayMessageOpcode.RealtimeMapMovement,
                     updates = gatewayMessages[tribeIds[i]]
-                }, tribeIds[i], server.id);
+                }, tribeIds[i], server.id);*/
             }
         }
     }

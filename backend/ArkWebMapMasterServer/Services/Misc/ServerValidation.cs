@@ -16,14 +16,13 @@ namespace ArkWebMapMasterServer.Services.Misc
         {
             //Get payload
             ServerValidationRequestPayload payload = Program.DecodePostBody<ServerValidationRequestPayload>(e);
-            byte[] creds = Convert.FromBase64String(payload.server_creds);
             string id = payload.server_id;
 
             //Find servers matching these
             var server = Program.connection.GetServerByIdAsync(id).GetAwaiter().GetResult();
             if(server != null)
             {
-                if(CompareCreds(server.server_creds, creds))
+                if(payload.server_creds == server.token)
                 {
                     //Ok.
                     return Program.QuickWriteJsonToDoc<ServerValidationResponsePayload>(e, new ServerValidationResponsePayload
