@@ -39,8 +39,8 @@ namespace ArkWebMapGateway
                         await SenderConnection.HandleIncomingConnection(e, version);
                     else if (endpoint == "user")
                         await FrontendGatewayConnection.HandleIncomingConnection(e, version);
-                    /*else if (endpoint == "system")
-                        await SystemGatewayConnection.HandleIncomingConnection(e, version);*/
+                    else if (endpoint == "subserver")
+                        await SubserverGatewayConnection.HandleIncomingConnection(e, version);
                     else
                         await Program.QuickWriteToDoc(e, "Unknown endpoint.", "text/plain", 404);
                 } else

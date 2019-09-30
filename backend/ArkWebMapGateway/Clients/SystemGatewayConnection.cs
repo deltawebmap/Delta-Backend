@@ -1,4 +1,5 @@
 ﻿using ArkWebMapGatewayClient;
+using LibDeltaSystem.Db.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,66 +10,66 @@ using System.Threading.Tasks;
 
 namespace ArkWebMapGateway.Clients
 {
-    /*public class SystemGatewayConnection : GatewayConnection
+    public class SubserverGatewayConnection : GatewayConnection
     {
-        public SystemGatewayHandler handler;
+        public DbMachine server;
 
-        public static async Task<SystemGatewayConnection> HandleIncomingConnection(Microsoft.AspNetCore.Http.HttpContext e, string version)
+        public static async Task<SubserverGatewayConnection> HandleIncomingConnection(Microsoft.AspNetCore.Http.HttpContext e, string version)
         {
-            //Ensure this really is the master server
-            bool authenticated;
-            try
+            //Do authentication
+            DbMachine server = await Program.conn.AuthenticateMachineTokenAsync(e.Request.Query["auth_token"]);
+            if (server == null)
             {
-                using (WebClient wc = new WebClient())
-                {
-                    string s = wc.DownloadString("https://deltamap.net/api/system_server_validation?type=system&value=" + System.Web.HttpUtility.UrlEncode(e.Request.Query["auth_token"]));
-                    authenticated = JsonConvert.DeserializeObject<ArkBridgeSharedEntities.Entities.TrueFalseReply>(s).ok;
-                }
-            }
-            catch (Exception ex)
-            {
-                authenticated = false;
-            }
-            if (!authenticated)
-            {
-                //Send auth failed.
-                Console.WriteLine("Rejecting connection from system server because it failed to identify itself.");
                 await Program.QuickWriteToDoc(e, "Not Authenticated.", "text/plain", 401);
                 return null;
             }
 
             //Start
-            SystemGatewayConnection conn = new SystemGatewayConnection();
-            conn.handler = new SystemGatewayHandler(conn);
-            conn.OnSetHandler(conn.handler);
+            SubserverGatewayConnection conn = new SubserverGatewayConnection
+            {
+                type = "SUBSERVER",
+                id = server.id,
+                server = server,
+                indexes = new Dictionary<string, List<string>>()
+            };
+
+            //Refresh indexes
+            await conn.RefreshIndexes();
+
+            //Run
             await conn.Run(e, () =>
             {
-                lock (ConnectionHolder.systemClients)
-                    ConnectionHolder.systemClients.Add(conn);
+                //Ready
+                //Add
+                lock (ClientHolder.connections)
+                    ClientHolder.connections.Add(conn);
             });
 
             return conn;
         }
 
+        /// <summary>
+        /// Refreshes the indexes so we can send messages.
+        /// </summary>
+        /// <returns></returns>
+        public override async Task RefreshIndexes()
+        {
+            //No indexes as of now...
+        }
+
         public override Task<bool> OnClose(WebSocketCloseStatus? status)
         {
             //Remove this from the list of clients
-            lock (ConnectionHolder.systemClients)
-                ConnectionHolder.systemClients.Remove(this);
+            lock (ClientHolder.connections)
+                ClientHolder.connections.Remove(this);
 
-            return Task.FromResult<bool>(true);
+            return base.OnClose(status);
         }
 
-        public override Task<bool> OnMsg(string msg)
+        public override async Task<bool> OnMsg(string msg)
         {
-            //Deserialize as base type to get the opcode
-            GatewayMessageBase b = JsonConvert.DeserializeObject<GatewayMessageBase>(msg);
-
-            //Now, let it be handled like normal.
-            handler.HandleMsg(b.opcode, msg, this);
-
-            //Return OK
-            return Task.FromResult<bool>(true);
+            //Ignore
+            return true;
         }
-    }*/
+    }
 }

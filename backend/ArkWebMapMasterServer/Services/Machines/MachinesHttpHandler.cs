@@ -27,6 +27,14 @@ namespace ArkWebMapMasterServer.Services.Machines
                 await MachineCreateServerRequest.OnHttpRequest(e, machine);
             else if (path == "info" && method == RequestHttpMethod.get)
                 await MachineQueryInfo.OnHttpRequest(e, machine);
+            else if (path == "files" && method == RequestHttpMethod.post)
+                await MachineFileListRequest.OnHttpRequest(e, machine);
+            else if (path == "file_callback" && method == RequestHttpMethod.post)
+                await MachineFileListRequest.OnCallbackHttpRequest(e, machine);
+            else if (path == "activate" && method == RequestHttpMethod.post)
+                await MachineActivateRequest.OnActivateRequest(e, machine);
+            else if (path == "await_activation" && method == RequestHttpMethod.get)
+                await MachineActivateRequest.OnWaitForActivationRequest(e, machine);
             else
                 await Program.QuickWriteToDoc(e, "Endpoint Not Found", "text/plain", 404);
         }

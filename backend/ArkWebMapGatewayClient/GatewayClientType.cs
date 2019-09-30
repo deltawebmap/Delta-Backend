@@ -7,6 +7,7 @@ namespace ArkWebMapGatewayClient
     public enum GatewayClientType
     {
         Frontend = 0,
-        Sender = 1
+        Sender = 1,
+        Subserver = 2
     }
 }

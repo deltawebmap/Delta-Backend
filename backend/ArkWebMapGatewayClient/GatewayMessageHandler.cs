@@ -1,4 +1,5 @@
 ﻿using ArkWebMapGatewayClient.Messages;
+using ArkWebMapGatewayClient.Messages.SubserverClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,9 @@ namespace ArkWebMapGatewayClient
             {
                 case GatewayMessageOpcode.OnDrawableMapChange: HandleMsgType<MessageOnDrawableMapChange>(Msg_OnDrawableMapChange, msg, context); break;
                 case GatewayMessageOpcode.SetSessionId: HandleMsgType<MessageSetSessionID>(Msg_SetSessionId, msg, context); break;
+                case GatewayMessageOpcode.OnServerListUpdate: HandleMsgType<MessageOnServerListUpdate>(Msg_OnServerListUpdate, msg, context); break;
+                case GatewayMessageOpcode.MessageDirListing: HandleMsgType<MessageDirListing>(Msg_MessageDirListing, msg, context); break;
+                case GatewayMessageOpcode.OnMachineUpdateServerList: HandleMsgType<MessageMachineUpdateServerList>(Msg_OnMachineUpdateServerList, msg, context); break;
             }
         }
 
@@ -28,6 +32,9 @@ namespace ArkWebMapGatewayClient
 
         public virtual void Msg_OnDrawableMapChange(MessageOnDrawableMapChange data, object context) { }
         public virtual void Msg_SetSessionId(MessageSetSessionID data, object context) { }
+        public virtual void Msg_OnServerListUpdate(MessageOnServerListUpdate data, object context) { }
+        public virtual void Msg_MessageDirListing(MessageDirListing data, object context) { }
+        public virtual void Msg_OnMachineUpdateServerList(MessageMachineUpdateServerList data, object context) { }
     }
 
     public delegate void GatewayIncomingMessageCallback<T>(T data, object context);

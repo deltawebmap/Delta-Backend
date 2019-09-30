@@ -95,7 +95,11 @@ namespace ArkWebMapMasterServer.Services.Users
             {
                 return Machines.CreateMachineRequest.OnUserCreateMachine(e, user);
             }
-            if (path.StartsWith("@me/"))
+            if (path == "@me/machines")
+            {
+                return UsersMe.OnMachineListRequest(e, user);
+            }
+            if (path == "@me/" || path == "@me")
             {
                 //Requested user info
                 return UsersMe.OnHttpRequest(e, user);

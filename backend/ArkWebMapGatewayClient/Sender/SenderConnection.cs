@@ -73,6 +73,16 @@ namespace ArkWebMapGatewayClient.Sender
             });
         }
 
+        public void SendMessageToSubserverWithId(GatewayMessageBase msg, string id)
+        {
+            SendMessageToClient(msg, new SenderMsgQuery
+            {
+                client_type = "SUBSERVER",
+                index_name = "ID",
+                index_value = id
+            });
+        }
+
         /// <summary>
         /// Sends a message to a client with a query
         /// </summary>

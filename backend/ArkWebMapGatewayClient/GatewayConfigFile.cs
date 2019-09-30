@@ -22,5 +22,6 @@ namespace ArkWebMapGatewayClient
     {
         public string sender;
         public string frontend;
+        public string subserver;
     }
 }

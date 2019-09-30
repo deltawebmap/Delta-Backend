@@ -62,6 +62,13 @@ namespace ArkWebMapMasterServer.Services.Machines
             //Insert
             Program.connection.system_servers.InsertOne(server);
 
+            //Notify the machine to update
+            Program.gateway.SendMessageToSubserverWithId(new ArkWebMapGatewayClient.Messages.SubserverClient.MessageMachineUpdateServerList
+            {
+                opcode = ArkWebMapGatewayClient.GatewayMessageOpcode.OnMachineUpdateServerList,
+                headers = new Dictionary<string, string>()
+            }, machine.id);
+
             //Write server info
             MachineCreateServerResponse response = new MachineCreateServerResponse
             {

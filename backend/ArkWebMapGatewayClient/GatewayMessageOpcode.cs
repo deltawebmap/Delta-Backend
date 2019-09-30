@@ -7,6 +7,9 @@ namespace ArkWebMapGatewayClient
     public enum GatewayMessageOpcode
     {
         OnDrawableMapChange = 0,
-        SetSessionId = 1
+        SetSessionId = 1,
+        OnServerListUpdate = 2,
+        MessageDirListing = 3,
+        OnMachineUpdateServerList = 4
     }
 }
