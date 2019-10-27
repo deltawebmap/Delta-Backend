@@ -81,29 +81,39 @@ namespace ArkWebMapMasterServer
                     //File download
                     return Tools.TokenFileDownloadTool.OnDownloadRequest(e);
                 }
+                if(path == "/preregister")
+                {
+                    return Services.Misc.PreregisterUser.OnHttpRequest(e);
+                }
 
                 //Unknown
                 throw new StandardError("Not Found", StandardErrorCode.NotFound);
             } catch (StandardError ex)
             {
-                //Log error
-                ErrorLogger.LogStandardError(ex, e);
-                
-                //Write error
+                //Set status code
                 int errorCode = 500;
                 if (ex.error_code == StandardErrorCode.AuthRequired)
                     errorCode = 401;
-                return Program.QuickWriteJsonToDoc(e, ex, errorCode);
+
+                //Create response to send
+                return Program.QuickWriteJsonToDoc(e, new LibDeltaSystem.Entities.HttpErrorResponse
+                {
+                    message = ex.screen_error,
+                    message_more = "Error of type "+ex.error_code.ToString(),
+                    support_tag = null
+                }, errorCode);
             } catch (Exception ex)
             {
-                //Log error
-                ErrorLogger.LogException(ex, e);
-
-                //Write error
-                return Program.QuickWriteJsonToDoc(e, new StandardError(ex.Message + ex.StackTrace, StandardErrorCode.UncaughtException, ex), 500);
+                //Log this error with the system
+                try
+                {
+                    return Program.QuickWriteJsonToDoc(e, Program.connection.LogHttpError(ex, new Dictionary<string, string>()).GetAwaiter().GetResult(), 500);
+                } catch (Exception exx)
+                {
+                    Console.WriteLine(exx.Message + exx.StackTrace);
+                }
+                return null;
             }
         }
-
-        
     }
 }

@@ -71,28 +71,21 @@ namespace ArkWebMapMasterServer.Services.Servers
                         throw new StandardError("Could not find player tribe.", StandardErrorCode.NotPermitted);
                     return ServerMaps.OnHttpRequest(e, server, tribeId, nextUrl.Substring("maps".Length));
                 }
-                if(nextUrl == "hub")
+                if(nextUrl.StartsWith("mods"))
                 {
-                    //Get hub data for this tribe
-                    BasicTribeLogEntry[] hubEntries = TribeHubTool.GetTribeLogEntries(new List<Tuple<string, int>> { new Tuple<string, int>(server.id, tribeId) }, 200);
-
-                    //Grab Steam profiles from hub data
-                    Dictionary<string, SteamProfile> steamProfiles = new Dictionary<string, SteamProfile>();
-                    foreach (var entr in hubEntries)
-                    {
-                        foreach (var sid in entr.steamIds)
-                        {
-                            if (!steamProfiles.ContainsKey(sid))
-                                steamProfiles.Add(sid, SteamUserRequest.GetSteamProfile(sid));
-                        }
-                    }
-
-                    //Write
-                    return Program.QuickWriteJsonToDoc(e, new SingleServerHub
-                    {
-                        log = hubEntries,
-                        profiles = steamProfiles
-                    });
+                    return ServerMods.OnHttpRequest(e, server);
+                }
+                if (nextUrl.StartsWith("put_user_prefs"))
+                {
+                    return ServerUpdateSavedPrefs.OnUserPrefsRequest(e, server, user);
+                }
+                if (nextUrl.StartsWith("put_dino_prefs/"))
+                {
+                    return ServerUpdateSavedPrefs.OnTribeDinoPrefsRequest(e, server, tribeId, nextUrl.Substring("put_dino_prefs/".Length));
+                }
+                if (nextUrl.StartsWith("test_rp"))
+                {
+                    return Program.connection.SendPushNotificationToTribe(server, tribeId, "Test!");
                 }
 
                 throw new StandardError("Not Found in Server", StandardErrorCode.NotFound);

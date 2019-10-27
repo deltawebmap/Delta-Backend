@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibDeltaSystem.Db.System.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -22,7 +23,7 @@ namespace ArkBridgeSharedEntities.Entities.Master
         public bool is_hidden;
         public bool is_public;
         public ArkPublishedServerListing public_listing;
-        public DateTime lastReportTime;
+        public SavedUserServerPrefs user_prefs;
 
         public string endpoint_createsession;
     }

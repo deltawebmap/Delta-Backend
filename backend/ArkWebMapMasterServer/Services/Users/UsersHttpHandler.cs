@@ -99,6 +99,10 @@ namespace ArkWebMapMasterServer.Services.Users
             {
                 return UsersMe.OnMachineListRequest(e, user);
             }
+            if (path == "@me/push_token" && method == RequestHttpMethod.post)
+            {
+                return NotificationTokenRequest.OnHttpRequest(e, user);
+            }
             if (path == "@me/" || path == "@me")
             {
                 //Requested user info

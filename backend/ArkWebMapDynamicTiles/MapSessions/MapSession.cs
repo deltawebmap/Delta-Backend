@@ -13,6 +13,9 @@ namespace ArkWebMapDynamicTiles.MapSessions
         public string user_id;
         public int tribe_id;
 
+        public bool is_premium;
+        public int resolution;
+
         public DateTime last_heartbeat;
 
         public abstract Task OnCreate(Microsoft.AspNetCore.Http.HttpContext e, DbServer server, int tribeId);

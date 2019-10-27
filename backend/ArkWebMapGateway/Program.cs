@@ -29,7 +29,7 @@ namespace ArkWebMapGateway
             config = JsonConvert.DeserializeObject<SystemConfigFile>(File.ReadAllText(args[0]));
 
             //Connect to database
-            conn = new DeltaConnection(config.db);
+            conn = new DeltaConnection(config.db, "gateway", 0, 0);
             conn.Connect().GetAwaiter().GetResult();
 
             //Start

@@ -30,6 +30,7 @@ namespace ArkWebMapDynamicTiles
         public static DeltaConnection connection;
 
         public static Dictionary<string, PublicStructureSize> structure_size_map = new Dictionary<string, PublicStructureSize>();
+        public static Dictionary<string, ArkSaveEditor.Entities.ArkMapData> ark_maps;
 
         public const int HEARTBEAT_POLICY_MS = 60000;
         public const int HEARTBEAT_EXPIRE_TIME_ADD = 30000; //Time + HEARTBEAT_POLICY_MS that the session will be expired.
@@ -41,8 +42,12 @@ namespace ArkWebMapDynamicTiles
             //Open config file
             config = JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText(args[0]));
 
+            //Load Ark maps
+            ark_maps = JsonConvert.DeserializeObject<Dictionary<string, ArkSaveEditor.Entities.ArkMapData>>(File.ReadAllText(config.map_config_file));
+
             //Init the lib
-            connection = new DeltaConnection(config.database_config_path);
+            connection = new DeltaConnection(config.database_config_path, "dynamic-tiles", 0, 0);
+            connection.Connect().GetAwaiter().GetResult();
 
             //Import content
             image_package = ImportImages(config.image_content_path);

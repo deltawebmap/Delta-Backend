@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\LibDeltaSystem\LibDeltaSystem\LibDeltaSystem.csproj" />
     <ProjectReference Include="..\Ark-Save-Manager\ArkSaveEditor\ArkSaveEditor.csproj" />
   </ItemGroup>
 

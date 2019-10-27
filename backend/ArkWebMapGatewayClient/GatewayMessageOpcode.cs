@@ -10,6 +10,7 @@ namespace ArkWebMapGatewayClient
         SetSessionId = 1,
         OnServerListUpdate = 2,
         MessageDirListing = 3,
-        OnMachineUpdateServerList = 4
+        OnMachineUpdateServerList = 4,
+        OnMirrorDinoUpdate = 5,
     }
 }

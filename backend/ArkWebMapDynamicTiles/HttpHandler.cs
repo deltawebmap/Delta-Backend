@@ -46,8 +46,8 @@ namespace ArkWebMapDynamicTiles
                 return;
             } catch (Exception ex)
             {
-                Console.WriteLine($"ERROR {ex.Message} {ex.StackTrace}");
-                await Program.QuickWriteToDoc(e, "Internal Server Error", "text/plain", 500);
+                var error = await Program.connection.LogHttpError(ex, new Dictionary<string, string>());
+                await Program.QuickWriteToDoc(e, JsonConvert.SerializeObject(error, Formatting.Indented), "application/json", 500);
             }
         }
 
@@ -94,6 +94,10 @@ namespace ArkWebMapDynamicTiles
             session.tribe_id = tribe.tribe_id;
             session.server_id = server.id;
             session.last_heartbeat = DateTime.UtcNow;
+            session.is_premium = user.GetIsPremium();
+            session.resolution = 256;
+            if (!session.is_premium)
+                session.resolution = 128; //Lower the resolution and CPU usage for members that are not subscribers
 
             //Load session
             await session.OnCreate(e, server, tribe.tribe_id);

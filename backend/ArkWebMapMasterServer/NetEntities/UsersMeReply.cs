@@ -6,6 +6,7 @@ using System.Text;
 using ArkBridgeSharedEntities.Entities.Master;
 using LibDeltaSystem.Db.System;
 using LibDeltaSystem.Db.Content;
+using MongoDB.Driver;
 
 namespace ArkWebMapMasterServer.NetEntities
 {
@@ -38,7 +39,7 @@ namespace ArkWebMapMasterServer.NetEntities
             foreach(var id in found_servers)
             {
                 //Get server by ID
-                var converted = MakeServer(id.Item1, id.Item2);
+                var converted = MakeServer(id.Item1, id.Item2, u);
                 servers.Add(converted);
             }
 
@@ -65,7 +66,7 @@ namespace ArkWebMapMasterServer.NetEntities
             //TODO!!
         }
 
-        public static UsersMeReply_Server MakeServer(DbServer s, DbPlayerProfile ps)
+        public static UsersMeReply_Server MakeServer(DbServer s, DbPlayerProfile ps, DbUser user)
         {
             //If this server has never sent a status, skip
             UsersMeReply_Server reply = new UsersMeReply_Server();
@@ -94,6 +95,27 @@ namespace ArkWebMapMasterServer.NetEntities
                 ArkPublishedServerListing listing = ServerPublishingManager.GetPublishedServer(s.id);
                 reply.public_listing = listing;
                 reply.is_public = listing != null;
+            }
+
+            //Get the user prefs, if they exist. If they don't, generate one on the fly
+            {
+                var filterBuilder = Builders<DbSavedUserServerPrefs>.Filter;
+                var filter = filterBuilder.Eq("server_id", s.id) & filterBuilder.Eq("user_id", user.id);
+                var results = Program.connection.system_saved_user_server_prefs.Find(filter).FirstOrDefault();
+                if(results != null)
+                {
+                    reply.user_prefs = results.payload;
+                } else
+                {
+                    reply.user_prefs = new LibDeltaSystem.Db.System.Entities.SavedUserServerPrefs
+                    {
+                        x = 128,
+                        y = -128,
+                        z = 2,
+                        map = 0,
+                        drawable_map = null
+                    };
+                }
             }
 
             return reply;

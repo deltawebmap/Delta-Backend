@@ -22,50 +22,34 @@ namespace ArkWebMapMasterServer
         public static SenderConnection gateway;
         public static MasterServerConfig config;
         public static Random rand = new Random();
-        public static List<string> onlineServers;
         public const string PREFIX_URL = "https://deltamap.net/api";
 
         public static DeltaConnection connection;
+
+        public static Dictionary<string, ArkSaveEditor.Entities.ArkMapData> ark_maps;
 
         static void Main(string[] args)
         {
             Console.WriteLine("Loading config...");
             config = JsonConvert.DeserializeObject<MasterServerConfig>(File.ReadAllText(args[0]));
+            ark_maps = JsonConvert.DeserializeObject<Dictionary<string, ArkSaveEditor.Entities.ArkMapData>>(File.ReadAllText(config.map_config_path));
 
             Console.WriteLine("Starting Database...");
             db = new LiteDatabase(config.database_pathname);
             map_db = new LiteDatabase(config.map_database_pathname);
 
             Console.WriteLine("Connecting to MongoDB...");
-            connection = new DeltaConnection(config.database);
+            connection = new DeltaConnection(config.database_config_path, "master", 0, 0);
             connection.Connect().GetAwaiter().GetResult();
 
             Console.WriteLine("Connecting to GATEWAY...");
-            gateway = SenderConnection.CreateClient("sender", "", 1, 0, false, config.database.key);
-
-            Console.WriteLine("Fetching online servers from LIGHTSPEED...");
-            FetchOnlineServers();
+            gateway = SenderConnection.CreateClient("sender", "", 1, 0, false, config.gateway_key);
 
             Console.WriteLine("Starting some other timers...");
             Tools.TokenFileDownloadTool.Init();
 
             Console.WriteLine("Starting Kestrel...");
             MainAsync().GetAwaiter().GetResult();
-        }
-
-        private static void FetchOnlineServers()
-        {
-            string text;
-            try
-            {
-                using (WebClient wc = new WebClient())
-                    text = wc.DownloadString("https://lightspeed.deltamap.net/online");
-                onlineServers = JsonConvert.DeserializeObject<List<string>>(text);
-            }
-            catch (Exception ex)
-            {
-                onlineServers = new List<string>();
-            }
         }
 
         public static void Log(string message, ConsoleColor color)
