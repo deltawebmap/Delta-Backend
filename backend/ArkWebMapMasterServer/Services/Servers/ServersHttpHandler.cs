@@ -30,16 +30,6 @@ namespace ArkWebMapMasterServer.Services.Servers
             {
                 string nextUrl = path.Substring(serverId.Length + 1).TrimStart('/');
 
-                //Check if this is a path that requires no auth
-                if (nextUrl == "status")
-                {
-                    //Returns status for waiting for setup to finish
-                    return Program.QuickWriteJsonToDoc(e, new ServerSetupStatusResponse
-                    {
-                        ready = server.has_server_report
-                    });
-                }
-
                 //Authenticate the user
                 DbUser user = Users.UsersHttpHandler.AuthenticateUser(e, true);
 
@@ -60,10 +50,6 @@ namespace ArkWebMapMasterServer.Services.Servers
                 {
                     //Rename
                     return EditServerListing.OnHttpRequest(e, server);
-                }
-                if(nextUrl == "publish")
-                {
-                    return ServerPublishing.OnHttpRequest(e, server);
                 }
                 if(nextUrl.StartsWith("maps"))
                 {

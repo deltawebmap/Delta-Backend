@@ -58,26 +58,20 @@ namespace ArkWebMapMasterServer.Services.Auth
             throw new StandardError("Not Found", StandardErrorCode.NotFound);
         }
 
-        private static Task OnSteamReturnRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        private static async Task OnSteamReturnRequest(Microsoft.AspNetCore.Http.HttpContext e)
         {
             //Finish Steam auth
-            var info = SteamAuth.SteamOpenID.Finish(e);
+            var info = await SteamAuth.SteamOpenID.Finish(e);
 
             //Get user. If a user account isn't created yet, make one.
             DbUser user = UserAuth.GetUserByAuthName(info.steam_id);
             if(user == null)
             {
-                user = UserAuth.CreateUserWithSteam(info.steam_id, info.profile);
+                user = await UserAuth.CreateUserWithSteam(info.steam_id, info.profile);
             }
 
-            //Update profile
-            user.screen_name = info.profile.personaname;
-            user.profile_image_url = info.profile.avatarfull;
-            user.steam_id = info.steam_id;
-            user.UpdateAsync().GetAwaiter().GetResult();
-
             //Pass into the next method
-            return OnFinishUserAuth(e, user, "Loaded from Steam profile.", info.next, true);
+            await OnFinishUserAuth(e, user, "Loaded from Steam profile.", info.next, true);
         }
 
         /// <summary>
@@ -86,7 +80,7 @@ namespace ArkWebMapMasterServer.Services.Auth
         public static Dictionary<string, AuthReply> url_tokens = new Dictionary<string, AuthReply>();
 
         //Called once the user is authenticated using whatever method.
-        public static Task OnFinishUserAuth(Microsoft.AspNetCore.Http.HttpContext e, DbUser u, string message, string next, bool redirect = false)
+        public static async Task OnFinishUserAuth(Microsoft.AspNetCore.Http.HttpContext e, DbUser u, string message, string next, bool redirect = false)
         {
             //If the user was authenticated, set a token.
             string token = null;
@@ -119,12 +113,14 @@ namespace ArkWebMapMasterServer.Services.Auth
             {
                 //Redirect back to the app.
                 e.Response.Headers.Add("Location", "ark-web-map-login://login/" + id);
-                return Program.QuickWriteToDoc(e, "You should be redirected back to the app. If not, let me know.", "text/plain", 302);
+                await Program.QuickWriteToDoc(e, "You should be redirected back to the app. If not, let me know.", "text/plain", 302);
+                return;
             } else
             {
                 //Redirect to the login page and pass in the token
                 e.Response.Headers.Add("Location", "https://deltamap.net/login/return/#"+id);
-                return Program.QuickWriteToDoc(e, "You should be redirected now.", "text/plain", 302);
+                await Program.QuickWriteToDoc(e, "You should be redirected now.", "text/plain", 302);
+                return;
             }
         }
     }

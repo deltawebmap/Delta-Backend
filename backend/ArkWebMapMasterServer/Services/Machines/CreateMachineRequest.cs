@@ -16,11 +16,21 @@ namespace ArkWebMapMasterServer.Services.Machines
             //Add the machine
             var machine = await DbMachine.CreateMachineAsync(Program.connection, "USER", user._id, body.name);
 
+            //Generate split shortcode
+            string displayShortcode = "";
+            int shortcodeSegments = machine.shorthand_token.Length / 4;
+            for (int i = 0; i < shortcodeSegments; i++) {
+                displayShortcode += machine.shorthand_token.Substring(i * 4, 4);
+                if (i + 1 != shortcodeSegments)
+                    displayShortcode += "-";
+            }
+
             //Create response
             CreateMachineRequestResponse response = new CreateMachineRequestResponse
             {
                 name = machine.name,
-                token = machine.token
+                token = machine.token,
+                shorthand = displayShortcode
             };
 
             //Send
@@ -46,6 +56,11 @@ namespace ArkWebMapMasterServer.Services.Machines
             /// The token to use
             /// </summary>
             public string token;
+
+            /// <summary>
+            /// Token for the user to type
+            /// </summary>
+            public string shorthand;
         }
     }
 }

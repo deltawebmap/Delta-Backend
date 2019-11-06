@@ -10,5 +10,6 @@ namespace ArkBridgeSharedEntities.Entities.NewSubserver
         public int version_major;
         public string enviornment;
         public string mode;
+        public string shorthand_token;
     }
 }

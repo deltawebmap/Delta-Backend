@@ -1,4 +1,5 @@
 ﻿using ArkBridgeSharedEntities.Entities;
+using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,6 @@ namespace ArkWebMapMasterServer.NetEntities
         public bool ok;
         public string next;
         public string steam_id;
-        public SteamProfile profile;
+        public DbSteamCache profile;
     }
 }

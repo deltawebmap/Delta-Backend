@@ -7,8 +7,6 @@ namespace ArkWebMapMasterServer
 {
     public class MasterServerConfig
     {
-        public string steam_api_key;
-        public string firebase_cloud_messages_api_key;
         public string database_pathname;
         public string map_database_pathname;
         public string github_api_key;

@@ -9,6 +9,7 @@ using ArkWebMapMasterServer.NetEntities;
 using ArkBridgeSharedEntities.Entities;
 using LibDeltaSystem.Db.System;
 using LibDeltaSystem;
+using System.Threading.Tasks;
 
 namespace ArkWebMapMasterServer.Users
 {
@@ -27,22 +28,22 @@ namespace ArkWebMapMasterServer.Users
             return Program.connection.GetUserBySteamIdAsync(id).GetAwaiter().GetResult();
         }
 
-        public static DbUser CreateUserWithSteam(string steamId, SteamProfile profile)
+        public static async Task<DbUser> CreateUserWithSteam(string steamId, DbSteamCache profile)
         {
             //Generate
             DbUser user = new DbUser
             {
                 user_settings = new DbUserSettings(),
-                profile_image_url = profile.avatarfull,
-                steam_profile_url = profile.profileurl,
-                screen_name = profile.personaname,
-                steam_id = profile.steamid,
+                profile_image_url = profile.icon_url,
+                steam_profile_url = profile.profile_url,
+                screen_name = profile.name,
+                steam_id = profile.steam_id,
                 _id = MongoDB.Bson.ObjectId.GenerateNewId(),
                 conn = Program.connection
             };
 
             //Insert in the database
-            Program.connection.system_users.InsertOne(user);
+            await Program.connection.system_users.InsertOneAsync(user);
 
             return user;
         }

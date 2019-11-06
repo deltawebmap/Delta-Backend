@@ -50,10 +50,7 @@ namespace ArkWebMapMasterServer.Services.Machines
                 image_url = icon,
                 owner_uid = machine.owner_id,
                 token = token,
-                is_managed = false,
-                is_published = false,
                 has_custom_image = isIconCustom,
-                revision_id = 0,
                 conn = Program.connection,
                 load_settings = payload.load_settings,
                 machine_uid = machine.id

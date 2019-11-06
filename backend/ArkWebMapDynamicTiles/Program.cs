@@ -42,6 +42,13 @@ namespace ArkWebMapDynamicTiles
             //Open config file
             config = JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText(args[0]));
 
+            //Create cache dir
+            if (config.cache_path == null)
+                throw new Exception("Cache path is null!");
+            if (Directory.Exists(config.cache_path))
+                Directory.Delete(config.cache_path, true);
+            Directory.CreateDirectory(config.cache_path);
+
             //Load Ark maps
             ark_maps = JsonConvert.DeserializeObject<Dictionary<string, ArkSaveEditor.Entities.ArkMapData>>(File.ReadAllText(config.map_config_file));
 

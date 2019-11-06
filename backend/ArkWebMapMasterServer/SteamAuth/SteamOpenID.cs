@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ArkWebMapMasterServer.SteamAuth
 {
@@ -39,7 +40,12 @@ namespace ArkWebMapMasterServer.SteamAuth
             return url;
         }
 
-        public static SteamValidationResponse Finish(Microsoft.AspNetCore.Http.HttpContext e)
+        /// <summary>
+        /// This is old and due for some updates
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        public static async Task<SteamValidationResponse> Finish(Microsoft.AspNetCore.Http.HttpContext e)
         {
             //We'll now validate this with Steam. Create the request back to Steam servers
             string validation_url = "https://steamcommunity.com/openid/login"+e.Request.QueryString.Value.Replace("openid.mode=id_res", "openid.mode=check_authentication");
@@ -73,7 +79,7 @@ namespace ArkWebMapMasterServer.SteamAuth
             string state = return_values[state_id];
 
             //Also request this users' Steam profile.
-            SteamProfile profile = RequestSteamUserData(steam_id);
+            var profile = await Program.connection.GetSteamProfileById(steam_id);
 
             //Output
             return new SteamValidationResponse
@@ -83,38 +89,6 @@ namespace ArkWebMapMasterServer.SteamAuth
                 steam_id = steam_id,
                 next = state
             };
-        }
-
-        public static SteamProfile RequestSteamUserData(string steam_id)
-        {
-            string profile_return;
-            string profile_url = $"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={Program.config.steam_api_key}&steamids={steam_id}";
-            try
-            {
-                using (WebClient hc = new WebClient())
-                    profile_return = hc.DownloadString(profile_url);
-            }
-            catch
-            {
-                throw new StandardError("Steam server returned an error while downloading profile.", StandardErrorCode.ExternalAuthError);
-            }
-
-            //Deserialize the profile
-            SteamProfile_Full profile_full;
-            try
-            {
-                profile_full = JsonConvert.DeserializeObject<SteamProfile_Full>(profile_return);
-            }
-            catch
-            {
-                throw new StandardError("Failed to deserialize the profile", StandardErrorCode.ExternalAuthError);
-            }
-
-            //Check to make sure we actuall have the the player
-            if (profile_full.response.players.Count != 1)
-                throw new StandardError("Steam profile response did not contain your player info.", StandardErrorCode.AuthFailed);
-
-            return profile_full.response.players[0];
         }
 
         public enum SteamAuthMode

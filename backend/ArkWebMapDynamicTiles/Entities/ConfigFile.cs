@@ -13,5 +13,6 @@ namespace ArkWebMapDynamicTiles.Entities
         public int web_port;
         public string database_config_path;
         public string map_config_file;
+        public string cache_path;
     }
 }

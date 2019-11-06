@@ -22,6 +22,7 @@ namespace ArkWebMapGatewayClient
                 case GatewayMessageOpcode.MessageDirListing: HandleMsgType<MessageDirListing>(Msg_MessageDirListing, msg, context); break;
                 case GatewayMessageOpcode.OnMachineUpdateServerList: HandleMsgType<MessageMachineUpdateServerList>(Msg_OnMachineUpdateServerList, msg, context); break;
                 case GatewayMessageOpcode.OnMirrorDinoUpdate: HandleMsgType<MessageOnMirrorDinoUpdate>(Msg_OnMirrorDinoUpdate, msg, context); break;
+                case GatewayMessageOpcode.OnDinoUpdate: HandleMsgType<MessageOnDinoUpdated>(Msg_OnDinoUpdate, msg, context); break;
             }
         }
 
@@ -37,6 +38,7 @@ namespace ArkWebMapGatewayClient
         public virtual void Msg_MessageDirListing(MessageDirListing data, object context) { }
         public virtual void Msg_OnMachineUpdateServerList(MessageMachineUpdateServerList data, object context) { }
         public virtual void Msg_OnMirrorDinoUpdate(MessageOnMirrorDinoUpdate data, object context) { }
+        public virtual void Msg_OnDinoUpdate(MessageOnDinoUpdated data, object context) { }
     }
 
     public delegate void GatewayIncomingMessageCallback<T>(T data, object context);

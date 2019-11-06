@@ -12,5 +12,6 @@ namespace ArkWebMapGatewayClient
         MessageDirListing = 3,
         OnMachineUpdateServerList = 4,
         OnMirrorDinoUpdate = 5,
+        OnDinoUpdate = 6
     }
 }

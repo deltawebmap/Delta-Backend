@@ -31,8 +31,6 @@ namespace ArkWebMapMasterServer.Services.Machines
                 await MachineFileListRequest.OnHttpRequest(e, machine);
             else if (path == "file_callback" && method == RequestHttpMethod.post)
                 await MachineFileListRequest.OnCallbackHttpRequest(e, machine);
-            else if (path == "activate" && method == RequestHttpMethod.post)
-                await MachineActivateRequest.OnActivateRequest(e, machine);
             else if (path == "await_activation" && method == RequestHttpMethod.get)
                 await MachineActivateRequest.OnWaitForActivationRequest(e, machine);
             else

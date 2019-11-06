@@ -56,21 +56,6 @@ namespace ArkWebMapMasterServer
                     //This is the setup proxy for communicating with up-and-coming servers.
                     return Services.Misc.MobileLoginTokenProxy.OnHttpRequest(e);
                 }
-                if (path.StartsWith("/discover/"))
-                {
-                    //ARK interface from an Ark server. Take care.
-                    return Services.ServerDiscovery.ServerDiscoveryHttpHandler.OnHttpRequest(e, path.Substring("/discover/".Length));
-                }
-                if (path == "/mirror/events")
-                {
-                    //ARK interface from an Ark server. Take care.
-                    return Services.Mirror.MirrorService.OnHttpRequest(e);
-                }
-                if (path == "/mirror/error")
-                {
-                    //ARK interface from an Ark server. Take care.
-                    return Services.Mirror.MirrorErrorService.OnHttpRequest(e);
-                }
                 if (path == "/status")
                 {
                     //System status report
@@ -84,6 +69,11 @@ namespace ArkWebMapMasterServer
                 if(path == "/preregister")
                 {
                     return Services.Misc.PreregisterUser.OnHttpRequest(e);
+                }
+                if (path == "/activate_machine")
+                {
+                    //First-time machine activation
+                    return Services.Machines.MachineActivateRequest.OnActivateRequest(e);
                 }
 
                 //Unknown

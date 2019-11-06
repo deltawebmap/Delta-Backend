@@ -22,7 +22,6 @@ namespace ArkBridgeSharedEntities.Entities.Master
         public bool has_ever_gone_online;
         public bool is_hidden;
         public bool is_public;
-        public ArkPublishedServerListing public_listing;
         public SavedUserServerPrefs user_prefs;
 
         public string endpoint_createsession;

@@ -74,7 +74,7 @@ namespace ArkWebMapMasterServer.NetEntities
             reply.image_url = s.image_url;
             reply.owner_uid = s.owner_uid;
             reply.id = s.id;
-            reply.has_ever_gone_online = s.has_server_report;
+            reply.has_ever_gone_online = true;
 
             if(ps != null)
             {
@@ -88,14 +88,6 @@ namespace ArkWebMapMasterServer.NetEntities
 
             reply.map_id = s.latest_server_map;
             reply.map_name = reply.map_id;
-
-            //Get the published server listing, if we have it
-            if(s.is_published)
-            {
-                ArkPublishedServerListing listing = ServerPublishingManager.GetPublishedServer(s.id);
-                reply.public_listing = listing;
-                reply.is_public = listing != null;
-            }
 
             //Get the user prefs, if they exist. If they don't, generate one on the fly
             {

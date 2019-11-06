@@ -13,10 +13,6 @@ namespace ArkWebMapMasterServer
     {
         public static List<DbUser> GetTribePlayers(DbServer s, int tribeId)
         {
-            //If the server has never sent a report, cancel.
-            if (!s.has_server_report)
-                return new List<DbUser>();
-
             //Get all
             return s.GetUsersByTribeAsync(tribeId).GetAwaiter().GetResult();
         }
@@ -24,9 +20,6 @@ namespace ArkWebMapMasterServer
         public static bool TryGetPlayerTribeId(DbServer s, DbUser u, out int tribeId)
         {
             tribeId = -1;
-            //If the server has never sent a report, cancel.
-            if (!s.has_server_report)
-                return false;
 
             //Grab the latest report and find all players with this tribe ID.
             DbPlayerProfile arkProfile = s.GetPlayerProfileBySteamIdAsync(u.steam_id).GetAwaiter().GetResult();

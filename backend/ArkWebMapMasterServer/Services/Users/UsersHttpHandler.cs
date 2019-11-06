@@ -80,6 +80,10 @@ namespace ArkWebMapMasterServer.Services.Users
                 
                 //Update
                 user.user_settings = Program.DecodePostBody<DbUserSettings>(e);
+                if(user.user_settings == null)
+                {
+                    throw new StandardError("Cannot set user settings to null.", StandardErrorCode.InvalidInput);
+                }
                 user.UpdateAsync().GetAwaiter().GetResult();
                 return Program.QuickWriteStatusToDoc(e, true);
             }
