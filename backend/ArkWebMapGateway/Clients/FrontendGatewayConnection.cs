@@ -1,5 +1,4 @@
-﻿using ArkBridgeSharedEntities.Entities.Master;
-using ArkWebMapGateway.Entities;
+﻿using ArkWebMapGateway.Entities;
 using ArkWebMapGatewayClient;
 using ArkWebMapMasterServer.NetEntities;
 using LibDeltaSystem.Db.System;

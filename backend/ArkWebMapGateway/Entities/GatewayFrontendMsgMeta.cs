@@ -1,5 +1,4 @@
-﻿using ArkBridgeSharedEntities.Entities.Master;
-using ArkWebMapMasterServer.NetEntities;
+﻿using ArkWebMapMasterServer.NetEntities;
 using System;
 using System.Collections.Generic;
 using System.Text;

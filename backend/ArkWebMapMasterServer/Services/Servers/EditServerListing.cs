@@ -1,7 +1,5 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.NetEntities;
-using ArkWebMapMasterServer.PresistEntities;
-using ArkWebMapMasterServer.Servers;
 using LibDeltaSystem.Db.System;
 using Newtonsoft.Json;
 using System;
@@ -64,25 +62,6 @@ namespace ArkWebMapMasterServer.Services.Servers
                 //We've validated this image. Set it
                 s.image_url = tokenPayload.url;
                 s.has_custom_image = true;
-            }
-
-            //Update cluster ID
-            if(payload.clusterId != null)
-            {
-                if(payload.clusterId == "")
-                {
-                    //Clear cluster
-                    s.cluster_id = null;
-                } else
-                {
-                    //Verify cluster
-                    ArkCluster cluster = ArkClusterTool.GetClusterById(payload.clusterId);
-                    if (cluster == null)
-                        throw new StandardError("Cluster ID not found.", StandardErrorCode.InvalidInput);
-                    if(cluster.owner_id != user.id)
-                        throw new StandardError("You do not own this cluster ID.", StandardErrorCode.InvalidInput);
-                    s.cluster_id = payload.clusterId;
-                }
             }
         }
     }

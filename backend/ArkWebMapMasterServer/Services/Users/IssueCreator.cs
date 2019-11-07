@@ -1,6 +1,5 @@
 ﻿using ArkBridgeSharedEntities.Entities;
 using ArkWebMapMasterServer.NetEntities;
-using ArkWebMapMasterServer.PresistEntities;
 using LibDeltaSystem.Db.System;
 using Newtonsoft.Json;
 using System;
@@ -32,7 +31,7 @@ namespace ArkWebMapMasterServer.Services.Users
                 throw new StandardError("Unknown Client", StandardErrorCode.InvalidInput);
 
             //Get server
-            DbServer server = ArkWebMapMasterServer.Servers.ArkSlaveServerSetup.GetSlaveServerById(request.server_id);
+            DbServer server = await Program.connection.GetServerByIdAsync(request.server_id);
             if (server == null)
                 throw new StandardError("Server Not Found", StandardErrorCode.InvalidInput);
             int? tribeIdInt = server.TryGetTribeIdAsync(u.steam_id).GetAwaiter().GetResult();

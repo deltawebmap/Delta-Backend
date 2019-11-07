@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArkBridgeSharedEntities.Entities.Master
+namespace ArkWebMapMasterServer.NetEntities
 {
     public class UsersMeReply_Server
     {

@@ -32,7 +32,7 @@ namespace ArkWebMapMasterServer.Services.Machines
                 headers = new Dictionary<string, string>(),
                 pathname = body.path,
                 token = token,
-                callback_url = Program.PREFIX_URL+"/machines/file_callback"
+                callback_url = Program.config.endpoint_master+"/machines/file_callback"
             }, machine.id);
 
             //Wait for the response

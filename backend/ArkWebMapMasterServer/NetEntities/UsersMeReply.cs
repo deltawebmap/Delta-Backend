@@ -1,9 +1,7 @@
 ﻿using ArkBridgeSharedEntities.Entities;
-using ArkWebMapMasterServer.PresistEntities;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using ArkBridgeSharedEntities.Entities.Master;
 using LibDeltaSystem.Db.System;
 using LibDeltaSystem.Db.Content;
 using MongoDB.Driver;

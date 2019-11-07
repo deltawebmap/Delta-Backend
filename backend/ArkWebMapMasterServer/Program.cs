@@ -1,6 +1,5 @@
 ﻿using ArkWebMapGatewayClient;
 using ArkWebMapGatewayClient.Sender;
-using ArkWebMapMasterServer.PresistEntities;
 using LibDeltaSystem;
 using LiteDB;
 using Microsoft.AspNetCore.Builder;
@@ -17,12 +16,9 @@ namespace ArkWebMapMasterServer
 {
     class Program
     {
-        public static LiteDatabase db;
-        public static LiteDatabase map_db;
         public static SenderConnection gateway;
         public static MasterServerConfig config;
         public static Random rand = new Random();
-        public const string PREFIX_URL = "https://deltamap.net/api";
 
         public static DeltaConnection connection;
 
@@ -34,16 +30,12 @@ namespace ArkWebMapMasterServer
             config = JsonConvert.DeserializeObject<MasterServerConfig>(File.ReadAllText(args[0]));
             ark_maps = JsonConvert.DeserializeObject<Dictionary<string, ArkSaveEditor.Entities.ArkMapData>>(File.ReadAllText(config.map_config_path));
 
-            Console.WriteLine("Starting Database...");
-            db = new LiteDatabase(config.database_pathname);
-            map_db = new LiteDatabase(config.map_database_pathname);
-
             Console.WriteLine("Connecting to MongoDB...");
             connection = new DeltaConnection(config.database_config_path, "master", 0, 0);
             connection.Connect().GetAwaiter().GetResult();
 
             Console.WriteLine("Connecting to GATEWAY...");
-            gateway = SenderConnection.CreateClient("sender", "", 1, 0, false, config.gateway_key);
+            gateway = SenderConnection.CreateClient("sender", "", 1, 0, false, connection.config.key);
 
             Console.WriteLine("Starting some other timers...");
             Tools.TokenFileDownloadTool.Init();
@@ -65,7 +57,7 @@ namespace ArkWebMapMasterServer
                 .UseKestrel(options =>
                 {
                     IPAddress addr = IPAddress.Any;
-                    options.Listen(addr, 43298);
+                    options.Listen(addr, config.listen_port);
 
                 })
                 .UseStartup<Program>()
@@ -148,12 +140,6 @@ namespace ArkWebMapMasterServer
         public static RequestHttpMethod FindRequestMethod(Microsoft.AspNetCore.Http.HttpContext context)
         {
             return Enum.Parse<RequestHttpMethod>(context.Request.Method.ToLower());
-        }
-
-        public static string GetRequestIP(Microsoft.AspNetCore.Http.HttpContext context)
-        {
-            //THIS WILL HAVE TO BE CHANGED UNDER YOUR OWN ENVIORNMENT!!!! This relies on my Apache reverse proxy. Please fix the url obtaining.
-            return context.Request.Headers["X-Forwarded-For"];
         }
 
         public static bool CompareByteArrays(byte[] b1, byte[] b2)

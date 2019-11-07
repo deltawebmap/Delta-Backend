@@ -15,8 +15,4 @@
     <ProjectReference Include="..\Ark-Save-Manager\ArkSaveEditor\ArkSaveEditor.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Entities\External\" />
-  </ItemGroup>
-
 </Project>

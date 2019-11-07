@@ -31,25 +31,10 @@ namespace ArkWebMapMasterServer
                     //Pass onto this part
                     return Services.Machines.MachinesHttpHandler.OnHttpRequest(e, path.Substring("/machines/".Length));
                 }
-                if (path.StartsWith("/clusters/"))
-                {
-                    //Pass onto this part
-                    return Services.Clusters.ClustersHttpHandler.OnHttpRequest(e, path.Substring("/clusters/".Length));
-                }
                 if (path.StartsWith("/auth/"))
                 {
                     //Pass onto this part
                     return Services.Auth.AuthHttpHandler.OnHttpRequest(e, path.Substring("/auth/".Length));
-                }
-                if (path.StartsWith("/server_validation"))
-                {
-                    //This is the setup proxy for communicating with up-and-coming servers.
-                    return Services.Misc.ServerValidation.OnHttpRequest(e);
-                }
-                if (path.StartsWith("/system_server_validation"))
-                {
-                    //This is the setup proxy for communicating with up-and-coming servers.
-                    return Services.Misc.SystemServerValidation.OnHttpRequest(e);
                 }
                 if (path.StartsWith("/mobile_login_code/"))
                 {
