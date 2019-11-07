@@ -1,7 +1,7 @@
 # Delta Web Map
 A live map for Ark: Survival Evolved to view your tames, heatmap of wild dinos, and search tools. 
 
-![Screenshot of main web interface](https://deltamap.net/assets/frontpage/landing/img/big.webp)
+![Screenshot of main web interface](web_screenshot_modern.webp)
 
 ## Features
 * View your tamed dinos
