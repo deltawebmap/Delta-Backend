@@ -22,7 +22,7 @@ namespace ArkWebMapMasterServer.NetEntities
 
         }
 
-        public void MakeUsersMe(DbUser u, bool filterHiddenServers)
+        public void MakeUsersMe(DbUser u)
         {
             //Set basic values
             screen_name = u.screen_name;
@@ -43,27 +43,6 @@ namespace ArkWebMapMasterServer.NetEntities
 
         }
 
-        public void MakeDummyUsersMe()
-        {
-            //Used for demo servers. Make a fake users me for the client
-            screen_name = "Delta Demo";
-            profile_image_url = "";
-            id = null;
-            steam_id = null;
-            user_settings = new DbUserSettings();
-            servers = new List<UsersMeReply_Server>();
-            /*servers.Add(MakeServer(Servers.ArkSlaveServerSetup.GetCollection().FindById(DemoServerData.DEMO_SERVER_ID), new ArkSlaveReport_PlayerAccount
-            {
-                allow_player = true,
-                player_name = "Demo User",
-                player_steam_id = null,
-                player_tribe_id = DemoServerData.DEMO_SERVER_TRIBE_ID,
-                player_tribe_name = "Demo Tribe"
-            }));*/
-
-            //TODO!!
-        }
-
         public static UsersMeReply_Server MakeServer(DbServer s, DbPlayerProfile ps, DbUser user)
         {
             //If this server has never sent a status, skip
@@ -81,8 +60,8 @@ namespace ArkWebMapMasterServer.NetEntities
                 reply.arkName = ps.name;
             }
 
-            string base_endpoint = $"https://deltamap.net/api/servers/{s.id}/";
-            reply.endpoint_createsession = $"https://echo-content.deltamap.net/{s.id}/" + "create_session";
+            string base_endpoint = Program.config.endpoint_master+$"/servers/{s.id}/";
+            reply.endpoint_createsession = Program.config.endpoint_echo+$"/{s.id}/" + "create_session";
 
             reply.map_id = s.latest_server_map;
             reply.map_name = reply.map_id;

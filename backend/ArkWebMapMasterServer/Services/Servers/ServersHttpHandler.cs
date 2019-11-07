@@ -29,10 +29,10 @@ namespace ArkWebMapMasterServer.Services.Servers
                 string nextUrl = path.Substring(serverId.Length + 1).TrimStart('/');
 
                 //Authenticate the user
-                DbUser user = Users.UsersHttpHandler.AuthenticateUser(e, true);
+                DbUser user = await ApiTools.AuthenticateUser(ApiTools.GetBearerToken(e), true);
 
                 //Look up the user's tribe by their steam ID
-                int? tribeIdNullable = server.TryGetTribeIdAsync(user.steam_id).GetAwaiter().GetResult();
+                int? tribeIdNullable = await server.TryGetTribeIdAsync(user.steam_id);
                 bool hasTribe = tribeIdNullable.HasValue;
                 if(!hasTribe)
                     throw new StandardError("You must be a part of this server to send API calls.", StandardErrorCode.NotPermitted);

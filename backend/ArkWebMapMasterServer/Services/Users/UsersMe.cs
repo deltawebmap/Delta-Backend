@@ -10,19 +10,12 @@ namespace ArkWebMapMasterServer.Services.Users
 {
     public class UsersMe
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
+        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
         {
-            //Check if we should hide invalid. By default, no
-            bool hideInvalid = false;
-            if(e.Request.Query.ContainsKey("hideInvalid"))
-            {
-                hideInvalid = e.Request.Query["hideInvalid"] == "true";
-            }
-
             //Just convert it.
             UsersMeReply user = new UsersMeReply();
-            user.MakeUsersMe(u, hideInvalid);
-            return Program.QuickWriteJsonToDoc(e, user);
+            user.MakeUsersMe(u);
+            await Program.QuickWriteJsonToDoc(e, user);
         }
 
         public static async Task OnMachineListRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)

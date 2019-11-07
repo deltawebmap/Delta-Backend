@@ -1,6 +1,4 @@
-﻿
-using ArkWebMapMasterServer.NetEntities;
-using ArkWebMapMasterServer.Users;
+﻿using ArkWebMapMasterServer.NetEntities;
 using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
@@ -12,12 +10,13 @@ namespace ArkWebMapMasterServer.Services.Auth
 {
     public class AuthHttpHandler
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
+        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
         {
             if (path.StartsWith("steam_auth_return"))
             {
                 //Handle
-                return OnSteamReturnRequest(e);
+                await OnSteamReturnRequest(e);
+                return;
             }
             if (path.StartsWith("steam_auth"))
             {
@@ -34,7 +33,8 @@ namespace ArkWebMapMasterServer.Services.Auth
                 //Redirect to Steam auth
                 string url = SteamAuth.SteamOpenID.Begin(mode, next);
                 e.Response.Headers.Add("Location", url);
-                return Program.QuickWriteToDoc(e, "", "text/plain", 302);
+                await Program.QuickWriteToDoc(e, "", "text/plain", 302);
+                return;
             }
             if(path.StartsWith("validate_preflight_token"))
             {
@@ -45,7 +45,8 @@ namespace ArkWebMapMasterServer.Services.Auth
                     //Respond with this. Then, delete it.
                     Task responseTask = Program.QuickWriteJsonToDoc(e, url_tokens[id]);
                     url_tokens.Remove(id);
-                    return responseTask;
+                    await responseTask;
+                    return;
                 } else
                 {
                     //Not found
@@ -63,10 +64,23 @@ namespace ArkWebMapMasterServer.Services.Auth
             var info = await SteamAuth.SteamOpenID.Finish(e);
 
             //Get user. If a user account isn't created yet, make one.
-            DbUser user = UserAuth.GetUserByAuthName(info.steam_id);
-            if(user == null)
+            DbUser user = await Program.connection.GetUserBySteamIdAsync(info.steam_id);
+            if (user == null)
             {
-                user = await UserAuth.CreateUserWithSteam(info.steam_id, info.profile);
+                //Create the user
+                user = new DbUser
+                {
+                    user_settings = new DbUserSettings(),
+                    profile_image_url = info.profile.icon_url,
+                    steam_profile_url = info.profile.profile_url,
+                    screen_name = info.profile.name,
+                    steam_id = info.profile.steam_id,
+                    _id = MongoDB.Bson.ObjectId.GenerateNewId(),
+                    conn = Program.connection
+                };
+
+                //Insert in the database
+                await Program.connection.system_users.InsertOneAsync(user);
             }
 
             //Pass into the next method
@@ -85,7 +99,7 @@ namespace ArkWebMapMasterServer.Services.Auth
             string token = null;
             if(u != null)
             {
-                token = UserTokens.GenerateUserToken(u);
+                token = await u.MakeToken();
             }
 
             //Generate reply

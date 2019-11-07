@@ -8,50 +8,28 @@ namespace ArkWebMapMasterServer
 {
     public class HttpHandler
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e)
         {
-            Program.Log($"[Incoming request] {e.Request.Path}{e.Request.QueryString}", ConsoleColor.Blue);
             try
             {
                 //Read the first part of the path.
                 string path = e.Request.Path.ToString();
                 if (path.StartsWith("/users/"))
-                {
-                    //Pass onto this part
-                    return Services.Users.UsersHttpHandler.OnHttpRequest(e, path.Substring("/users/".Length));
-                }
-                if (path.StartsWith("/servers/"))
-                {
-                    //Pass onto this part
-                    return Services.Servers.ServersHttpHandler.OnHttpRequest(e, path.Substring("/servers/".Length));
-                }
-                if (path.StartsWith("/auth/"))
-                {
-                    //Pass onto this part
-                    return Services.Auth.AuthHttpHandler.OnHttpRequest(e, path.Substring("/auth/".Length));
-                }
-                if (path.StartsWith("/mobile_login_code/"))
-                {
-                    //This is the setup proxy for communicating with up-and-coming servers.
-                    return Services.Misc.MobileLoginTokenProxy.OnHttpRequest(e);
-                }
-                if (path == "/status")
-                {
-                    //System status report
-                    return Services.Misc.ServiceStatus.OnHttpRequest(e);
-                }
-                if (path == "/download_token")
-                {
-                    //File download
-                    return Tools.TokenFileDownloadTool.OnDownloadRequest(e);
-                }
-                if(path == "/preregister")
-                {
-                    return Services.Misc.PreregisterUser.OnHttpRequest(e);
-                }
-
-                //Unknown
-                throw new StandardError("Not Found", StandardErrorCode.NotFound);
+                    await Services.Users.UsersHttpHandler.OnHttpRequest(e, path.Substring("/users/".Length));
+                else if (path.StartsWith("/servers/"))
+                    await Services.Servers.ServersHttpHandler.OnHttpRequest(e, path.Substring("/servers/".Length));
+                else if (path.StartsWith("/auth/"))
+                    await Services.Auth.AuthHttpHandler.OnHttpRequest(e, path.Substring("/auth/".Length));
+                else if (path.StartsWith("/mobile_login_code/"))
+                    await Services.Misc.MobileLoginTokenProxy.OnHttpRequest(e);
+                else if (path == "/status")
+                    await Services.Misc.ServiceStatus.OnHttpRequest(e);
+                else if (path == "/download_token")
+                    await Tools.TokenFileDownloadTool.OnDownloadRequest(e);
+                else if (path == "/preregister")
+                    await Services.Misc.PreregisterUser.OnHttpRequest(e);
+                else
+                    throw new StandardError("Not Found", StandardErrorCode.NotFound);
             } catch (StandardError ex)
             {
                 //Set status code
@@ -60,7 +38,7 @@ namespace ArkWebMapMasterServer
                     errorCode = 401;
 
                 //Create response to send
-                return Program.QuickWriteJsonToDoc(e, new LibDeltaSystem.Entities.HttpErrorResponse
+                await Program.QuickWriteJsonToDoc(e, new LibDeltaSystem.Entities.HttpErrorResponse
                 {
                     message = ex.screen_error,
                     message_more = "Error of type "+ex.error_code.ToString(),
@@ -69,14 +47,7 @@ namespace ArkWebMapMasterServer
             } catch (Exception ex)
             {
                 //Log this error with the system
-                try
-                {
-                    return Program.QuickWriteJsonToDoc(e, Program.connection.LogHttpError(ex, new Dictionary<string, string>()).GetAwaiter().GetResult(), 500);
-                } catch (Exception exx)
-                {
-                    Console.WriteLine(exx.Message + exx.StackTrace);
-                }
-                return null;
+                await Program.QuickWriteJsonToDoc(e, Program.connection.LogHttpError(ex, new Dictionary<string, string>()).GetAwaiter().GetResult(), 500);
             }
         }
     }

@@ -24,7 +24,7 @@ namespace ArkWebMapMasterServer.Services.Misc
     {
         private static Dictionary<string, string> responses = new Dictionary<string, string>();
 
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e)
         {
             //Get the method
             var method = Program.FindRequestMethod(e);
@@ -42,7 +42,8 @@ namespace ArkWebMapMasterServer.Services.Misc
                 responses.Add(code, null);
 
                 //Send response
-                return SendResponseCode(e, code);
+                await SendResponseCode(e, code);
+                return;
             }
 
             //This is to a code. Get the code from the URL
@@ -55,27 +56,30 @@ namespace ArkWebMapMasterServer.Services.Misc
             //Change what happens depending on the method
             if(method == RequestHttpMethod.get)
             {
-                return SendResponseCode(e, code);
+                await SendResponseCode(e, code);
+                return;
             } else if (method == RequestHttpMethod.put)
             {
                 //Set data to what is in the POST body
                 responses[code] = Program.GetPostBodyString(e);
-                return SendResponseCode(e, code);
+                await SendResponseCode(e, code);
+                return;
             } else if (method == RequestHttpMethod.delete)
             {
                 //Delete
                 responses.Remove(code);
-                return Program.QuickWriteStatusToDoc(e, true);
+                await Program.QuickWriteStatusToDoc(e, true);
+                return;
             } else
             {
                 throw new StandardError("Unexpected method.", StandardErrorCode.BadMethod);
             }
         }
 
-        private static Task SendResponseCode(Microsoft.AspNetCore.Http.HttpContext e, string code)
+        private static async Task SendResponseCode(Microsoft.AspNetCore.Http.HttpContext e, string code)
         {
             string data = responses[code];
-            return Program.QuickWriteJsonToDoc(e, new ResponseData
+            await Program.QuickWriteJsonToDoc(e, new ResponseData
             {
                 code = code,
                 complete = data != null,

@@ -19,14 +19,14 @@ namespace ArkWebMapMasterServer.Services.Users
                 throw new StandardError("Request must be POST or post.", StandardErrorCode.NotPermitted);
         }
 
-        public static Task OnSingleDevalidate(Microsoft.AspNetCore.Http.HttpContext e, DbUser u, string token)
+        public static async Task OnSingleDevalidate(Microsoft.AspNetCore.Http.HttpContext e, DbUser u, string token)
         {
             EnsureMethod(e, u);
             var tokenData = Program.connection.GetTokenByTokenAsync(token).GetAwaiter().GetResult();
             if(tokenData != null)
             {
-                tokenData.DeleteAsync().GetAwaiter().GetResult();
-                return Program.QuickWriteJsonToDoc(e, new OkReply
+                await tokenData.DeleteAsync();
+                await Program.QuickWriteJsonToDoc(e, new OkReply
                 {
                     ok = true
                 });
@@ -36,15 +36,15 @@ namespace ArkWebMapMasterServer.Services.Users
             }
         }
 
-        public static Task OnAllDevalidate(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
+        public static async Task OnAllDevalidate(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
         {
             EnsureMethod(e, u);
 
             //Devalidate ALL tokens for this user
-            u.DevalidateAllTokens().GetAwaiter().GetResult();
+            await u.DevalidateAllTokens();
 
             //Return OK
-            return Program.QuickWriteJsonToDoc(e, new OkReply
+            await Program.QuickWriteJsonToDoc(e, new OkReply
             {
                 ok = true
             });

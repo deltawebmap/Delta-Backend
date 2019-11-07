@@ -13,5 +13,6 @@ namespace ArkWebMapMasterServer
         public int listen_port;
 
         public string endpoint_master; //https://deltamap.net/api
+        public string endpoint_echo; //https://echo-content.deltamap.net
     }
 }

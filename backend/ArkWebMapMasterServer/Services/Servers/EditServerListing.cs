@@ -12,26 +12,26 @@ namespace ArkWebMapMasterServer.Services.Servers
 {
     public static class EditServerListing
     {
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s)
+        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s)
         {
             //Open payload
             EditServerListingPayload payload = Program.DecodePostBody<EditServerListingPayload>(e);
 
             //Authenticate user
-            DbUser user = ArkWebMapMasterServer.Services.Users.UsersHttpHandler.AuthenticateUser(e, true);
+            DbUser user = await ApiTools.AuthenticateUser(e, true);
 
             //Ensure user owns server
-            if (user.id != s.owner_uid)
+            if (!s.IsUserAdmin(user))
                 throw new StandardError("You do not own this server.", StandardErrorCode.NotPermitted);
 
             //Update
             EditServer(s, payload, user);            
 
             //Apply to server
-            s.Update();
+            await s.UpdateAsync();
 
             //Return OK
-            return Program.QuickWriteStatusToDoc(e, true);
+            await Program.QuickWriteStatusToDoc(e, true);
         }
 
         public static void EditServer(DbServer s, EditServerListingPayload payload, DbUser user)

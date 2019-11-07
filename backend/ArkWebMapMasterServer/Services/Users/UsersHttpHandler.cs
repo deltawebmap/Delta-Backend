@@ -11,96 +11,36 @@ namespace ArkWebMapMasterServer.Services.Users
 {
     public class UsersHttpHandler
     {
-        public static DbUser AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, bool required)
-        {
-            return AuthenticateUser(e, required, out string t);
-        }
-
-        public static string GetAuthToken(Microsoft.AspNetCore.Http.HttpContext e)
-        {
-            string token = null;
-            if (e.Request.Headers.ContainsKey("Authorization"))
-            {
-                //Read Authorization header
-                token = e.Request.Headers["Authorization"];
-                if (token.StartsWith("Bearer "))
-                    token = token.Substring("Bearer ".Length);
-            }
-            return token;
-        }
-
-        public static DbUser AuthenticateUser(Microsoft.AspNetCore.Http.HttpContext e, bool required, out string token)
-        {
-            token = GetAuthToken(e);
-            if (token == null && required)
-                throw new StandardError("No Auth Token Provided.", StandardErrorCode.AuthRequired);
-            DbUser user = ArkWebMapMasterServer.Users.UserTokens.ValidateUserToken(token);
-            if (user == null && required)
-                throw new StandardError("You're not signed in.", StandardErrorCode.AuthRequired);
-            return user;
-        }
-
-        public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
+        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
         {
             //Get method
             var method = Program.FindRequestMethod(e);
 
             //Every path here requies authentication. Do it.
-            DbUser user = AuthenticateUser(e, true, out string userToken);
+            string userToken = ApiTools.GetBearerToken(e);
+            DbUser user = await ApiTools.AuthenticateUser(userToken, true);
 
             //Check path
             if (path == "@me/report_issue")
-            {
-                IssueCreator.OnHttpRequest(e, user).GetAwaiter().GetResult();
-                return null;
-            }
-            if (path == "@me/tokens/@this/devalidate")
-            {
-                return TokenDevalidateService.OnSingleDevalidate(e, user, userToken);
-            }
-            if (path == "@me/tokens/@all/devalidate")
-            {
-                return TokenDevalidateService.OnAllDevalidate(e, user);
-            }
-            if(path == "@me/user_settings")
-            {
-                //Verify method
-                if (Program.FindRequestMethod(e) != RequestHttpMethod.post)
-                    throw new StandardError("Only POST or post requests are valid here.", StandardErrorCode.BadMethod);
-                
-                //Update
-                user.user_settings = Program.DecodePostBody<DbUserSettings>(e);
-                if(user.user_settings == null)
-                {
-                    throw new StandardError("Cannot set user settings to null.", StandardErrorCode.InvalidInput);
-                }
-                user.UpdateAsync().GetAwaiter().GetResult();
-                return Program.QuickWriteStatusToDoc(e, true);
-            }
-            if(path == "@me/archive")
-            {
-                return UserDataDownloader.OnCreateRequest(e, user, userToken);
-            }
-            if (path == "@me/delete")
-            {
-                return UserDataRemover.OnHttpRequest(e, user, userToken);
-            }
-            if (path == "@me/machines")
-            {
-                return UsersMe.OnMachineListRequest(e, user);
-            }
-            if (path == "@me/push_token" && method == RequestHttpMethod.post)
-            {
-                return NotificationTokenRequest.OnHttpRequest(e, user);
-            }
-            if (path == "@me/" || path == "@me")
-            {
-                //Requested user info
-                return UsersMe.OnHttpRequest(e, user);
-            }
-
-            //Not found
-            throw new StandardError("Not Found", StandardErrorCode.NotFound);
+                await IssueCreator.OnHttpRequest(e, user);
+            else if (path == "@me/tokens/@this/devalidate")
+                await TokenDevalidateService.OnSingleDevalidate(e, user, userToken);
+            else if (path == "@me/tokens/@all/devalidate")
+                await TokenDevalidateService.OnAllDevalidate(e, user);
+            else if (path == "@me/user_settings")
+                await PutUserSettingsRequest.OnHttpRequest(e, user);
+            else if (path == "@me/archive")
+                await UserDataDownloader.OnCreateRequest(e, user, userToken);
+            else if (path == "@me/delete")
+                await UserDataRemover.OnHttpRequest(e, user, userToken);
+            else if (path == "@me/machines")
+                await UsersMe.OnMachineListRequest(e, user);
+            else if (path == "@me/push_token" && method == RequestHttpMethod.post)
+                await NotificationTokenRequest.OnHttpRequest(e, user);
+            else if (path == "@me/" || path == "@me")
+                await UsersMe.OnHttpRequest(e, user); //Make async
+            else
+                throw new StandardError("Not Found", StandardErrorCode.NotFound);
         }
     }
 }
