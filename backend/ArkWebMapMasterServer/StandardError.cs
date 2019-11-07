@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArkBridgeSharedEntities.Entities
+namespace ArkWebMapMasterServer
 {
     public class StandardError : Exception
     {

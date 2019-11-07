@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using ArkBridgeSharedEntities.Entities;
+
 using ArkWebMapMasterServer.Tools;
 using LibDeltaSystem.Db.System;
 

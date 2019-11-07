@@ -1,6 +1,7 @@
 ﻿using ArkWebMapGatewayClient;
 using ArkWebMapGatewayClient.Sender;
 using LibDeltaSystem;
+using LibDeltaSystem.Entities.MiscNet;
 using LiteDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -104,7 +105,7 @@ namespace ArkWebMapMasterServer
 
         public static Task QuickWriteStatusToDoc(Microsoft.AspNetCore.Http.HttpContext e, bool ok, int code = 200)
         {
-            return QuickWriteJsonToDoc(e, new ArkBridgeSharedEntities.Entities.TrueFalseReply
+            return QuickWriteJsonToDoc(e, new OkStatusResponse
             {
                 ok = ok
             }, code);

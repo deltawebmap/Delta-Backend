@@ -1,4 +1,4 @@
-﻿using ArkBridgeSharedEntities.Entities;
+﻿
 using LibDeltaSystem.Db.System;
 using System;
 using System.Collections.Generic;
@@ -42,15 +42,6 @@ namespace ArkWebMapMasterServer.Services.Users
 
         public static Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
         {
-            //Check if this is a demo user
-            if(GetAuthToken(e) == "demo-user")
-            {
-                //This is a demo user. ALWAYS provide it with the placeholder users/me
-                NetEntities.UsersMeReply usersme = new NetEntities.UsersMeReply();
-                usersme.MakeDummyUsersMe();
-                return Program.QuickWriteJsonToDoc(e, usersme);
-            }
-
             //Get method
             var method = Program.FindRequestMethod(e);
 
@@ -93,10 +84,6 @@ namespace ArkWebMapMasterServer.Services.Users
             if (path == "@me/delete")
             {
                 return UserDataRemover.OnHttpRequest(e, user, userToken);
-            }
-            if(path == "@me/create_machine" && method == RequestHttpMethod.post)
-            {
-                return Machines.CreateMachineRequest.OnUserCreateMachine(e, user);
             }
             if (path == "@me/machines")
             {

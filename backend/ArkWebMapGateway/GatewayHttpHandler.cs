@@ -1,5 +1,4 @@
-﻿using ArkBridgeSharedEntities.Entities;
-using ArkWebMapGateway.Clients;
+﻿using ArkWebMapGateway.Clients;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

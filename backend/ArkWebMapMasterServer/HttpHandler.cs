@@ -1,5 +1,4 @@
-﻿using ArkBridgeSharedEntities.Entities;
-using ArkWebMapMasterServer.NetEntities;
+﻿using ArkWebMapMasterServer.NetEntities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,11 +25,6 @@ namespace ArkWebMapMasterServer
                     //Pass onto this part
                     return Services.Servers.ServersHttpHandler.OnHttpRequest(e, path.Substring("/servers/".Length));
                 }
-                if (path.StartsWith("/machines/"))
-                {
-                    //Pass onto this part
-                    return Services.Machines.MachinesHttpHandler.OnHttpRequest(e, path.Substring("/machines/".Length));
-                }
                 if (path.StartsWith("/auth/"))
                 {
                     //Pass onto this part
@@ -54,11 +48,6 @@ namespace ArkWebMapMasterServer
                 if(path == "/preregister")
                 {
                     return Services.Misc.PreregisterUser.OnHttpRequest(e);
-                }
-                if (path == "/activate_machine")
-                {
-                    //First-time machine activation
-                    return Services.Machines.MachineActivateRequest.OnActivateRequest(e);
                 }
 
                 //Unknown

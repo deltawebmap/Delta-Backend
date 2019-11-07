@@ -1,4 +1,4 @@
-﻿using ArkBridgeSharedEntities.Entities;
+﻿
 using ArkWebMapMasterServer.NetEntities.UserDataDownloader;
 using ArkWebMapMasterServer.Tools;
 using LibDeltaSystem.Db.System;

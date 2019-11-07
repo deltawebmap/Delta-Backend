@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\LibDeltaSystem\LibDeltaSystem\LibDeltaSystem.csproj" />
-    <ProjectReference Include="..\ArkBridgeSharedEntities\ArkBridgeSharedEntities.csproj" />
     <ProjectReference Include="..\ArkWebMapGatewayClient\ArkWebMapGatewayClient.csproj" />
     <ProjectReference Include="..\ArkWebMapMasterServer\ArkWebMapMasterServer.csproj" />
   </ItemGroup>

@@ -1,6 +1,7 @@
-﻿using ArkBridgeSharedEntities.Entities;
+﻿
 using ArkWebMapMasterServer.NetEntities;
 using LibDeltaSystem.Db.System;
+using LibDeltaSystem.Entities.MiscNet;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,7 +32,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             s.Update();
 
             //Return OK
-            return Program.QuickWriteJsonToDoc(e, new ArkBridgeSharedEntities.Entities.TrueFalseReply
+            return Program.QuickWriteJsonToDoc(e, new OkStatusResponse
             {
                 ok = true
             });
