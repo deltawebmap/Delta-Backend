@@ -1,5 +1,6 @@
 ﻿using LibDeltaSystem.Db.System;
 using LibDeltaSystem.Db.System.Entities;
+using LibDeltaSystem.RPC.Payloads;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             await Program.QuickWriteJsonToDoc(e, prefs);
         }
 
-        public static async Task OnTribeDinoPrefsRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s, int tribeId, string next)
+        public static async Task OnTribeDinoPrefsRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s, DbUser u, int tribeId, string next)
         {
             //Get the dinosaur ID
             ulong id = ulong.Parse(next);
@@ -53,6 +54,14 @@ namespace ArkWebMapMasterServer.Services.Servers
             {
                 IsUpsert = true
             });
+
+            //Notify on RPC
+            Program.connection.GetRPC().SendRPCMessageToTribe(LibDeltaSystem.RPC.RPCOpcode.DinoPrefsChanged, new RPCPayloadDinoPrefsUpdate
+            {
+                dino_id = id.ToString(),
+                prefs = prefs,
+                user_id = u.id
+            }, s, tribeId);
 
             //Return prefs
             await Program.QuickWriteJsonToDoc(e, prefs);

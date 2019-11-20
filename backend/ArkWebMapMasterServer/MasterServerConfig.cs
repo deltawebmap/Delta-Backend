@@ -12,7 +12,8 @@ namespace ArkWebMapMasterServer
         public string map_config_path;
         public int listen_port;
 
-        public string endpoint_master; //https://deltamap.net/api
+        public string endpoint_this; //https://deltamap.net/api
         public string endpoint_echo; //https://echo-content.deltamap.net
+        public string endpoint_canvas; //wss://canvas.deltamap.net
     }
 }

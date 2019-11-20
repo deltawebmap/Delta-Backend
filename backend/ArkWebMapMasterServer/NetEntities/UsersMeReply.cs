@@ -60,7 +60,7 @@ namespace ArkWebMapMasterServer.NetEntities
                 reply.arkName = ps.name;
             }
 
-            string base_endpoint = Program.config.endpoint_master+$"/servers/{s.id}/";
+            string base_endpoint = Program.config.endpoint_this+$"/servers/{s.id}/";
             reply.endpoint_createsession = Program.config.endpoint_echo+$"/{s.id}/" + "create_session";
 
             reply.map_id = s.latest_server_map;

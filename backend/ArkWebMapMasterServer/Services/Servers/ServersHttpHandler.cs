@@ -48,9 +48,13 @@ namespace ArkWebMapMasterServer.Services.Servers
                 else if (nextUrl.StartsWith("put_user_prefs"))
                     await ServerUpdateSavedPrefs.OnUserPrefsRequest(e, server, user);
                 else if (nextUrl.StartsWith("put_dino_prefs/"))
-                    await ServerUpdateSavedPrefs.OnTribeDinoPrefsRequest(e, server, tribeId, nextUrl.Substring("put_dino_prefs/".Length));
+                    await ServerUpdateSavedPrefs.OnTribeDinoPrefsRequest(e, server, user, tribeId, nextUrl.Substring("put_dino_prefs/".Length));
+                else if (nextUrl.StartsWith("canvas/"))
+                    await CanvasRequest.OnCanvasRequest(e, server, user, tribeId, nextUrl.Substring("canvas/".Length));
+                else if (nextUrl.StartsWith("canvas"))
+                    await CanvasRequest.OnListRequest(e, server, user, tribeId);
                 else
-                    throw new StandardError("Not Found in Server", StandardErrorCode.NotFound);
+                    throw new StandardError("Not Found", StandardErrorCode.NotFound);
             } else
             {
                 //Return with some server info
