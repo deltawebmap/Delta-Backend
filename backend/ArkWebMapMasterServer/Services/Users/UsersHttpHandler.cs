@@ -37,6 +37,10 @@ namespace ArkWebMapMasterServer.Services.Users
                 await UsersMe.OnMachineListRequest(e, user);
             else if (path == "@me/push_token" && method == RequestHttpMethod.post)
                 await NotificationTokenRequest.OnHttpRequest(e, user);
+            else if (path == "@me/applications/")
+                await OAuthApplicationsHandler.OnBaseHTTPRequest(e, user);
+            else if (path.StartsWith("@me/applications/"))
+                await OAuthApplicationsHandler.OnAppHTTPRequest(e, user, path.Substring("@me/applications/".Length));
             else if (path == "@me/" || path == "@me")
                 await UsersMe.OnHttpRequest(e, user); //Make async
             else

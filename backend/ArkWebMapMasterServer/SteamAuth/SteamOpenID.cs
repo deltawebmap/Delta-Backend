@@ -1,6 +1,7 @@
 ﻿
 using ArkWebMapMasterServer.NetEntities;
 using IdentityModel.OidcClient;
+using LibDeltaSystem.Db.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,25 +17,25 @@ namespace ArkWebMapMasterServer.SteamAuth
         /// <summary>
         /// Holds "sessions" that have objects that are returned to the server when auth is complete. Maps those to an ID.
         /// </summary>
-        public static Dictionary<string, string> return_values = new Dictionary<string, string>();
+        public static Dictionary<string, SteamOpenIDCallback> states = new Dictionary<string, SteamOpenIDCallback>();
 
         /// <summary>
         /// Starts a session and returns a URL to redirect to.
         /// </summary>
         /// <param name="returner"></param>
         /// <returns></returns>
-        public static string Begin(string mode, string next)
+        public static string Begin(SteamOpenIDCallback response)
         {
             //First, generate a state ID. This should be unique
             string stateId = Program.GenerateRandomString(24);
-            while(return_values.ContainsKey(stateId))
+            while(states.ContainsKey(stateId))
                 stateId = Program.GenerateRandomString(24);
 
             //Add
-            return_values.Add(stateId, next);
+            states.Add(stateId, response);
 
             //Now, construct a URL to send the user to.
-            string return_url = $"https://deltamap.net/api/auth/steam_auth_return/?state={stateId}&mode={mode}";
+            string return_url = $"https://deltamap.net/api/auth/steam_auth_return/?state={stateId}";
             string encoded_return_url = System.Web.HttpUtility.UrlEncode(return_url);
             string url = $"https://steamcommunity.com/openid/login?openid.return_to={encoded_return_url}&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns.sreg=http%3A%2F%2Fopenid.net%2Fextensions%2Fsreg%2F1.1&openid.realm={encoded_return_url}";
             return url;
@@ -45,7 +46,7 @@ namespace ArkWebMapMasterServer.SteamAuth
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public static async Task<SteamValidationResponse> Finish(Microsoft.AspNetCore.Http.HttpContext e)
+        public static async Task Finish(Microsoft.AspNetCore.Http.HttpContext e)
         {
             //We'll now validate this with Steam. Create the request back to Steam servers
             string validation_url = "https://steamcommunity.com/openid/login"+e.Request.QueryString.Value.Replace("openid.mode=id_res", "openid.mode=check_authentication");
@@ -74,27 +75,30 @@ namespace ArkWebMapMasterServer.SteamAuth
 
             //Get the state ID
             string state_id = e.Request.Query["state"];
-            if (!return_values.ContainsKey(state_id))
+            if (!states.ContainsKey(state_id))
                 throw new StandardError("Could not find state.", StandardErrorCode.AuthFailed);
-            string state = return_values[state_id];
+            SteamOpenIDCallback state = states[state_id];
 
-            //Also request this users' Steam profile.
+            //Request this users' Steam profile.
             var profile = await Program.connection.GetSteamProfileById(steam_id);
 
-            //Output
-            return new SteamValidationResponse
-            {
-                ok = true,
-                profile = profile,
-                steam_id = steam_id,
-                next = state
-            };
+            //Get user account
+            DbUser user = await DbUser.GetUserBySteamID(Program.connection, profile);
+
+            //Run callback. This'll allow a client to handle this themselves
+            await state.OnAuthFinished(e, profile, user);
         }
 
-        public enum SteamAuthMode
+        public abstract class SteamOpenIDCallback
         {
-            Web,
-            AndroidClient
+            public abstract Task OnAuthFinished(Microsoft.AspNetCore.Http.HttpContext e, DbSteamCache profile, DbUser user);
+
+            public async Task Begin(Microsoft.AspNetCore.Http.HttpContext e)
+            {
+                string url = SteamAuth.SteamOpenID.Begin(this);
+                e.Response.Headers.Add("Location", url);
+                await Program.QuickWriteToDoc(e, "Redirecting to STEAM authentication.", "text/plain", 302);
+            }
         }
     }
 }
