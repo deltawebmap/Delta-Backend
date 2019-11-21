@@ -1,6 +1,4 @@
-﻿using ArkWebMapGatewayClient;
-using ArkWebMapGatewayClient.Sender;
-using LibDeltaSystem;
+﻿using LibDeltaSystem;
 using LibDeltaSystem.Entities.MiscNet;
 using LiteDB;
 using Microsoft.AspNetCore.Builder;
@@ -17,7 +15,6 @@ namespace ArkWebMapMasterServer
 {
     class Program
     {
-        public static SenderConnection gateway;
         public static MasterServerConfig config;
         public static Random rand = new Random();
 
@@ -34,9 +31,6 @@ namespace ArkWebMapMasterServer
             Console.WriteLine("Connecting to MongoDB...");
             connection = new DeltaConnection(config.database_config_path, "master", 0, 0);
             connection.Connect().GetAwaiter().GetResult();
-
-            Console.WriteLine("Connecting to GATEWAY...");
-            gateway = SenderConnection.CreateClient("sender", "", 1, 0, false, connection.config.key);
 
             Console.WriteLine("Starting some other timers...");
             Tools.TokenFileDownloadTool.Init();
