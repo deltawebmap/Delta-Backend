@@ -1,4 +1,5 @@
 ﻿using LibDeltaSystem;
+using LibDeltaSystem.Db.System;
 using LibDeltaSystem.Entities.MiscNet;
 using LiteDB;
 using Microsoft.AspNetCore.Builder;
@@ -140,6 +141,31 @@ namespace ArkWebMapMasterServer
                     return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Checks to see if a token is capable of doing an action based upon it's scope. Will throw a StandardError if it cannot.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="user"></param>
+        /// <param name="scope"></param>
+        /// <returns></returns>
+        public static async Task CheckTokenScope(DbUser user, string scope)
+        {
+            if(user.GetAuthenticatedToken() != null)
+            {
+                if (user.GetAuthenticatedToken().CheckScope(scope))
+                    return;
+            } else
+            {
+                throw new StandardError("This action appears to have been requested without specifying a valid token. This action is prohibited.", StandardErrorCode.AuthFailed);
+            }
+
+            //Failed.
+            if (scope == null)
+                throw new StandardError("This OAUTH token is not capable of doing this action. Only user tokens can do that.", StandardErrorCode.AuthRequired);
+            else
+                throw new StandardError("This OAUTH token is not capable of doing this action. Check the scope, or request a new token with the scope '"+scope+"'.", StandardErrorCode.AuthRequired);
         }
     }
 

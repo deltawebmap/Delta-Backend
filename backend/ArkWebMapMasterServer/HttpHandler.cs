@@ -28,6 +28,8 @@ namespace ArkWebMapMasterServer
                     await Tools.TokenFileDownloadTool.OnDownloadRequest(e);
                 else if (path == "/preregister")
                     await Services.Misc.PreregisterUser.OnHttpRequest(e);
+                else if (path == "/config/maps.json")
+                    await Services.Misc.MapList.OnHttpRequest(e);
                 else
                     throw new StandardError("Not Found", StandardErrorCode.NotFound);
             } catch (StandardError ex)

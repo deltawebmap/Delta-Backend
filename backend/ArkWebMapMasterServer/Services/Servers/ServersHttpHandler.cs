@@ -22,6 +22,8 @@ namespace ArkWebMapMasterServer.Services.Servers
 
             //Get the server by this ID
             DbServer server = await Program.connection.GetServerByIdAsync(serverId);
+            if (server == null)
+                throw new StandardError("Server Not Found", StandardErrorCode.NotFound);
 
             //Handle server data
             if(split.Length > 1)
@@ -39,10 +41,8 @@ namespace ArkWebMapMasterServer.Services.Servers
                 int tribeId = tribeIdNullable.Value;
 
                 //Check if this is one of our URLs.
-                if (nextUrl == "delete")
-                    await DeleteServer.OnHttpRequest(e, server, user);
-                else if (nextUrl == "edit")
-                    await EditServerListing.OnHttpRequest(e, server);
+                if (nextUrl == "manage")
+                    await ManageRequest.OnHttpRequest(e, server, user);
                 else if (nextUrl.StartsWith("mods"))
                     await ServerMods.OnHttpRequest(e, server);
                 else if (nextUrl.StartsWith("put_user_prefs"))

@@ -35,14 +35,27 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
             foreach (var s in scopes)
                 is_dangerous = is_dangerous || s.is_dangerous;
 
+            //Create scopes URL
+            string scopesSeparated = "";
+            foreach (var s in scopes)
+                scopesSeparated += s.id + ",";
+            scopesSeparated.TrimEnd(',');
+
             //Respond
+            string baseUrl = Program.config.endpoint_this;
             await Program.QuickWriteJsonToDoc(e, new OAuthInfoResponse
             {
                 name = app.name,
                 description = app.description,
                 icon = app.icon_url,
                 is_dangerous = is_dangerous,
-                scopes = scopes
+                scopes = scopes,
+                client_id = app.client_id,
+                endpoints = new OAuthInfoResponse_Endpoints
+                {
+                    authorize = baseUrl + "/auth/oauth/authorize?client_id=" + app.client_id+"&scopes="+System.Web.HttpUtility.UrlEncode(scopesSeparated),
+                    report = baseUrl + "/auth/oauth/report"
+                }
             });
         }
 
@@ -59,6 +72,14 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
             public string icon;
             public List<OAuthScopeEntry> scopes;
             public bool is_dangerous;
+            public string client_id;
+            public OAuthInfoResponse_Endpoints endpoints;
+        }
+
+        class OAuthInfoResponse_Endpoints
+        {
+            public string authorize;
+            public string report;
         }
     }
 }

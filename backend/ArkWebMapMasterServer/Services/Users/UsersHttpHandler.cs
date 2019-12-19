@@ -25,6 +25,8 @@ namespace ArkWebMapMasterServer.Services.Users
                 await IssueCreator.OnHttpRequest(e, user);
             else if (path == "@me/tokens/@this/devalidate")
                 await TokenDevalidateService.OnSingleDevalidate(e, user, userToken);
+            else if (path == "@me/servers")
+                await ServerListRequest.OnHttpRequest(e, user);
             else if (path == "@me/tokens/@all/devalidate")
                 await TokenDevalidateService.OnAllDevalidate(e, user);
             else if (path == "@me/user_settings")
@@ -41,8 +43,10 @@ namespace ArkWebMapMasterServer.Services.Users
                 await OAuthApplicationsHandler.OnBaseHTTPRequest(e, user);
             else if (path.StartsWith("@me/applications/"))
                 await OAuthApplicationsHandler.OnAppHTTPRequest(e, user, path.Substring("@me/applications/".Length));
+            else if (path == "@me/clusters")
+                await UserClustersRequest.OnHttpRequest(e, user);
             else if (path == "@me/" || path == "@me")
-                await UsersMe.OnHttpRequest(e, user); //Make async
+                await UsersMeHandler.OnHttpRequest(e, user);
             else
                 throw new StandardError("Not Found", StandardErrorCode.NotFound);
         }

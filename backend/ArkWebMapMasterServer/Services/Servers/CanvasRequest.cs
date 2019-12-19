@@ -39,6 +39,9 @@ namespace ArkWebMapMasterServer.Services.Servers
                 return;
             } else if (method == RequestHttpMethod.post)
             {
+                //Check scope
+                await Program.CheckTokenScope(u, null);
+                
                 //We'll create a canvas. Decode the body
                 CanvasCreateRequest request = Program.DecodePostBody<CanvasCreateRequest>(e);
 
@@ -95,6 +98,9 @@ namespace ArkWebMapMasterServer.Services.Servers
             }
             else if (method == RequestHttpMethod.post)
             {
+                //Check scope
+                await Program.CheckTokenScope(u, null);
+
                 //Rename the canvas; decode request
                 CanvasCreateRequest request = Program.DecodePostBody<CanvasCreateRequest>(e);
 
@@ -109,6 +115,9 @@ namespace ArkWebMapMasterServer.Services.Servers
             }
             else if (method == RequestHttpMethod.delete)
             {
+                //Check scope
+                await Program.CheckTokenScope(u, null);
+
                 //Delete canvas
                 await c.DeleteCanvas();
 
@@ -120,6 +129,9 @@ namespace ArkWebMapMasterServer.Services.Servers
             }
             else if (method == RequestHttpMethod.put)
             {
+                //Check scope
+                await Program.CheckTokenScope(u, null);
+
                 //We'll update the thumbnail; Decode the request
                 UpdateThumbnailRequest request = Program.DecodePostBody<UpdateThumbnailRequest>(e);
 

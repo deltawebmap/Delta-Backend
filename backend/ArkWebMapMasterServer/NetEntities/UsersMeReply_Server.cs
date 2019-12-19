@@ -10,6 +10,7 @@ namespace ArkWebMapMasterServer.NetEntities
         public string display_name;
         public string image_url;
         public string owner_uid;
+        public string cluster_id;
         public string id;
 
         public int tribeId;

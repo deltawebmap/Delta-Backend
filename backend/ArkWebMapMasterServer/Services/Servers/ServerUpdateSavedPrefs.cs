@@ -35,6 +35,9 @@ namespace ArkWebMapMasterServer.Services.Servers
 
         public static async Task OnTribeDinoPrefsRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s, DbUser u, int tribeId, string next)
         {
+            //Check scope
+            await Program.CheckTokenScope(u, DbToken.SCOPE_PUT_DINO_PREFS);
+
             //Get the dinosaur ID
             ulong id = ulong.Parse(next);
 

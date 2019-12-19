@@ -5,7 +5,11 @@ using System.Text;
 using LibDeltaSystem.Db.System;
 using LibDeltaSystem.Db.Content;
 using MongoDB.Driver;
+using System.Threading.Tasks;
 
+/// <summary>
+/// TODO: REFACCTOR THIS FILE
+/// </summary>
 namespace ArkWebMapMasterServer.NetEntities
 {
     public class UsersMeReply
@@ -16,13 +20,14 @@ namespace ArkWebMapMasterServer.NetEntities
         public string steam_id;
         public DbUserSettings user_settings;
         public List<UsersMeReply_Server> servers;
+        public List<UsersMeReply_Cluster> clusters;
 
         public UsersMeReply()
         {
 
         }
 
-        public void MakeUsersMe(DbUser u)
+        public async Task MakeUsersMe(DbUser u)
         {
             //Set basic values
             screen_name = u.screen_name;
@@ -33,14 +38,21 @@ namespace ArkWebMapMasterServer.NetEntities
 
             //Convert servers
             servers = new List<UsersMeReply_Server>();
-            var found_servers = u.GetGameServers();
+            List<string> clusterIds = new List<string>();
+            var found_servers = await u.GetGameServersAsync();
             foreach(var id in found_servers)
             {
                 //Get server by ID
                 var converted = MakeServer(id.Item1, id.Item2, u);
                 servers.Add(converted);
+                if (converted.cluster_id != null && !clusterIds.Contains(converted.cluster_id))
+                    clusterIds.Add(converted.cluster_id);
             }
 
+            //Convert clusters
+            clusters = new List<UsersMeReply_Cluster>();
+            foreach (var c in clusterIds)
+                clusters.Add(new UsersMeReply_Cluster(await DbCluster.GetClusterById(Program.connection, MongoDB.Bson.ObjectId.Parse(c))));
         }
 
         public static UsersMeReply_Server MakeServer(DbServer s, DbPlayerProfile ps, DbUser user)
@@ -52,6 +64,7 @@ namespace ArkWebMapMasterServer.NetEntities
             reply.owner_uid = s.owner_uid;
             reply.id = s.id;
             reply.has_ever_gone_online = true;
+            reply.cluster_id = s.cluster_id;
 
             if(ps != null)
             {
@@ -88,6 +101,18 @@ namespace ArkWebMapMasterServer.NetEntities
             }
 
             return reply;
+        }
+
+        public class UsersMeReply_Cluster
+        {
+            public string name;
+            public string id;
+
+            public UsersMeReply_Cluster(DbCluster c)
+            {
+                name = c.name;
+                id = c.id;
+            }
         }
     }
 }

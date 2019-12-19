@@ -14,7 +14,7 @@ namespace ArkWebMapMasterServer.Services.Users
         {
             //Just convert it.
             UsersMeReply user = new UsersMeReply();
-            user.MakeUsersMe(u);
+            await user.MakeUsersMe(u);
             await Program.QuickWriteJsonToDoc(e, user);
         }
 
