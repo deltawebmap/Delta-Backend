@@ -24,30 +24,23 @@ namespace ArkWebMapMasterServer.Services.Auth
                 await SteamAuth.SteamOpenID.Finish(e);
                 return;
             }
-            if (path == "steam_auth" || path == "steam_auth/")
+            if (path.StartsWith("steam_auth/"))
             {
-                //Web Steam auth
-                
-                //Get the next url
-                string next = "https://deltamap.net/app/";
-                if (e.Request.Query.ContainsKey("next"))
-                    next = e.Request.Query["next"];
+                //We're doing auth. Determine the method
+                string methodName = path.Substring("steam_auth/".Length);
 
-                //Create a session
-                LoginSessionWeb session = new LoginSessionWeb(next);
+                //Find the method
+                OneTimeLoginSession session;
+                switch(methodName)
+                {
+                    case "": session = new LoginSessionWeb(); break;
+                    case "android_secure": session = new LoginSessionAndroid(); break;
+                    default:
+                        throw new StandardError("Unknown auth method.", StandardErrorCode.AuthFailed);
+                }
 
-                //Redirect to Steam auth
-                string url = SteamAuth.SteamOpenID.Begin(session);
-                e.Response.Headers.Add("Location", url);
-                await Program.QuickWriteToDoc(e, "Redirecting to STEAM authentication.", "text/plain", 302);
-                return;
-            }
-            if(path == "steam_auth/android")
-            {
-                //Android official Steam auth
-
-                //Create a session
-                LoginSessionAndroid session = new LoginSessionAndroid();
+                //Run intro
+                session.OnOpen(e);
 
                 //Redirect to Steam auth
                 string url = SteamAuth.SteamOpenID.Begin(session);
@@ -139,6 +132,8 @@ namespace ArkWebMapMasterServer.Services.Auth
                 one_time_token = id;
                 AuthHttpHandler.oneTimeSessions.Add(id, this);
             }
+
+            public abstract void OnOpen(HttpContext e);
         }
 
         /// <summary>
@@ -166,9 +161,18 @@ namespace ArkWebMapMasterServer.Services.Auth
                 await Program.QuickWriteToDoc(e, "You should be redirected now.", "text/plain", 302);
             }
 
-            public LoginSessionWeb(string next_url) : base()
+            public LoginSessionWeb() : base()
             {
-                this.next_url = next_url;
+
+            }
+
+            public override void OnOpen(HttpContext e)
+            {
+                //Get the next url
+                string next = "https://deltamap.net/app/";
+                if (e.Request.Query.ContainsKey("next"))
+                    next = e.Request.Query["next"];
+                next_url = next;
             }
         }
 
@@ -178,6 +182,8 @@ namespace ArkWebMapMasterServer.Services.Auth
         class LoginSessionAndroid : OneTimeLoginSession
         {
             DbUser user;
+
+            public string nonce;
 
             public override object CreateResponseData()
             {
@@ -191,7 +197,7 @@ namespace ArkWebMapMasterServer.Services.Auth
                 this.user = user;
                 
                 //Create URL to redirect to
-                string url = "ark-web-map-login://login/" + one_time_token;
+                string url = "delta-web-map://login/" + nonce + "/" + one_time_token;
 
                 //Redirect to this
                 e.Response.Headers.Add("Location", url);
@@ -201,6 +207,13 @@ namespace ArkWebMapMasterServer.Services.Auth
             public LoginSessionAndroid() : base()
             {
 
+            }
+
+            public override void OnOpen(HttpContext e)
+            {
+                //Get the next url
+                if (e.Request.Query.ContainsKey("nonce"))
+                    nonce = e.Request.Query["nonce"];
             }
         }
     }

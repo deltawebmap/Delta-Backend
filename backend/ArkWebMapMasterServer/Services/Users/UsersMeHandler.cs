@@ -33,8 +33,9 @@ namespace ArkWebMapMasterServer.Services.Users
 
                 //Get map info
                 string mapName = null;
-                if (Program.ark_maps.ContainsKey(s.Item1.latest_server_map))
-                    mapName = Program.ark_maps[s.Item1.latest_server_map].displayName;
+                var mapData = await s.Item1.GetMapEntryAsync(Program.connection);
+                if (mapData != null)
+                    mapName = mapData.displayName;
 
                 //Get closed reason, if any
                 int close = -1;
@@ -45,7 +46,7 @@ namespace ArkWebMapMasterServer.Services.Users
                 }
 
                 //Check pseudo flags
-                if (!Program.ark_maps.ContainsKey(s.Item1.latest_server_map))
+                if (mapData == null)
                     close = 32; //MAP_NOT_SUPPORTED
 
                 //Create response

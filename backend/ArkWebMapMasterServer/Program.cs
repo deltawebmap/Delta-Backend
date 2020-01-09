@@ -21,13 +21,10 @@ namespace ArkWebMapMasterServer
 
         public static DeltaConnection connection;
 
-        public static Dictionary<string, ArkSaveEditor.Entities.ArkMapData> ark_maps;
-
         static void Main(string[] args)
         {
             Console.WriteLine("Loading config...");
             config = JsonConvert.DeserializeObject<MasterServerConfig>(File.ReadAllText(args[0]));
-            ark_maps = JsonConvert.DeserializeObject<Dictionary<string, ArkSaveEditor.Entities.ArkMapData>>(File.ReadAllText(config.map_config_path));
 
             Console.WriteLine("Connecting to MongoDB...");
             connection = new DeltaConnection(config.database_config_path, "master", 0, 0);

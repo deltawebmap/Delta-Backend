@@ -23,8 +23,9 @@ namespace ArkWebMapMasterServer.Services.Users
             {
                 //Get map
                 string mapName = null;
-                if (Program.ark_maps.ContainsKey(s.latest_server_map))
-                    mapName = Program.ark_maps[s.latest_server_map].displayName;
+                var mapData = await s.GetMapEntryAsync(Program.connection);
+                if (mapData != null)
+                    mapName = mapData.displayName;
 
                 //Write
                 response.servers.Add(new ServerListResponseServer
