@@ -51,7 +51,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             {
                 tribe_id = tribeId,
                 dino_id = id,
-                server_id = s.id,
+                server_id = s._id,
                 payload = prefs
             }, new UpdateOptions
             {

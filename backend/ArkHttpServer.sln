@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkSaveEditor", "Ark-Save-Manager\ArkSaveEditor\ArkSaveEditor.csproj", "{CA8F9500-8795-44EE-BFA0-E6A6BBE82905}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArkWebMapMasterServer", "ArkWebMapMasterServer\ArkWebMapMasterServer.csproj", "{E7668329-B4DE-403F-8F75-8E293EB43747}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibDeltaSystem", "..\..\LibDeltaSystem\LibDeltaSystem\LibDeltaSystem.csproj", "{CE675317-8366-4993-8C2B-8E5D068ACC4E}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CA8F9500-8795-44EE-BFA0-E6A6BBE82905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA8F9500-8795-44EE-BFA0-E6A6BBE82905}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA8F9500-8795-44EE-BFA0-E6A6BBE82905}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA8F9500-8795-44EE-BFA0-E6A6BBE82905}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E7668329-B4DE-403F-8F75-8E293EB43747}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E7668329-B4DE-403F-8F75-8E293EB43747}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7668329-B4DE-403F-8F75-8E293EB43747}.Release|Any CPU.ActiveCfg = Release|Any CPU
