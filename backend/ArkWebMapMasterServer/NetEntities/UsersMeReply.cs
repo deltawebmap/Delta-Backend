@@ -39,7 +39,7 @@ namespace ArkWebMapMasterServer.NetEntities
             //Convert servers
             servers = new List<UsersMeReply_Server>();
             List<string> clusterIds = new List<string>();
-            var found_servers = await u.GetGameServersAsync();
+            var found_servers = await u.GetGameServersAsync(Program.connection);
             foreach(var id in found_servers)
             {
                 //Get server by ID
@@ -69,11 +69,11 @@ namespace ArkWebMapMasterServer.NetEntities
             if(ps != null)
             {
                 reply.tribeId = ps.tribe_id;
-                reply.tribeName = s.GetTribeAsync(ps.tribe_id).GetAwaiter().GetResult().tribe_name;
+                reply.tribeName = s.GetTribeAsync(Program.connection, ps.tribe_id).GetAwaiter().GetResult().tribe_name;
                 reply.arkName = ps.name;
             }
 
-            string base_endpoint = Program.config.endpoint_this+$"/servers/{s.id}/";
+            string base_endpoint = Program.connection.config.hosts.master + "/api" +$"/servers/{s.id}/";
             reply.endpoint_createsession = Program.config.endpoint_echo+$"/{s.id}/" + "create_session";
 
             reply.map_id = s.latest_server_map;

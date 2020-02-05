@@ -26,7 +26,7 @@ namespace ArkWebMapMasterServer.Services.Users
                 WriteJsonToZip(zip, "me.json", u);
 
                 //Get servers this user owns
-                WriteJsonToZip(zip, "owned_servers.json", u.GetOwnedServersAsync().GetAwaiter().GetResult());
+                WriteJsonToZip(zip, "owned_servers.json", u.GetOwnedServersAsync(Program.connection).GetAwaiter().GetResult());
 
                 //Download remote data
                 Task[] remote = new Task[] {

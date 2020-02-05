@@ -34,7 +34,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 DbUser user = await ApiTools.AuthenticateUser(ApiTools.GetBearerToken(e), true);
 
                 //Look up the user's tribe by their steam ID
-                int? tribeIdNullable = await server.TryGetTribeIdAsync(user.steam_id);
+                int? tribeIdNullable = await server.TryGetTribeIdAsync(Program.connection, user.steam_id);
                 bool hasTribe = tribeIdNullable.HasValue;
                 if(!hasTribe)
                     throw new StandardError("You must be a part of this server to send API calls.", StandardErrorCode.NotPermitted);

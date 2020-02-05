@@ -115,7 +115,7 @@ namespace ArkWebMapMasterServer.Services.Auth
             public override async Task OnAuthFinished(HttpContext e, DbSteamCache profile, DbUser user)
             {
                 //Create an access token
-                access_token = await user.MakeToken();
+                access_token = await user.MakeToken(Program.connection);
             }
 
             /// <summary>

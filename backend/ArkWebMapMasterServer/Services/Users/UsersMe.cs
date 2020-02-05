@@ -31,8 +31,7 @@ namespace ArkWebMapMasterServer.Services.Users
             foreach(var m in machines)
             {
                 //Find how many servers use this machine
-                m.conn = Program.connection;
-                var servers = await m.GetServersAsync();
+                var servers = await m.GetServersAsync(Program.connection);
 
                 //Convert servers
                 List<ResponseServer> responseServers = new List<ResponseServer>();

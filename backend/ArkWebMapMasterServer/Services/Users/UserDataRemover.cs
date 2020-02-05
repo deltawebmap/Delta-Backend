@@ -26,17 +26,17 @@ namespace ArkWebMapMasterServer.Services.Users
                 await hc.PostAsync("https://web-analytics.deltamap.net/v1/destroy?access_token=" + token, new StringContent(""));
 
             //Now, delete all servers we own
-            var owned_servers = u.GetOwnedServersAsync().GetAwaiter().GetResult();
+            var owned_servers = u.GetOwnedServersAsync(Program.connection).GetAwaiter().GetResult();
             foreach (var s in owned_servers)
             {
-                s.DeleteAsync().GetAwaiter().GetResult();
+                s.DeleteAsync(Program.connection).GetAwaiter().GetResult();
             }
 
             //Destroy all of our tokens
-            u.DevalidateAllTokens().GetAwaiter().GetResult();
+            u.DevalidateAllTokens(Program.connection).GetAwaiter().GetResult();
 
             //Finally, destroy our user
-            u.DeleteAsync().GetAwaiter().GetResult();
+            u.DeleteAsync(Program.connection).GetAwaiter().GetResult();
 
             //Goodbye!
             await Program.QuickWriteStatusToDoc(e, true);

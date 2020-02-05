@@ -35,7 +35,7 @@ namespace ArkWebMapMasterServer.SteamAuth
             states.Add(stateId, response);
 
             //Now, construct a URL to send the user to.
-            string return_url = $"https://deltamap.net/api/auth/steam_auth_return/?state={stateId}";
+            string return_url = $"{Program.connection.config.hosts.master}/api/auth/steam_auth_return/?state={stateId}";
             string encoded_return_url = System.Web.HttpUtility.UrlEncode(return_url);
             string url = $"https://steamcommunity.com/openid/login?openid.return_to={encoded_return_url}&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns.sreg=http%3A%2F%2Fopenid.net%2Fextensions%2Fsreg%2F1.1&openid.realm={encoded_return_url}";
             return url;

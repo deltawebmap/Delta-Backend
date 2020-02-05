@@ -20,7 +20,7 @@ namespace ArkWebMapMasterServer.Services.Users
             {
                 throw new StandardError("Cannot set user settings to null.", StandardErrorCode.InvalidInput);
             }
-            await user.UpdateAsync();
+            await user.UpdateAsync(Program.connection);
 
             //Return response
             await Program.QuickWriteStatusToDoc(e, true);

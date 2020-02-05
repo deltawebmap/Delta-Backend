@@ -1,5 +1,7 @@
 ﻿using LibDeltaSystem.Db.System;
 using LibDeltaSystem.Db.System.Entities;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,10 +26,14 @@ namespace ArkWebMapMasterServer.Services.Users
             };
 
             //Fetch and convert our servers
-            var servers = await u.GetGameServersAsync();
+            var servers = await u.GetGameServersAsync(Program.connection);
             List<string> clusterIds = new List<string>();
+            List<ObjectId> serverIds = new List<ObjectId>();
             foreach(var s in servers)
             {
+                //Add server
+                serverIds.Add(s.Item1._id);
+                
                 //Get tribe info
                 var tribe = await Program.connection.GetTribeByTribeIdAsync(s.Item1.id, s.Item2.tribe_id);
 
@@ -63,7 +69,7 @@ namespace ArkWebMapMasterServer.Services.Users
                     map_name = mapName,
                     permissions = s.Item1.GetPermissionFlagList(),
                     closed_reason = close,
-                    user_prefs = await s.Item1.GetUserPrefs(u.id),
+                    user_prefs = await s.Item1.GetUserPrefs(Program.connection, u.id),
                     endpoint_createsession = Program.config.endpoint_echo + $"/{s.Item1.id}/" + "create_session"
                 };
 
@@ -89,6 +95,9 @@ namespace ArkWebMapMasterServer.Services.Users
                 });
             }
 
+            //Get messages
+            response.alerts = await (await u.GetAlertBanners(Program.connection, serverIds)).ToListAsync();
+
             //Write response
             await Program.QuickWriteJsonToDoc(e, response);
         }
@@ -102,6 +111,7 @@ namespace ArkWebMapMasterServer.Services.Users
             public DbUserSettings user_settings;
             public List<UsersMeReply_Server> servers;
             public List<UsersMeReply_Cluster> clusters;
+            public List<DbAlertBanner> alerts;
         }
 
         public class UsersMeReply_Server

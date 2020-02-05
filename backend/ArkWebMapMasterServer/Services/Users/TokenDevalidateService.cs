@@ -25,7 +25,7 @@ namespace ArkWebMapMasterServer.Services.Users
             var tokenData = Program.connection.GetTokenByTokenAsync(token).GetAwaiter().GetResult();
             if(tokenData != null)
             {
-                await tokenData.DeleteAsync();
+                await tokenData.DeleteAsync(Program.connection);
                 await Program.QuickWriteJsonToDoc(e, new OkReply
                 {
                     ok = true
@@ -41,7 +41,7 @@ namespace ArkWebMapMasterServer.Services.Users
             EnsureMethod(e, u);
 
             //Devalidate ALL tokens for this user
-            await u.DevalidateAllTokens();
+            await u.DevalidateAllTokens(Program.connection);
 
             //Return OK
             await Program.QuickWriteJsonToDoc(e, new OkReply

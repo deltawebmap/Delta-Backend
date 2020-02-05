@@ -34,7 +34,7 @@ namespace ArkWebMapMasterServer.Services.Users
             DbServer server = await Program.connection.GetServerByIdAsync(request.server_id);
             if (server == null)
                 throw new StandardError("Server Not Found", StandardErrorCode.InvalidInput);
-            int? tribeIdInt = server.TryGetTribeIdAsync(u.steam_id).GetAwaiter().GetResult();
+            int? tribeIdInt = server.TryGetTribeIdAsync(Program.connection, u.steam_id).GetAwaiter().GetResult();
             string tribeId = tribeIdInt.HasValue ? tribeIdInt.Value.ToString() : "*No Tribe ID*";
 
             //Get the screenshot

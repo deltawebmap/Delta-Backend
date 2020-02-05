@@ -42,7 +42,7 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
             scopesSeparated.TrimEnd(',');
 
             //Respond
-            string baseUrl = Program.config.endpoint_this;
+            string baseUrl = Program.connection.config.hosts.master + "/api";
             await Program.QuickWriteJsonToDoc(e, new OAuthInfoResponse
             {
                 name = app.name,

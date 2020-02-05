@@ -22,7 +22,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             if(method == RequestHttpMethod.get)
             {
                 //Find all canvases beloning to this server
-                List<DbCanvas> canvases = await s.GetServerCanvases();
+                List<DbCanvas> canvases = await s.GetServerCanvases(Program.connection);
 
                 //Now, convert all
                 CanvasListResponse response = new CanvasListResponse
@@ -105,7 +105,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 CanvasCreateRequest request = Program.DecodePostBody<CanvasCreateRequest>(e);
 
                 //Set
-                await c.RenameCanvas(request.name, request.color);
+                await c.RenameCanvas(Program.connection, request.name, request.color);
 
                 //Send RPC message
                 SendRPCMessage(c, s, u, tribe_id, RPCPayloadModifyCanvas.RPCPayloadModifyCanvas_CanvasChange.Modify);
@@ -119,7 +119,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 await Program.CheckTokenScope(u, null);
 
                 //Delete canvas
-                await c.DeleteCanvas();
+                await c.DeleteCanvas(Program.connection);
 
                 //Send RPC message
                 SendRPCMessage(c, s, u, tribe_id, RPCPayloadModifyCanvas.RPCPayloadModifyCanvas_CanvasChange.Delete);
@@ -143,7 +143,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                     throw new StandardError("Specified User Content Application ID Mismatch", StandardErrorCode.InvalidInput);
 
                 //Update
-                await c.SetNewThumbnail(uc);
+                await c.SetNewThumbnail(Program.connection, uc);
 
                 //Send RPC message
                 SendRPCMessage(c, s, u, tribe_id, RPCPayloadModifyCanvas.RPCPayloadModifyCanvas_CanvasChange.Modify);
@@ -181,7 +181,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             return new RPCPayloadModifyCanvas_ListedCanvas
             {
                 color = c.color,
-                href = Program.config.endpoint_this + "/servers/" + c.server_id + "/canvas/" + c.id,
+                href = Program.connection.config.hosts.master + "/api" + "/servers/" + c.server_id + "/canvas/" + c.id,
                 id = c.id,
                 name = c.name,
                 thumbnail = c.thumbnail_url

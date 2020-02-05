@@ -40,7 +40,7 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
 
             //Deactivate preflight token internally
             token.oauth_preflight = null;
-            await token.UpdateAsync();
+            await token.UpdateAsync(Program.connection);
 
             //Create and write a response
             await Program.QuickWriteJsonToDoc(e, new VerifyResponsePayload

@@ -17,7 +17,7 @@ namespace ArkWebMapMasterServer.Services.Users
             ServerListResponse response = new ServerListResponse
             {
                 servers = new List<ServerListResponseServer>(),
-                token = await u.GetServerCreationToken()
+                token = await u.GetServerCreationToken(Program.connection)
             };
             foreach (var s in servers)
             {

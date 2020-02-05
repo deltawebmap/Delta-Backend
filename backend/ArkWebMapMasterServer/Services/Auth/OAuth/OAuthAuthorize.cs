@@ -52,7 +52,7 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
         public static async Task SendToApplication(Microsoft.AspNetCore.Http.HttpContext e, DbOauthApp app, DbUser user, string[] scopeIDs)
         {
             //Create a token
-            var token = await user.MakeOAuthToken(app, scopeIDs);
+            var token = await user.MakeOAuthToken(Program.connection, app, scopeIDs);
 
             //Redirect to the application
             e.Response.Headers.Add("Location", app.redirect_uri + "?t=" + token.oauth_preflight);

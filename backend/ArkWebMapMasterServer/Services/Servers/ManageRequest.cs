@@ -125,7 +125,7 @@ namespace ArkWebMapMasterServer.Services.Servers
 
             //Set icon
             if (settings.icon_token == "%CLEAR_ICON") {
-                s.image_url = DbServer.StaticGetPlaceholderIcon(s.display_name);
+                s.image_url = DbServer.StaticGetPlaceholderIcon(Program.connection, s.display_name);
                 s.has_custom_image = false;
             } else if (settings.icon_token != null)
             {
@@ -151,7 +151,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 s.cluster_id = settings.cluster_id;
 
             //Save
-            await s.UpdateAsync();
+            await s.UpdateAsync(Program.connection);
 
             //Write response
             await OnGETRequest(e, s, u);
