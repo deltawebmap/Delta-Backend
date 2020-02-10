@@ -24,8 +24,6 @@ namespace ArkWebMapMasterServer
                     await Services.Auth.AuthHttpHandler.OnEndRequest(e);
                 else if (path == "/auth/token")
                     await Services.Auth.AuthHttpHandler.OnTokenRequest(e);
-                else if (path.StartsWith("/mobile_login_code/"))
-                    await Services.Misc.MobileLoginTokenProxy.OnHttpRequest(e);
                 else if (path == "/status")
                     await Services.Misc.ServiceStatus.OnHttpRequest(e);
                 else if (path == "/download_token")

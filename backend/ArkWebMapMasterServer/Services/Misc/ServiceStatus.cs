@@ -22,30 +22,12 @@ namespace ArkWebMapMasterServer.Services.Misc
             },
             new DeltaService
             {
-                url = "https://gateway.deltamap.net:43297/",
-                name = "Gateway",
+                url = "https://rpc-prod.deltamap.net/",
+                name = "RPC",
                 description = "Sends important events between all services.",
                 down_message = "Without this service, some actions won't appear without a page refresh.",
                 important = true,
                 id = 1
-            },
-            new DeltaService
-            {
-                url = "https://lightspeed.deltamap.net/online",
-                name = "Lightspeed Proxy",
-                description = "Relays server data from Ark servers to you.",
-                down_message = "Without this service, only offline data can be accessed.",
-                important = true,
-                id = 2
-            },
-            new DeltaService
-            {
-                url = "https://dynamic-tiles.deltamap.net/",
-                name = "Dynamic Tiles",
-                description = "Provides structure images and other map tiles that can be changed.",
-                down_message = "Without this service, structure images will not load.",
-                important = false,
-                id = 3
             },
             new DeltaService
             {
@@ -69,10 +51,19 @@ namespace ArkWebMapMasterServer.Services.Misc
             {
                 url = "https://icon-assets.deltamap.net/",
                 name = "Icon Assets CDN",
+                description = "Distributes static icon assets from Delta Web Map",
+                down_message = "Without this service, icons will appear.",
+                important = true,
+                id = 6
+            },
+            new DeltaService
+            {
+                url = "https://charlie-assets.deltamap.net/",
+                name = "Charlie Assets CDN",
                 description = "Distributes static icon assets, such as dino images, item icons, and other Ark assets.",
                 down_message = "Without this service, no dino images or item icons will appear.",
                 important = true,
-                id = 6
+                id = 2
             },
             new DeltaService
             {
@@ -82,15 +73,6 @@ namespace ArkWebMapMasterServer.Services.Misc
                 down_message = "You will not notice this service going down.",
                 important = false,
                 id = 7
-            },
-            new DeltaService
-            {
-                url = "https://offline-content.deltamap.net/",
-                name = "Offline Content",
-                description = "Used to upload/download offline server data. Offline data is used when the Delta Web Map client is closed.",
-                down_message = "Without this service, no servers that aren't currently running will download data.",
-                important = true,
-                id = 8
             },
         };
 
