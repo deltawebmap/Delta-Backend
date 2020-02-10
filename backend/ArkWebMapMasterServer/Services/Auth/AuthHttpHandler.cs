@@ -11,210 +11,115 @@ namespace ArkWebMapMasterServer.Services.Auth
 {
     public class AuthHttpHandler
     {
-        /// <summary>
-        /// Holds one-time sessions 
-        /// </summary>
-        private static Dictionary<string, OneTimeLoginSession> oneTimeSessions = new Dictionary<string, OneTimeLoginSession>();
-
-        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, string path)
+        public static readonly string[] PREFLIGHT_OUT_URLS = new string[]
         {
-            if (path.StartsWith("steam_auth_return"))
+            "https://deltamap.net/login/return/?state={STATE}",
+            "https://dev.deltamap.net/login/return/?state={STATE}"
+        };
+        
+        public static async Task OnBeginRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        {
+            //Get args
+            if(!e.Request.Query.ContainsKey("nonce") || !e.Request.Query.ContainsKey("next") || !e.Request.Query.ContainsKey("type"))
             {
-                //Finish Steam auth and let handler take care of the rest
-                await SteamAuth.SteamOpenID.Finish(e);
+                await Program.QuickWriteToDoc(e, "Missing Required Args (client out of date?)", "text/plain", 400);
                 return;
             }
-            if (path.StartsWith("steam_auth/"))
+            if(!int.TryParse(e.Request.Query["nonce"], out int nonce))
             {
-                //We're doing auth. Determine the method
-                string methodName = path.Substring("steam_auth/".Length);
-
-                //Find the method
-                OneTimeLoginSession session;
-                switch(methodName)
-                {
-                    case "": session = new LoginSessionWeb(); break;
-                    case "android_secure": session = new LoginSessionAndroid(); break;
-                    default:
-                        throw new StandardError("Unknown auth method.", StandardErrorCode.AuthFailed);
-                }
-
-                //Run intro
-                session.OnOpen(e);
-
-                //Redirect to Steam auth
-                string url = SteamAuth.SteamOpenID.Begin(session);
-                e.Response.Headers.Add("Location", url);
-                await Program.QuickWriteToDoc(e, "Redirecting to STEAM authentication.", "text/plain", 302);
+                await Program.QuickWriteToDoc(e, "Invalid Nonce", "text/plain", 400);
                 return;
             }
-            if(path.StartsWith("validate_preflight_token"))
+            if (!int.TryParse(e.Request.Query["type"], out int type))
             {
-                //Handles one-time response
-
-                //Get the data and destroy it from the dict
-                if (!oneTimeSessions.ContainsKey(e.Request.Query["id"]))
-                    throw new StandardError("Auth failed, this token expired, or it never existed.", StandardErrorCode.AuthFailed);
-                OneTimeLoginSession data = oneTimeSessions[e.Request.Query["id"].ToString()];
-                oneTimeSessions.Remove(e.Request.Query["id"]);
-
-                //Create response
-                OneTimeLoginResponse response = new OneTimeLoginResponse
-                {
-                    access_token = data.access_token,
-                    extra = data.CreateResponseData()
-                };
-
-                //Write data
-                await Program.QuickWriteJsonToDoc(e, response);
+                await Program.QuickWriteToDoc(e, "Invalid Type", "text/plain", 400);
+                return;
             }
-            if(path.StartsWith("oauth/"))
+            string next = e.Request.Query["next"];
+
+            //Create preflight token
+            string session = LibDeltaSystem.Tools.SecureStringTool.GenerateSecureString(24);
+
+            //Create preflight token
+            DbPreflightToken t = new DbPreflightToken
             {
-                await OAuth.OAuthHttpHandler.OnOAuthRequest(e, path.Substring("oauth".Length));
+                redirect_type = type,
+                next = next,
+                auth = false,
+                creation = DateTime.UtcNow,
+                nonce = nonce,
+                preflight_token = session
+            };
+            await Program.connection.system_preflight_tokens.InsertOneAsync(t);
+            
+            //Redirect to Steam auth
+            string url = SteamAuth.SteamOpenID.Begin(session);
+            e.Response.Headers.Add("Location", url);
+            await Program.QuickWriteToDoc(e, "Redirecting to STEAM authentication.", "text/plain", 302);
+        }
+
+        public static async Task OnEndRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        {
+            //Get preflight token
+            string state = e.Request.Query["state"];
+            DbPreflightToken session = await Program.connection.GetPreflightTokenByTokenAsync(state);
+            if (session == null)
+            {
+                await Program.QuickWriteToDoc(e, "Failed to sign in, you might have taken too long.", "text/plain", 400); //TODO: REDIRECT BACK TO LOGIN
                 return;
             }
 
-            //Not found
-            throw new StandardError("Not Found", StandardErrorCode.NotFound);
+            //Do auth
+            DbUser user = await SteamAuth.SteamOpenID.Finish(e);
+            if (user == null)
+            {
+                await Program.QuickWriteToDoc(e, "Failed to sign in. Try again.", "text/plain", 400); //TODO: REDIRECT BACK TO LOGIN
+                return;
+            }
+
+            //Update
+            await session.SetUser(Program.connection, user);
+
+            //Redirect to final endpoint
+            string url = PREFLIGHT_OUT_URLS[session.redirect_type].Replace("{STATE}", state);
+            e.Response.Headers.Add("Location", url);
+            await Program.QuickWriteToDoc(e, "Redirecting...", "text/plain", 302);
         }
 
-        class OneTimeLoginResponse
+        public static async Task OnTokenRequest(Microsoft.AspNetCore.Http.HttpContext e)
         {
-            public string access_token;
-            public object extra;
+            //Get preflight token
+            string state = e.Request.Query["state"];
+            DbPreflightToken session = await Program.connection.GetPreflightTokenByTokenAsync(state);
+            if (session == null)
+            {
+                await Program.QuickWriteToDoc(e, "Failed to sign in, you might have taken too long.", "text/plain", 400); //TODO: REDIRECT BACK TO LOGIN
+                return;
+            }
+
+            //Verify
+            if(!session.auth)
+            {
+                await Program.QuickWriteToDoc(e, "Token is not yet valid.", "text/plain", 400);
+                return;
+            }
+
+            //Create output data
+            TokenResponseData d = new TokenResponseData
+            {
+                token = session.final_token,
+                next = session.next,
+                nonce = session.nonce
+            };
+
+            await Program.QuickWriteJsonToDoc(e, d);
         }
 
-        /// <summary>
-        /// Class used for auth methods that involve going back to our own page to set an access token. Used for official only.
-        /// </summary>
-        abstract class OneTimeLoginSession : SteamAuth.SteamOpenID.SteamOpenIDCallback
+        class TokenResponseData
         {
-            /// <summary>
-            /// Response object is sent over HTTP to the pending body
-            /// </summary>
-            /// <returns></returns>
-            public abstract object CreateResponseData();
-
-            /// <summary>
-            /// Token that can be used to request this session
-            /// </summary>
-            public readonly string one_time_token;
-
-            /// <summary>
-            /// The access token response
-            /// </summary>
-            public string access_token;
-
-            /// <summary>
-            /// Handles finished auth
-            /// </summary>
-            /// <param name="e"></param>
-            /// <param name="profile"></param>
-            /// <param name="user"></param>
-            /// <returns></returns>
-            public override async Task OnAuthFinished(HttpContext e, DbSteamCache profile, DbUser user)
-            {
-                //Create an access token
-                access_token = await user.MakeToken(Program.connection);
-            }
-
-            /// <summary>
-            /// Creates a one-time session. Automatically generates a token and attaches it
-            /// </summary>
-            public OneTimeLoginSession()
-            {
-                //Create token
-                string id = Program.GenerateRandomString(56);
-                while (AuthHttpHandler.oneTimeSessions.ContainsKey(id))
-                    id = Program.GenerateRandomString(56);
-
-                //Attach
-                one_time_token = id;
-                AuthHttpHandler.oneTimeSessions.Add(id, this);
-            }
-
-            public abstract void OnOpen(HttpContext e);
-        }
-
-        /// <summary>
-        /// Session used for OFFICIAL login requests to web
-        /// </summary>
-        class LoginSessionWeb : OneTimeLoginSession
-        {
-            public string next_url;
-
-            public override object CreateResponseData()
-            {
-                return next_url;
-            }
-
-            public override async Task OnAuthFinished(HttpContext e, DbSteamCache profile, DbUser user)
-            {
-                //Run base
-                await base.OnAuthFinished(e, profile, user);
-
-                //Create URL to redirect to
-                string url = "https://deltamap.net/login/return/#" + one_time_token;
-
-                //Redirect to this
-                e.Response.Headers.Add("Location", url);
-                await Program.QuickWriteToDoc(e, "You should be redirected now.", "text/plain", 302);
-            }
-
-            public LoginSessionWeb() : base()
-            {
-
-            }
-
-            public override void OnOpen(HttpContext e)
-            {
-                //Get the next url
-                string next = "https://deltamap.net/app/";
-                if (e.Request.Query.ContainsKey("next"))
-                    next = e.Request.Query["next"];
-                next_url = next;
-            }
-        }
-
-        /// <summary>
-        /// Session used for OFFICIAL Android requests to web
-        /// </summary>
-        class LoginSessionAndroid : OneTimeLoginSession
-        {
-            DbUser user;
-
-            public string nonce;
-
-            public override object CreateResponseData()
-            {
-                return user;
-            }
-
-            public override async Task OnAuthFinished(HttpContext e, DbSteamCache profile, DbUser user)
-            {
-                //Run base
-                await base.OnAuthFinished(e, profile, user);
-                this.user = user;
-                
-                //Create URL to redirect to
-                string url = "delta-web-map://login/" + nonce + "/" + one_time_token;
-
-                //Redirect to this
-                e.Response.Headers.Add("Location", url);
-                await Program.QuickWriteToDoc(e, "You should be redirected now.", "text/plain", 302);
-            }
-
-            public LoginSessionAndroid() : base()
-            {
-
-            }
-
-            public override void OnOpen(HttpContext e)
-            {
-                //Get the next url
-                if (e.Request.Query.ContainsKey("nonce"))
-                    nonce = e.Request.Query["nonce"];
-            }
+            public string token;
+            public string next;
+            public int nonce;
         }
     }
 }

@@ -18,8 +18,12 @@ namespace ArkWebMapMasterServer
                     await Services.Users.UsersHttpHandler.OnHttpRequest(e, path.Substring("/users/".Length));
                 else if (path.StartsWith("/servers/"))
                     await Services.Servers.ServersHttpHandler.OnHttpRequest(e, path.Substring("/servers/".Length));
-                else if (path.StartsWith("/auth/"))
-                    await Services.Auth.AuthHttpHandler.OnHttpRequest(e, path.Substring("/auth/".Length));
+                else if (path == "/auth/steam_auth")
+                    await Services.Auth.AuthHttpHandler.OnBeginRequest(e);
+                else if (path == "/auth/steam_auth_return")
+                    await Services.Auth.AuthHttpHandler.OnEndRequest(e);
+                else if (path == "/auth/token")
+                    await Services.Auth.AuthHttpHandler.OnTokenRequest(e);
                 else if (path.StartsWith("/mobile_login_code/"))
                     await Services.Misc.MobileLoginTokenProxy.OnHttpRequest(e);
                 else if (path == "/status")

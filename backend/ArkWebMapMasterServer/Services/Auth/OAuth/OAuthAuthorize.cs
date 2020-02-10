@@ -31,18 +31,8 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
             string[] scopeIDs = OAuthScopeStatics.GetOAuthScopeIDs(scopes, out bool is_dangerous);
 
             //Send to the application
-            if(user != null)
-            {
-                //Authenticated. Go now
-                await SendToApplication(e, app, user, scopeIDs);
-            } else
-            {
-                //Create a session
-                OAuthLoginSession session = new OAuthLoginSession(app, scopeIDs);
-
-                //Redirect to Steam auth
-                await session.Begin(e);
-            }
+            //Authenticated. Go now
+            await SendToApplication(e, app, user, scopeIDs);
         }
 
         /// <summary>
@@ -59,22 +49,6 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
             await Program.QuickWriteToDoc(e, "You should be redirected now.", "text/plain", 302);
         }
 
-        class OAuthLoginSession : SteamAuth.SteamOpenID.SteamOpenIDCallback
-        {
-            DbOauthApp app;
-            string[] scopeIDs;
-
-            public override async Task OnAuthFinished(HttpContext e, DbSteamCache profile, DbUser user)
-            {
-                //Now that we are authenticated, send to the application
-                await SendToApplication(e, app, user, scopeIDs);
-            }
-
-            public OAuthLoginSession(DbOauthApp app, string[] scopeIDs)
-            {
-                this.app = app;
-                this.scopeIDs = scopeIDs;
-            }
-        }
+        
     }
 }
