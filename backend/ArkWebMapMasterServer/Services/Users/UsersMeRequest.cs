@@ -74,7 +74,7 @@ namespace ArkWebMapMasterServer.Services.Users
             response.alerts = await(await user.GetAlertBanners(Program.connection, serverIds)).ToListAsync();
 
             //Write response
-            await Program.QuickWriteJsonToDoc(e, response);
+            await WriteJSON(response);
         }
 
         class UsersMeResponse

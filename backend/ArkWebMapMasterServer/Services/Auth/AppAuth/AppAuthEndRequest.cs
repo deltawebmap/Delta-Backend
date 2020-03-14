@@ -21,7 +21,7 @@ namespace ArkWebMapMasterServer.Services.Auth.AppAuth
             DbPreflightToken session = await Program.connection.GetPreflightTokenByTokenAsync(state);
             if (session == null)
             {
-                await Program.QuickWriteToDoc(e, "Failed to sign in, you might have taken too long.", "text/plain", 400); //TODO: REDIRECT BACK TO LOGIN
+                await WriteString("Failed to sign in, you might have taken too long.", "text/plain", 400); //TODO: REDIRECT BACK TO LOGIN
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace ArkWebMapMasterServer.Services.Auth.AppAuth
             DbUser user = await SteamAuth.SteamOpenID.Finish(e);
             if (user == null)
             {
-                await Program.QuickWriteToDoc(e, "Failed to sign in. Try again.", "text/plain", 400); //TODO: REDIRECT BACK TO LOGIN
+                await WriteString("Failed to sign in. Try again.", "text/plain", 400); //TODO: REDIRECT BACK TO LOGIN
                 return;
             }
 
@@ -39,7 +39,7 @@ namespace ArkWebMapMasterServer.Services.Auth.AppAuth
             //Redirect to final endpoint
             string url = PREFLIGHT_OUT_URLS[session.redirect_type].Replace("{STATE}", state);
             e.Response.Headers.Add("Location", url);
-            await Program.QuickWriteToDoc(e, "Redirecting...", "text/plain", 302);
+            await WriteString("Redirecting...", "text/plain", 302);
         }
     }
 }

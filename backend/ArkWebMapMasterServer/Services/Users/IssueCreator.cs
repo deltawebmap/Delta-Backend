@@ -27,7 +27,7 @@ namespace ArkWebMapMasterServer.Services.Users
         public override async Task OnRequest()
         {
             //Decode issue
-            CreateIssueRequest request = Program.DecodePostBody<CreateIssueRequest>(e);
+            CreateIssueRequest request = await DecodePOSTBody<CreateIssueRequest>();
 
             //Get topic name
             string client_tag;
@@ -84,7 +84,7 @@ namespace ArkWebMapMasterServer.Services.Users
             }
 
             //Decode
-            await Program.QuickWriteJsonToDoc(e, new CreateIssueResponse
+            await WriteJSON(new CreateIssueResponse
             {
                 url = JsonConvert.DeserializeObject<GitHubIssueCreateResponse>(response_string).html_url
             });

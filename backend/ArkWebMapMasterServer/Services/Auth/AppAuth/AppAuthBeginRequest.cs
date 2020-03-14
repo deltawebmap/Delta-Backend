@@ -19,17 +19,17 @@ namespace ArkWebMapMasterServer.Services.Auth.AppAuth
             //Get args
             if (!e.Request.Query.ContainsKey("nonce") || !e.Request.Query.ContainsKey("next") || !e.Request.Query.ContainsKey("type"))
             {
-                await Program.QuickWriteToDoc(e, "Missing Required Args (client out of date?)", "text/plain", 400);
+                await WriteString("Missing Required Args (client out of date?)", "text/plain", 400);
                 return;
             }
             if (!int.TryParse(e.Request.Query["nonce"], out int nonce))
             {
-                await Program.QuickWriteToDoc(e, "Invalid Nonce", "text/plain", 400);
+                await WriteString("Invalid Nonce", "text/plain", 400);
                 return;
             }
             if (!int.TryParse(e.Request.Query["type"], out int type))
             {
-                await Program.QuickWriteToDoc(e, "Invalid Type", "text/plain", 400);
+                await WriteString("Invalid Type", "text/plain", 400);
                 return;
             }
             string next = e.Request.Query["next"];
@@ -52,7 +52,7 @@ namespace ArkWebMapMasterServer.Services.Auth.AppAuth
             //Redirect to Steam auth
             string url = SteamAuth.SteamOpenID.Begin(session);
             e.Response.Headers.Add("Location", url);
-            await Program.QuickWriteToDoc(e, "Redirecting to STEAM authentication.", "text/plain", 302);
+            await WriteString("Redirecting to STEAM authentication.", "text/plain", 302);
         }
     }
 }

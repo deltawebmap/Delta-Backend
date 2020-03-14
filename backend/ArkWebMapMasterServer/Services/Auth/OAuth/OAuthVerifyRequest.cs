@@ -1,4 +1,7 @@
-﻿using LibDeltaSystem.Db.System;
+﻿using LibDeltaSystem;
+using LibDeltaSystem.Db.System;
+using LibDeltaSystem.WebFramework.ServiceTemplates;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,17 +9,21 @@ using System.Threading.Tasks;
 
 namespace ArkWebMapMasterServer.Services.Auth.OAuth
 {
-    public static class OAuthVerifyRequest
+    public class OAuthVerifyRequest : BasicDeltaService
     {
+        public OAuthVerifyRequest(DeltaConnection conn, HttpContext e) : base(conn, e)
+        {
+        }
+
         /// <summary>
         /// Used to obtain an access token from a backend server
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public static async Task OnVerifyRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        public override async Task OnRequest()
         {
             //Decode request
-            VerifyRequestPayload request = Program.DecodePostBody<VerifyRequestPayload>(e);
+            VerifyRequestPayload request = await DecodePOSTBody<VerifyRequestPayload>();
 
             //Find the application
             DbOauthApp app = await Program.connection.GetOAuthAppByAppID(request.client_id);
@@ -29,9 +36,9 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
 
             //Get a token using this
             var token = await Program.connection.GetTokenByPreflightAsync(request.preflight_token);
-            if(token == null)
+            if (token == null)
             {
-                await Program.QuickWriteJsonToDoc(e, new VerifyResponsePayload
+                await WriteJSON(new VerifyResponsePayload
                 {
                     ok = false
                 });
@@ -43,7 +50,7 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
             await token.UpdateAsync(Program.connection);
 
             //Create and write a response
-            await Program.QuickWriteJsonToDoc(e, new VerifyResponsePayload
+            await WriteJSON(new VerifyResponsePayload
             {
                 access_token = token.token,
                 scopes = token.oauth_scopes,

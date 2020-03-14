@@ -1,4 +1,7 @@
-﻿using LibDeltaSystem.Db.System;
+﻿using LibDeltaSystem;
+using LibDeltaSystem.Db.System;
+using LibDeltaSystem.WebFramework.ServiceTemplates;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,18 +10,19 @@ using static ArkWebMapMasterServer.Services.Auth.OAuth.OAuthScopeStatics;
 
 namespace ArkWebMapMasterServer.Services.Auth.OAuth
 {
-    public static class OAuthQuery
+    /// <summary>
+    /// Used to query an app ID to just respond with data
+    /// </summary>
+    public class OAuthQuery : BasicDeltaService
     {
-        /// <summary>
-        /// Used to query app info from an ID
-        /// </summary>
-        /// <param name="e"></param>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static async Task OnQueryRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        public OAuthQuery(DeltaConnection conn, HttpContext e) : base(conn, e)
+        {
+        }
+
+        public override async Task OnRequest()
         {
             //Decode request
-            OAuthInfoRequest request = Program.DecodePostBody<OAuthInfoRequest>(e);
+            OAuthInfoRequest request = await DecodePOSTBody<OAuthInfoRequest>();
 
             //Find the application
             DbOauthApp app = await Program.connection.GetOAuthAppByAppID(request.client_id);
@@ -43,7 +47,7 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
 
             //Respond
             string baseUrl = Program.connection.config.hosts.master + "/api";
-            await Program.QuickWriteJsonToDoc(e, new OAuthInfoResponse
+            await WriteJSON(new OAuthInfoResponse
             {
                 name = app.name,
                 description = app.description,
@@ -53,7 +57,7 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
                 client_id = app.client_id,
                 endpoints = new OAuthInfoResponse_Endpoints
                 {
-                    authorize = baseUrl + "/auth/oauth/authorize?client_id=" + app.client_id+"&scopes="+System.Web.HttpUtility.UrlEncode(scopesSeparated),
+                    authorize = baseUrl + "/auth/oauth/authorize?client_id=" + app.client_id + "&scopes=" + System.Web.HttpUtility.UrlEncode(scopesSeparated),
                     report = baseUrl + "/auth/oauth/report"
                 }
             });

@@ -21,14 +21,14 @@ namespace ArkWebMapMasterServer.Services.Auth.AppAuth
             DbPreflightToken session = await Program.connection.GetPreflightTokenByTokenAsync(state);
             if (session == null)
             {
-                await Program.QuickWriteToDoc(e, "Failed to sign in, you might have taken too long.", "text/plain", 400); //TODO: REDIRECT BACK TO LOGIN
+                await WriteString("Failed to sign in, you might have taken too long.", "text/plain", 400); //TODO: REDIRECT BACK TO LOGIN
                 return;
             }
 
             //Verify
             if (!session.auth)
             {
-                await Program.QuickWriteToDoc(e, "Token is not yet valid.", "text/plain", 400);
+                await WriteString("Token is not yet valid.", "text/plain", 400);
                 return;
             }
 
@@ -40,7 +40,7 @@ namespace ArkWebMapMasterServer.Services.Auth.AppAuth
                 nonce = session.nonce
             };
 
-            await Program.QuickWriteJsonToDoc(e, d);
+            await WriteJSON(d);
         }
 
         class TokenResponseData

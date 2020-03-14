@@ -19,7 +19,7 @@ namespace ArkWebMapMasterServer.Services.Misc
         public override async Task OnRequest()
         {
             var maps = await Program.connection.GetARKMaps();
-            await Program.QuickWriteJsonToDoc(e, new MapListResponse
+            await WriteJSON(new MapListResponse
             {
                 maps = maps
             });

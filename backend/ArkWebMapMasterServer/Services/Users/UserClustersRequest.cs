@@ -23,16 +23,16 @@ namespace ArkWebMapMasterServer.Services.Users
         public override async Task OnRequest()
         {
             //Get method
-            var method = Program.FindRequestMethod(e);
-            if (method == RequestHttpMethod.get)
+            var method = GetMethod();
+            if (method == LibDeltaSystem.WebFramework.Entities.DeltaCommonHTTPMethod.GET)
                 await OnGETRequest(e, user);
-            else if (method == RequestHttpMethod.post)
+            else if (method == LibDeltaSystem.WebFramework.Entities.DeltaCommonHTTPMethod.POST)
                 await OnPOSTRequest(e, user);
             else
                 throw new StandardError("This method was not expected.", StandardErrorCode.BadMethod);
         }
 
-        public static async Task OnGETRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
+        public async Task OnGETRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
         {
             //Get clusters
             var clusters = await DbCluster.GetClustersForUser(Program.connection, u._id);
@@ -48,13 +48,13 @@ namespace ArkWebMapMasterServer.Services.Users
                 });
             }
 
-            await Program.QuickWriteJsonToDoc(e, response);
+            await WriteJSON(response);
         }
 
-        public static async Task OnPOSTRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
+        public async Task OnPOSTRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
         {
             //Decode data
-            var request = Program.DecodePostBody<ClusterCreateData>(e);
+            var request = await DecodePOSTBody<ClusterCreateData>();
 
             //Check
             if (request.name == null)
@@ -72,7 +72,7 @@ namespace ArkWebMapMasterServer.Services.Users
             await Program.connection.system_clusters.InsertOneAsync(cluster);
 
             //Write the response
-            await Program.QuickWriteJsonToDoc(e, new ClusterResponseData
+            await WriteJSON(new ClusterResponseData
             {
                 id = cluster.id,
                 name = cluster.name

@@ -27,10 +27,10 @@ namespace ArkWebMapMasterServer.Services.Servers
                 return;
 
             //Get method
-            var method = Program.FindRequestMethod(e);
-            if (method == RequestHttpMethod.get)
+            var method = GetMethod();
+            if (method == LibDeltaSystem.WebFramework.Entities.DeltaCommonHTTPMethod.GET)
                 await OnGETRequest();
-            else if (method == RequestHttpMethod.post)
+            else if (method == LibDeltaSystem.WebFramework.Entities.DeltaCommonHTTPMethod.POST)
                 await OnPOSTRequest();
             else
                 throw new StandardError("This method was not expected.", StandardErrorCode.BadMethod);
@@ -114,13 +114,13 @@ namespace ArkWebMapMasterServer.Services.Servers
                 map_id = server.latest_server_map,
                 map_name = mapName
             };
-            await Program.QuickWriteJsonToDoc(e, m);
+            await WriteJSON(m);
         }
 
         public async Task OnPOSTRequest()
         {
             //Decode settings
-            var settings = Program.DecodePostBody<ManagementDataRequest>(e);
+            var settings = await DecodePOSTBody<ManagementDataRequest>();
 
             //Set name
             if (settings.name != null)

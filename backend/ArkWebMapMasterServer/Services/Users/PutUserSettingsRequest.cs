@@ -18,11 +18,14 @@ namespace ArkWebMapMasterServer.Services.Users
         public override async Task OnRequest()
         {
             //Verify method
-            if (Program.FindRequestMethod(e) != RequestHttpMethod.post)
-                throw new StandardError("Only POST or post requests are valid here.", StandardErrorCode.BadMethod);
+            if (GetMethod() != LibDeltaSystem.WebFramework.Entities.DeltaCommonHTTPMethod.POST)
+                throw new StandardError("Only POST requests are valid here.", StandardErrorCode.BadMethod);
+
+            //Decode
+            var settings = await DecodePOSTBody<DbUserSettings>();
 
             //Update
-            user.user_settings = Program.DecodePostBody<DbUserSettings>(e);
+            user.user_settings = settings;
             if (user.user_settings == null)
             {
                 throw new StandardError("Cannot set user settings to null.", StandardErrorCode.InvalidInput);
@@ -30,7 +33,7 @@ namespace ArkWebMapMasterServer.Services.Users
             await user.UpdateAsync(Program.connection);
 
             //Return response
-            await Program.QuickWriteStatusToDoc(e, true);
+            await WriteJSON(settings);
         }
 
         public override async Task<bool> SetArgs(Dictionary<string, string> args)

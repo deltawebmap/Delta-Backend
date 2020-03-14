@@ -19,7 +19,7 @@ namespace ArkWebMapMasterServer.Services.Misc
         public override async Task OnRequest()
         {
             //Decode POST body
-            RequestBody request = Program.DecodePostBody<RequestBody>(e);
+            RequestBody request = await DecodePOSTBody<RequestBody>();
 
             //Add to database
             var filterBuilder = Builders<DbPreregisteredUser>.Filter;
@@ -36,7 +36,7 @@ namespace ArkWebMapMasterServer.Services.Misc
             }
 
             //Write ok
-            await Program.QuickWriteStatusToDoc(e, true);
+            await WriteStatus(true);
         }
 
         class RequestBody

@@ -47,7 +47,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Canvas
                 response.canvases[i] = ConvertCanvas(canvases[i]);
 
             //Write response
-            await Program.QuickWriteJsonToDoc(e, response);
+            await WriteJSON(response);
         }
 
         private async Task OnPOST()
@@ -57,12 +57,12 @@ namespace ArkWebMapMasterServer.Services.Servers.Canvas
                 return;
             
             //We'll create a canvas. Decode the body
-            CanvasCreateRequest request = Program.DecodePostBody<CanvasCreateRequest>(e);
+            CanvasCreateRequest request = await DecodePOSTBody<CanvasCreateRequest>();
 
             //Verify
             if (request.color == null || request.name == null)
             {
-                await Program.QuickWriteToDoc(e, "Missing required data.", "text/plain", 400);
+                await WriteString("Missing required data.", "text/plain", 400);
                 return;
             }
 
@@ -88,7 +88,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Canvas
             SendRPCMessage(c, server, user, tribeId.Value, RPCPayload20003CanvasEvent_CanvasEventType.Create);
 
             //Write response
-            await Program.QuickWriteJsonToDoc(e, ConvertCanvas(c));
+            await WriteJSON(ConvertCanvas(c));
         }
     }
 }

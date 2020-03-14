@@ -1,4 +1,5 @@
 ﻿using ArkWebMapMasterServer.ServiceDefinitions.Auth.AppAuth;
+using ArkWebMapMasterServer.ServiceDefinitions.Auth.OAuth;
 using ArkWebMapMasterServer.ServiceDefinitions.Misc;
 using ArkWebMapMasterServer.ServiceDefinitions.Servers;
 using ArkWebMapMasterServer.ServiceDefinitions.Servers.Canvas;
@@ -49,6 +50,9 @@ namespace ArkWebMapMasterServer
             server.AddService(new AppAuthBeginDefinition());
             server.AddService(new AppAuthEndDefinition());
             server.AddService(new AppAuthTokenDefinition());
+            server.AddService(new OAuthQueryDefinition());
+            server.AddService(new OAuthAuthorizeDefinition());
+            server.AddService(new OAuthVerifyDefinition());
 
             //Server
             server.AddService(new CanvasListDefinition());
@@ -68,62 +72,5 @@ namespace ArkWebMapMasterServer
             //Start
             await server.RunAsync();
         }
-
-        public static Task QuickWriteToDoc(Microsoft.AspNetCore.Http.HttpContext context, string content, string type = "text/html", int code = 200)
-        {
-            var response = context.Response;
-            response.StatusCode = code;
-            response.ContentType = type;
-
-            //Load the template.
-            string html = content;
-            var data = Encoding.UTF8.GetBytes(html);
-            response.ContentLength = data.Length;
-            return response.Body.WriteAsync(data, 0, data.Length);
-        }
-
-        public static string GetPostBodyString(Microsoft.AspNetCore.Http.HttpContext context)
-        {
-            string buffer;
-            using (StreamReader sr = new StreamReader(context.Request.Body))
-                buffer = sr.ReadToEnd();
-
-            return buffer;
-        }
-
-        public static T DecodePostBody<T>(Microsoft.AspNetCore.Http.HttpContext context)
-        {
-            string buffer = GetPostBodyString(context);
-
-            //Deserialize
-            return JsonConvert.DeserializeObject<T>(buffer);
-        }
-
-        public static Task QuickWriteStatusToDoc(Microsoft.AspNetCore.Http.HttpContext e, bool ok, int code = 200)
-        {
-            return QuickWriteJsonToDoc(e, new OkStatusResponse
-            {
-                ok = ok
-            }, code);
-        }
-
-        public static Task QuickWriteJsonToDoc<T>(Microsoft.AspNetCore.Http.HttpContext context, T data, int code = 200)
-        {
-            return QuickWriteToDoc(context, JsonConvert.SerializeObject(data, Formatting.Indented), "application/json", code);
-        }
-
-        public static RequestHttpMethod FindRequestMethod(Microsoft.AspNetCore.Http.HttpContext context)
-        {
-            return Enum.Parse<RequestHttpMethod>(context.Request.Method.ToLower());
-        }
-    }
-
-    public enum RequestHttpMethod
-    {
-        get,
-        post,
-        put,
-        delete,
-        options
     }
 }

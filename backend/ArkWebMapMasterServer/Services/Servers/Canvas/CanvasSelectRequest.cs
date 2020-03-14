@@ -43,7 +43,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Canvas
                 return;
 
             //Rename the canvas; decode request
-            CanvasCreateRequest request = Program.DecodePostBody<CanvasCreateRequest>(e);
+            CanvasCreateRequest request = await DecodePOSTBody<CanvasCreateRequest>();
 
             //Set
             await canvas.RenameCanvas(Program.connection, request.name, request.color);
@@ -52,7 +52,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Canvas
             SendRPCMessage(canvas, server, user, tribeId.Value, RPCPayload20003CanvasEvent_CanvasEventType.Modify);
 
             //Write response
-            await Program.QuickWriteJsonToDoc(e, ConvertCanvas(canvas));
+            await WriteJSON(ConvertCanvas(canvas));
         }
 
         private async Task OnDELETE()
@@ -68,7 +68,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Canvas
             SendRPCMessage(canvas, server, user, tribeId.Value, RPCPayload20003CanvasEvent_CanvasEventType.Delete);
 
             //Write response
-            await Program.QuickWriteJsonToDoc(e, ConvertCanvas(canvas));
+            await WriteJSON(ConvertCanvas(canvas));
         }
 
         private async Task OnPUT()
@@ -78,7 +78,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Canvas
                 return;
 
             //We'll update the thumbnail; Decode the request
-            UpdateThumbnailRequest request = Program.DecodePostBody<UpdateThumbnailRequest>(e);
+            UpdateThumbnailRequest request = await DecodePOSTBody<UpdateThumbnailRequest>();
 
             //Try to find
             DbUserContent uc = await Program.connection.GetUserContentByToken(request.token);
@@ -94,7 +94,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Canvas
             SendRPCMessage(canvas, server, user, tribeId.Value, RPCPayload20003CanvasEvent_CanvasEventType.Modify);
 
             //Write response
-            await Program.QuickWriteJsonToDoc(e, ConvertCanvas(canvas));
+            await WriteJSON(ConvertCanvas(canvas));
         }
 
         public override async Task<bool> SetArgs(Dictionary<string, string> args)

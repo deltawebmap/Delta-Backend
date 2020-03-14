@@ -29,7 +29,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             }
             
             //Deserialize
-            SavedUserServerPrefs prefs = Program.DecodePostBody<SavedUserServerPrefs>(e);
+            SavedUserServerPrefs prefs = await DecodePOSTBody<SavedUserServerPrefs>();
 
             //Update in db
             var filterBuilder = Builders<DbSavedUserServerPrefs>.Filter;
@@ -45,7 +45,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             });
 
             //Return prefs
-            await Program.QuickWriteJsonToDoc(e, prefs);
+            await WriteJSON(prefs);
         }
     }
 }

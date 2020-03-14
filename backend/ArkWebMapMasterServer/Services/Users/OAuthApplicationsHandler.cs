@@ -37,7 +37,7 @@ namespace ArkWebMapMasterServer.Services.Users
             }
 
             //Decode request body
-            CreateApplicationRequest request = Program.DecodePostBody<CreateApplicationRequest>(e);
+            CreateApplicationRequest request = await DecodePOSTBody<CreateApplicationRequest>();
 
             //Verify that all required elements are listed
             List<EditResponseError> errors = new List<EditResponseError>();
@@ -104,14 +104,14 @@ namespace ArkWebMapMasterServer.Services.Users
             await Program.connection.system_oauth_apps.InsertOneAsync(app);
 
             //Write app info
-            await Program.QuickWriteJsonToDoc(e, app);
+            await WriteJSON(app);
         }
 
-        static async Task<bool> TryRespondWithError(Microsoft.AspNetCore.Http.HttpContext e, List<EditResponseError> errors)
+        async Task<bool> TryRespondWithError(Microsoft.AspNetCore.Http.HttpContext e, List<EditResponseError> errors)
         {
             if (errors.Count == 0)
                 return false;
-            await Program.QuickWriteJsonToDoc(e, new EditResponse
+            await WriteJSON(new EditResponse
             {
                 ok = false,
                 errors = errors
