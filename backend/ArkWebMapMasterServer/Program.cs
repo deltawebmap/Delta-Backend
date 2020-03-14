@@ -1,6 +1,12 @@
-﻿using LibDeltaSystem;
+﻿using ArkWebMapMasterServer.ServiceDefinitions.Auth.AppAuth;
+using ArkWebMapMasterServer.ServiceDefinitions.Misc;
+using ArkWebMapMasterServer.ServiceDefinitions.Servers;
+using ArkWebMapMasterServer.ServiceDefinitions.Servers.Canvas;
+using ArkWebMapMasterServer.ServiceDefinitions.User;
+using LibDeltaSystem;
 using LibDeltaSystem.Db.System;
 using LibDeltaSystem.Entities.MiscNet;
+using LibDeltaSystem.WebFramework;
 using LiteDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,8 +23,6 @@ namespace ArkWebMapMasterServer
     class Program
     {
         public static MasterServerConfig config;
-        public static Random rand = new Random();
-
         public static DeltaConnection connection;
 
         static void Main(string[] args)
@@ -30,32 +34,39 @@ namespace ArkWebMapMasterServer
             connection = new DeltaConnection(config.database_config_path, "master", 0, 0);
             connection.Connect().GetAwaiter().GetResult();
 
-            Console.WriteLine("Starting some other timers...");
-            Tools.TokenFileDownloadTool.Init();
-
-            Console.WriteLine("Starting Kestrel...");
-            MainAsync().GetAwaiter().GetResult();
+            Console.WriteLine("Starting Server...");
+            V2SetupServer().GetAwaiter().GetResult();
         }
 
-        public static Task MainAsync()
+        public static async Task V2SetupServer()
         {
-            var host = new WebHostBuilder()
-                .UseKestrel(options =>
-                {
-                    IPAddress addr = IPAddress.Any;
-                    options.Listen(addr, config.listen_port);
+            var server = new DeltaWebServer(connection, config.listen_port);
 
-                })
-                .UseStartup<Program>()
-                .Build();
+            //Misc
+            server.AddService(new MapListDefinition());
 
-            return host.RunAsync();
-        }
+            //Auth
+            server.AddService(new AppAuthBeginDefinition());
+            server.AddService(new AppAuthEndDefinition());
+            server.AddService(new AppAuthTokenDefinition());
 
-        public void Configure(IApplicationBuilder app)
-        {
-            app.Run(HttpHandler.OnHttpRequest);
+            //Server
+            server.AddService(new CanvasListDefinition());
+            server.AddService(new CanvasSelectDefinition());
+            server.AddService(new ServerManageDefinition());
+            server.AddService(new PutUserPrefsDefinition());
 
+            //User
+            server.AddService(new UsersMeDefinition());
+            server.AddService(new PutUserSettingsDefinition());
+            server.AddService(new TokenDevalidateDefinition());
+            server.AddService(new UserClustersDefinition());
+            server.AddService(new UserOAuthApplicationsDefinition_Root());
+            server.AddService(new UserOAuthApplicationsDefinition_Item());
+            server.AddService(new IssueCreatorDefinition());
+
+            //Start
+            await server.RunAsync();
         }
 
         public static Task QuickWriteToDoc(Microsoft.AspNetCore.Http.HttpContext context, string content, string type = "text/html", int code = 200)
@@ -101,68 +112,9 @@ namespace ArkWebMapMasterServer
             return QuickWriteToDoc(context, JsonConvert.SerializeObject(data, Formatting.Indented), "application/json", code);
         }
 
-        public static string GenerateRandomString(int length)
-        {
-            return GenerateRandomStringCustom(length, "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM".ToCharArray());
-        }
-
-        public static string GenerateRandomStringCustom(int length, char[] chars)
-        {
-            string output = "";
-            for (int i = 0; i < length; i++)
-            {
-                output += chars[rand.Next(0, chars.Length)];
-            }
-            return output;
-        }
-
-        public static byte[] GenerateRandomBytes(int length)
-        {
-            byte[] buf = new byte[length];
-            rand.NextBytes(buf);
-            return buf;
-        }
-
         public static RequestHttpMethod FindRequestMethod(Microsoft.AspNetCore.Http.HttpContext context)
         {
             return Enum.Parse<RequestHttpMethod>(context.Request.Method.ToLower());
-        }
-
-        public static bool CompareByteArrays(byte[] b1, byte[] b2)
-        {
-            if (b1.Length != b2.Length)
-                return false;
-            for(int i = 0; i<b1.Length; i++)
-            {
-                if (b1[i] != b2[i])
-                    return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Checks to see if a token is capable of doing an action based upon it's scope. Will throw a StandardError if it cannot.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="user"></param>
-        /// <param name="scope"></param>
-        /// <returns></returns>
-        public static async Task CheckTokenScope(DbUser user, string scope)
-        {
-            if(user.GetAuthenticatedToken() != null)
-            {
-                if (user.GetAuthenticatedToken().CheckScope(scope))
-                    return;
-            } else
-            {
-                throw new StandardError("This action appears to have been requested without specifying a valid token. This action is prohibited.", StandardErrorCode.AuthFailed);
-            }
-
-            //Failed.
-            if (scope == null)
-                throw new StandardError("This OAUTH token is not capable of doing this action. Only user tokens can do that.", StandardErrorCode.AuthRequired);
-            else
-                throw new StandardError("This OAUTH token is not capable of doing this action. Check the scope, or request a new token with the scope '"+scope+"'.", StandardErrorCode.AuthRequired);
         }
     }
 

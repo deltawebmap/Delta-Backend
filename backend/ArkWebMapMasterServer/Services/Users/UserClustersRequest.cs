@@ -1,4 +1,7 @@
-﻿using LibDeltaSystem.Db.System;
+﻿using LibDeltaSystem;
+using LibDeltaSystem.Db.System;
+using LibDeltaSystem.WebFramework.ServiceTemplates;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,19 +9,25 @@ using System.Threading.Tasks;
 
 namespace ArkWebMapMasterServer.Services.Users
 {
-    public static class UserClustersRequest
+    public class UserClustersRequest : UserAuthDeltaService
     {
-        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
+        public UserClustersRequest(DeltaConnection conn, HttpContext e) : base(conn, e)
         {
-            //Check scope
-            await Program.CheckTokenScope(u, null);
+        }
 
+        public override async Task<bool> SetArgs(Dictionary<string, string> args)
+        {
+            return true;
+        }
+
+        public override async Task OnRequest()
+        {
             //Get method
             var method = Program.FindRequestMethod(e);
             if (method == RequestHttpMethod.get)
-                await OnGETRequest(e, u);
+                await OnGETRequest(e, user);
             else if (method == RequestHttpMethod.post)
-                await OnPOSTRequest(e, u);
+                await OnPOSTRequest(e, user);
             else
                 throw new StandardError("This method was not expected.", StandardErrorCode.BadMethod);
         }

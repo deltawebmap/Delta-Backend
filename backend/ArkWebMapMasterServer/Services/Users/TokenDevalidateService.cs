@@ -1,6 +1,9 @@
 ﻿
 using ArkWebMapMasterServer.NetEntities;
+using LibDeltaSystem;
 using LibDeltaSystem.Db.System;
+using LibDeltaSystem.WebFramework.ServiceTemplates;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,45 +12,23 @@ using System.Threading.Tasks;
 
 namespace ArkWebMapMasterServer.Services.Users
 {
-    public static class TokenDevalidateService
+    public class TokenDevalidateService : UserAuthDeltaService
     {
-        private static void EnsureMethod(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
+        public TokenDevalidateService(DeltaConnection conn, HttpContext e) : base(conn, e)
         {
-            if (u == null)
-                throw new StandardError("You must be signed in.", StandardErrorCode.AuthRequired);
-            if (Program.FindRequestMethod(e) != RequestHttpMethod.post)
-                throw new StandardError("Request must be POST or post.", StandardErrorCode.NotPermitted);
         }
 
-        public static async Task OnSingleDevalidate(Microsoft.AspNetCore.Http.HttpContext e, DbUser u, string token)
+        public string tokenType;
+
+        public override async Task OnRequest()
         {
-            EnsureMethod(e, u);
-            var tokenData = Program.connection.GetTokenByTokenAsync(token).GetAwaiter().GetResult();
-            if(tokenData != null)
-            {
-                await tokenData.DeleteAsync(Program.connection);
-                await Program.QuickWriteJsonToDoc(e, new OkReply
-                {
-                    ok = true
-                });
-            } else
-            {
-                throw new StandardError("Failed to find this token.", StandardErrorCode.MissingData);
-            }
+            throw new NotImplementedException();
         }
 
-        public static async Task OnAllDevalidate(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
+        public override async Task<bool> SetArgs(Dictionary<string, string> args)
         {
-            EnsureMethod(e, u);
-
-            //Devalidate ALL tokens for this user
-            await u.DevalidateAllTokens(Program.connection);
-
-            //Return OK
-            await Program.QuickWriteJsonToDoc(e, new OkReply
-            {
-                ok = true
-            });
+            tokenType = args["TOKEN_TYPE"];
+            return true;
         }
     }
 }

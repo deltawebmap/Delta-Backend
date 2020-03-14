@@ -1,4 +1,8 @@
-﻿using LibDeltaSystem.Entities.ArkEntries;
+﻿using LibDeltaSystem;
+using LibDeltaSystem.Entities.ArkEntries;
+using LibDeltaSystem.WebFramework;
+using LibDeltaSystem.WebFramework.ServiceTemplates;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,9 +10,13 @@ using System.Threading.Tasks;
 
 namespace ArkWebMapMasterServer.Services.Misc
 {
-    public static class MapList
+    public class MapListRequest : BasicDeltaService
     {
-        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        public MapListRequest(DeltaConnection conn, HttpContext e) : base(conn, e)
+        {
+        }
+
+        public override async Task OnRequest()
         {
             var maps = await Program.connection.GetARKMaps();
             await Program.QuickWriteJsonToDoc(e, new MapListResponse

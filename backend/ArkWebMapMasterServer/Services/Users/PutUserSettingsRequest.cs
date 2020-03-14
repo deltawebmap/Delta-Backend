@@ -1,4 +1,7 @@
-﻿using LibDeltaSystem.Db.System;
+﻿using LibDeltaSystem;
+using LibDeltaSystem.Db.System;
+using LibDeltaSystem.WebFramework.ServiceTemplates;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,9 +9,13 @@ using System.Threading.Tasks;
 
 namespace ArkWebMapMasterServer.Services.Users
 {
-    public static class PutUserSettingsRequest
+    public class PutUserSettingsRequest : UserAuthDeltaService
     {
-        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser user)
+        public PutUserSettingsRequest(DeltaConnection conn, HttpContext e) : base(conn, e)
+        {
+        }
+
+        public override async Task OnRequest()
         {
             //Verify method
             if (Program.FindRequestMethod(e) != RequestHttpMethod.post)
@@ -24,6 +31,11 @@ namespace ArkWebMapMasterServer.Services.Users
 
             //Return response
             await Program.QuickWriteStatusToDoc(e, true);
+        }
+
+        public override async Task<bool> SetArgs(Dictionary<string, string> args)
+        {
+            return true;
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using LibDeltaSystem.Db.System;
+﻿using LibDeltaSystem;
+using LibDeltaSystem.Db.System;
+using LibDeltaSystem.WebFramework.ServiceTemplates;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,29 +9,33 @@ using System.Threading.Tasks;
 
 namespace ArkWebMapMasterServer.Services.Users
 {
-    public static class OAuthApplicationsHandler
+    public class OAuthApplicationsHandler : SelectItemUserAuthDeltaService<DbOauthApp>
     {
         public const string ICON_APP_ID = "GPzQeYyDBApTcXBk";
 
-        public static async Task OnBaseHTTPRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
+        public OAuthApplicationsHandler(DeltaConnection conn, HttpContext e) : base(conn, e)
         {
-            //Get method
-            var method = Program.FindRequestMethod(e);
-
-            //Act
-            if (method == RequestHttpMethod.post)
-                await OnCreateRequest(e, u);
-            else
-                throw new StandardError("Unexpected method.", StandardErrorCode.BadMethod);
         }
 
-        public static async Task OnAppHTTPRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u, string next)
+        public override async Task<DbOauthApp> GetItemByRequestedString(string id)
         {
-
+            throw new NotImplementedException();
         }
 
-        public static async Task OnCreateRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
+        public override async Task OnRequestToItem(DbOauthApp item)
         {
+            throw new NotImplementedException();
+        }
+
+        public override async Task OnRequestNoItem()
+        {
+            //This is a request to create. Make sure it is a POST
+            if(GetMethod() != LibDeltaSystem.WebFramework.Entities.DeltaCommonHTTPMethod.POST)
+            {
+                await WriteString("Method Not Supported", "text/plain", 400);
+                return;
+            }
+
             //Decode request body
             CreateApplicationRequest request = Program.DecodePostBody<CreateApplicationRequest>(e);
 
@@ -55,15 +62,15 @@ namespace ArkWebMapMasterServer.Services.Users
             else if (request.description.Length < 2)
                 errors.Add(new EditResponseError("DESCRIPTION", "Description must be at least 2 characters long."));
             else if (request.description.Length > 256)
-                errors.Add(new EditResponseError("DESCRIPTION", "Description must be at less than 256 characters."));
-            if(!request.redirect_uri.StartsWith("http://") && !request.redirect_uri.StartsWith("https://"))
+                errors.Add(new EditResponseError("DESCRIPTION", "Description must be less than 256 characters."));
+            if (!request.redirect_uri.StartsWith("http://") && !request.redirect_uri.StartsWith("https://"))
                 errors.Add(new EditResponseError("REDIRECT_URI", "Only http and https redirects are permitted."));
             if (await TryRespondWithError(e, errors))
                 return;
 
             //If an icon is set, verify it
             string icon = null;
-            if(request.icon_token != null)
+            if (request.icon_token != null)
             {
                 var iconInfo = await Program.connection.GetUserContentByToken(request.icon_token);
                 if (iconInfo == null)
@@ -76,7 +83,7 @@ namespace ArkWebMapMasterServer.Services.Users
 
             //Generate an application ID and secret
             string appId = LibDeltaSystem.Tools.SecureStringTool.GenerateSecureString(24);
-            while(await Program.connection.GetOAuthAppByAppID(appId) != null)
+            while (await Program.connection.GetOAuthAppByAppID(appId) != null)
                 appId = LibDeltaSystem.Tools.SecureStringTool.GenerateSecureString(24);
             string appSecret = LibDeltaSystem.Tools.SecureStringTool.GenerateSecureString(42);
 
@@ -88,7 +95,7 @@ namespace ArkWebMapMasterServer.Services.Users
                 description = request.description,
                 icon_url = icon,
                 name = request.name,
-                owner_id = u.id,
+                owner_id = user.id,
                 redirect_uri = request.redirect_uri,
                 _id = MongoDB.Bson.ObjectId.GenerateNewId()
             };

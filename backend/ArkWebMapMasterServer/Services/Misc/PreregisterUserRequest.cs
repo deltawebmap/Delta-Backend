@@ -1,4 +1,7 @@
-﻿using LibDeltaSystem.Db.System;
+﻿using LibDeltaSystem;
+using LibDeltaSystem.Db.System;
+using LibDeltaSystem.WebFramework.ServiceTemplates;
+using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -7,9 +10,13 @@ using System.Threading.Tasks;
 
 namespace ArkWebMapMasterServer.Services.Misc
 {
-    public static class PreregisterUser
+    public class PreregisterUserRequest : BasicDeltaService
     {
-        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e)
+        public PreregisterUserRequest(DeltaConnection conn, HttpContext e) : base(conn, e)
+        {
+        }
+
+        public override async Task OnRequest()
         {
             //Decode POST body
             RequestBody request = Program.DecodePostBody<RequestBody>(e);
@@ -19,7 +26,7 @@ namespace ArkWebMapMasterServer.Services.Misc
             var filter = filterBuilder.Eq("email", request.email);
             var results = await Program.connection.system_preregistered.FindAsync(filter);
             var r = await results.FirstOrDefaultAsync();
-            if(r == null)
+            if (r == null)
             {
                 await Program.connection.system_preregistered.InsertOneAsync(new DbPreregisteredUser
                 {

@@ -1,6 +1,10 @@
-﻿using LibDeltaSystem.Db.System;
+﻿using ArkWebMapMasterServer.ServiceTemplates;
+using LibDeltaSystem;
+using LibDeltaSystem.Db.System;
 using LibDeltaSystem.Db.System.Entities;
 using LibDeltaSystem.Entities;
+using Microsoft.AspNetCore.Http;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,58 +12,57 @@ using System.Threading.Tasks;
 
 namespace ArkWebMapMasterServer.Services.Servers
 {
-    public static class ManageRequest
+    public class ManageRequest : MasterTribeServiceTemplate
     {
         public const string ICON_APPLICATION_ID = "t3VXa599Na64w7vd";
 
-        public static async Task OnHttpRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s, DbUser u)
+        public ManageRequest(DeltaConnection conn, HttpContext e) : base(conn, e)
         {
-            //Check scope
-            await Program.CheckTokenScope(u, null);
+        }
 
-            //Validate that this user owns this server
-            if (s.owner_uid != u.id)
-            {
-                throw new StandardError("You do not own this server and are not allowed to perform this action.", StandardErrorCode.NotPermitted);
-            }
+        public override async Task OnRequest()
+        {
+            //Make sure we are admin
+            if (!await RequireServerAdmin())
+                return;
 
             //Get method
             var method = Program.FindRequestMethod(e);
             if (method == RequestHttpMethod.get)
-                await OnGETRequest(e, s, u);
+                await OnGETRequest();
             else if (method == RequestHttpMethod.post)
-                await OnPOSTRequest(e, s, u);
+                await OnPOSTRequest();
             else
                 throw new StandardError("This method was not expected.", StandardErrorCode.BadMethod);
         }
 
-        public static async Task OnGETRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s, DbUser u)
+        public async Task OnGETRequest()
         {
             //Get cluster, if any
             DbCluster cluster = null;
-            if (s.cluster_id != null)
-                cluster = await DbCluster.GetClusterById(Program.connection, MongoDB.Bson.ObjectId.Parse(s.cluster_id));
+            if (server.cluster_id != null)
+                cluster = await DbCluster.GetClusterById(Program.connection, MongoDB.Bson.ObjectId.Parse(server.cluster_id));
 
             //Get map entry
             string mapName = null;
-            var mapEntry = await Program.connection.GetARKMapByInternalName(s.latest_server_map);
+            var mapEntry = await Program.connection.GetARKMapByInternalName(server.latest_server_map);
             if (mapEntry != null)
                 mapName = mapEntry.displayName;
 
             //Get server status
             string status = "ONLINE";
             string message = "Online";
-            if (s.CheckLockFlag(1))
+            if (server.CheckLockFlag(1))
             {
                 status = "ALERT";
                 message = "Locked";
             }
-            if(s.CheckLockFlag(0))
+            if(server.CheckLockFlag(0))
             {
                 status = "ALERT";
                 message = "Still Initializing...";
             }
-            if (s.CheckLockFlag(2))
+            if (server.CheckLockFlag(2))
             {
                 status = "OFFLINE";
                 message = "Locked by Admin";
@@ -71,7 +74,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             }
 
             //Check last connect time
-            DateTime lastConnectTime = new DateTime(s.last_client_connect_time);
+            DateTime lastConnectTime = new DateTime(server.last_client_connect_time);
             if ((DateTime.UtcNow - lastConnectTime).TotalMinutes > 2.5f)
             {
                 status = "OFFLINE";
@@ -79,7 +82,7 @@ namespace ArkWebMapMasterServer.Services.Servers
             }
 
             //Look up all mods used and convert
-            Dictionary<string, DbSteamModCache> mods = await s.GetAllServerMods(Program.connection, true);
+            Dictionary<string, DbSteamModCache> mods = await server.GetAllServerMods(Program.connection, true);
             List<WebArkMod> modList = new List<WebArkMod>();
             foreach(var mod in mods.Values)
             {
@@ -91,42 +94,42 @@ namespace ArkWebMapMasterServer.Services.Servers
 
             //Look up all admins
             List<ManagementData_User> admins = new List<ManagementData_User>();
-            admins.Add(await ManagementData_User.GetUser(u));
-            foreach (var id in s.admins)
+            admins.Add(await ManagementData_User.GetUser(user));
+            foreach (var id in server.admins)
                 admins.Add(await ManagementData_User.GetUser( await DbUser.GetUserByID( Program.connection, id )));
 
             ManagementDataResponse m = new ManagementDataResponse
             {
-                name = s.display_name,
-                icon = s.image_url,
-                is_user_locked = s.CheckLockFlag(1),
-                permissions = s.GetPermissionFlagList(),
-                settings = s.game_settings,
-                cluster_id = s.cluster_id,
+                name = server.display_name,
+                icon = server.image_url,
+                is_user_locked = server.CheckLockFlag(1),
+                permissions = server.GetPermissionFlagList(),
+                settings = server.game_settings,
+                cluster_id = server.cluster_id,
                 cluster = cluster,
                 status = status,
                 alert = message,
                 mods = modList,
                 admins = admins,
-                map_id = s.latest_server_map,
+                map_id = server.latest_server_map,
                 map_name = mapName
             };
             await Program.QuickWriteJsonToDoc(e, m);
         }
 
-        public static async Task OnPOSTRequest(Microsoft.AspNetCore.Http.HttpContext e, DbServer s, DbUser u)
+        public async Task OnPOSTRequest()
         {
             //Decode settings
             var settings = Program.DecodePostBody<ManagementDataRequest>(e);
 
             //Set name
             if (settings.name != null)
-                s.display_name = settings.name;
+                server.display_name = settings.name;
 
             //Set icon
             if (settings.icon_token == "%CLEAR_ICON") {
-                s.image_url = DbServer.StaticGetPlaceholderIcon(Program.connection, s.display_name);
-                s.has_custom_image = false;
+                server.image_url = DbServer.StaticGetPlaceholderIcon(Program.connection, server.display_name);
+                server.has_custom_image = false;
             } else if (settings.icon_token != null)
             {
                 var d = await Program.connection.GetUserContentByToken(settings.icon_token);
@@ -134,27 +137,34 @@ namespace ArkWebMapMasterServer.Services.Servers
                     throw new StandardError("Couldn't get content token!", StandardErrorCode.InvalidInput);
                 if (d.application_id != ICON_APPLICATION_ID)
                     throw new StandardError("Content application ID did not match.", StandardErrorCode.InvalidInput);
-                if (d.uploader != u._id)
+                if (d.uploader != user._id)
                     throw new StandardError("Content uploader ID did not match.", StandardErrorCode.InvalidInput);
-                s.image_url = d.url;
-                s.has_custom_image = true;
+                server.image_url = d.url;
+                server.has_custom_image = true;
             }
 
             //Set user lock
-            s.SetLockFlag(1, settings.is_user_locked);
+            server.SetLockFlag(1, settings.is_user_locked);
 
             //Set permissions
-            s.SetPermissionFlags(settings.permissions);
+            server.SetPermissionFlags(settings.permissions);
 
             //Set cluster ID, if it is set
             if (settings.cluster_id != null && await DbCluster.GetClusterById(Program.connection, MongoDB.Bson.ObjectId.Parse(settings.cluster_id)) != null)
-                s.cluster_id = settings.cluster_id;
+                server.cluster_id = settings.cluster_id;
 
             //Save
-            await s.UpdateAsync(Program.connection);
+            var updateBuilder = Builders<DbServer>.Update;
+            var update = updateBuilder.Set("lock_flags", server.lock_flags)
+                .Set("permission_flags", server.permission_flags)
+                .Set("cluster_id", server.cluster_id)
+                .Set("has_custom_image", server.has_custom_image)
+                .Set("image_url", server.image_url)
+                .Set("display_name", server.display_name);
+            await server.UpdateAsync(Program.connection, update);
 
             //Write response
-            await OnGETRequest(e, s, u);
+            await OnGETRequest();
         }
 
         class ManagementData_User
