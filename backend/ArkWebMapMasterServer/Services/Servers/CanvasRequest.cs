@@ -1,11 +1,13 @@
 ﻿using LibDeltaSystem.Db.System;
+using LibDeltaSystem.Entities.CommonNet;
 using LibDeltaSystem.RPC.Payloads;
+using LibDeltaSystem.RPC.Payloads.Server;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using static LibDeltaSystem.RPC.Payloads.RPCPayloadModifyCanvas;
+using static LibDeltaSystem.RPC.Payloads.Server.RPCPayload20003CanvasEvent;
 
 namespace ArkWebMapMasterServer.Services.Servers
 {
@@ -27,7 +29,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 //Now, convert all
                 CanvasListResponse response = new CanvasListResponse
                 {
-                    canvases = new RPCPayloadModifyCanvas_ListedCanvas[canvases.Count],
+                    canvases = new NetCanvas[canvases.Count],
                     ws_reconnect_policy = 10000,
                     ws_url = Program.config.endpoint_canvas
                 };
@@ -45,6 +47,13 @@ namespace ArkWebMapMasterServer.Services.Servers
                 //We'll create a canvas. Decode the body
                 CanvasCreateRequest request = Program.DecodePostBody<CanvasCreateRequest>(e);
 
+                //Verify
+                if(request.color == null || request.name == null)
+                {
+                    await Program.QuickWriteToDoc(e, "Missing required data.", "text/plain", 400);
+                    return;
+                }
+
                 //Create
                 DbCanvas c = new DbCanvas
                 {
@@ -54,9 +63,8 @@ namespace ArkWebMapMasterServer.Services.Servers
                     last_saved = DateTime.UtcNow,
                     name = request.name,
                     server_id = s.id,
-                    users = new ObjectId[256],
-                    user_index = 0,
-                    version = 0,
+                    users = new List<ObjectId>(),
+                    version = 1,
                     _id = ObjectId.GenerateNewId()
                 };
 
@@ -64,7 +72,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 await Program.connection.system_canvases.InsertOneAsync(c);
 
                 //Send RPC message
-                SendRPCMessage(c, s, u, tribe_id, RPCPayloadModifyCanvas.RPCPayloadModifyCanvas_CanvasChange.Create);
+                SendRPCMessage(c, s, u, tribe_id, RPCPayload20003CanvasEvent_CanvasEventType.Create);
 
                 //Write response
                 await Program.QuickWriteJsonToDoc(e, ConvertCanvas(c));
@@ -108,7 +116,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 await c.RenameCanvas(Program.connection, request.name, request.color);
 
                 //Send RPC message
-                SendRPCMessage(c, s, u, tribe_id, RPCPayloadModifyCanvas.RPCPayloadModifyCanvas_CanvasChange.Modify);
+                SendRPCMessage(c, s, u, tribe_id, RPCPayload20003CanvasEvent_CanvasEventType.Modify);
 
                 //Write response
                 await Program.QuickWriteJsonToDoc(e, ConvertCanvas(c));
@@ -122,7 +130,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 await c.DeleteCanvas(Program.connection);
 
                 //Send RPC message
-                SendRPCMessage(c, s, u, tribe_id, RPCPayloadModifyCanvas.RPCPayloadModifyCanvas_CanvasChange.Delete);
+                SendRPCMessage(c, s, u, tribe_id, RPCPayload20003CanvasEvent_CanvasEventType.Delete);
 
                 //Write response
                 await Program.QuickWriteJsonToDoc(e, ConvertCanvas(c));
@@ -146,7 +154,7 @@ namespace ArkWebMapMasterServer.Services.Servers
                 await c.SetNewThumbnail(Program.connection, uc);
 
                 //Send RPC message
-                SendRPCMessage(c, s, u, tribe_id, RPCPayloadModifyCanvas.RPCPayloadModifyCanvas_CanvasChange.Modify);
+                SendRPCMessage(c, s, u, tribe_id, RPCPayload20003CanvasEvent_CanvasEventType.Modify);
 
                 //Write response
                 await Program.QuickWriteJsonToDoc(e, ConvertCanvas(c));
@@ -157,28 +165,23 @@ namespace ArkWebMapMasterServer.Services.Servers
             }
         }
 
-        private static void SendRPCMessage(DbCanvas c, DbServer server, DbUser u, int tribe_id, RPCPayloadModifyCanvas.RPCPayloadModifyCanvas_CanvasChange change)
+        private static void SendRPCMessage(DbCanvas c, DbServer server, DbUser u, int tribe_id, RPCPayload20003CanvasEvent_CanvasEventType change)
         {
             //Create message
-            RPCPayloadModifyCanvas msg = new RPCPayloadModifyCanvas
+            RPCPayload20003CanvasEvent msg = new RPCPayload20003CanvasEvent
             {
                 action = change,
                 data = ConvertCanvas(c),
-                user = new RPCPayloadModifyCanvas_ActorUser
-                {
-                    icon = u.profile_image_url,
-                    id = u.id,
-                    name = u.screen_name
-                }
+                user = NetMiniUser.ConvertUser(u)
             };
 
             //Send RPC message
-            Program.connection.GetRPC().SendRPCMessageToTribe(LibDeltaSystem.RPC.RPCOpcode.CanvasChange, msg, server, tribe_id);
+            Program.connection.GetRPC().SendRPCMsgToServerTribe(LibDeltaSystem.RPC.RPCOpcode.RPCServer20002CanvasEvent, msg, server, tribe_id);
         }
 
-        private static RPCPayloadModifyCanvas_ListedCanvas ConvertCanvas(DbCanvas c)
+        private static NetCanvas ConvertCanvas(DbCanvas c)
         {
-            return new RPCPayloadModifyCanvas_ListedCanvas
+            return new NetCanvas
             {
                 color = c.color,
                 href = Program.connection.config.hosts.master + "/api" + "/servers/" + c.server_id + "/canvas/" + c.id,
@@ -190,7 +193,7 @@ namespace ArkWebMapMasterServer.Services.Servers
 
         class CanvasListResponse
         {
-            public RPCPayloadModifyCanvas_ListedCanvas[] canvases;
+            public NetCanvas[] canvases;
             public string ws_url;
             public int ws_reconnect_policy;
         }

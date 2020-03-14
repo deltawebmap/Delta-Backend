@@ -1,4 +1,6 @@
-﻿using LibDeltaSystem.Db.System;
+﻿using LibDeltaSystem.Db;
+using LibDeltaSystem.Db.Content;
+using LibDeltaSystem.Db.System;
 using LibDeltaSystem.Db.System.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -31,11 +33,25 @@ namespace ArkWebMapMasterServer.Services.Users
             List<ObjectId> serverIds = new List<ObjectId>();
             foreach(var s in servers)
             {
+                //Split
+                int tribeId = s.Item2.tribe_id;
+                DbServer server = s.Item1;
+
                 //Add server
                 serverIds.Add(s.Item1._id);
                 
                 //Get tribe info
                 var tribe = await Program.connection.GetTribeByTribeIdAsync(s.Item1.id, s.Item2.tribe_id);
+
+                //Get my location
+                DbVector3 myPos = null;
+                if (s.Item2.x != null && s.Item2.y != null && s.Item2.z != null)
+                    myPos = new DbVector3
+                    {
+                        x = s.Item2.x.Value,
+                        y = s.Item2.y.Value,
+                        z = s.Item2.z.Value
+                    };
 
                 //Get map info
                 string mapName = null;
@@ -63,14 +79,15 @@ namespace ArkWebMapMasterServer.Services.Users
                     owner_uid = s.Item1.owner_uid,
                     cluster_id = s.Item1.cluster_id,
                     id = s.Item1.id,
-                    tribe_id = s.Item2.tribe_id,
-                    tribe_name = tribe.tribe_name,
                     map_id = s.Item1.latest_server_map,
-                    map_name = mapName,
                     permissions = s.Item1.GetPermissionFlagList(),
                     closed_reason = close,
                     user_prefs = await s.Item1.GetUserPrefs(Program.connection, u.id),
-                    endpoint_createsession = Program.config.endpoint_echo + $"/{s.Item1.id}/" + "create_session"
+                    my_location = myPos,
+                    ark_id = s.Item2.ark_id.ToString(),
+                    target_tribe = tribe,
+                    is_admin = s.Item1.CheckIsUserAdmin(u),
+                    has_tribe = s.Item1 != null
                 };
 
                 //Add cluster if not added
@@ -122,19 +139,19 @@ namespace ArkWebMapMasterServer.Services.Users
             public string cluster_id;
             public string id;
 
-            public int tribe_id;
-            public string tribe_name;
-            public string ark_name;
+            public DbTribe target_tribe; //The tribe this user belongs to
+            public DbVector3 my_location; //The current location of the user
+            public string ark_id;
 
             public string map_id;
-            public string map_name;
 
             public bool[] permissions;
             public int closed_reason; //https://docs.google.com/spreadsheets/d/1zQ_r86uyDAvwAtEg0135rL6g2lHqhPtYAgFdJrL3vZc/edit
 
             public SavedUserServerPrefs user_prefs;
 
-            public string endpoint_createsession;
+            public bool is_admin;
+            public bool has_tribe; 
         }
 
         public class UsersMeReply_Cluster

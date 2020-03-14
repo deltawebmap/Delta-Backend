@@ -35,8 +35,6 @@ namespace ArkWebMapMasterServer.Services.Users
                 await UserDataDownloader.OnCreateRequest(e, user, userToken);
             else if (path == "@me/delete")
                 await UserDataRemover.OnHttpRequest(e, user, userToken);
-            else if (path == "@me/machines")
-                await UsersMe.OnMachineListRequest(e, user);
             else if (path == "@me/push_token" && method == RequestHttpMethod.post)
                 await NotificationTokenRequest.OnHttpRequest(e, user);
             else if (path == "@me/applications/")

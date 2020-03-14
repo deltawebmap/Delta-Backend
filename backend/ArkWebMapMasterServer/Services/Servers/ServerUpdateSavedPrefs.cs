@@ -1,4 +1,5 @@
-﻿using LibDeltaSystem.Db.System;
+﻿using LibDeltaSystem.Db.Content;
+using LibDeltaSystem.Db.System;
 using LibDeltaSystem.Db.System.Entities;
 using LibDeltaSystem.RPC.Payloads;
 using MongoDB.Driver;
@@ -44,27 +45,13 @@ namespace ArkWebMapMasterServer.Services.Servers
             //Decode data from the POST
             SavedDinoTribePrefs prefs = Program.DecodePostBody<SavedDinoTribePrefs>(e);
 
-            //Now, create an entry to insert into the db
-            var filterBuilder = Builders<DbSavedDinoTribePrefs>.Filter;
-            var filter = filterBuilder.Eq("server_id", s.id) & filterBuilder.Eq("dino_id", id) & filterBuilder.Eq("tribe_id", tribeId);
-            await Program.connection.system_saved_dino_tribe_prefs.ReplaceOneAsync(filter, new DbSavedDinoTribePrefs
-            {
-                tribe_id = tribeId,
-                dino_id = id,
-                server_id = s._id,
-                payload = prefs
-            }, new UpdateOptions
-            {
-                IsUpsert = true
-            });
+            //Get the dino
+            DbDino dino = await DbDino.GetDinosaurByID(Program.connection, id, s);
 
-            //Notify on RPC
-            Program.connection.GetRPC().SendRPCMessageToTribe(LibDeltaSystem.RPC.RPCOpcode.DinoPrefsChanged, new RPCPayloadDinoPrefsUpdate
-            {
-                dino_id = id.ToString(),
-                prefs = prefs,
-                user_id = u.id
-            }, s, tribeId);
+            //Apply updates
+            var updateBuilder = Builders<DbDino>.Update;
+            var update = updateBuilder.Set("prefs", prefs);
+            await dino.UpdateDino(Program.connection, s, update);
 
             //Return prefs
             await Program.QuickWriteJsonToDoc(e, prefs);
