@@ -1,4 +1,5 @@
-﻿using ArkWebMapMasterServer.ServiceDefinitions.Auth.AppAuth;
+﻿using ArkWebMapMasterServer.ServiceDefinitions.Auth;
+using ArkWebMapMasterServer.ServiceDefinitions.Auth.AppAuth;
 using ArkWebMapMasterServer.ServiceDefinitions.Auth.OAuth;
 using ArkWebMapMasterServer.ServiceDefinitions.Misc;
 using ArkWebMapMasterServer.ServiceDefinitions.Servers;
@@ -54,6 +55,7 @@ namespace ArkWebMapMasterServer
             server.AddService(new OAuthQueryDefinition());
             server.AddService(new OAuthAuthorizeDefinition());
             server.AddService(new OAuthVerifyDefinition());
+            server.AddService(new ValidateBetaKeyDefinition());
 
             //Server
             server.AddService(new CanvasListDefinition());

@@ -45,7 +45,11 @@ namespace ArkWebMapMasterServer.Services.Auth.AppAuth
                 auth = false,
                 creation = DateTime.UtcNow,
                 nonce = nonce,
-                preflight_token = session
+                preflight_token = session,
+                custom_data = new Dictionary<string, string>
+                {
+                    {"BETA_KEY", e.Request.Query["beta_key"] }
+                }
             };
             await Program.connection.system_preflight_tokens.InsertOneAsync(t);
 

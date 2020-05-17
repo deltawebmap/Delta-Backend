@@ -33,6 +33,13 @@ namespace ArkWebMapMasterServer.Services.Auth.AppAuth
                 return;
             }
 
+            //Validate and claim token
+            if(!await conn.ValidateAndClaimBetaKey(session.custom_data["BETA_KEY"], user._id))
+            {
+                await WriteString($"<h1>Beta Key Invalid</h1><p>Oops! That beta key has already been used by a different user or is invalid.</p><p><u>USER ID:</u> {user.id}<br><u>BETA KEY:</u> {session.custom_data["BETA_KEY"]}</p><br><br><a href=\"/login/\">Try Again</a>", "text/html", 400);
+                return;
+            }
+
             //Update
             await session.SetUser(Program.connection, user);
 
