@@ -10,7 +10,7 @@ using static ArkWebMapMasterServer.Services.Auth.OAuth.OAuthScopeStatics;
 
 namespace ArkWebMapMasterServer.Services.Auth.OAuth
 {
-    public class OAuthAuthorize : BasicDeltaService
+    public class OAuthAuthorize : UserAuthDeltaService
     {
         public OAuthAuthorize(DeltaConnection conn, HttpContext e) : base(conn, e)
         {
@@ -24,35 +24,55 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
         /// <returns></returns>
         public override async Task OnRequest()
         {
-            //Attempt to authorize the user
-            DbUser user = null;
+            //Decode request
+            OAuthInfoRequest request = await DecodePOSTBody<OAuthInfoRequest>();
 
-            //Get the application
-            DbOauthApp app = await Program.connection.GetOAuthAppByAppID(e.Request.Query["client_id"]);
+            //Find the application
+            DbOauthApp app = await Program.connection.GetOAuthAppByAppID(request.client_id);
             if (app == null)
-                throw new StandardError("Application not found.", StandardErrorCode.NotFound);
+            {
+                await WriteString("Application ID invalid.", "text/plain", 400);
+                return;
+            }
 
             //Get a list of scopes used
-            var scopes = OAuthScopeStatics.GetOAuthScopes(e.Request.Query["scopes"].ToString().Split(','));
-            string[] scopeIDs = OAuthScopeStatics.GetOAuthScopeIDs(scopes, out bool is_dangerous);
+            ulong scope = ulong.Parse(request.scopes);
 
             //Send to the application
             //Authenticated. Go now
-            await SendToApplication(app, user, scopeIDs);
+            await SendToApplication(app, scope);
         }
 
         /// <summary>
         /// Creates an OAuth token and redirects to the application
         /// </summary>
         /// <returns></returns>
-        public async Task SendToApplication(DbOauthApp app, DbUser user, string[] scopeIDs)
+        public async Task SendToApplication(DbOauthApp app, ulong scope)
         {
             //Create a token
-            var token = await user.MakeOAuthToken(Program.connection, app, scopeIDs);
+            var token = await user.MakeOAuthToken(Program.connection, app, scope);
 
-            //Redirect to the application
-            e.Response.Headers.Add("Location", app.redirect_uri + "?t=" + token.oauth_preflight);
-            await WriteString("You should be redirected now.", "text/plain", 302);
+            //Send response
+            await WriteJSON(new ResponseData
+            {
+                next_url = app.redirect_uri + "?oauth_token=" + token.oauth_preflight
+            });
+        }
+
+        public override async Task<bool> SetArgs(Dictionary<string, string> args)
+        {
+            return true;
+        }
+
+        class OAuthInfoRequest
+        {
+            public string client_id;
+            public string scopes;
+        }
+
+        class ResponseData
+        {
+            public string next_url;
         }
     }
 }

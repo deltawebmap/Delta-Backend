@@ -29,10 +29,10 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
             }
         };
 
-        public static List<OAuthScopeEntry> GetOAuthScopes(string[] requestedScopes)
+        public static List<OAuthScopeEntry> GetOAuthScopes(ulong requestedScopes)
         {
             List<OAuthScopeEntry> responses = new List<OAuthScopeEntry>();
-            foreach(var r in requestedScopes)
+            /*foreach(var r in requestedScopes)
             {
                 OAuthScopeEntry s = scopes.Where(x => x.id == r).FirstOrDefault();
                 if (s == null)
@@ -40,7 +40,7 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
                 if (responses.Contains(s))
                     continue;
                 responses.Add(s);
-            }
+            }*/
             return responses;
         }
 

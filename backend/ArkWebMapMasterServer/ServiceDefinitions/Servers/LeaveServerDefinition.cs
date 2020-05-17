@@ -1,4 +1,4 @@
-﻿using ArkWebMapMasterServer.Services.Auth.OAuth;
+﻿using ArkWebMapMasterServer.Services.Servers;
 using LibDeltaSystem;
 using LibDeltaSystem.WebFramework;
 using Microsoft.AspNetCore.Http;
@@ -6,18 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArkWebMapMasterServer.ServiceDefinitions.Auth.OAuth
+namespace ArkWebMapMasterServer.ServiceDefinitions.Servers
 {
-    public class OAuthVerifyDefinition : DeltaWebServiceDefinition
+    public class LeaveServerDefinition : DeltaWebServiceDefinition
     {
         public override string GetTemplateUrl()
         {
-            return "/auth/oauth/token";
+            return "/servers/{SERVER}/leave";
         }
 
         public override DeltaWebService OpenRequest(DeltaConnection conn, HttpContext e)
         {
-            return new OAuthVerifyRequest(conn, e);
+            return new LeaveServerRequest(conn, e);
         }
     }
 }

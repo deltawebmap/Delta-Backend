@@ -20,7 +20,7 @@ namespace ArkWebMapMasterServer.NetEntities
             //Set the simple stuff
             display_name = s.display_name;
             image_url = s.image_url;
-            owner_uid = s.owner_uid;
+            owner_uid = s.owner_uid?.ToString();
             id = s.id;
         }
     }

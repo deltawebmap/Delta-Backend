@@ -47,13 +47,13 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
 
             //Deactivate preflight token internally
             token.oauth_preflight = null;
-            await token.UpdateAsync(Program.connection);
+            await token.ActivateOauthToken(Program.connection);
 
             //Create and write a response
             await WriteJSON(new VerifyResponsePayload
             {
                 access_token = token.token,
-                scopes = token.oauth_scopes,
+                scope = token.token_scope.ToString(),
                 ok = true
             });
         }
@@ -69,7 +69,7 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
         {
             public bool ok;
             public string access_token;
-            public string[] scopes;
+            public string scope;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
     /// <summary>
     /// Used to query an app ID to just respond with data
     /// </summary>
-    public class OAuthQuery : BasicDeltaService
+    public class OAuthQuery : UserAuthDeltaService
     {
         public OAuthQuery(DeltaConnection conn, HttpContext e) : base(conn, e)
         {
@@ -27,12 +27,19 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
             //Find the application
             DbOauthApp app = await Program.connection.GetOAuthAppByAppID(request.client_id);
             if (app == null)
-                throw new StandardError("App not found.", StandardErrorCode.NotFound);
+            {
+                await WriteString("Application ID invalid.", "text/plain", 400);
+                return;
+            }
 
             //Get all scopes that are usable
-            List<OAuthScopeEntry> scopes = OAuthScopeStatics.GetOAuthScopes(request.scopes);
-            if (scopes.Count == 0)
-                throw new StandardError("No scopes found.", StandardErrorCode.InvalidInput);
+            ulong scopeWrapped = ulong.Parse(request.scopes);
+            List<OAuthScopeEntry> scopes = OAuthScopeStatics.GetOAuthScopes(scopeWrapped);
+            if (scopeWrapped == 0)
+            {
+                await WriteString("No scopes provided.", "text/plain", 400);
+                return;
+            }
 
             //Determine if this is dangerous
             bool is_dangerous = false;
@@ -54,19 +61,19 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
                 icon = app.icon_url,
                 is_dangerous = is_dangerous,
                 scopes = scopes,
-                client_id = app.client_id,
-                endpoints = new OAuthInfoResponse_Endpoints
-                {
-                    authorize = baseUrl + "/auth/oauth/authorize?client_id=" + app.client_id + "&scopes=" + System.Web.HttpUtility.UrlEncode(scopesSeparated),
-                    report = baseUrl + "/auth/oauth/report"
-                }
+                client_id = app.client_id
             });
+        }
+
+        public override async Task<bool> SetArgs(Dictionary<string, string> args)
+        {
+            return true;
         }
 
         class OAuthInfoRequest
         {
             public string client_id;
-            public string[] scopes;
+            public string scopes;
         }
 
         class OAuthInfoResponse
@@ -77,13 +84,6 @@ namespace ArkWebMapMasterServer.Services.Auth.OAuth
             public List<OAuthScopeEntry> scopes;
             public bool is_dangerous;
             public string client_id;
-            public OAuthInfoResponse_Endpoints endpoints;
-        }
-
-        class OAuthInfoResponse_Endpoints
-        {
-            public string authorize;
-            public string report;
         }
     }
 }

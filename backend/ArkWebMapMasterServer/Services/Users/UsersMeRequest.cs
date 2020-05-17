@@ -36,15 +36,16 @@ namespace ArkWebMapMasterServer.Services.Users
                 id = user.id,
                 steam_id = user.steam_id,
                 user_settings = user.user_settings,
+                server_token = user.server_creation_token,
                 servers = new List<NetGuildUser>(),
-                clusters = new List<UsersMeReply_Cluster>()
+                clusters = new List<NetCluster>()
             };
 
             //Fetch and convert our servers
-            var servers = await user.GetGameServersAsync(Program.connection);
+            var profileServers = await user.GetGameServersAsync(Program.connection);
             List<string> clusterIds = new List<string>();
             List<ObjectId> serverIds = new List<ObjectId>();
-            foreach (var s in servers)
+            foreach (var s in profileServers)
             {
                 //Get guild
                 var guild = await NetGuildUser.GetNetGuild(Program.connection, s.Item1, user, s.Item2);
@@ -56,6 +57,24 @@ namespace ArkWebMapMasterServer.Services.Users
                 response.servers.Add(guild);
             }
 
+            //Add servers we admin, but we don't already have added
+            var adminServers = await user.GetAdminedServersAsync(conn);
+            foreach (var s in adminServers)
+            {
+                //Check if we already have this server
+                if (serverIds.Contains(s._id))
+                    continue;
+                
+                //Get guild. We can assume we do not have a profile
+                var guild = await NetGuildUser.GetNetGuild(conn, s, user, null);
+
+                //Add to lists
+                if (guild.cluster_id != null && !clusterIds.Contains(guild.cluster_id))
+                    clusterIds.Add(guild.cluster_id);
+                serverIds.Add(s._id);
+                response.servers.Add(guild);
+            }
+
             //Add clusters
             foreach (var c in clusterIds)
             {
@@ -63,11 +82,7 @@ namespace ArkWebMapMasterServer.Services.Users
                 var cluster = await DbCluster.GetClusterById(Program.connection, MongoDB.Bson.ObjectId.Parse(c));
 
                 //Add cluster data
-                response.clusters.Add(new UsersMeReply_Cluster
-                {
-                    id = cluster.id,
-                    name = cluster.name
-                });
+                response.clusters.Add(NetCluster.GetCluster(cluster));
             }
 
             //Get messages
@@ -83,16 +98,11 @@ namespace ArkWebMapMasterServer.Services.Users
             public string profile_image_url;
             public string id;
             public string steam_id;
+            public string server_token;
             public DbUserSettings user_settings;
             public List<NetGuildUser> servers;
-            public List<UsersMeReply_Cluster> clusters;
+            public List<NetCluster> clusters;
             public List<DbAlertBanner> alerts;
-        }
-
-        public class UsersMeReply_Cluster
-        {
-            public string name;
-            public string id;
         }
     }
 }

@@ -2,6 +2,7 @@
 using ArkWebMapMasterServer.ServiceDefinitions.Auth.OAuth;
 using ArkWebMapMasterServer.ServiceDefinitions.Misc;
 using ArkWebMapMasterServer.ServiceDefinitions.Servers;
+using ArkWebMapMasterServer.ServiceDefinitions.Servers.Admin;
 using ArkWebMapMasterServer.ServiceDefinitions.Servers.Canvas;
 using ArkWebMapMasterServer.ServiceDefinitions.User;
 using LibDeltaSystem;
@@ -59,6 +60,9 @@ namespace ArkWebMapMasterServer
             server.AddService(new CanvasSelectDefinition());
             server.AddService(new ServerManageDefinition());
             server.AddService(new PutUserPrefsDefinition());
+            server.AddService(new LeaveServerDefinition());
+            server.AddService(new ServerTribesDefinition());
+            server.AddService(new AdminServerPlayerListDefinition());
 
             //User
             server.AddService(new UsersMeDefinition());
