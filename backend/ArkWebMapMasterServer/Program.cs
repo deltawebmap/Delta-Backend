@@ -65,6 +65,8 @@ namespace ArkWebMapMasterServer
             server.AddService(new LeaveServerDefinition());
             server.AddService(new ServerTribesDefinition());
             server.AddService(new AdminServerPlayerListDefinition());
+            server.AddService(new AdminServerSetSecureModeDefinition());
+            server.AddService(new AdminServerSetPermissionsDefinition());
 
             //User
             server.AddService(new UsersMeDefinition());

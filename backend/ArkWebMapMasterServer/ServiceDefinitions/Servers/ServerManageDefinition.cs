@@ -21,7 +21,8 @@ namespace ArkWebMapMasterServer.ServiceDefinitions.Servers
 
         public override DeltaWebService OpenRequest(DeltaConnection conn, HttpContext e)
         {
-            return new ManageRequest(conn, e);
+            return null; //TODO
+            //return new ManageRequest(conn, e);
         }
     }
 }

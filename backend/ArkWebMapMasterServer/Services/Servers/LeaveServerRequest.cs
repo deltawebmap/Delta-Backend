@@ -31,11 +31,12 @@ namespace ArkWebMapMasterServer.Services.Servers
             }
 
             //Get player profile
-            bool ok = await server.DeleteUserPlayerProfile(conn, user);
+            await server.DeleteUserPlayerProfile(conn, user);
 
-            //TODO: Send RPC message
+            //Also remove them from the list of admins
+            await server.RemoveAdmin(conn, user);
 
-            await WriteStatus(ok);
+            await WriteStatus(true);
         }
     }
 }
