@@ -42,13 +42,22 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
             foreach(var p in players)
             {
                 //Try to see if this has a Delta account
-                var deltaAccount = conn.GetUserBySteamIdAsync(p.steam_id);
+                var deltaAccount = await conn.GetUserBySteamIdAsync(p.steam_id);
+                string deltaAccountId = null;
+                bool isAdmin = false;
+                if (deltaAccount != null)
+                {
+                    deltaAccountId = deltaAccount.id;
+                    isAdmin = server.CheckIsUserAdmin(deltaAccount);
+                }
 
                 //Add user
                 output.players.Add(new ResponsePlayer
                 {
                     ark_id = p.ark_id.ToString(),
                     delta_account = deltaAccount != null,
+                    delta_account_id = deltaAccountId,
+                    is_admin = isAdmin,
                     icon = p.icon,
                     last_seen = p.last_seen,
                     name = p.name,
@@ -76,6 +85,8 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
             public DateTime last_seen;
             public string steam_id;
             public bool delta_account;
+            public string delta_account_id;
+            public bool is_admin;
             public string ark_id;
         }
     }

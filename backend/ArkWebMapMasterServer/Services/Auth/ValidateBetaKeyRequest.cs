@@ -1,6 +1,7 @@
 ﻿using LibDeltaSystem;
 using LibDeltaSystem.WebFramework.ServiceTemplates;
 using Microsoft.AspNetCore.Http;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,13 +17,24 @@ namespace ArkWebMapMasterServer.Services.Auth
 
         public override async Task OnRequest()
         {
-            string key = e.Request.Query["beta_key"].ToString().ToUpper();
-            bool ok = await conn.ValidateAndClaimBetaKey(key, null);
+            //Get request data
+            RequestData request = await ReadPOSTContentChecked<RequestData>();
+
+            //Check
+            bool ok = await conn.ValidateAndClaimBetaKey(request.key, ObjectId.Parse(request.user_id));
+
+            //Return
             await WriteJSON(new ResponseData
             {
-                key = key,
+                key = request.key,
                 ok = ok
             });
+        }
+
+        class RequestData
+        {
+            public string key;
+            public string user_id;
         }
 
         class ResponseData
