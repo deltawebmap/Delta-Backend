@@ -1,4 +1,4 @@
-﻿using ArkWebMapMasterServer.Services.Auth.OAuth;
+﻿using ArkWebMapMasterServer.Services.Auth.NewAuth;
 using LibDeltaSystem;
 using LibDeltaSystem.WebFramework;
 using Microsoft.AspNetCore.Http;
@@ -6,18 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArkWebMapMasterServer.ServiceDefinitions.Auth.OAuth
+namespace ArkWebMapMasterServer.ServiceDefinitions.Auth.NewAuth
 {
-    public class OAuthAuthorizeDefinition : DeltaWebServiceDefinition
+    public class NewAuthAppValidateDefinition : DeltaWebServiceDefinition
     {
         public override string GetTemplateUrl()
         {
-            return "/auth/oauth/authorize";
+            return "/auth/validate";
         }
 
         public override DeltaWebService OpenRequest(DeltaConnection conn, HttpContext e)
         {
-            return new OAuthAuthorize(conn, e);
+            return new NewAuthAppValidateRequest(conn, e);
         }
     }
 }

@@ -96,23 +96,25 @@ namespace ArkWebMapMasterServer.Services.Auth.NewAuth
 
             //Update session
             session.state = DbAuthenticationSession.AuthState.PendingOauthAuth;
-            session.custom_data.Add("user_id", user.id);
+            session.custom_data.Add(CUSTOM_DATA_KEY__USER_ID, user.id);
             await session.UpdateAsync(conn);
 
             //Get oauth app
             var app = await conn.GetOAuthAppByInternalID(session.application_id);
-            //TODO: Do oauth
+
+            //Create oauth url
+            string output = app.redirect_uri + "?oauth_token=" + session.session_token + "&oauth_custom=" + System.Web.HttpUtility.UrlEncode(session.custom_data[CUSTOM_DATA_KEY__OAUTH_CUSTOM_DATA]);
 
             //Create HTML
             HtmlData hData = new HtmlData
             {
                 nonce = session.nonce,
-                reject_url = $"/auth/?client_id="+app.client_id,
+                reject_url = $"/auth/?client_id="+app.client_id+"&scope="+session.scope,
                 beta_key_url = "/api/auth/validate_beta_key",
-                return_url = app.redirect_uri,
+                return_url = output,
                 user_id = user.id
             };
-            string html = $"<!DOCTYPE html><html id=\"html\"><head><meta charset=\"UTF-8\"><title>Delta Web Map - Login...</title><link href=\"https://fonts.googleapis.com/css?family=Roboto\" rel=\"stylesheet\"><link rel=\"stylesheet\" href=\"/assets/auth/auth.css\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, minimum-scale=1.0\"></head><body><div class=\"content\"><img class=\"welcomebox_icon\" src=\"{System.Web.HttpUtility.HtmlEncode(user.profile_image_url)}\" /><div class=\"welcomebox_text\">Welcome, <span class=\"welcomebox_name\">{System.Web.HttpUtility.HtmlEncode(user.screen_name)}</span>!</div></div><script>var DELTA_LOGON_DATA = {JsonConvert.SerializeObject(hData)};</script><script src=\"/assets/auth/auth_finished.js\"></script></body></html>";
+            string html = $"<!DOCTYPE html><html id=\"html\"><head><meta charset=\"UTF-8\"><title>Delta Web Map - Login...</title><link href=\"https://fonts.googleapis.com/css?family=Roboto\" rel=\"stylesheet\"><link rel=\"stylesheet\" href=\"/assets/auth/auth.css\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, minimum-scale=1.0\"></head><body><div id=\"og_content\" class=\"content\"><img class=\"welcomebox_icon\" src=\"{System.Web.HttpUtility.HtmlEncode(user.profile_image_url)}\" /><div class=\"welcomebox_text\">Welcome, <span class=\"welcomebox_name\">{System.Web.HttpUtility.HtmlEncode(user.screen_name)}</span>!</div></div><script>var DELTA_LOGON_DATA = {JsonConvert.SerializeObject(hData)};</script><script src=\"/assets/auth/auth_finished.js\"></script></body></html>";
 
             //Write
             await WriteString(html, "text/html", 200);

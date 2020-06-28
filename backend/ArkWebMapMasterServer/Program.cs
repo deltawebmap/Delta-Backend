@@ -1,7 +1,5 @@
 ﻿using ArkWebMapMasterServer.ServiceDefinitions.Auth;
-using ArkWebMapMasterServer.ServiceDefinitions.Auth.AppAuth;
 using ArkWebMapMasterServer.ServiceDefinitions.Auth.NewAuth;
-using ArkWebMapMasterServer.ServiceDefinitions.Auth.OAuth;
 using ArkWebMapMasterServer.ServiceDefinitions.Misc;
 using ArkWebMapMasterServer.ServiceDefinitions.Servers;
 using ArkWebMapMasterServer.ServiceDefinitions.Servers.Admin;
@@ -50,15 +48,10 @@ namespace ArkWebMapMasterServer
             server.AddService(new MapListDefinition());
 
             //Auth
-            /*server.AddService(new AppAuthBeginDefinition());
-            server.AddService(new AppAuthEndDefinition());
-            server.AddService(new AppAuthTokenDefinition());
-            server.AddService(new OAuthQueryDefinition());
-            server.AddService(new OAuthAuthorizeDefinition());
-            server.AddService(new OAuthVerifyDefinition());*/
             server.AddService(new ValidateBetaKeyDefinition());
             server.AddService(new NewAuthBeginDefinition());
             server.AddService(new NewAuthAuthorizeDefinition());
+            server.AddService(new NewAuthAppValidateDefinition());
 
             //Server
             server.AddService(new CanvasListDefinition());
