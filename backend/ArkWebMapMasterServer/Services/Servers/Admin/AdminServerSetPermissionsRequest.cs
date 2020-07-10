@@ -1,4 +1,5 @@
 ﻿using LibDeltaSystem;
+using LibDeltaSystem.Db.System;
 using LibDeltaSystem.WebFramework.ServiceTemplates;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -29,7 +30,15 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
                 return;
 
             //Update
-            await server.ChangePermissionFlags(conn, request.flags);
+            await server.ChangePermissionFlags(conn, (int)request.flags);
+
+            //Update template if needed
+            if(request.template != null)
+            {
+                await server.ExplicitUpdateAsync(conn, MongoDB.Driver.Builders<DbServer>.Update.Set("permissions_template", request.template));
+                server.permissions_template = request.template;
+                await server.NotifyPublicDetailsChanged(conn);
+            }
 
             await WriteJSON(new ResponseData
             {
@@ -40,6 +49,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
         class RequestData
         {
             public uint flags;
+            public string template;
         }
 
         class ResponseData

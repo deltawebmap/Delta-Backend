@@ -1,4 +1,4 @@
-﻿using ArkWebMapMasterServer.Services.Servers;
+﻿using ArkWebMapMasterServer.Services.Servers.Admin;
 using LibDeltaSystem;
 using LibDeltaSystem.WebFramework;
 using Microsoft.AspNetCore.Http;
@@ -6,22 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArkWebMapMasterServer.ServiceDefinitions.Servers
+namespace ArkWebMapMasterServer.ServiceDefinitions.Servers.Admin
 {
-    public class ServerTribesDefinition : DeltaWebServiceDefinition
+    public class AdminServerSetIconDefinition : DeltaWebServiceDefinition
     {
-        public ServerTribesDefinition()
-        {
-        }
-
         public override string GetTemplateUrl()
         {
-            return "/servers/{SERVER}/tribes";
+            return "/servers/{SERVER}/admin/upload_icon";
         }
 
         public override DeltaWebService OpenRequest(DeltaConnection conn, HttpContext e)
         {
-            return new ServerTribesRequest(conn, e);
+            return new AdminServerSetIconRequest(conn, e);
         }
     }
 }
