@@ -111,7 +111,6 @@ namespace ArkWebMapMasterServer.Services.Servers.Canvas
             }
 
             //Get this server
-            EndDebugCheckpoint("Get Canvas");
             canvas = await conn.LoadCanvasData(canvas_id);
             if (canvas == null)
             {

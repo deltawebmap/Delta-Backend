@@ -30,7 +30,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Canvas
             };
 
             //Send RPC message
-            Program.connection.GetRPC().SendRPCMsgToServerTribe(LibDeltaSystem.RPC.RPCOpcode.RPCServer20003CanvasEvent, msg, server, tribe_id);
+            Program.connection.network.SendRPCEventToServerTribeId(LibDeltaSystem.RPC.RPCOpcode.RPCServer20003CanvasEvent, msg, server._id, tribe_id);
         }
 
         internal static NetCanvas ConvertCanvas(DbCanvas c)

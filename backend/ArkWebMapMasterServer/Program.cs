@@ -33,7 +33,7 @@ namespace ArkWebMapMasterServer
             config = JsonConvert.DeserializeObject<MasterServerConfig>(File.ReadAllText(args[0]));
 
             Console.WriteLine("Connecting to MongoDB...");
-            connection = new DeltaConnection(config.database_config_path, "master", 0, 0);
+            connection = new DeltaConnection(config.database_config_path, 1001, 0, 1, new DeltaNetworkMasterServer());
             connection.Connect().GetAwaiter().GetResult();
 
             Console.WriteLine("Starting Server...");
