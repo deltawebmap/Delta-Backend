@@ -41,7 +41,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Canvas
             {
                 canvases = new NetCanvas[canvases.Count],
                 ws_reconnect_policy = 10000,
-                ws_url = Program.config.endpoint_canvas
+                ws_url = "wss://canvas.deltamap.net/v1"
             };
             for (int i = 0; i < canvases.Count; i++)
                 response.canvases[i] = ConvertCanvas(canvases[i]);

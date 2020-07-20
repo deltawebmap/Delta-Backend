@@ -24,17 +24,12 @@ namespace ArkWebMapMasterServer
 {
     class Program
     {
-        public static MasterServerConfig config;
         public static DeltaConnection connection;
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Loading config...");
-            config = JsonConvert.DeserializeObject<MasterServerConfig>(File.ReadAllText(args[0]));
-
-            Console.WriteLine("Connecting to MongoDB...");
-            connection = new DeltaConnection(config.database_config_path, 1001, 0, 1, new DeltaNetworkMasterServer());
-            connection.Connect().GetAwaiter().GetResult();
+            //Connect
+            connection = DeltaConnection.InitDeltaManagedApp(args, 0, 1, new DeltaNetworkMasterServer());
 
             Console.WriteLine("Starting Server...");
             V2SetupServer().GetAwaiter().GetResult();
@@ -42,7 +37,7 @@ namespace ArkWebMapMasterServer
 
         public static async Task V2SetupServer()
         {
-            var server = new DeltaWebServer(connection, config.listen_port);
+            var server = new DeltaWebServer(connection, connection.GetUserPort(0));
 
             //Misc
             server.AddService(new MapListDefinition());
@@ -76,7 +71,6 @@ namespace ArkWebMapMasterServer
             server.AddService(new UserClustersDefinition());
             server.AddService(new UserOAuthApplicationsDefinition_Root());
             server.AddService(new UserOAuthApplicationsDefinition_Item());
-            server.AddService(new IssueCreatorDefinition());
 
             //Start
             await server.RunAsync();
