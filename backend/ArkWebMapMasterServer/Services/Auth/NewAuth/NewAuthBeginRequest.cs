@@ -2,10 +2,12 @@
 using LibDeltaSystem.Db.System;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace ArkWebMapMasterServer.Services.Auth.NewAuth
 {
@@ -90,7 +92,13 @@ namespace ArkWebMapMasterServer.Services.Auth.NewAuth
             await conn.system_auth_sessions.InsertOneAsync(s);
 
             //Create return URL
-            string return_url = $"{Program.connection.config.hosts.master}/api/auth/authenticate?token={s.session_token}&nonce={r.nonce}";
+            string[] retryData = new string[]
+            {
+                r.application_id,
+                r.scope,
+                r.custom
+            }; //retry data is used to create a new session if this one fails later in the pipeline
+            string return_url = $"{Program.connection.config.hosts.master}/api/auth/authenticate?{URLPARAM_TOKEN}={s.session_token}&{URLPARAM_NONCE}={HttpUtility.UrlEncode(r.nonce)}&{URLPARAM_RETRY}={HttpUtility.UrlEncode(JsonConvert.SerializeObject(retryData))}";
             string encoded_return_url = System.Web.HttpUtility.UrlEncode(return_url);
             string url = $"https://steamcommunity.com/openid/login?openid.return_to={encoded_return_url}&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns.sreg=http%3A%2F%2Fopenid.net%2Fextensions%2Fsreg%2F1.1&openid.realm={encoded_return_url}";
 

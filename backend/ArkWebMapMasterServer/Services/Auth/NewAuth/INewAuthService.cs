@@ -19,6 +19,10 @@ namespace ArkWebMapMasterServer.Services.Auth.NewAuth
         public const string CUSTOM_DATA_KEY__OAUTH_CUSTOM_DATA = "oauth_custom_data";
         public const string CUSTOM_DATA_KEY__USER_ID = "user_id";
 
+        public const string URLPARAM_TOKEN = "delta_token";
+        public const string URLPARAM_NONCE = "delta_nonce";
+        public const string URLPARAM_RETRY = "delta_retry";
+
         public override async Task<bool> OnPreRequest()
         {
             return true;

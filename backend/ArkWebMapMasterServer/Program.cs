@@ -9,7 +9,6 @@ using LibDeltaSystem;
 using LibDeltaSystem.Db.System;
 using LibDeltaSystem.Entities.MiscNet;
 using LibDeltaSystem.WebFramework;
-using LiteDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
@@ -26,12 +25,12 @@ namespace ArkWebMapMasterServer
     {
         public static DeltaConnection connection;
 
+        public const int APP_VERISON_MAJOR = 0;
+        public const int APP_VERISON_MINOR = 2;
+
         static void Main(string[] args)
         {
-            //Connect
-            connection = DeltaConnection.InitDeltaManagedApp(args, 0, 1, new DeltaNetworkMasterServer());
-
-            Console.WriteLine("Starting Server...");
+            connection = DeltaConnection.InitDeltaManagedApp(args, APP_VERISON_MAJOR, APP_VERISON_MINOR, new DeltaNetworkMasterServer());
             V2SetupServer().GetAwaiter().GetResult();
         }
 
@@ -51,7 +50,6 @@ namespace ArkWebMapMasterServer
             //Server
             server.AddService(new CanvasListDefinition());
             server.AddService(new CanvasSelectDefinition());
-            server.AddService(new ServerManageDefinition());
             server.AddService(new PutUserPrefsDefinition());
             server.AddService(new LeaveServerDefinition());
             server.AddService(new ServerTribesDefinition());
