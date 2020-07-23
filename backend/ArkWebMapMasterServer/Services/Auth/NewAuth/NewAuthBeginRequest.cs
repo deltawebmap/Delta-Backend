@@ -65,10 +65,12 @@ namespace ArkWebMapMasterServer.Services.Auth.NewAuth
             {
                 //Set scope to everything if this is an official app
                 scope = uint.MaxValue;
-            }  
+            }
 
             //Get oauth owner
-            var appOwner = await conn.GetUserByIdAsync(app.owner_id);
+            DbUser appOwner = null;
+            if(app.owner_id != null)
+                appOwner = await conn.GetUserByIdAsync(app.owner_id);
 
             //Create session token
             string token = LibDeltaSystem.Tools.SecureStringTool.GenerateSecureString(48);
@@ -119,9 +121,9 @@ namespace ArkWebMapMasterServer.Services.Auth.NewAuth
                         icon = app.icon_url,
                         is_official = app.is_official,
                         is_verified = app.is_verified,
-                        author_id = appOwner.id,
-                        author_icon = appOwner.profile_image_url,
-                        author_name = appOwner.screen_name,
+                        author_id = appOwner != null ? appOwner.id : null,
+                        author_icon = appOwner != null ? appOwner.profile_image_url : null,
+                        author_name = appOwner != null ? appOwner.screen_name : null,
                         creation_date = app.creation_date
                     }
                 }
