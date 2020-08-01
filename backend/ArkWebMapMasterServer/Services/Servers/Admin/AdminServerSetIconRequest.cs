@@ -20,7 +20,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
         public override async Task OnAuthenticatedRequest()
         {
             //Upload image
-            string url = await LibDeltaSystem.Tools.UserContentTool.UploadUserContentResizeImage(e.Request.Body, 128, 128);
+            string url = await LibDeltaSystem.Tools.UserContentTool.UploadUserContentResizeImage(conn, e.Request.Body, 128, 128);
 
             //Update
             await server.ExplicitUpdateAsync(conn, Builders<DbServer>.Update.Set("image_url", url).Set("has_custom_image", true));

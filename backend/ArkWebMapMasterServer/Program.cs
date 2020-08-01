@@ -3,7 +3,6 @@ using ArkWebMapMasterServer.ServiceDefinitions.Auth.NewAuth;
 using ArkWebMapMasterServer.ServiceDefinitions.Misc;
 using ArkWebMapMasterServer.ServiceDefinitions.Servers;
 using ArkWebMapMasterServer.ServiceDefinitions.Servers.Admin;
-using ArkWebMapMasterServer.ServiceDefinitions.Servers.Canvas;
 using ArkWebMapMasterServer.ServiceDefinitions.User;
 using LibDeltaSystem;
 using LibDeltaSystem.Db.System;
@@ -48,8 +47,6 @@ namespace ArkWebMapMasterServer
             server.AddService(new NewAuthAppValidateDefinition());
 
             //Server
-            server.AddService(new CanvasListDefinition());
-            server.AddService(new CanvasSelectDefinition());
             server.AddService(new PutUserPrefsDefinition());
             server.AddService(new LeaveServerDefinition());
             server.AddService(new ServerTribesDefinition());
@@ -67,8 +64,6 @@ namespace ArkWebMapMasterServer
             server.AddService(new PutUserSettingsDefinition());
             server.AddService(new TokenDevalidateDefinition());
             server.AddService(new UserClustersDefinition());
-            server.AddService(new UserOAuthApplicationsDefinition_Root());
-            server.AddService(new UserOAuthApplicationsDefinition_Item());
 
             //Start
             await server.RunAsync();
