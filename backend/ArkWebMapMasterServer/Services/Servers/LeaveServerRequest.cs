@@ -23,13 +23,6 @@ namespace ArkWebMapMasterServer.Services.Servers
                 return;
             }
 
-            //Make sure we are not the owner
-            if (server.owner_uid == user._id)
-            {
-                await WriteString("The server owner cannot leave their own server. Please delete it instead.", "text/plain", 400);
-                return;
-            }
-
             //Get player profile
             await server.DeleteUserPlayerProfile(conn, user);
 

@@ -16,13 +16,6 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
 
         public override async Task OnAuthenticatedRequest()
         {
-            //Make sure we're admin
-            if (!server.IsUserOwner(user))
-            {
-                await WriteString("Only the server owner can change this setting.", "text/plain", 400);
-                return;
-            }
-
             //Make sure this is a POST
             if(GetMethod() != LibDeltaSystem.WebFramework.Entities.DeltaCommonHTTPMethod.POST)
             {

@@ -1,6 +1,4 @@
-﻿
-using ArkWebMapMasterServer.NetEntities;
-using LibDeltaSystem;
+﻿using LibDeltaSystem;
 using LibDeltaSystem.Db.System;
 using LibDeltaSystem.WebFramework.ServiceTemplates;
 using Microsoft.AspNetCore.Http;
