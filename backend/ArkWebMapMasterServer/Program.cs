@@ -61,6 +61,8 @@ namespace ArkWebMapMasterServer
             server.AddService(new AdminServerSetNameDefinition());
             server.AddService(new AdminServerStatsDefinition());
             server.AddService(new ForceRemoteRefreshDefinition());
+            server.AddService(new AdminServerTransferDinoOwnershipDefinition());
+            server.AddService(new AdminServerTeleportDinoDefinition());
 
             //User
             server.AddService(new UsersMeDefinition());
