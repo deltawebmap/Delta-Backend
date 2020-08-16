@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ArkWebMapMasterServer.ServiceTemplates
 {
-    public abstract class MasterArkRpcService : ArkServerAdminDeltaService
+    public abstract class MasterArkRpcService : ArkServerDeltaService
     {
         public MasterArkRpcService(DeltaConnection conn, HttpContext e) : base(conn, e)
         {
@@ -25,7 +25,7 @@ namespace ArkWebMapMasterServer.ServiceTemplates
         /// <returns></returns>
         public abstract Task<RpcCommand?> BuildArkRpcEvent();
 
-        public override async Task OnAuthenticatedRequest()
+        public override async Task OnRequest()
         {
             //Get the parameters
             var p = await BuildArkRpcEvent();

@@ -15,6 +15,19 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
         {
         }
 
+        public override async Task OnRequest()
+        {
+            //Make sure we're an admin
+            if (server.CheckIsUserAdmin(user))
+            {
+                await base.OnRequest();
+            }
+            else
+            {
+                await WriteString("Only server admins can access this endpoint.", "text/plain", 401);
+            }
+        }
+
         public override async Task<RpcCommand?> BuildArkRpcEvent()
         {
             //Decode data

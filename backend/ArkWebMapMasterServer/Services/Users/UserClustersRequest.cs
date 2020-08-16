@@ -29,7 +29,7 @@ namespace ArkWebMapMasterServer.Services.Users
             else if (method == LibDeltaSystem.WebFramework.Entities.DeltaCommonHTTPMethod.POST)
                 await OnPOSTRequest(e, user);
             else
-                throw new StandardError("This method was not expected.", StandardErrorCode.BadMethod);
+                await WriteString("Expected GET or POST.", "text/plain", 400);
         }
 
         public async Task OnGETRequest(Microsoft.AspNetCore.Http.HttpContext e, DbUser u)
@@ -58,9 +58,15 @@ namespace ArkWebMapMasterServer.Services.Users
 
             //Check
             if (request.name == null)
-                throw new StandardError("Missing name field.", StandardErrorCode.InvalidInput);
+            {
+                await WriteString("Missing name field.", "text/plain", 400);
+                return;
+            }
             if (request.name.Length > 24 || request.name.Length < 2)
-                throw new StandardError("Name field is too long or too short.", StandardErrorCode.InvalidInput);
+            {
+                await WriteString("Name field too long or too short.", "text/plain", 400);
+                return;
+            }
 
             //Add cluster
             var cluster = new DbCluster
