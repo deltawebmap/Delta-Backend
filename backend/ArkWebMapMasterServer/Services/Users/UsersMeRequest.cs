@@ -85,9 +85,6 @@ namespace ArkWebMapMasterServer.Services.Users
                 response.clusters.Add(NetCluster.GetCluster(cluster));
             }
 
-            //Get messages
-            response.alerts = await(await user.GetAlertBanners(Program.connection, serverIds)).ToListAsync();
-
             //Write response
             await WriteJSON(response);
         }
@@ -102,7 +99,6 @@ namespace ArkWebMapMasterServer.Services.Users
             public DbUserSettings user_settings;
             public List<NetGuildUser> servers;
             public List<NetCluster> clusters;
-            public List<DbAlertBanner> alerts;
         }
     }
 }
