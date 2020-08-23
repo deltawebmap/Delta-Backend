@@ -25,7 +25,7 @@ namespace ArkWebMapMasterServer
         public static DeltaConnection connection;
 
         public const int APP_VERISON_MAJOR = 0;
-        public const int APP_VERISON_MINOR = 7;
+        public const int APP_VERISON_MINOR = 8;
 
         static void Main(string[] args)
         {

@@ -119,6 +119,7 @@ namespace ArkWebMapMasterServer.Services.Misc
         {
             public string steam_mod_id;
             public ResponseData_Config_Host[] supported_hosts;
+            public ResponseData_Config_Preset[] security_presets;
         }
 
         class ResponseData_Config_Host
@@ -127,6 +128,16 @@ namespace ArkWebMapMasterServer.Services.Misc
             public string display_name;
             public string type;
             public string tutorial_video_id;
+        }
+
+        class ResponseData_Config_Preset
+        {
+            public string name;
+            public string description;
+            public string color;
+            public int flags;
+            public string id;
+            public bool @default;
         }
     }
 }
