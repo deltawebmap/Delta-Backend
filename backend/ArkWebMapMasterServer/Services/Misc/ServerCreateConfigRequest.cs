@@ -135,7 +135,7 @@ namespace ArkWebMapMasterServer.Services.Misc
             public string name;
             public string description;
             public string color;
-            public int flags;
+            public long flags;
             public string id;
             public bool @default;
         }
