@@ -25,19 +25,17 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
                 return;
 
             //Clear setup flag
-            server.flags &= ~(1 << 1);
+            int flags = server.flags;
+            flags &= ~(1 << 1);
             
             //Change lock flag
             if(payload.locked)
-                server.flags |= 1 << 0;
+                flags |= 1 << 0;
             else
-                server.flags &= ~(1 << 0);
+                flags &= ~(1 << 0);
 
             //Update
-            await server.ExplicitUpdateAsync(conn, Builders<DbServer>.Update.Set("flags", server.flags));
-
-            //Notify via RPC
-            await server.NotifyPublicDetailsChanged(conn);
+            await server.ChangePermissionFlags(conn, flags);
 
             //Return server
             await WriteJSON(await NetGuildUser.GetNetGuild(conn, server, user));

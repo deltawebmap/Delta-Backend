@@ -72,7 +72,7 @@ namespace ArkWebMapMasterServer.Services.Auth.NewAuth
             }
 
             //Create the original URL we used to access this, as it's important
-            string requestUrl = $"{Program.connection.config.hosts.master}/api/auth/authenticate?{URLPARAM_TOKEN}={session.session_token}&{URLPARAM_NONCE}={session.nonce}&{URLPARAM_RETRY}={HttpUtility.UrlEncode(e.Request.Query[URLPARAM_RETRY])}";
+            string requestUrl = $"{Program.connection.hosts.master}/api/auth/authenticate?{URLPARAM_TOKEN}={session.session_token}&{URLPARAM_NONCE}={session.nonce}&{URLPARAM_RETRY}={HttpUtility.UrlEncode(e.Request.Query[URLPARAM_RETRY])}";
 
             //Take in parameters from the URL to produce the outgoing validity one
             string validityUrl = $"https://steamcommunity.com/openid/login?openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.mode=check_authentication&openid.op_endpoint=https%3A%2F%2Fsteamcommunity.com%2Fopenid%2Flogin&openid.claimed_id={System.Web.HttpUtility.UrlEncode(claimedId)}&openid.identity={System.Web.HttpUtility.UrlEncode(identity)}&openid.return_to={System.Web.HttpUtility.UrlEncode(requestUrl)}&openid.response_nonce={System.Web.HttpUtility.UrlEncode(openIdNonce)}&openid.assoc_handle={System.Web.HttpUtility.UrlEncode(openIdHandle)}&openid.signed=signed%2Cop_endpoint%2Cclaimed_id%2Cidentity%2Creturn_to%2Cresponse_nonce%2Cassoc_handle&openid.sig={System.Web.HttpUtility.UrlEncode(openIdSig)}";

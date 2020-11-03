@@ -71,7 +71,7 @@ namespace ArkWebMapMasterServer.Services.Misc
             }
 
             //Load static config
-            ResponseData_Config config = conn.GetUserConfigDefault<ResponseData_Config>("master_guildconfig.json", new ResponseData_Config());
+            ResponseData_Config config = await conn.GetUserConfig<ResponseData_Config>("master_guildconfig.json", new ResponseData_Config());
 
             //Write
             await WriteJSON(new ResponseData

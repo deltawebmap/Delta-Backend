@@ -31,12 +31,8 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
                 return;
             }
 
-            //Update
-            await server.ExplicitUpdateAsync(conn, Builders<DbServer>.Update.Set("display_name", request.name));
-            server.display_name = request.name;
-
-            //Notify via RPC
-            await server.NotifyPublicDetailsChanged(conn);
+            //Set
+            await server.UpdateServerNameAsync(conn, request.name);
 
             //Return server
             await WriteJSON(await NetGuildUser.GetNetGuild(conn, server, user));

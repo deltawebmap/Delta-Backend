@@ -23,12 +23,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
             string url = await LibDeltaSystem.Tools.UserContentTool.UploadUserContentResizeImage(conn, e.Request.Body, 128, 128);
 
             //Update
-            await server.ExplicitUpdateAsync(conn, Builders<DbServer>.Update.Set("image_url", url).Set("has_custom_image", true));
-            server.image_url = url;
-            server.has_custom_image = true;
-
-            //Notify via RPC
-            await server.NotifyPublicDetailsChanged(conn);
+            await server.UpdateServerIconAsync(conn, url);
 
             //Return server
             await WriteJSON(await NetGuildUser.GetNetGuild(conn, server, user));

@@ -25,11 +25,11 @@ namespace ArkWebMapMasterServer
         public static DeltaConnection connection;
 
         public const int APP_VERISON_MAJOR = 0;
-        public const int APP_VERISON_MINOR = 10;
+        public const int APP_VERISON_MINOR = 11;
 
         static void Main(string[] args)
         {
-            connection = DeltaConnection.InitDeltaManagedApp(args, APP_VERISON_MAJOR, APP_VERISON_MINOR, new DeltaNetworkMasterServer());
+            connection = DeltaConnection.InitDeltaManagedApp(args, DeltaCoreNetServerType.API_MASTER, APP_VERISON_MAJOR, APP_VERISON_MINOR);
             V2SetupServer().GetAwaiter().GetResult();
         }
 

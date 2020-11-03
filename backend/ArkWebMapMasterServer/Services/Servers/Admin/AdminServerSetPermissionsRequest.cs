@@ -26,12 +26,8 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
             await server.ChangePermissionFlags(conn, (int)request.flags);
 
             //Update template if needed
-            if(request.template != null)
-            {
-                await server.ExplicitUpdateAsync(conn, MongoDB.Driver.Builders<DbServer>.Update.Set("permissions_template", request.template));
-                server.permissions_template = request.template;
-                await server.NotifyPublicDetailsChanged(conn);
-            }
+            if (request.template != null)
+                await server.UpdateServerPermissionsTemplate(conn, request.template);
 
             await WriteJSON(new ResponseData
             {
