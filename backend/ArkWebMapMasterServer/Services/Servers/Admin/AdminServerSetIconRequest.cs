@@ -23,7 +23,9 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
             string url = await LibDeltaSystem.Tools.UserContentTool.UploadUserContentResizeImage(conn, e.Request.Body, 128, 128);
 
             //Update
-            await server.UpdateServerIconAsync(conn, url);
+            await server.GetUpdateBuilder(conn)
+                .UpdateServerIcon(url)
+                .Apply();
 
             //Return server
             await WriteJSON(await NetGuildUser.GetNetGuild(conn, server, user));

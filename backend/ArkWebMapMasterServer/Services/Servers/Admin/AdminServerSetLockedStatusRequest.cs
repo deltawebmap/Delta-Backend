@@ -24,18 +24,10 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
             if (payload == null)
                 return;
 
-            //Clear setup flag
-            int flags = server.flags;
-            flags &= ~(1 << 1);
-            
-            //Change lock flag
-            if(payload.locked)
-                flags |= 1 << 0;
-            else
-                flags &= ~(1 << 0);
-
-            //Update
-            await server.ChangePermissionFlags(conn, flags);
+            //Apply
+            await server.GetUpdateBuilder(conn)
+                .UpdateFlag(DbServer.FLAG_INDEX_LOCKED, payload.locked)
+                .Apply();
 
             //Return server
             await WriteJSON(await NetGuildUser.GetNetGuild(conn, server, user));

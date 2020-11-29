@@ -25,7 +25,7 @@ namespace ArkWebMapMasterServer
         public static DeltaConnection connection;
 
         public const int APP_VERISON_MAJOR = 0;
-        public const int APP_VERISON_MINOR = 11;
+        public const int APP_VERISON_MINOR = 13;
 
         static void Main(string[] args)
         {
@@ -65,6 +65,7 @@ namespace ArkWebMapMasterServer
             server.AddService(new ForceRemoteRefreshDefinition());
             server.AddService(new AdminServerTransferDinoOwnershipDefinition());
             server.AddService(new AdminServerTeleportDinoDefinition());
+            server.AddService(new AdminServerCompleteInitialSetupDefinition());
 
             //User
             server.AddService(new UsersMeDefinition());

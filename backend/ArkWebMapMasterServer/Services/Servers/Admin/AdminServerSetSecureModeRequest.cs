@@ -21,26 +21,18 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
             if (request == null)
                 return;
 
-            //Run if changed
-            if(request.secure != server.secure_mode)
-            {
-                await server.ChangeSecureMode(conn, request.secure);
-            }
+            //Update
+            await server.GetUpdateBuilder(conn)
+                .UpdateSecureMode(request.secure)
+                .Apply();
 
-            await WriteJSON(new ResponseData
-            {
-                ok = true
-            });
+            //Send
+            await WriteStatus(true);
         }
 
         class RequestData
         {
             public bool secure;
-        }
-
-        class ResponseData
-        {
-            public bool ok;
         }
     }
 }

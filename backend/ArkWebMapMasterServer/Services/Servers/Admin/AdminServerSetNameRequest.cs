@@ -24,15 +24,10 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
             if (request == null)
                 return;
 
-            //Validate
-            if(request.name.Length < 2 || request.name.Length > 32)
-            {
-                await WriteString("Name must be between 2 and 32 characters in length.", "text/plain", 400);
-                return;
-            }
-
-            //Set
-            await server.UpdateServerNameAsync(conn, request.name);
+            //Update
+            await server.GetUpdateBuilder(conn)
+                .UpdateServerNameValidated(request.name)
+                .Apply();
 
             //Return server
             await WriteJSON(await NetGuildUser.GetNetGuild(conn, server, user));

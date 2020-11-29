@@ -26,8 +26,13 @@ namespace ArkWebMapMasterServer.Services.Servers
             //Get player profile
             await server.DeleteUserPlayerProfile(conn, user);
 
-            //Also remove them from the list of admins
-            await server.RemoveAdmin(conn, user);
+            //Remove user from admin list
+            if(server.CheckIsUserAdmin(user))
+            {
+                await server.GetUpdateBuilder(conn)
+                    .RemoveAdmin(user)
+                    .Apply();
+            }
 
             await WriteStatus(true);
         }

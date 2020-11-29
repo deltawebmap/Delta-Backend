@@ -23,11 +23,10 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
                 return;
 
             //Update
-            await server.ChangePermissionFlags(conn, (int)request.flags);
-
-            //Update template if needed
-            if (request.template != null)
-                await server.UpdateServerPermissionsTemplate(conn, request.template);
+            await server.GetUpdateBuilder(conn)
+                .UpdatePermissionFlags(request.flags)
+                .UpdatePermissionTemplate(request.template)
+                .Apply();
 
             await WriteJSON(new ResponseData
             {
@@ -37,7 +36,7 @@ namespace ArkWebMapMasterServer.Services.Servers.Admin
 
         class RequestData
         {
-            public uint flags;
+            public int flags;
             public string template;
         }
 
