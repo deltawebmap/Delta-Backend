@@ -8,20 +8,20 @@ using System.Text;
 
 namespace ArkWebMapMasterServer.ServiceDefinitions.Servers.Admin
 {
-    public class AdminServerCompleteInitialSetupDefinition : DeltaWebServiceDefinition
+    public class AdminServerUpdateDefinition : DeltaWebServiceDefinition
     {
-        public AdminServerCompleteInitialSetupDefinition()
+        public AdminServerUpdateDefinition()
         {
         }
 
         public override string GetTemplateUrl()
         {
-            return "/servers/{SERVER}/admin/complete_initial_setup";
+            return "/servers/{SERVER}/admin/update";
         }
 
         public override DeltaWebService OpenRequest(DeltaConnection conn, HttpContext e)
         {
-            return new AdminServerCompleteInitialSetupRequest(conn, e);
+            return new AdminServerUpdateRequest(conn, e);
         }
     }
 }
