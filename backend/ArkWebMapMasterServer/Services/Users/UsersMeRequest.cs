@@ -43,7 +43,6 @@ namespace ArkWebMapMasterServer.Services.Users
 
             //Fetch and convert our servers
             var profileServers = await user.GetGameServersAsync(Program.connection);
-            List<string> clusterIds = new List<string>();
             List<ObjectId> serverIds = new List<ObjectId>();
             foreach (var s in profileServers)
             {
@@ -51,8 +50,6 @@ namespace ArkWebMapMasterServer.Services.Users
                 var guild = await NetGuildUser.GetNetGuild(Program.connection, s.Item1, user, s.Item2);
 
                 //Add to lists
-                if (guild.cluster_id != null && !clusterIds.Contains(guild.cluster_id))
-                    clusterIds.Add(guild.cluster_id);
                 serverIds.Add(s.Item1._id);
                 response.servers.Add(guild);
             }
@@ -69,20 +66,8 @@ namespace ArkWebMapMasterServer.Services.Users
                 var guild = await NetGuildUser.GetNetGuild(conn, s, user, null);
 
                 //Add to lists
-                if (guild.cluster_id != null && !clusterIds.Contains(guild.cluster_id))
-                    clusterIds.Add(guild.cluster_id);
                 serverIds.Add(s._id);
                 response.servers.Add(guild);
-            }
-
-            //Add clusters
-            foreach (var c in clusterIds)
-            {
-                //Get cluster data
-                var cluster = await DbCluster.GetClusterById(Program.connection, MongoDB.Bson.ObjectId.Parse(c));
-
-                //Add cluster data
-                response.clusters.Add(NetCluster.GetCluster(cluster));
             }
 
             //Write response
